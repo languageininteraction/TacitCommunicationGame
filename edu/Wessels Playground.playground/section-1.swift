@@ -157,3 +157,130 @@ func sort(input:Int...) -> [Int]
 }
 
 sort(1,5,6,2,3,10,15,3,8,100,0,23)
+
+class Tree
+{
+    var realsize:Int = 0
+    
+    var size:Int
+    {
+        get
+        {
+            return realsize*2
+        }
+        set(value)
+            {
+                realsize = value + 1
+        }
+    }
+
+    init(size:Int)
+    {
+        self.realsize = size
+    }
+}
+
+var t = Tree(size:10)
+
+t.size = 80
+println(t.size)
+
+enum Rank: Int {
+    case Ace = 1
+    case Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten
+    case Jack, Queen, King
+    func simpleDescription() -> String {
+        switch self {
+        case .Ace:
+            return "ace"
+        case .Jack:
+            return "jack"
+        case .Queen:
+            return "queen"
+        case .King:
+            return "king"
+        default:
+            return String(self.toRaw())
+        }
+    }
+}
+
+func highest_rank(rank1:Rank,rank2:Rank) -> String
+{
+    if rank1.toRaw() > rank2.toRaw()
+    {
+        return rank1.simpleDescription()
+    }
+    else
+    {
+        return rank2.simpleDescription()
+    }
+}
+
+var r1 = Rank.Six
+var r2 = Rank.Three
+
+highest_rank(r1,r2)
+
+enum Suit {
+    case Spades, Hearts, Diamonds, Clubs
+    func simpleDescription() -> String {
+        switch self {
+        case .Spades:
+            return "spades"
+        case .Hearts:
+            return "hearts"
+        case .Diamonds:
+            return "diamonds"
+        case .Clubs:
+            return "clubs"
+        }
+    }
+
+    func color() -> String
+    {
+        if self == Spades || self == Hearts
+        {
+            return "black"
+        }
+        else
+        {
+            return "red"
+        }
+    }
+
+   
+}
+    
+let hearts = Suit.Diamonds
+let heartsDescription = hearts.simpleDescription()
+hearts.color()
+
+enum OS
+{
+    case Windows(String)
+    case Mac(String)
+    case Linux(String)
+}
+
+var keuze = OS.Linux("Handigste")
+
+switch keuze
+{
+    case let .Linux(reden): println(reden)
+    default: println("Oja");
+}
+
+func reverse_str(s:String) -> String
+{
+    var result = ""
+    
+    for letter in s
+    {
+        result = String(letter)+result;
+    }
+    
+    return result
+}
+
+reverse_str("wessel")
