@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5E17A2A8-6666-4511-B768-D3A9740B7E35</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AnotherTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>EE53A5601A4E3308BD0BB8360B3E77FC675BC1F0</key>
+		<string>https://github.com/languageininteraction/TacitCommunicationGame.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AnotherTest/AnotherTest.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>EE53A5601A4E3308BD0BB8360B3E77FC675BC1F0</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/languageininteraction/TacitCommunicationGame.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>EE53A5601A4E3308BD0BB8360B3E77FC675BC1F0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EE53A5601A4E3308BD0BB8360B3E77FC675BC1F0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TacitCommunicationGame</string>
+		</dict>
+	</array>
+</dict>
+</plist>
