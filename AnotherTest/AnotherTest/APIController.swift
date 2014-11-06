@@ -17,7 +17,10 @@ class APIController
 {
     var delegate: APIControllerProtocol?
     
-    init() {}
+    init(delegate:APIControllerProtocol)
+    {
+        self.delegate = delegate
+    }
    
     func searchItunesFor(searchTerm: String) {
         

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81CE2E731A0B8821002FB533 /* Blank52.png in Resources */ = {isa = PBXBuildFile; fileRef = 81CE2E721A0B8821002FB533 /* Blank52.png */; };
 		81DFA0471A022EB800A084FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DFA0461A022EB800A084FF /* AppDelegate.swift */; };
 		81DFA0491A022EB800A084FF /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DFA0481A022EB800A084FF /* SearchResultsViewController.swift */; };
 		81DFA04C1A022EB800A084FF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81DFA04A1A022EB800A084FF /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		81CE2E721A0B8821002FB533 /* Blank52.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Blank52.png; path = ../../../Downloads/Blank52.png; sourceTree = "<group>"; };
 		81DFA0411A022EB800A084FF /* AnotherTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnotherTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81DFA0451A022EB800A084FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81DFA0461A022EB800A084FF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		81DFA0431A022EB800A084FF /* AnotherTest */ = {
 			isa = PBXGroup;
 			children = (
+				81CE2E721A0B8821002FB533 /* Blank52.png */,
 				81DFA0461A022EB800A084FF /* AppDelegate.swift */,
 				81DFA0481A022EB800A084FF /* SearchResultsViewController.swift */,
 				81DFA04A1A022EB800A084FF /* Main.storyboard */,
@@ -196,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81DFA04C1A022EB800A084FF /* Main.storyboard in Resources */,
+				81CE2E731A0B8821002FB533 /* Blank52.png in Resources */,
 				81DFA0511A022EB800A084FF /* LaunchScreen.xib in Resources */,
 				81DFA04E1A022EB800A084FF /* Images.xcassets in Resources */,
 			);
@@ -411,6 +415,7 @@
 				81DFA0621A022EB800A084FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		81DFA0631A022EB800A084FF /* Build configuration list for PBXNativeTarget "AnotherTestTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +424,7 @@
 				81DFA0651A022EB800A084FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
