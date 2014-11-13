@@ -17,12 +17,21 @@ class Round : NSObject {
 	
 	// todo: collect phases (states and transitions) into an array; make a function currentPhase that returns the last phase
 	
+    let board: Board
+    let ownPawn: Pawn
+    let otherPawn: Pawn
+    
 	
 	// Initializer if the game is created by ourselves:
 	override init() {
 		self.myRole = RoundRole.Sender // todo: random? choose?
 		self.othersRole = RoundRole.Receiver
-	}
+
+        self.board = Board(width:3, height: 3)
+        self.ownPawn = Pawn(board: board, field:board.fields[0])
+        self.otherPawn = Pawn(board: board, field:board.fields[0])
+        
+    }
 	
 	// Initializer if the game is created by the other:
 	// todo
@@ -42,6 +51,9 @@ class Round : NSObject {
 		// Let our current state create the next phase:;l.
 		let nextPhase = self.currentState().nextPhase(action)
 		
+        println("\(self.ownPawn.field.x) \(self.ownPawn.field.y)")
+        self.ownPawn.field = self.board.fields[2]
+        
 		// todo: add the nextPhase to an array of phases; for now just update the current phase:
 		self.currentPhase = nextPhase
 	}
