@@ -38,6 +38,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// MARK: - Outlets
 	
+	@IBOutlet weak var textFieldForTesting: UILabel!
+	
     @IBOutlet weak var field00: UIButton!
     @IBOutlet weak var field10: UIButton!
     @IBOutlet weak var field01: UIButton!
@@ -164,7 +166,31 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	// MARK: - Playing the match
 	
 	func startPlayingMatch() {
+		// test asymmetry:
+//		let players = 
+//		for i in 0...1 { // todo
+//			let player: GKPlayer = self.match?.players[i] as GKPlayer
+//			if player.playerID.compare(self.localPlayer.playerID) != NSComparisonResult.OrderedSame {
+//				textFieldForTesting.text = "\(player.playerID)"
+//			}
+//		}
 		
+		let otherPlayer = self.match!.players[0] as GKPlayer //
+		let weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+		let string = weDecideWhoIsWho ? "We deicde!" : "They decide :("
+		textFieldForTesting.text = "\(string)"
+		println("hiero \(string)")
+		
+//		let match = self.match!
+//		for i in 0...1 { // todo
+//			let player: GKPlayer = match.players[i] as GKPlayer
+//			if player.playerID.compare(self.localPlayer.playerID) != NSComparisonResult.OrderedSame {
+//				textFieldForTesting.text = "\(player.playerID)"
+//			}
+//		}
+		
+//		let playerIDOfOther =
+//		self.localPlayer.playerID.compare(playerIDOfOther)
 	}
 	
 	func performIncrease() {
