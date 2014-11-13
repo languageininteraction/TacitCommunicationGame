@@ -48,6 +48,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     @IBAction func fieldButtonPressed(sender: UIButton) {
         let x : Int = sender == field00 || sender == field01 ? 0 : 1;
+        let y: Int = sender == field00 || sender == field10 ? 0 : 1;
+
+        self.movePawn((x,y))
         
     }
 	
@@ -167,17 +170,20 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		
 	}
 	
-	func performIncrease() {
-		// Create the corresponding action:
-		let action = RoundAction(type: .Tap)
+    func movePawn(position: (Int,Int)) {
+
+        // Create the corresponding action:
+        let action = RoundAction(type: .Tap,position: position)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 		self.sendActionToOther(action)
 		
 		// Update the model:
 		currentRound.processAction(action)
-		
+        
 		// Update our UI (for now the transition is irrelevant):
+        self.updateUI();
+        
 	}
 	
 	func sendActionToOther(action: RoundAction) {
@@ -197,5 +203,35 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 			self.managerOfMultiplePlayerViewControllers!.sendMessageForPlayerViewController(self, packet: packet)
 		}
 	}
+    
+    func updateUI()
+    {
+        for field in [field00,field10,field01,field11]
+        {
+            field.backgroundColor = UIColor(red:0.81,green:0.82,blue:1,alpha:1);
+        }
+        
+        if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 0
+        {
+            println("00");
+            field00.backgroundColor = UIColor.purpleColor()
+        }
+        else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 0
+        {
+            println("10")
+            field10.backgroundColor = UIColor.purpleColor()
+        }
+        else if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 1
+        {
+            println("01")
+            field01.backgroundColor = UIColor.purpleColor()
+        }
+        else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 1
+        {
+            println("11")
+            field11.backgroundColor = UIColor.purpleColor()
+        }
+
+    }
 
 }
