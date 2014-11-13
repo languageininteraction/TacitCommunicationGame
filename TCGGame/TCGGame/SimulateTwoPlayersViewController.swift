@@ -65,9 +65,11 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 		}
 	}
 	
-	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		player1ViewController.weDecideWhoIsWho = true
+		player2ViewController.weDecideWhoIsWho = false
 		
 		// todo: worth it to make a function that takes a block and performs it for both or either one of the PlayerViewControllers?
 		

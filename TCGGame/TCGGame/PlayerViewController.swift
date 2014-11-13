@@ -32,6 +32,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
 	var match: GKMatch?
+	var weDecideWhoIsWho: Bool? // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes the sender and who becomes the receiver; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewController
 	
 	var matchStarted = false
 	
@@ -169,31 +170,10 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	// MARK: - Playing the match
 	
 	func startPlayingMatch() {
-		// test asymmetry:
-//		let players = 
-//		for i in 0...1 { // todo
-//			let player: GKPlayer = self.match?.players[i] as GKPlayer
-//			if player.playerID.compare(self.localPlayer.playerID) != NSComparisonResult.OrderedSame {
-//				textFieldForTesting.text = "\(player.playerID)"
-//			}
-//		}
-		
 		let otherPlayer = self.match!.players[0] as GKPlayer //
-		let weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
-		let string = weDecideWhoIsWho ? "We deicde!" : "They decide :("
+		self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+		let string = self.weDecideWhoIsWho! ? "We deicde!" : "They decide :("
 		textFieldForTesting.text = "\(string)"
-		println("hiero \(string)")
-		
-//		let match = self.match!
-//		for i in 0...1 { // todo
-//			let player: GKPlayer = match.players[i] as GKPlayer
-//			if player.playerID.compare(self.localPlayer.playerID) != NSComparisonResult.OrderedSame {
-//				textFieldForTesting.text = "\(player.playerID)"
-//			}
-//		}
-		
-//		let playerIDOfOther =
-//		self.localPlayer.playerID.compare(playerIDOfOther)
 	}
 	
     func movePawn(position: (Int,Int)) {
