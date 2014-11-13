@@ -13,15 +13,18 @@ import UIKit
 
 class RoundAction: NSObject {
 	let type: RoundActionType
-	
-	init (type: RoundActionType) {
+    let position: (Int,Int)
+    
+    init (type: RoundActionType,position: (Int,Int)) {
 		self.type = type
+        self.position = position
 	}
 	
 	init (packet: NSData) {
 		var hashValue = 0
 		packet.getBytes(&hashValue, length: 4)
 		self.type = RoundActionType.Tap // todo: ok to assume that this works? I'm not completely sure yet how to work with optionals…
+        self.position = (0,0)
 	}
 	
 	func packetForOther() -> NSData {

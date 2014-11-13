@@ -10,6 +10,8 @@ import UIKit
 
 class RoundState: NSObject {
 	var count = 0
+    var posPawn1 = (0,0)
+    var posPawn2 = (0,0)
 	
 	func nextPhase(action: RoundAction) -> RoundPhase {
 		// todo: implement copying protocol so we can start with a copy of ourselves:
@@ -17,7 +19,9 @@ class RoundState: NSObject {
 		
 		if (action.type == RoundActionType.Tap) {
 			// The next state is the same as us, but with an increased counter:
-			nextState.count = self.count + 1;
+			nextState.posPawn1 = action.position
+            nextState.posPawn2 = self.posPawn2
+            
 		} else {
 			println("Warning in Round's processAction: don't know what to do with this action type.");
 		}
