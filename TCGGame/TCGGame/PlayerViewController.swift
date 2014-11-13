@@ -163,6 +163,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		currentRound.processAction(action)
 		
 		// Update our UI (for now the transition is irrelevant):
+        self.updateUI()
 
     }
 	
@@ -212,32 +213,59 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     func updateUI()
     {
+        //All fields back to basic color
         for field in [field00,field10,field01,field11]
         {
             field.backgroundColor = UIColor(red:0.81,green:0.82,blue:1,alpha:1);
         }
+
+        //Check which fields the own and other pawn are standing on
+
+        var ownField = field00
         
         if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 0
         {
-            println("00");
-            field00.backgroundColor = UIColor.purpleColor()
+            ownField = field00
         }
         else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 0
         {
-            println("10")
-            field10.backgroundColor = UIColor.purpleColor()
+            ownField = field10
         }
         else if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 1
         {
-            println("01")
-            field01.backgroundColor = UIColor.purpleColor()
+            ownField = field01
         }
         else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 1
         {
-            println("11")
-            field11.backgroundColor = UIColor.purpleColor()
+            ownField = field11
+        }
+        else
+        {
+            ownField = field00
         }
 
+        var otherField = field00
+        
+        if self.currentRound.currentState().posPawn2.0 == 0 && self.currentRound.currentState().posPawn2.1 == 0
+        {
+            otherField = field00
+        }
+        else if self.currentRound.currentState().posPawn2.0 == 1 && self.currentRound.currentState().posPawn2.1 == 0
+        {
+            otherField = field10
+        }
+        else if self.currentRound.currentState().posPawn2.0 == 0 && self.currentRound.currentState().posPawn2.1 == 1
+        {
+            otherField = field01
+        }
+        else if self.currentRound.currentState().posPawn2.0 == 1 && self.currentRound.currentState().posPawn2.1 == 1
+        {
+            otherField = field11
+        }
+        
+        ownField.backgroundColor = UIColor.purpleColor()
+        otherField.backgroundColor = UIColor.blueColor()
+        
     }
 
 }
