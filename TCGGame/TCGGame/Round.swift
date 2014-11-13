@@ -6,6 +6,11 @@
 //  Copyright (c) 2014 gametogether. All rights reserved.
 //
 
+/* In a round we only model stuff that stays the same during the whole round.
+
+*/
+
+
 import UIKit
 
 class Round : NSObject {
