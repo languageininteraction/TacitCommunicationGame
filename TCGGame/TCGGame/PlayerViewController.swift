@@ -38,23 +38,24 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// MARK: - Outlets
 	
-	@IBOutlet weak var labelCounter: UILabel!
+    @IBOutlet weak var field00: UIButton!
+    @IBOutlet weak var field10: UIButton!
+    @IBOutlet weak var field01: UIButton!
+    @IBOutlet weak var field11: UIButton!
 	
-	
-	// MARK: - IB Actions
-	
-	@IBAction func addButtonPressed(sender: AnyObject) {
-		self.performIncrease()
-	}
-	
+    
+    // MARK: - IB Actions
+    
+    @IBAction func fieldButtonPressed(sender: UIButton) {
+        let x : Int = sender == field00 || sender == field01 ? 0 : 1;
+        
+    }
 	
 	// MARK: - Flow
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		labelCounter.text = "loading"
-		
+				
 		if (!kDevLocalTestingIsOn) { // normal case
 			self.authenticateLocalPlayer()
 		} else {
@@ -156,8 +157,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		currentRound.processAction(action)
 		
 		// Update our UI (for now the transition is irrelevant):
-		labelCounter.text = "\(currentRound.currentState().count)"
-	}
+
+    }
 	
 	
 	// MARK: - Playing the match
@@ -177,7 +178,6 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		currentRound.processAction(action)
 		
 		// Update our UI (for now the transition is irrelevant):
-		labelCounter.text = "\(currentRound.currentState().count)"
 	}
 	
 	func sendActionToOther(action: RoundAction) {
