@@ -21,7 +21,7 @@ class RoundAction: NSObject {
 	init (packet: NSData) {
 		var hashValue = 0
 		packet.getBytes(&hashValue, length: 4)
-		self.type = RoundActionType(rawValue: hashValue)! // todo: ok to assume that this works? I'm not completely sure yet how to work with optionals…
+		self.type = RoundActionType.Tap // todo: ok to assume that this works? I'm not completely sure yet how to work with optionals…
 	}
 	
 	func packetForOther() -> NSData {

@@ -25,6 +25,9 @@
 		482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */; };
 		482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
+		81FE3EE41A14B2DC002AE287 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FE3EE31A14B2DC002AE287 /* Board.swift */; };
+		81FE3EE61A14B304002AE287 /* BoardField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FE3EE51A14B304002AE287 /* BoardField.swift */; };
+		81FE3EE81A14B310002AE287 /* Pawn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FE3EE71A14B310002AE287 /* Pawn.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +63,9 @@
 		482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		81FE3EE31A14B2DC002AE287 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		81FE3EE51A14B304002AE287 /* BoardField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardField.swift; sourceTree = "<group>"; };
+		81FE3EE71A14B310002AE287 /* Pawn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawn.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +149,7 @@
 		4812E62B1A0A6AEA006DED82 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				81FE3EE21A14B2C9002AE287 /* Physicals */,
 				4812E63C1A0A7671006DED82 /* Rounds */,
 			);
 			name = Model;
@@ -187,6 +194,16 @@
 				482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */,
 			);
 			name = "For One Player";
+			sourceTree = "<group>";
+		};
+		81FE3EE21A14B2C9002AE287 /* Physicals */ = {
+			isa = PBXGroup;
+			children = (
+				81FE3EE31A14B2DC002AE287 /* Board.swift */,
+				81FE3EE51A14B304002AE287 /* BoardField.swift */,
+				81FE3EE71A14B310002AE287 /* Pawn.swift */,
+			);
+			name = Physicals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,10 +320,13 @@
 				4812E63B1A0A715C006DED82 /* RoundPhase.swift in Sources */,
 				4812E6371A0A6DA5006DED82 /* RoundRoles.swift in Sources */,
 				4812E6391A0A6F7C006DED82 /* RoundActionTypes.swift in Sources */,
+				81FE3EE41A14B2DC002AE287 /* Board.swift in Sources */,
 				4812E6351A0A6B8D006DED82 /* RoundTransition.swift in Sources */,
 				4812E62F1A0A6B65006DED82 /* Round.swift in Sources */,
 				482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
+				81FE3EE61A14B304002AE287 /* BoardField.swift in Sources */,
+				81FE3EE81A14B310002AE287 /* Pawn.swift in Sources */,
 				482EEC441A123E0B00FB13FF /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
