@@ -18,6 +18,7 @@ import UIKit
 class RoundAction: NSObject {
 	let type: RoundActionType
     let position: (Int,Int)
+	var movingPawn0 = false // todo solve more elegantly and add in init
     
     init (type: RoundActionType,position: (Int,Int)) {
 		self.type = type
@@ -37,4 +38,6 @@ class RoundAction: NSObject {
         var hashValue = self.position.0 * 2 + self.position.1 // todo, quick fix!
 		return NSData(bytes:&hashValue, length:4) // todo check length!
 	}
+	
+	
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-let kDevelopmentMode = false
+let kDevelopmentMode = true
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false

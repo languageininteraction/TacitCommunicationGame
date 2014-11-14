@@ -19,8 +19,15 @@ class RoundState: NSObject {
 		
 		if (action.type == RoundActionType.Tap) {
 			// The next state is the same as us, but with an increased counter:
-			nextState.posPawn1 = action.position
+			nextState.posPawn1 = self.posPawn1
             nextState.posPawn2 = self.posPawn2
+			
+			if (action.movingPawn0) {
+				nextState.posPawn1 = action.position
+			} else {
+				nextState.posPawn2 = action.position
+			}
+			
             
 		} else {
 			println("Warning in Round's processAction: don't know what to do with this action type.");

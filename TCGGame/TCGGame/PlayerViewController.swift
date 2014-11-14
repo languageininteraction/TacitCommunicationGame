@@ -159,6 +159,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		// Decode the data, which is always a RoundAction:
 		let action = RoundAction(packet: data)
 		
+		// todo, quick hack!
+		action.movingPawn0 = !action.movingPawn0
+		
 		// Update the model:
 		currentRound.processAction(action)
 		
@@ -171,8 +174,10 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	// MARK: - Playing the match
 	
 	func startPlayingMatch() {
-		let otherPlayer = self.match!.players[0] as GKPlayer //
-		self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+		if (!kDevLocalTestingIsOn) {
+			let otherPlayer = self.match!.players[0] as GKPlayer //
+			self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+		}
 		let string = self.weDecideWhoIsWho! ? "We deicde!" : "They decide :("
 		textFieldForTesting.text = "\(string)"
 	}
@@ -181,6 +186,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 
         // Create the corresponding action:
         let action = RoundAction(type: .Tap,position: position)
+		action.movingPawn0 = weDecideWhoIsWho! // there should be an extra 'level' of this, we explicitly says which role the player has (sender or receiver)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 		self.sendActionToOther(action)
