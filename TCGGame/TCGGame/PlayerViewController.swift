@@ -158,10 +158,13 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	func receiveData(data: NSData!) {
 		// Decode the data, which is always a RoundAction:
 		let action = RoundAction(packet: data)
-		
-		// todo, quick hack!
-		action.movingPawn0 = !action.movingPawn0
-		
+
+        //Dirty fix
+        if self.currentRound.myRole == RoundRole.Receiver
+        {
+            action.movingPawn0 = true
+        }
+        
 		// Update the model:
 		currentRound.processAction(action)
 		
@@ -177,17 +180,39 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		if (!kDevLocalTestingIsOn) {
 			let otherPlayer = self.match!.players[0] as GKPlayer //
 			self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+            
 		}
 		let string = self.weDecideWhoIsWho! ? "We deicde!" : "They decide :("
 		textFieldForTesting.text = "\(string)"
-	}
+
+        if self.weDecideWhoIsWho == true
+        {
+            self.currentRound.setRole(RoundRole.Sender)
+        }
+        else
+        {
+            self.currentRound.setRole(RoundRole.Receiver)
+        }
+
+    
+    }
 	
     func movePawn(position: (Int,Int)) {
 
         // Create the corresponding action:
         let action = RoundAction(type: .Tap,position: position)
-		action.movingPawn0 = weDecideWhoIsWho! // there should be an extra 'level' of this, we explicitly says which role the player has (sender or receiver)
-		
+        
+        if self.currentRound.myRole == RoundRole.Sender
+        {
+            action.movingPawn0 = true
+        }
+        else
+        {
+            action.movingPawn0 = false
+        }
+        
+        println(action.movingPawn0);
+            
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 		self.sendActionToOther(action)
 		
@@ -217,6 +242,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		}
 	}
     
+    //Mark: - Update GUI
+    
     func updateUI()
     {
         //All fields back to basic color
@@ -227,50 +254,55 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 
         //Check which fields the own and other pawn are standing on
 
-        var ownField = field00
+        var fieldPown1 = field00
         
         if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 0
         {
-            ownField = field00
+            fieldPown1 = field00
         }
         else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 0
         {
-            ownField = field10
+            fieldPown1 = field10
         }
         else if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 1
         {
-            ownField = field01
+            fieldPown1 = field01
         }
         else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 1
         {
-            ownField = field11
+            fieldPown1 = field11
         }
         else
         {
-            ownField = field00
+            fieldPown1 = field00
         }
 
-        var otherField = field00
+        var fieldPown2 = field00
         
         if self.currentRound.currentState().posPawn2.0 == 0 && self.currentRound.currentState().posPawn2.1 == 0
         {
-            otherField = field00
+            fieldPown2 = field00
         }
         else if self.currentRound.currentState().posPawn2.0 == 1 && self.currentRound.currentState().posPawn2.1 == 0
         {
-            otherField = field10
+            fieldPown2 = field10
         }
         else if self.currentRound.currentState().posPawn2.0 == 0 && self.currentRound.currentState().posPawn2.1 == 1
         {
-            otherField = field01
+            fieldPown2 = field01
         }
         else if self.currentRound.currentState().posPawn2.0 == 1 && self.currentRound.currentState().posPawn2.1 == 1
         {
-            otherField = field11
+            fieldPown2 = field11
         }
         
-        ownField.backgroundColor = UIColor.purpleColor()
-        otherField.backgroundColor = UIColor.blueColor()
+        fieldPown1.backgroundColor = self.currentRound.pawn1.color
+        fieldPown2.backgroundColor = self.currentRound.pawn2.color
+        
+        if fieldPown1 == fieldPown2
+        {
+            fieldPown2.backgroundColor = UIColor.orangeColor()
+        }
         
     }
 
