@@ -38,20 +38,6 @@
 			remoteGlobalIDString = 4812E6051A0A655A006DED82;
 			remoteInfo = TCGGame;
 		};
-		486FEB3D1A1A923100260AB4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 486FEB381A1A923000260AB4 /* ShapePathTest.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 486FEB131A1A923000260AB4;
-			remoteInfo = ShapePathTest;
-		};
-		486FEB3F1A1A923100260AB4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 486FEB381A1A923000260AB4 /* ShapePathTest.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 486FEB281A1A923000260AB4;
-			remoteInfo = ShapePathTestTests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -77,7 +63,6 @@
 		482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		486FEB381A1A923000260AB4 /* ShapePathTest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ShapePathTest.xcodeproj; path = ShapePathTest/ShapePathTest.xcodeproj; sourceTree = "<group>"; };
 		81FE3EE31A14B2DC002AE287 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		81FE3EE51A14B304002AE287 /* BoardField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardField.swift; sourceTree = "<group>"; };
 		81FE3EE71A14B310002AE287 /* Pawn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pawn.swift; sourceTree = "<group>"; };
@@ -105,7 +90,6 @@
 		4812E5FD1A0A655A006DED82 = {
 			isa = PBXGroup;
 			children = (
-				486FEB381A1A923000260AB4 /* ShapePathTest.xcodeproj */,
 				4812E63F1A0B7972006DED82 /* GameKit.framework */,
 				4812E6081A0A655A006DED82 /* TCGGame */,
 				4812E61E1A0A655A006DED82 /* TCGGameTests */,
@@ -212,15 +196,6 @@
 			name = "For One Player";
 			sourceTree = "<group>";
 		};
-		486FEB391A1A923000260AB4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				486FEB3E1A1A923100260AB4 /* ShapePathTest.app */,
-				486FEB401A1A923100260AB4 /* ShapePathTestTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		81FE3EE21A14B2C9002AE287 /* Physicals */ = {
 			isa = PBXGroup;
 			children = (
@@ -304,12 +279,6 @@
 			mainGroup = 4812E5FD1A0A655A006DED82;
 			productRefGroup = 4812E6071A0A655A006DED82 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 486FEB391A1A923000260AB4 /* Products */;
-					ProjectRef = 486FEB381A1A923000260AB4 /* ShapePathTest.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				4812E6051A0A655A006DED82 /* TCGGame */,
@@ -317,23 +286,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		486FEB3E1A1A923100260AB4 /* ShapePathTest.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = ShapePathTest.app;
-			remoteRef = 486FEB3D1A1A923100260AB4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		486FEB401A1A923100260AB4 /* ShapePathTestTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = ShapePathTestTests.xctest;
-			remoteRef = 486FEB3F1A1A923100260AB4 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4812E6041A0A655A006DED82 /* Resources */ = {
