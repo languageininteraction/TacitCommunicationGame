@@ -24,8 +24,10 @@ class RoundState: NSObject {
 			
 			if (action.movingPawn0) {
 				nextState.posPawn1 = action.position
+                println("Moving one");
 			} else {
 				nextState.posPawn2 = action.position
+                println("Moving two")
 			}
 			
             

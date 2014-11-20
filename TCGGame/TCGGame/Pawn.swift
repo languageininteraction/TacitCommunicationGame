@@ -7,16 +7,19 @@
 //
 
 import Foundation
+import UIKit
 
 class Pawn : NSObject {
     let board: Board
     var field: BoardField
     let orientation: Int = 0 //Will be a special enum later
+    let color: UIColor
     
-    init(board: Board, field: BoardField)
+    init(board: Board, field: BoardField, color:UIColor)
     {
         self.board = board
         self.field = field
+        self.color = color
     }
 
 }
