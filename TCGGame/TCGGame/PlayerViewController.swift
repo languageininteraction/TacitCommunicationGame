@@ -159,12 +159,6 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		// Decode the data, which is always a RoundAction
         var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
         
-        //Dirty fix
-        if self.currentRound.myRole == RoundRole.Receiver
-        {
-            action.movingPawn0 = true
-        }
-        
 		// Update the model:
 		currentRound.processAction(action)
 		
@@ -200,18 +194,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     func movePawn(position: (Int,Int)) {
 
         // Create the corresponding action:
-        let action = RoundAction(type: .Tap,position: position)
+        let action = RoundAction(type: .Tap,position: position,role: self.currentRound.myRole!)
         
-        if self.currentRound.myRole == RoundRole.Sender
-        {
-            action.movingPawn0 = true
-        }
-        else
-        {
-            action.movingPawn0 = false
-        }
-        
-        println(action.movingPawn0);
+        println(action.role.rawValue);
             
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 		self.sendActionToOther(action)

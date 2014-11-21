@@ -18,17 +18,19 @@ import UIKit
 class RoundAction: NSObject, NSCoding {
 	let type: RoundActionType
     let position: (Int,Int)
-	var movingPawn0 = false // todo solve more elegantly and add in init
+    let role: RoundRole
     
-    init (type: RoundActionType,position: (Int,Int)) {
+    init (type: RoundActionType,position: (Int,Int),role: RoundRole) {
 		self.type = type
         self.position = position
+        self.role = role
 	}
 	
     func encodeWithCoder(coder: NSCoder) {
         
         coder.encodeInt(Int32(self.position.0), forKey:"x")
         coder.encodeInt(Int32(self.position.1), forKey:"y")
+        coder.encodeInt(Int32(role.rawValue),forKey:"role")
     }
 	
 
@@ -36,6 +38,7 @@ class RoundAction: NSObject, NSCoding {
     {
         self.type = RoundActionType.Tap
         self.position = (Int(decoder.decodeIntForKey("x")),Int(decoder.decodeIntForKey("y")))
+        self.role = RoundRole(rawValue: Int(decoder.decodeIntForKey("role")))!
     }
     
 }
