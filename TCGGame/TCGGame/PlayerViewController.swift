@@ -155,10 +155,10 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	
 	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
-	func receiveData(data: NSData!) {
-		// Decode the data, which is always a RoundAction:
-		let action = RoundAction(packet: data)
-
+	func receiveData(data: NSData) {
+		// Decode the data, which is always a RoundAction
+        var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
+        
         //Dirty fix
         if self.currentRound.myRole == RoundRole.Receiver
         {
@@ -226,8 +226,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	func sendActionToOther(action: RoundAction) {
 	
-		let packet = action.packetForOther()
-
+		let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
+        
 		if (!kDevLocalTestingIsOn) { // normal case
 			var error: NSError?
 			let match = self.match!
