@@ -155,15 +155,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	
 	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
-	func receiveData(data: NSData!) {
-		// Decode the data, which is always a RoundAction:
-		let action = RoundAction(packet: data)
-
-        //Dirty fix
-        if self.currentRound.myRole == RoundRole.Receiver
-        {
-            action.movingPawn0 = true
-        }
+	func receiveData(data: NSData) {
+		// Decode the data, which is always a RoundAction
+        var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
         
 		// Update the model:
 		currentRound.processAction(action)
@@ -200,18 +194,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     func movePawn(position: (Int,Int)) {
 
         // Create the corresponding action:
-        let action = RoundAction(type: .Tap,position: position)
+        let action = RoundAction(type: .Tap,position: position,role: self.currentRound.myRole!)
         
-        if self.currentRound.myRole == RoundRole.Sender
-        {
-            action.movingPawn0 = true
-        }
-        else
-        {
-            action.movingPawn0 = false
-        }
-        
-        println(action.movingPawn0);
+        println(action.role.rawValue);
             
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 		self.sendActionToOther(action)
@@ -226,8 +211,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	func sendActionToOther(action: RoundAction) {
 	
-		let packet = action.packetForOther()
-
+		let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
+        
 		if (!kDevLocalTestingIsOn) { // normal case
 			var error: NSError?
 			let match = self.match!

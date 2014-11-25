@@ -22,12 +22,10 @@ class RoundState: NSObject {
 			nextState.posPawn1 = self.posPawn1
             nextState.posPawn2 = self.posPawn2
 			
-			if (action.movingPawn0) {
+			if (action.role == RoundRole.Sender) {
 				nextState.posPawn1 = action.position
-                println("Moving one");
 			} else {
 				nextState.posPawn2 = action.position
-                println("Moving two")
 			}
 			
             

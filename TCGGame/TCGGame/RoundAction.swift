@@ -15,29 +15,30 @@
 
 import UIKit
 
-class RoundAction: NSObject {
+class RoundAction: NSObject, NSCoding {
 	let type: RoundActionType
     let position: (Int,Int)
-	var movingPawn0 = false // todo solve more elegantly and add in init
+    let role: RoundRole
     
-    init (type: RoundActionType,position: (Int,Int)) {
+    init (type: RoundActionType,position: (Int,Int),role: RoundRole) {
 		self.type = type
         self.position = position
+        self.role = role
 	}
 	
-	init (packet: NSData) {
-		var hashValue = 0
-		packet.getBytes(&hashValue, length: 4)
-		self.type = RoundActionType.Tap // todo: ok to assume that this works? I'm not completely sure yet how to work with optionals
-        self.position.1 = hashValue % 2
-        self.position.0 = (hashValue - self.position.1) / 2
-	}
+    func encodeWithCoder(coder: NSCoder) {
+        
+        coder.encodeInt(Int32(self.position.0), forKey:"x")
+        coder.encodeInt(Int32(self.position.1), forKey:"y")
+        coder.encodeInt(Int32(role.rawValue),forKey:"role")
+    }
 	
-	func packetForOther() -> NSData {
-//		var hashValue = self.type.hashValue
-        var hashValue = self.position.0 * 2 + self.position.1 // todo, quick fix!
-		return NSData(bytes:&hashValue, length:4) // todo check length!
-	}
-	
-	
+
+    required init (coder decoder: NSCoder)
+    {
+        self.type = RoundActionType.Tap
+        self.position = (Int(decoder.decodeIntForKey("x")),Int(decoder.decodeIntForKey("y")))
+        self.role = RoundRole(rawValue: Int(decoder.decodeIntForKey("role")))!
+    }
+    
 }
