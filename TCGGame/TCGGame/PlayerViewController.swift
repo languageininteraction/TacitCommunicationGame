@@ -67,6 +67,20 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		} else {
 			startPlayingMatch()
 		}
+		
+		
+		// Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
+		
+		// Add a board view:
+		let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
+		boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
+		boardView.boardSize = (5, 3)
+//		self.view.addSubview(boardView)
+		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
+		
+		// Add a pawn to the board view:
+		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Square, color: kColorLiIOrange)
+		boardView.placePawn1((1, 2))
 	}
 	
 	override func didReceiveMemoryWarning() {

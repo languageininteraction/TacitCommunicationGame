@@ -75,12 +75,12 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 		
 		player1ViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
 		self.view.addSubview(player1ViewController.view)
-		player1ViewController.view.backgroundColor = UIColor.redColor()
+//		player1ViewController.view.backgroundColor = UIColor.redColor()
 		player1ViewController.managerOfMultiplePlayerViewControllers = self
 		
 		player2ViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
 		self.view.addSubview(player2ViewController.view)
-		player2ViewController.view.backgroundColor = UIColor.blueColor()
+//		player2ViewController.view.backgroundColor = UIColor.blueColor()
 		player2ViewController.managerOfMultiplePlayerViewControllers = self
 		
 		
@@ -102,6 +102,10 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 		
 		let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: "pinchRecognized:")
 		self.view.addGestureRecognizer(pinchRecognizer)
+		
+		
+		// Start with the perspective defined by kDevPerspectiveToStartWithInLocalTesting:
+		self.perspective = kDevPerspectiveToStartWithInLocalTesting
     }
 
     override func didReceiveMemoryWarning() {

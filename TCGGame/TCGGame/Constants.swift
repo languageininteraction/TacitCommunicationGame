@@ -7,9 +7,30 @@
 //
 
 import Foundation
+import UIKit
 
 
 let kDevelopmentMode = true
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
+
+// Layout of the board and stuff on top of / inside the board:
+let kBoardEdgeLength: Float = 500
+let kBoardSpaceBetweenFields: Float = 10
+let kBoardLineWidthOfFields = 2
+let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
+
+// Pawns:
+let kPawnLineWidth = 2
+let kPawnNumberOfLines = 4
+let kPawnScaleOfSecondLargestWRTLargest: Float = 0.85
+
+// Main Colors:
+let kColorLiIBlue = UIColor(red:0, green:158.0/255.0, blue:200.0/255.0, alpha:1)
+let kColorLiIBlueLighter = UIColor(red:142.0/255.0, green:207.0/255.0, blue:230.0/255.0, alpha:1)
+let kColorLiIOrange = UIColor(red:239.0/255.0, green:123.0/255.0, blue:16.0/255.0, alpha:1)
+
+// Component colors:
+let kColorBoardFields = kColorLiIBlueLighter

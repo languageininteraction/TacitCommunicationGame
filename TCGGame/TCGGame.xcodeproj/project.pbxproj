@@ -25,6 +25,10 @@
 		482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */; };
 		482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
+		4847D8151A24D99400540223 /* PawnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847D8141A24D99400540223 /* PawnView.swift */; };
+		4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847D8171A24DA3000540223 /* PawnDefinition.swift */; };
+		4856E58A1A24908100309751 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5891A24908100309751 /* BoardView.swift */; };
+		4856E58C1A24953800309751 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E58B1A24953800309751 /* FieldView.swift */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
 		48B2C3221A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2DA1A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png */; };
@@ -135,6 +139,10 @@
 		482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4847D8141A24D99400540223 /* PawnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PawnView.swift; sourceTree = "<group>"; };
+		4847D8171A24DA3000540223 /* PawnDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PawnDefinition.swift; sourceTree = "<group>"; };
+		4856E5891A24908100309751 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		4856E58B1A24953800309751 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
 		48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54@2x.png"; sourceTree = "<group>"; };
 		48B2C2DA1A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrangeOther 54x54.png"; sourceTree = "<group>"; };
@@ -294,7 +302,8 @@
 		4812E62B1A0A6AEA006DED82 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				81FE3EE21A14B2C9002AE287 /* Physicals */,
+				4847D8161A24D9DD00540223 /* Physicals */,
+				81FE3EE21A14B2C9002AE287 /* Physicals (todo remove) */,
 				4812E63C1A0A7671006DED82 /* Rounds */,
 			);
 			name = Model;
@@ -303,6 +312,9 @@
 		4812E62C1A0A6AF1006DED82 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4856E5891A24908100309751 /* BoardView.swift */,
+				4856E58B1A24953800309751 /* FieldView.swift */,
+				4847D8141A24D99400540223 /* PawnView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -339,6 +351,14 @@
 				482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */,
 			);
 			name = "For One Player";
+			sourceTree = "<group>";
+		};
+		4847D8161A24D9DD00540223 /* Physicals */ = {
+			isa = PBXGroup;
+			children = (
+				4847D8171A24DA3000540223 /* PawnDefinition.swift */,
+			);
+			name = Physicals;
 			sourceTree = "<group>";
 		};
 		48B2C2D51A248CD6002FFEDF /* Resources */ = {
@@ -436,14 +456,14 @@
 			name = Buttons;
 			sourceTree = "<group>";
 		};
-		81FE3EE21A14B2C9002AE287 /* Physicals */ = {
+		81FE3EE21A14B2C9002AE287 /* Physicals (todo remove) */ = {
 			isa = PBXGroup;
 			children = (
 				81FE3EE31A14B2DC002AE287 /* Board.swift */,
 				81FE3EE51A14B304002AE287 /* BoardField.swift */,
 				81FE3EE71A14B310002AE287 /* Pawn.swift */,
 			);
-			name = Physicals;
+			name = "Physicals (todo remove)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -626,6 +646,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				482EEC3D1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift in Sources */,
+				4856E58C1A24953800309751 /* FieldView.swift in Sources */,
+				4847D8151A24D99400540223 /* PawnView.swift in Sources */,
 				4812E6311A0A6B77006DED82 /* RoundState.swift in Sources */,
 				4812E60E1A0A655A006DED82 /* ViewController.swift in Sources */,
 				4812E6331A0A6B82006DED82 /* RoundAction.swift in Sources */,
@@ -638,7 +660,9 @@
 				482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
 				81FE3EE61A14B304002AE287 /* BoardField.swift in Sources */,
+				4856E58A1A24908100309751 /* BoardView.swift in Sources */,
 				81FE3EE81A14B310002AE287 /* Pawn.swift in Sources */,
+				4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */,
 				482EEC441A123E0B00FB13FF /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
