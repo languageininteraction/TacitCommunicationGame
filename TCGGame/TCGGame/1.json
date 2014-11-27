@@ -1,0 +1,27 @@
+{
+    'board': {'width':3,'height':3},
+    'player1':
+    {
+        'shape':'square',
+        'color':'orange',
+        'items':
+        {
+            {'itemType':'glasses','endlessUse':true},
+            {'itemType':'shoes','endlessUse':true},
+        },
+        'startConfiguration': {'x':0,'y':0,'orientation':'North'},
+        'endConfiguration': {'x':0,'y':0,'orientation':'North'},
+    }
+    'player2':
+    {
+        'shape':'square',
+        'color':'orange',
+        'items':
+        {
+            {'itemType':'glasses','endlessUse':true},
+            {'itemType':'shoes','endlessUse':true},
+        },
+        'startConfiguration': {'x':0,'y':0,'orientation':'North'},
+        'endConfiguration': {'x':0,'y':0,'orientation':'North'},
+    }
+}
