@@ -26,9 +26,9 @@ class Level: NSObject
     override init()
     {
         self.nr = 1
-        self.board = BoardDefinition(width:5,height:3)
-        self.pawnRole1 = PawnDefinition(shape:PawnShape.Circle,color:kColorLiIOrange)
-        self.pawnRole2 = PawnDefinition(shape:PawnShape.Circle,color:kColorLiIOrange)
+        self.board = BoardDefinition(width:3,height:3)
+        self.pawnRole1 = PawnDefinition(shape:PawnShape.Square,color:kColorLiIOrange)
+        self.pawnRole2 = PawnDefinition(shape:PawnShape.Square,color:kColorLiIYellow)
         
         self.startConfigurationPawn1 = PawnConfiguration(x: 1, y:1, rotation: Rotation.North)
         self.startConfigurationPawn2 = PawnConfiguration(x: 2, y:2, rotation: Rotation.North)

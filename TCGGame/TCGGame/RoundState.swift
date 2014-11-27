@@ -11,7 +11,7 @@ import UIKit
 class RoundState: NSObject {
 	var count = 0
     var posPawn1 = (0,0)
-    var posPawn2 = (0,0)
+    var posPawn2 = (1,1)
 	
 	func nextPhase(action: RoundAction) -> RoundPhase {
 		// todo: implement copying protocol so we can start with a copy of ourselves:

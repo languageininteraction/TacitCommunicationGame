@@ -10,10 +10,10 @@ import Foundation
 
 class Game: NSObject
 {
-    var level:Int
+    var level:Level
     
     override init()
     {
-        self.level = 1
+        self.level = Level()
     }
 }

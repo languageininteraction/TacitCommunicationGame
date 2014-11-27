@@ -66,7 +66,8 @@ class BoardView: UIView {
 	// One or two pawns can be set. Setting a pawn means that a corresponding pawnView is added, which can be manipulated with dedicated methods (see MARK Controlling Pawns):
 	private var pawnView1: PawnView?
 	private var pawnView2: PawnView?
-	var pawnDefinition1: PawnDefinition? {
+
+    var pawnDefinition1: PawnDefinition? {
 		willSet {
 			// Remove the old pawnView, if there was one:
 			if let oldPawnView = pawnView1 {
@@ -83,7 +84,25 @@ class BoardView: UIView {
 			}
 		}
 	}
-	// todo add pawnDefinition2; share code?
+
+    // todo add pawnDefinition2; share code?
+    var pawnDefinition2: PawnDefinition? {
+        willSet {
+            // Remove the old pawnView, if there was one:
+            if let oldPawnView = pawnView2 {
+                oldPawnView.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            // If necessary, create a corresponding pawnView and add it:
+            if let newPawnDefinition = pawnDefinition2 {
+                let edgeLength = kBoardEdgeLengthOfPawnsWRTFields * self.edgeLengthFieldView
+                pawnView2 = PawnView(edgelength: CGFloat(edgeLength), pawnDefinition: newPawnDefinition)
+                self.addSubview(pawnView2!)
+            }
+        }
+    }
 	
 	
 	init(edgelength: CGFloat) {
@@ -105,6 +124,7 @@ class BoardView: UIView {
 	// These methods can be used to set a pawn's (initial) position. They don't animate:
 	
 	func placePawn1(field: (x: Int, y: Int)) {
+        println(field)
 		self.placePawn(true, field: field)
 	}
 	
@@ -117,7 +137,6 @@ class BoardView: UIView {
 			// Change the pawnView's origin so it's in the center of the corresponding field view:
 			
 			// Get the frame of the fieldView:
-			
 			let frameField = self.fieldViews[field.x][field.y].frame
 			
 			// Place the pawnView in its center:
