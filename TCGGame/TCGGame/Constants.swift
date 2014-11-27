@@ -38,5 +38,5 @@ let kColorLiIBordeaux = UIColor(red:139.0/255.0, green:34.0/255.0, blue:31.0/255
 let kColorLiIYellow = UIColor(red:199.0/255.0, green:178.0/255.0, blue:0.0/255.0, alpha:1)
 
 // Component colors:
-let kColorBoardFields = kColorLiIBlueLighter
 
+let kColorBoardFields = kColorLiIBlueLighter

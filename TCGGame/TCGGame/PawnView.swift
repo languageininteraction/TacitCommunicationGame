@@ -26,7 +26,7 @@ class PawnView: UIView {
 		
 		// Add shape layers:
 		
-		// todo explain:
+		// shapeLayers is a constant, therefore we start with a temporary, mutable array which we can fill, and then set the immutable shapeLayers to this array:
 		var shapeLayersTEMP: [CAShapeLayer] = []
 		
 		for i in 0...kPawnNumberOfLines - 1 {
@@ -36,22 +36,72 @@ class PawnView: UIView {
 			// Prepare the shape layer:
 			shapeLayer.frame = CGRectMake(0, 0, edgelength, edgelength)
 			
-			// Create its path:
-			let path = UIBezierPath()
+			// Create and set its path:
 			switch pawnDefinition.shape {
 			case .Square:
-				path.moveToPoint(CGPointMake(0, 0))
-				path.addLineToPoint(CGPointMake(edgelength, 0))
-				path.addLineToPoint(CGPointMake(edgelength, edgelength))
-				path.addLineToPoint(CGPointMake(0, edgelength))
-				path.addLineToPoint(CGPointMake(0, 0))
+				shapeLayer.path = UIBezierPath(rect: CGRectMake(0, 0, edgelength, edgelength)).CGPath
+			case .Circle:
+				shapeLayer.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, edgelength, edgelength)).CGPath
+			case .Triangle:
+				
+				// THIS IS RIDICULOUS! IS SWIFT REALLY THIS BAD AT THIS?
+				
+				let path = UIBezierPath()
+				let piAsFloat = NSNumber(double: M_PI).floatValue // this is crazy…
+				var angle = 0.5 * piAsFloat
+				
+				var crazyX = cosf(angle)
+				crazyX += 1
+				crazyX *= 0.5
+				crazyX *= Float(edgelength)
+				
+				var crazyY = sinf(angle)
+				crazyY += 1
+				crazyY *= 0.5
+				crazyY *= Float(edgelength)
+				
+				let startPoint = CGPointMake(CGFloat(crazyX), CGFloat(crazyY))
+				path.moveToPoint(startPoint)
+				
+				
+				angle = piAsFloat * 7.0/6.0
+				
+				crazyX = cosf(angle)
+				crazyX += 1
+				crazyX *= 0.5
+				crazyX *= Float(edgelength)
+				
+				crazyY = sinf(angle)
+				crazyY += 1
+				crazyY *= 0.5
+				crazyY *= Float(edgelength)
+				
+				path.addLineToPoint(CGPointMake(CGFloat(crazyX), CGFloat(crazyY)))
+				
+				
+				angle = piAsFloat * 11.0/6.0
+				
+				crazyX = cosf(angle)
+				crazyX += 1
+				crazyX *= 0.5
+				crazyX *= Float(edgelength)
+				
+				crazyY = sinf(angle)
+				crazyY += 1
+				crazyY *= 0.5
+				crazyY *= Float(edgelength)
+				
+				path.addLineToPoint(CGPointMake(CGFloat(crazyX), CGFloat(crazyY)))
+				
+				path.addLineToPoint(startPoint)
+				
+				path.closePath()
+				shapeLayer.path = path.CGPath
 			default:
 				println("todo: draw path for PawnShape \(pawnDefinition.shape)")
 			}
-			path.closePath()
 			
-			// Set its path and how it draws the path:
-			shapeLayer.path = path.CGPath
+			// Set how it draws the path:
 			shapeLayer.fillColor = UIColor.clearColor().CGColor
 			shapeLayer.strokeColor = pawnDefinition.color.CGColor
 			shapeLayer.lineWidth = CGFloat(kPawnLineWidth)
@@ -85,7 +135,8 @@ class PawnView: UIView {
 	}
 	
 	
-	// MARK - Manipulating Pawns
+	// MARK: - Manipulating Pawns
+	
 	func moveCenterTo(position: CGPoint) {
 		
 		// Calculate the new frame:
@@ -117,6 +168,31 @@ class PawnView: UIView {
 			let slowiness: Float = 0.075
 			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayers.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
 			shapeLayer.addAnimation(animation, forKey: "transform")
+		}
+		
+		CATransaction.commit()
+	}
+	
+	
+	func rotateTo(rotation: Rotation) {
+		CATransaction.begin()
+		CATransaction.setAnimationDuration(2.25)
+		
+		for i in 0...self.shapeLayers.count - 1 {
+			
+			let shapeLayer = self.shapeLayers[i]
+			
+			let angle = rotation == Rotation.East ? 0 : rotation == Rotation.North ? 0.5 * M_PI : rotation == Rotation.West ? M_PI : 1.5 * M_PI
+			let toTransform = CATransform3DConcat(shapeLayer.transform, CATransform3DMakeRotation(CGFloat(angle), 0, 0, 1))
+			let fromValue = NSValue(CATransform3D: shapeLayer.transform)
+			let toValue = NSValue(CATransform3D: toTransform)
+			
+			let animation = CAKeyframeAnimation(keyPath: "transform")
+			animation.values = [fromValue, fromValue, toValue, toValue]
+			let slowiness: Float = 0.075
+			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayers.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
+			shapeLayer.addAnimation(animation, forKey: "transform")
+			shapeLayer.transform = toTransform
 		}
 		
 		CATransaction.commit()
