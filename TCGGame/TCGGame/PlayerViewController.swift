@@ -28,6 +28,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// MARK: - Model
 	
+    var currentGame = Game()
 	var currentRound = Round()
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
@@ -273,6 +274,33 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     //Mark: - Update GUI
     
     func updateUI()
+    {
+        let currentState = self.currentRound.currentState()
+        let currentLevel = self.currentGame.level
+        
+        // Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
+        
+        // Add a board view:
+        let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
+        boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
+        boardView.boardSize = (self.currentGame.level.board.width,self.currentGame.level.board.height)
+
+        boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
+
+        self.view.addSubview(boardView) //This turns on the new style
+        
+        // Add a pawn to the board view:
+        boardView.pawnDefinition1 = currentLevel.pawnRole1
+        boardView.pawnDefinition2 = currentLevel.pawnRole2
+        
+        boardView.placePawn1(currentState.posPawn1)
+        boardView.placePawn2(currentState.posPawn2)
+        
+    }
+    
+    //Mark: - Depricated update GUI
+    
+    func old_updateUI()
     {
         //All fields back to basic color
         for field in [field00,field10,field01,field11]
