@@ -28,6 +28,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// MARK: - Model
 	
+    var currentGame = Game()
 	var currentRound = Round()
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
@@ -75,7 +76,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
 		boardView.boardSize = (5, 3)
-//		self.view.addSubview(boardView)
+		self.view.addSubview(boardView) //This turns on the new style
 		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 		
 		// Add a pawn to the board view:
