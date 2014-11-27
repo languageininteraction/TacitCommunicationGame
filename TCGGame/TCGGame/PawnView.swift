@@ -83,5 +83,53 @@ class PawnView: UIView {
 		self.pawnDefinition = PawnDefinition(shape: PawnShape.Circle, color: UIColor.blackColor())
 		super.init(coder: decoder)
 	}
-
+	
+	
+	// MARK - Manipulating Pawns
+	func moveCenterTo(position: CGPoint) {
+		
+		// Calculate the new frame:
+		var newFrame = self.frame
+		newFrame.origin = CGPointMake(position.x - 0.5 * frame.size.width, position.y - 0.5 * frame.size.height)
+		
+		// Calculate the displacement:
+		let deltaX = newFrame.origin.x - self.frame.origin.x, deltaY = newFrame.origin.y - self.frame.origin.y
+		
+		
+		// Animate our shapeLayers. Actually change our frame first and then animate as if the movement happens slower:
+		
+		self.frame = newFrame
+		
+		
+		CATransaction.begin()
+		CATransaction.setAnimationDuration(0.25)
+		
+		for i in 0...self.shapeLayers.count - 1 {
+			
+			let shapeLayer = self.shapeLayers[i]
+			
+			let fromTransform = CATransform3DConcat(shapeLayer.transform, CATransform3DMakeTranslation(-1 * deltaX, -1 * deltaY, 0))
+			let fromValue = NSValue(CATransform3D: fromTransform)
+			let toValue = NSValue(CATransform3D: shapeLayer.transform)
+			
+			let animation = CAKeyframeAnimation(keyPath: "transform")
+			animation.values = [fromValue, fromValue, toValue, toValue]
+			let slowiness: Float = 0.075
+			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayers.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
+			shapeLayer.addAnimation(animation, forKey: "transform")
+		}
+		
+		CATransaction.commit()
+	}
 }
+
+
+
+
+
+
+
+
+
+
+

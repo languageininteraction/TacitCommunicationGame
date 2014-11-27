@@ -46,6 +46,13 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     @IBOutlet weak var field01: UIButton!
     @IBOutlet weak var field11: UIButton!
 	
+	
+	// MARK: - Other UI
+	
+	var boardView = BoardView(edgelength: 0)
+	var tempX = 1
+	var tempY = 1
+	
     
     // MARK: - IB Actions
     
@@ -69,18 +76,40 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		}
 		
 		
-		// Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
-		
+		// Testing BoardView (uncomment if you want to see)
+		/*
 		// Add a board view:
-		let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
+		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
 		boardView.boardSize = (5, 3)
-//		self.view.addSubview(boardView)
+		self.view.addSubview(boardView)
 		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 		
 		// Add a pawn to the board view:
 		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Square, color: kColorLiIOrange)
-		boardView.placePawn1((1, 2))
+		boardView.placePawn(true, field: (tempX, tempY))
+		
+		// Add a button to test stuff:
+		let testButton = UIButton(frame: CGRectMake(20, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
+		testButton.backgroundColor = UIColor.redColor()
+		testButton.addTarget(self, action: "testButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+		self.view.addSubview(testButton)
+		*/
+	}
+	
+	// temp:
+	func testButtonPressed() {
+		if tempX == 1 && tempY == 1 {
+			tempY++
+		} else if tempX == 1 && tempY == 2 {
+			tempX++
+		} else if tempX == 2 && tempY == 2 {
+			tempY--
+		} else if tempX == 2 && tempY == 1 {
+			tempX--
+		}
+		
+		boardView.movePawnToField(true, field: (tempX, tempY))
 	}
 	
 	override func didReceiveMemoryWarning() {

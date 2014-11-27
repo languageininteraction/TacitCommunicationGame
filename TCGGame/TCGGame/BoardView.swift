@@ -102,16 +102,7 @@ class BoardView: UIView {
 	// MARK: - Controlling Pawns
 	
 	
-	// These methods can be used to set a pawn's (initial) position. They don't animate:
-	
-	func placePawn1(field: (x: Int, y: Int)) {
-		self.placePawn(true, field: field)
-	}
-	
-	func placePawn2(field: (x: Int, y: Int)) {
-		self.placePawn(false, field: field)
-	}
-	
+	// This method can be used to set a pawn's (initial) position. It doesn't animate:
 	func placePawn(aboutPawn1: Bool, field: (x: Int, y: Int)) {
 		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
 			// Change the pawnView's origin so it's in the center of the corresponding field view:
@@ -126,6 +117,16 @@ class BoardView: UIView {
 			pawnView.frame = framePawnView
 		}
 	}
+	
+	
+	func movePawnToField(aboutPawn1: Bool, field: (x: Int, y: Int)) {
+		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
+			// Let the pawnView move itself, because it knows how to do this in a cool, animated manner:
+			let frameField = self.fieldViews[field.x][field.y].frame
+			pawnView.moveCenterTo(CGPointMake(frameField.origin.x + 0.5 * frameField.size.width, frameField.origin.y + 0.5 * frameField.size.height))
+		}
+	}
+	
 }
 
 
