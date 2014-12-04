@@ -48,6 +48,14 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     @IBOutlet weak var field01: UIButton!
     @IBOutlet weak var field11: UIButton!
 	
+	
+	// MARK: - Other UI
+	
+	var boardView = BoardView(edgelength: 0)
+	var tempX = 1
+	var tempY = 1
+	var tempRotation = Rotation.East
+	
     
     // MARK: - IB Actions
     
@@ -71,6 +79,63 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		}
 		
 		self.updateUI()
+		
+		// Testing BoardView (uncomment if you want to see)
+		
+		// Add a board view:
+		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
+		boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
+		boardView.boardSize = (5, 3)
+		self.view.addSubview(boardView)
+		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
+		
+		
+		// Add pawns to the board view:
+		
+		// Pawn 1:
+		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
+		boardView.placePawn(true, field: (tempX, tempY))
+		
+		// Pawn 2:
+		boardView.pawnDefinition2 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIYellow)
+		boardView.placePawn(false, field: (0, 1))
+		
+		
+		// Add buttons to test stuff:
+		
+		// Movement:
+		let testButton = UIButton(frame: CGRectMake(20, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
+		testButton.backgroundColor = UIColor.redColor()
+		testButton.addTarget(self, action: "testButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+		self.view.addSubview(testButton)
+		
+		// Rotation:
+		let tempRotateButton = UIButton(frame: CGRectMake(80, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
+		tempRotateButton.backgroundColor = UIColor.blueColor()
+		tempRotateButton.addTarget(self, action: "test2ButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+		self.view.addSubview(tempRotateButton)
+	}
+	
+	// temp:
+	func testButtonPressed() {
+		if tempX == 1 && tempY == 1 {
+			tempY++
+		} else if tempX == 1 && tempY == 2 {
+			tempX++
+		} else if tempX == 2 && tempY == 2 {
+			tempY--
+		} else if tempX == 2 && tempY == 1 {
+			tempX--
+		}
+		
+		boardView.movePawnToField(true, field: (tempX, tempY))
+	}
+	
+	// temp:
+	func test2ButtonPressed() {
+		tempRotation = tempRotation == Rotation.North ? Rotation.East : tempRotation == Rotation.East ? Rotation.South : tempRotation == Rotation.South ? Rotation.West : Rotation.North
+		
+		boardView.rotatePawnToRotation(true, rotation: tempRotation)
 	}
 	
 	override func didReceiveMemoryWarning() {

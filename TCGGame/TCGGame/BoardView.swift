@@ -145,6 +145,24 @@ class BoardView: UIView {
 			pawnView.frame = framePawnView
 		}
 	}
+	
+	
+	func movePawnToField(aboutPawn1: Bool, field: (x: Int, y: Int)) {
+		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
+			// Let the pawnView move itself, because it knows how to do this in a cool, animated manner:
+			let frameField = self.fieldViews[field.x][field.y].frame
+			pawnView.moveCenterTo(CGPointMake(frameField.origin.x + 0.5 * frameField.size.width, frameField.origin.y + 0.5 * frameField.size.height))
+		}
+	}
+	
+	
+	func rotatePawnToRotation(aboutPawn1: Bool, rotation: Rotation) {
+		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
+			// Let the pawnView rotate itself, because it knows how to do this in a cool, animated manner:
+			pawnView.rotateTo(rotation)
+		}
+	}
+	
 }
 
 
