@@ -337,7 +337,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
             
                 var image = UIImage(named: "Button_\(buttonType) 54x54@2x")
 
-                if currentState.itemsPlayer1[index]
+                if currentState.selectedItemPlayer1 == index
                 {
                     image = UIImage(named: "Button_\(buttonType)Selected 54x54@2x")
                 }
@@ -365,8 +365,15 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     func tapButton(sender:UIButton!)
     {
         var action = RoundAction(type: RoundActionType.Tap,sensor: sender, role: RoundRole.Sender)
-        self.currentRound.currentPhase = self.currentRound.currentState().nextPhase(action)
-        self.updateUI()
+        
+        // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+        self.sendActionToOther(action)
+
+        // Update the model:
+        currentRound.processAction(action)
+
+        // Update our UI (for now the transition is irrelevant):
+        self.updateUI();
     }
     
     //Mark: - Depricated update GUI
