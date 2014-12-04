@@ -327,19 +327,28 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         
         for (index,item) in enumerate(currentLevel.itemsRole1)
         {
-                //Get whether this button is active or not
-                var color = kColorLiILightGreen.CGColor
+                //Figure out how this button should look
+                var buttonType = "see"
+            
+                if currentLevel.itemsRole1[index].itemType == ItemType.Shoes
+                {
+                    buttonType = "move"
+                }
+            
+                var image = UIImage(named: "Button_\(buttonType) 54x54@2x")
 
                 if currentState.itemsPlayer1[index]
                 {
-                    color = kColorLiILila.CGColor
+                    image = UIImage(named: "Button_\(buttonType)Selected 54x54@2x")
                 }
-        
+            
+                //Create the button
                 var currentButton = UIButton(frame: CGRectMake(0, y, 50, 50))
 
                 currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
-                println(color)
-                currentButton.layer.backgroundColor = color;
+                currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
+                currentButton.setImage(image, forState: .Normal)
+                currentButton.opaque = true
                 currentButton.tag = index
             
                 self.view.addSubview(currentButton)
