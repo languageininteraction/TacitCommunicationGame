@@ -12,7 +12,9 @@ class RoundState: NSObject {
 	var count = 0
     var posPawn1 = (0,0)
     var posPawn2 = (1,1)
-	
+	var itemsPlayer1 = [true,true]
+    var itemsPlayer2 = [true,true]
+    
 	func nextPhase(action: RoundAction) -> RoundPhase {
 		// todo: implement copying protocol so we can start with a copy of ourselves:
 		let nextState = RoundState()
@@ -21,6 +23,8 @@ class RoundState: NSObject {
 			// The next state is the same as us, but with an increased counter:
 			nextState.posPawn1 = self.posPawn1
             nextState.posPawn2 = self.posPawn2
+            nextState.itemsPlayer1 = self.itemsPlayer1
+            nextState.itemsPlayer2 = self.itemsPlayer2
 			
 			if (action.role == RoundRole.Sender) {
 				nextState.posPawn1 = action.position
