@@ -20,9 +20,9 @@ class RoundAction: NSObject, NSCoding {
     let position: (Int,Int)
     let role: RoundRole
     
-    init (type: RoundActionType,position: (Int,Int),role: RoundRole) {
+    init (type: RoundActionType,position: CGPoint,role: RoundRole) {
 		self.type = type
-        self.position = position
+        self.position = (Int(position.x),Int(position.y))
         self.role = role
 	}
 	
