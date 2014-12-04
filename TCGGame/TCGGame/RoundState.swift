@@ -25,12 +25,21 @@ class RoundState: NSObject {
             nextState.posPawn2 = self.posPawn2
             nextState.itemsPlayer1 = self.itemsPlayer1
             nextState.itemsPlayer2 = self.itemsPlayer2
-			
-			if (action.role == RoundRole.Sender) {
-				nextState.posPawn1 = action.position
-			} else {
-				nextState.posPawn2 = action.position
-			}
+           
+            if nextState.itemsPlayer1[action.buttonTag]
+            {
+                nextState.itemsPlayer1[action.buttonTag] = false
+            }
+            else
+            {
+                nextState.itemsPlayer1[action.buttonTag] = true
+            }
+            
+//			if (action.role == RoundRole.Sender) {
+//				nextState.posPawn1 = action.position
+//			} else {
+//				nextState.posPawn2 = action.position
+//			}
 			
             
 		} else {
