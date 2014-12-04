@@ -63,7 +63,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         let x : Int = sender == field00 || sender == field01 ? 0 : 1;
         let y: Int = sender == field00 || sender == field10 ? 0 : 1;
 
-        self.movePawn((x,y))
+//        self.movePawn((x,y))
         
     }
 	
@@ -260,23 +260,23 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     }
 	
-    func movePawn(position: (Int,Int)) {
-
-        // Create the corresponding action:
-        let action = RoundAction(type: .Tap,position: position,role: self.currentRound.myRole!)
-        
-        println(action.role.rawValue);
-            
-		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
-		
-		// Update the model:
-		currentRound.processAction(action)
-        
-		// Update our UI (for now the transition is irrelevant):
-        self.updateUI();
-        
-	}
+//    func movePawn(position: (Int,Int)) {
+//
+//        // Create the corresponding action:
+//        let action = RoundAction(RoundActionType.Tap,position,self.currentRound.myRole!)
+//        
+//        println(action.role.rawValue);
+//            
+//		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+//		self.sendActionToOther(action)
+//		
+//		// Update the model:
+//		currentRound.processAction(action)
+//        
+//		// Update our UI (for now the transition is irrelevant):
+//        self.updateUI();
+//        
+//	}
 	
 	func sendActionToOther(action: RoundAction) {
 	
@@ -344,7 +344,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     func tapButton(sender:UIButton!)
     {
-        var action = RoundAction(RoundActionType.Tap,sender.frame.origin,RoundRole.Sender)
+        var action = RoundAction(type: RoundActionType.Tap,position: sender.frame.origin,role: RoundRole.Sender)
         self.currentRound.currentState().nextPhase(action)
     }
     
