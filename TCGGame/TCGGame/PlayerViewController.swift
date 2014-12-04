@@ -129,6 +129,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		}
 		
 		boardView.movePawnToField(true, field: (tempX, tempY))
+
+		// Test inflating fields:
+		boardView.coordsOfInflatedField = (tempX, tempY)
 	}
 	
 	// temp:

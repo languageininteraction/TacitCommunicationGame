@@ -8,10 +8,32 @@
 
 import UIKit
 
+
+let kKeyFieldSquare = "Square"
+let kKeyFieldRound = "Round"
+let kKeyFieldDentEast = "Dent east"
+let kKeyFieldDentSouth = "Dent south"
+let kKeyFieldDentWest = "Dent west"
+let kKeyFieldDentNorth = "Dent north"
+
+
 class FieldView: UIView {
 
 	let edgelength: CGFloat
 	let shapeLayer: CAShapeLayer
+	var shapePaths: [String: UIBezierPath] = [:] // todo explain
+	
+	var keyOfFieldShape: String = kKeyFieldSquare {
+		didSet {
+			let animation = CABasicAnimation(keyPath: "path")
+			animation.fromValue = shapeLayer.path
+			let newPath = shapePaths[self.keyOfFieldShape]?.CGPath
+			animation.toValue = newPath
+			animation.duration = 0.5
+			shapeLayer.addAnimation(animation, forKey: "path")
+			shapeLayer.path = newPath // square is default
+		}
+	}
 	
 	init(edgelength: CGFloat) {
 		self.edgelength = edgelength
@@ -20,22 +42,80 @@ class FieldView: UIView {
 		super.init(frame: frame)
 		
 		
-		// Add a shape layer:
+		// Add paths to self.shapePaths for all shapes we want to be able to show:
 		
-		// Prepare the shape layer:
-		shapeLayer.frame = CGRectMake(0, 0, edgelength, edgelength)
+		// Reused for each path:
+		var path: UIBezierPath
 		
-		// Create its path:
-		let path = UIBezierPath()
+		// Square:
+		path = UIBezierPath()
 		path.moveToPoint(CGPointMake(0, 0))
 		path.addLineToPoint(CGPointMake(edgelength, 0))
 		path.addLineToPoint(CGPointMake(edgelength, edgelength))
 		path.addLineToPoint(CGPointMake(0, edgelength))
 		path.addLineToPoint(CGPointMake(0, 0))
 		path.closePath()
+		shapePaths[kKeyFieldSquare] = path
+		
+		// Round:
+		var amountInward = kAmountFieldCanInflate * edgelength
+		path = UIBezierPath()
+		path.moveToPoint(CGPointMake(0, 0))
+		path.addQuadCurveToPoint(CGPointMake(edgelength, 0), controlPoint: CGPointMake(0.5 * edgelength, -1 * amountInward))
+		path.addQuadCurveToPoint(CGPointMake(edgelength, edgelength), controlPoint: CGPointMake(edgelength + amountInward, 0.5 * edgelength))
+		path.addQuadCurveToPoint(CGPointMake(0, edgelength), controlPoint: CGPointMake(0.5 * edgelength, edgelength + amountInward))
+		path.addQuadCurveToPoint(CGPointMake(0, 0), controlPoint: CGPointMake(-1 * amountInward, 0.5 * edgelength))
+		path.closePath()
+		shapePaths[kKeyFieldRound] = path
+		
+		// Dent east:
+		path = UIBezierPath()
+		path.moveToPoint(CGPointMake(0, 0))
+		path.addLineToPoint(CGPointMake(edgelength, 0))
+		path.addQuadCurveToPoint(CGPointMake(edgelength, edgelength), controlPoint: CGPointMake(edgelength - amountInward, 0.5 * edgelength))
+		path.addLineToPoint(CGPointMake(0, edgelength))
+		path.addLineToPoint(CGPointMake(0, 0))
+		path.closePath()
+		shapePaths[kKeyFieldDentEast] = path
+		
+		// Dent north:
+		path = UIBezierPath()
+		path.moveToPoint(CGPointMake(0, 0))
+		path.addQuadCurveToPoint(CGPointMake(edgelength, 0), controlPoint: CGPointMake(0.5 * edgelength, amountInward))
+		path.addLineToPoint(CGPointMake(edgelength, edgelength))
+		path.addLineToPoint(CGPointMake(0, edgelength))
+		path.addLineToPoint(CGPointMake(0, 0))
+		path.closePath()
+		shapePaths[kKeyFieldDentNorth] = path
+		
+		// Dent west:
+		path = UIBezierPath()
+		path.moveToPoint(CGPointMake(0, 0))
+		path.addLineToPoint(CGPointMake(edgelength, 0))
+		path.addLineToPoint(CGPointMake(edgelength, edgelength))
+		path.addLineToPoint(CGPointMake(0, edgelength))
+		path.addQuadCurveToPoint(CGPointMake(0, 0), controlPoint: CGPointMake(amountInward, 0.5 * edgelength))
+		path.closePath()
+		shapePaths[kKeyFieldDentWest] = path
+		
+		// Dent south:
+		path = UIBezierPath()
+		path.moveToPoint(CGPointMake(0, 0))
+		path.addLineToPoint(CGPointMake(edgelength, 0))
+		path.addLineToPoint(CGPointMake(edgelength, edgelength))
+		path.addQuadCurveToPoint(CGPointMake(0, edgelength), controlPoint: CGPointMake(0.5 * edgelength, edgelength - amountInward))
+		path.addLineToPoint(CGPointMake(0, 0))
+		path.closePath()
+		shapePaths[kKeyFieldDentSouth] = path
+		
+		
+		// Add a shape layer:
+		
+		// Prepare the shape layer:
+		shapeLayer.frame = CGRectMake(0, 0, edgelength, edgelength)
 		
 		// Set its path and how it draws the path:
-		shapeLayer.path = path.CGPath
+		shapeLayer.path = shapePaths[self.keyOfFieldShape]?.CGPath // square is default
 		shapeLayer.fillColor = UIColor.clearColor().CGColor
 		shapeLayer.strokeColor = kColorBoardFields.CGColor
 		shapeLayer.lineWidth = CGFloat(kBoardLineWidthOfFields)
@@ -50,3 +130,6 @@ class FieldView: UIView {
 		super.init(coder: decoder)
 	}
 }
+
+
+

@@ -28,4 +28,9 @@ class PawnConfiguration: NSObject
         self.y = y
         self.rotation = rotation
     }
+	
+	// Convenience method:
+	func coords() -> (x: Int, y: Int) {
+		return (x, y)
+	}
 }
