@@ -33,6 +33,7 @@ class RoundAction: NSObject, NSCoding {
         coder.encodeInt(Int32(self.position.0), forKey:"x")
         coder.encodeInt(Int32(self.position.1), forKey:"y")
         coder.encodeInt(Int32(role.rawValue),forKey:"role")
+        coder.encodeInt(Int32(self.buttonTag),forKey:"buttonTag")
     }
 	
 
@@ -41,7 +42,7 @@ class RoundAction: NSObject, NSCoding {
         self.type = RoundActionType.Tap
         self.position = (Int(decoder.decodeIntForKey("x")),Int(decoder.decodeIntForKey("y")))
         self.role = RoundRole(rawValue: Int(decoder.decodeIntForKey("role")))!
-        self.buttonTag = 0
+        self.buttonTag = Int(decoder.decodeIntForKey("buttonTag"))
     }
     
 }

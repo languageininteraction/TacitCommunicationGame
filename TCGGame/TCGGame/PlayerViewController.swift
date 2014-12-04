@@ -324,29 +324,80 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         boardView.placePawn1(currentState.posPawn1)
         boardView.placePawn2(currentState.posPawn2)
         
+        var ownItems = [ItemDefinition]()
+        var otherItems = [ItemDefinition]()
+        var selectedItem = 0
+        var selectedItemOther = 0
+        
+        //Update the buttons of the other player
+        var y = 20 as CGFloat
+        if self.currentRound.myRole == RoundRole.Sender
+        {
+            ownItems = currentLevel.itemsRole1
+            otherItems = currentLevel.itemsRole2
+
+            selectedItem = currentState.selectedItemPlayer1
+            selectedItemOther = currentState.selectedItemPlayer2
+        }
+        else
+        {
+            ownItems = currentLevel.itemsRole2
+            otherItems = currentLevel.itemsRole1
+
+            selectedItem = currentState.selectedItemPlayer2
+            selectedItemOther = currentState.selectedItemPlayer1
+        }
+        
+        
+        for (index,item) in enumerate(otherItems)
+        {
+            //Figure out how this button should look
+            var buttonType = "see"
+            
+            if otherItems[index].itemType == ItemType.Shoes
+            {
+                buttonType = "move"
+            }
+            
+            var image = UIImage(named: "Button_\(buttonType)Other 54x54@2x")
+            
+            if selectedItemOther == index
+            {
+                image = UIImage(named: "Button_\(buttonType)SelectedOther 54x54@2x")
+            }
+
+            var imview = UIImageView(frame: CGRectMake(20, y, 50, 50))
+            imview.backgroundColor = UIColor.whiteColor()
+            imview.image = image
+            
+            self.view.addSubview(imview)
+            y += 60
+        
+        }
+        
         //Update buttons (for now newly created with every UI udpate)
-        var y = 0 as CGFloat
+        y = 20 as CGFloat
         self.itemButtons = [];
         
-        for (index,item) in enumerate(currentLevel.itemsRole1)
+        for (index,item) in enumerate(ownItems)
         {
                 //Figure out how this button should look
                 var buttonType = "see"
             
-                if currentLevel.itemsRole1[index].itemType == ItemType.Shoes
+                if ownItems[index].itemType == ItemType.Shoes
                 {
                     buttonType = "move"
                 }
             
                 var image = UIImage(named: "Button_\(buttonType) 54x54@2x")
 
-                if currentState.itemsPlayer1[index]
+                if selectedItem == index
                 {
                     image = UIImage(named: "Button_\(buttonType)Selected 54x54@2x")
                 }
             
                 //Create the button
-                var currentButton = UIButton(frame: CGRectMake(0, y, 50, 50))
+                var currentButton = UIButton(frame: CGRectMake(120, y, 50, 50))
 
                 currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
                 currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
@@ -367,9 +418,16 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     func tapButton(sender:UIButton!)
     {
-        var action = RoundAction(type: RoundActionType.Tap,sensor: sender, role: RoundRole.Sender)
-        self.currentRound.currentPhase = self.currentRound.currentState().nextPhase(action)
-        self.updateUI()
+        var action = RoundAction(type: RoundActionType.Tap,sensor: sender, role: self.currentRound.myRole!)
+        
+        // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+        self.sendActionToOther(action)
+
+        // Update the model:
+        currentRound.processAction(action)
+
+        // Update our UI (for now the transition is irrelevant):
+        self.updateUI();
     }
     
     //Mark: - Depricated update GUI
