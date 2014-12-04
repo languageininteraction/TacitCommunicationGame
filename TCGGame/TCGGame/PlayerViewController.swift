@@ -51,12 +51,22 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// MARK: - Other UI
 	
+	// The board:
 	var boardView = BoardView(edgelength: 0)
 	var tempX = 1
 	var tempY = 1
 	var tempRotation = Rotation.East
     
     var buttonToSwitchMovingOn: UIButton?
+	
+	// The movement buttons:
+	var buttonToMoveEast = UIButton()
+	var buttonToMoveSouth = UIButton()
+	var buttonToMoveWest = UIButton()
+	var buttonToMoveNorth = UIButton()
+	var buttonToRotateClockwise = UIButton()
+	var buttonToRotateCounterclockwise = UIButton()
+	var viewWithAllMoveAndRotateButtons: UIView?
 	
     
     // MARK: - IB Actions
@@ -103,6 +113,47 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		boardView.placePawn(false, field: (0, 1))
 		
 		
+		// Add buttons to move and rotate:
+		
+		// viewWithAllMoveAndRotateButtons:
+		let edgelengthViewWithAllMoveAndRotateButtons = 2.0 * CGFloat(boardView.edgeLengthFieldViewPlusMargin) + kEdgelengthMovementButtons // this way if we put the move buttons at the sides, they shouls fall exactly above the board's fields
+		viewWithAllMoveAndRotateButtons = UIView(frame: CGRectMake(300, 100, edgelengthViewWithAllMoveAndRotateButtons, edgelengthViewWithAllMoveAndRotateButtons))
+		viewWithAllMoveAndRotateButtons?.backgroundColor = UIColor.clearColor() // (white: 0, alpha: 0.05)
+		self.view.addSubview(viewWithAllMoveAndRotateButtons!)
+		
+		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
+		
+		// East:
+		buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 54x54"), forState: UIControlState.Normal)
+		buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveEast)
+		
+		// South:
+		buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 54x54"), forState: UIControlState.Normal)
+		buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveSouth)
+		
+		// West:
+		buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 54x54"), forState: UIControlState.Normal)
+		buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveWest)
+		
+		// North:
+		buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 54x54"), forState: UIControlState.Normal)
+		buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveNorth)
+		
+		// Rotate clockwise:
+		buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 54x54"), forState: UIControlState.Normal)
+		buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		viewWithAllMoveAndRotateButtons?.addSubview(buttonToRotateClockwise)
+		
+		// Rotate counterclockwise:
+		buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 54x54"), forState: UIControlState.Normal)
+		buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		viewWithAllMoveAndRotateButtons?.addSubview(buttonToRotateCounterclockwise)
+		
+		
 		// Add buttons to test stuff:
 		
 		// Movement:
@@ -131,6 +182,12 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		}
 		
 		boardView.movePawnToField(true, field: (tempX, tempY))
+
+		// Test inflating fields:
+		boardView.coordsOfInflatedField = (tempX, tempY)
+		
+		// Test moving the move and rotate buttons:
+		self.centerViewWithAllMoveAndRotateButtonsAboveField(tempX, y: tempY)
 	}
 	
 	// temp:
@@ -178,6 +235,16 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		matchmakerViewController.matchmakerDelegate = self
 		
 		self.presentViewController(matchmakerViewController, animated: true, completion: nil)
+	}
+	
+	
+	// MARK: - Update UI
+	
+	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
+		var frame = viewWithAllMoveAndRotateButtons!.frame
+		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
+		frame.origin = CGPointMake(centerOfFieldView.x - 0.5 * frame.size.width, centerOfFieldView.y - 0.5 * frame.size.height)
+		viewWithAllMoveAndRotateButtons!.frame = frame
 	}
 	
 	

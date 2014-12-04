@@ -63,6 +63,43 @@ class BoardView: UIView {
 		}
 	}
 	
+	var coordsOfInflatedField: (x: Int, y: Int)? {
+		didSet {
+			if let actualCoords = coordsOfInflatedField {
+				for x in 0...boardSize.width - 1 {
+					var fieldViewsInColumn = fieldViews[x]
+					for y in 0...boardSize.height - 1 {
+						let fieldView = fieldViewsInColumn[y]
+						
+						let deltaX = x - actualCoords.x
+						let deltaY = y - actualCoords.y
+						
+						if deltaX == 0 && deltaY == 0 {
+							fieldView.keyOfFieldShape = kKeyFieldRound
+						} else if deltaX == 1 && deltaY == 0 {
+							fieldView.keyOfFieldShape = kKeyFieldDentWest
+						} else if deltaX == -1 && deltaY == 0 {
+							fieldView.keyOfFieldShape = kKeyFieldDentEast
+						} else if deltaX == 0 && deltaY == 1 {
+							fieldView.keyOfFieldShape = kKeyFieldDentNorth
+						} else if deltaX == 0 && deltaY == -1 {
+							fieldView.keyOfFieldShape = kKeyFieldDentSouth
+						} else {
+							fieldView.keyOfFieldShape = kKeyFieldSquare
+						}
+					}
+				}
+			} else {
+				// All fields should have their normal, square shape:
+				for lineOfFieldViews in fieldViews {
+					for fieldView in lineOfFieldViews {
+						fieldView.keyOfFieldShape = kKeyFieldSquare
+					}
+				}
+			}
+		}
+	}
+	
 	// One or two pawns can be set. Setting a pawn means that a corresponding pawnView is added, which can be manipulated with dedicated methods (see MARK Controlling Pawns):
 	private var pawnView1: PawnView?
 	private var pawnView2: PawnView?
@@ -161,6 +198,14 @@ class BoardView: UIView {
 			// Let the pawnView rotate itself, because it knows how to do this in a cool, animated manner:
 			pawnView.rotateTo(rotation)
 		}
+	}
+	
+	
+	// MARK: - Other
+	
+	func centerOfField(x: Int, y: Int) -> CGPoint {
+		let frame = fieldViews[x][y].frame
+		return CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height)
 	}
 	
 }

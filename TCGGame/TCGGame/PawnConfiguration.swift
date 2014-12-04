@@ -10,10 +10,10 @@ import Foundation
 
 enum Rotation: Int
 {
-    case North
     case East
     case South
     case West
+	case North
 }
 
 class PawnConfiguration: NSObject
@@ -28,4 +28,9 @@ class PawnConfiguration: NSObject
         self.y = y
         self.rotation = rotation
     }
+	
+	// Convenience method:
+	func coords() -> (x: Int, y: Int) {
+		return (x, y)
+	}
 }
