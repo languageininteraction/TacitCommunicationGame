@@ -23,8 +23,18 @@ class RoundState: NSObject {
 			// The next state is the same as us, but with an increased counter:
 			nextState.posPawn1 = self.posPawn1
             nextState.posPawn2 = self.posPawn2
-            nextState.selectedItemPlayer1 = action.buttonTag
-            nextState.selectedItemPlayer2 = self.selectedItemPlayer2
+
+            if action.role == RoundRole.Sender
+            {
+                nextState.selectedItemPlayer1 = action.buttonTag
+                nextState.selectedItemPlayer2 = self.selectedItemPlayer2
+            }
+            else
+            {
+                nextState.selectedItemPlayer2 = action.buttonTag
+                nextState.selectedItemPlayer1 = self.selectedItemPlayer1
+            }
+            
             
 //			if (action.role == RoundRole.Sender) {
 //				nextState.posPawn1 = action.position
