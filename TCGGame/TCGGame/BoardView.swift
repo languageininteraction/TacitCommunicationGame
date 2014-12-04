@@ -200,6 +200,14 @@ class BoardView: UIView {
 		}
 	}
 	
+	
+	// MARK: - Other
+	
+	func centerOfField(x: Int, y: Int) -> CGPoint {
+		let frame = fieldViews[x][y].frame
+		return CGPointMake(frame.origin.x + 0.5 * frame.size.width, frame.origin.y + 0.5 * frame.size.height)
+	}
+	
 }
 
 

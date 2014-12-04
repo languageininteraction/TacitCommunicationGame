@@ -22,6 +22,7 @@ let kBoardSpaceBetweenFields: Float = 10
 let kBoardLineWidthOfFields = 2
 let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
 let kAmountFieldCanInflate: CGFloat = 0.25
+let kEdgelengthMovementButtons: CGFloat = 54
 
 // Pawns:
 let kPawnLineWidth = 2

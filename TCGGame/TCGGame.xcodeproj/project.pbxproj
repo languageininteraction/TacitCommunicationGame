@@ -25,6 +25,18 @@
 		482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */; };
 		482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
+		483FFB8C1A30BC3C00C26009 /* Button_moveEast 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB801A30BC3C00C26009 /* Button_moveEast 54x54.png */; };
+		483FFB8D1A30BC3C00C26009 /* Button_moveEast 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB811A30BC3C00C26009 /* Button_moveEast 54x54@2x.png */; };
+		483FFB8E1A30BC3C00C26009 /* Button_moveNorth 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB821A30BC3C00C26009 /* Button_moveNorth 54x54.png */; };
+		483FFB8F1A30BC3C00C26009 /* Button_moveNorth 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB831A30BC3C00C26009 /* Button_moveNorth 54x54@2x.png */; };
+		483FFB901A30BC3C00C26009 /* Button_moveSouth 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB841A30BC3C00C26009 /* Button_moveSouth 54x54.png */; };
+		483FFB911A30BC3C00C26009 /* Button_moveSouth 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB851A30BC3C00C26009 /* Button_moveSouth 54x54@2x.png */; };
+		483FFB921A30BC3C00C26009 /* Button_moveWest 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB861A30BC3C00C26009 /* Button_moveWest 54x54.png */; };
+		483FFB931A30BC3C00C26009 /* Button_moveWest 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB871A30BC3C00C26009 /* Button_moveWest 54x54@2x.png */; };
+		483FFB941A30BC3C00C26009 /* Button_rotateClockwise 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB881A30BC3C00C26009 /* Button_rotateClockwise 54x54.png */; };
+		483FFB951A30BC3C00C26009 /* Button_rotateClockwise 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB891A30BC3C00C26009 /* Button_rotateClockwise 54x54@2x.png */; };
+		483FFB961A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB8A1A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54.png */; };
+		483FFB971A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483FFB8B1A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png */; };
 		4847D8151A24D99400540223 /* PawnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847D8141A24D99400540223 /* PawnView.swift */; };
 		4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847D8171A24DA3000540223 /* PawnDefinition.swift */; };
 		4856E58A1A24908100309751 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5891A24908100309751 /* BoardView.swift */; };
@@ -144,6 +156,18 @@
 		482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		483FFB801A30BC3C00C26009 /* Button_moveEast 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveEast 54x54.png"; sourceTree = "<group>"; };
+		483FFB811A30BC3C00C26009 /* Button_moveEast 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveEast 54x54@2x.png"; sourceTree = "<group>"; };
+		483FFB821A30BC3C00C26009 /* Button_moveNorth 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveNorth 54x54.png"; sourceTree = "<group>"; };
+		483FFB831A30BC3C00C26009 /* Button_moveNorth 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveNorth 54x54@2x.png"; sourceTree = "<group>"; };
+		483FFB841A30BC3C00C26009 /* Button_moveSouth 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveSouth 54x54.png"; sourceTree = "<group>"; };
+		483FFB851A30BC3C00C26009 /* Button_moveSouth 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveSouth 54x54@2x.png"; sourceTree = "<group>"; };
+		483FFB861A30BC3C00C26009 /* Button_moveWest 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveWest 54x54.png"; sourceTree = "<group>"; };
+		483FFB871A30BC3C00C26009 /* Button_moveWest 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveWest 54x54@2x.png"; sourceTree = "<group>"; };
+		483FFB881A30BC3C00C26009 /* Button_rotateClockwise 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_rotateClockwise 54x54.png"; sourceTree = "<group>"; };
+		483FFB891A30BC3C00C26009 /* Button_rotateClockwise 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_rotateClockwise 54x54@2x.png"; sourceTree = "<group>"; };
+		483FFB8A1A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_rotateCounterclockwise 54x54.png"; sourceTree = "<group>"; };
+		483FFB8B1A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_rotateCounterclockwise 54x54@2x.png"; sourceTree = "<group>"; };
 		4847D8141A24D99400540223 /* PawnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PawnView.swift; sourceTree = "<group>"; };
 		4847D8171A24DA3000540223 /* PawnDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PawnDefinition.swift; sourceTree = "<group>"; };
 		4856E5891A24908100309751 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
@@ -366,6 +390,25 @@
 			name = "For One Player";
 			sourceTree = "<group>";
 		};
+		483FFB671A30BB4C00C26009 /* Move and Rotate */ = {
+			isa = PBXGroup;
+			children = (
+				483FFB801A30BC3C00C26009 /* Button_moveEast 54x54.png */,
+				483FFB811A30BC3C00C26009 /* Button_moveEast 54x54@2x.png */,
+				483FFB821A30BC3C00C26009 /* Button_moveNorth 54x54.png */,
+				483FFB831A30BC3C00C26009 /* Button_moveNorth 54x54@2x.png */,
+				483FFB841A30BC3C00C26009 /* Button_moveSouth 54x54.png */,
+				483FFB851A30BC3C00C26009 /* Button_moveSouth 54x54@2x.png */,
+				483FFB861A30BC3C00C26009 /* Button_moveWest 54x54.png */,
+				483FFB871A30BC3C00C26009 /* Button_moveWest 54x54@2x.png */,
+				483FFB881A30BC3C00C26009 /* Button_rotateClockwise 54x54.png */,
+				483FFB891A30BC3C00C26009 /* Button_rotateClockwise 54x54@2x.png */,
+				483FFB8A1A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54.png */,
+				483FFB8B1A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png */,
+			);
+			name = "Move and Rotate";
+			sourceTree = "<group>";
+		};
 		4847D8161A24D9DD00540223 /* Physicals */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +438,7 @@
 		48B2C2D71A248CE6002FFEDF /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				483FFB671A30BB4C00C26009 /* Move and Rotate */,
 				48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */,
 				48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */,
 				48B2C2DA1A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png */,
@@ -567,9 +611,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				483FFB931A30BC3C00C26009 /* Button_moveWest 54x54@2x.png in Resources */,
 				48B2C35F1A248D38002FFEDF /* Button_restartYellowSelectedOther 54x54@2x.png in Resources */,
 				48B2C3321A248D38002FFEDF /* Button_moveOther 54x54.png in Resources */,
 				48B2C3521A248D38002FFEDF /* Button_restartOrangeOther 54x54.png in Resources */,
+				483FFB951A30BC3C00C26009 /* Button_rotateClockwise 54x54@2x.png in Resources */,
 				48B2C3601A248D38002FFEDF /* Button_see 54x54.png in Resources */,
 				48B2C3381A248D38002FFEDF /* Button_nextOrange 54x54.png in Resources */,
 				48B2C3631A248D38002FFEDF /* Button_seeOther 54x54@2x.png in Resources */,
@@ -582,13 +628,16 @@
 				48B2C32B1A248D38002FFEDF /* Button_checkmarkYellowOther 54x54@2x.png in Resources */,
 				48B2C3351A248D38002FFEDF /* Button_moveSelected 54x54@2x.png in Resources */,
 				48B2C3241A248D38002FFEDF /* Button_checkmarkOrangeSelected 54x54.png in Resources */,
+				483FFB941A30BC3C00C26009 /* Button_rotateClockwise 54x54.png in Resources */,
 				48B2C3551A248D38002FFEDF /* Button_restartOrangeSelected 54x54@2x.png in Resources */,
 				48B2C35B1A248D38002FFEDF /* Button_restartYellowOther 54x54@2x.png in Resources */,
 				48B2C3511A248D38002FFEDF /* Button_restartOrange 54x54@2x.png in Resources */,
 				48B2C3291A248D38002FFEDF /* Button_checkmarkYellow 54x54@2x.png in Resources */,
 				48B2C3621A248D38002FFEDF /* Button_seeOther 54x54.png in Resources */,
 				48B2C3261A248D38002FFEDF /* Button_checkmarkOrangeSelectedOther 54x54.png in Resources */,
+				483FFB911A30BC3C00C26009 /* Button_moveSouth 54x54@2x.png in Resources */,
 				48B2C34B1A248D38002FFEDF /* Button_presentOther 54x54@2x.png in Resources */,
+				483FFB8D1A30BC3C00C26009 /* Button_moveEast 54x54@2x.png in Resources */,
 				48B2C3391A248D38002FFEDF /* Button_nextOrange 54x54@2x.png in Resources */,
 				48B2C3591A248D38002FFEDF /* Button_restartYellow 54x54@2x.png in Resources */,
 				48B2C3441A248D38002FFEDF /* Button_nextYellowSelected 54x54.png in Resources */,
@@ -599,12 +648,15 @@
 				48B2C3301A248D38002FFEDF /* Button_move 54x54.png in Resources */,
 				48B2C3401A248D38002FFEDF /* Button_nextYellow 54x54.png in Resources */,
 				48B2C3451A248D38002FFEDF /* Button_nextYellowSelected 54x54@2x.png in Resources */,
+				483FFB8F1A30BC3C00C26009 /* Button_moveNorth 54x54@2x.png in Resources */,
 				48B2C3571A248D38002FFEDF /* Button_restartOrangeSelectedOther 54x54@2x.png in Resources */,
 				48B2C3231A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54@2x.png in Resources */,
 				48B2C3581A248D38002FFEDF /* Button_restartYellow 54x54.png in Resources */,
 				48B2C32A1A248D38002FFEDF /* Button_checkmarkYellowOther 54x54.png in Resources */,
 				48B2C3251A248D38002FFEDF /* Button_checkmarkOrangeSelected 54x54@2x.png in Resources */,
+				483FFB8C1A30BC3C00C26009 /* Button_moveEast 54x54.png in Resources */,
 				48B2C34F1A248D38002FFEDF /* Button_presentSelected 54x54@2x.png in Resources */,
+				483FFB961A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54.png in Resources */,
 				48B2C33B1A248D38002FFEDF /* Button_nextOrangeOther 54x54@2x.png in Resources */,
 				48B2C35E1A248D38002FFEDF /* Button_restartYellowSelectedOther 54x54.png in Resources */,
 				48B2C3531A248D38002FFEDF /* Button_restartOrangeOther 54x54@2x.png in Resources */,
@@ -616,11 +668,13 @@
 				48B2C3671A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png in Resources */,
 				48B2C35C1A248D38002FFEDF /* Button_restartYellowSelected 54x54.png in Resources */,
 				48B2C3281A248D38002FFEDF /* Button_checkmarkYellow 54x54.png in Resources */,
+				483FFB901A30BC3C00C26009 /* Button_moveSouth 54x54.png in Resources */,
 				48B2C3411A248D38002FFEDF /* Button_nextYellow 54x54@2x.png in Resources */,
 				48B2C3331A248D38002FFEDF /* Button_moveOther 54x54@2x.png in Resources */,
 				48B2C34E1A248D38002FFEDF /* Button_presentSelected 54x54.png in Resources */,
 				48B2C34D1A248D38002FFEDF /* Button_presentSelecetdOther 54x54@2x.png in Resources */,
 				48B2C3541A248D38002FFEDF /* Button_restartOrangeSelected 54x54.png in Resources */,
+				483FFB971A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png in Resources */,
 				48B2C3481A248D38002FFEDF /* Button_present 54x54.png in Resources */,
 				48B2C32C1A248D38002FFEDF /* Button_checkmarkYellowSelected 54x54.png in Resources */,
 				48B2C3471A248D38002FFEDF /* Button_nextYellowSelectedOther 54x54@2x.png in Resources */,
@@ -634,7 +688,9 @@
 				48B2C3491A248D38002FFEDF /* Button_present 54x54@2x.png in Resources */,
 				48B2C3341A248D38002FFEDF /* Button_moveSelected 54x54.png in Resources */,
 				48B2C34A1A248D38002FFEDF /* Button_presentOther 54x54.png in Resources */,
+				483FFB921A30BC3C00C26009 /* Button_moveWest 54x54.png in Resources */,
 				48B2C3431A248D38002FFEDF /* Button_nextYellowOther 54x54@2x.png in Resources */,
+				483FFB8E1A30BC3C00C26009 /* Button_moveNorth 54x54.png in Resources */,
 				482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */,
 				48B2C3651A248D38002FFEDF /* Button_seeSelected 54x54@2x.png in Resources */,
 				48B2C3641A248D38002FFEDF /* Button_seeSelected 54x54.png in Resources */,
