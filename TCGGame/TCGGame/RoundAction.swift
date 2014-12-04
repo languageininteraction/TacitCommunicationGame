@@ -19,11 +19,13 @@ class RoundAction: NSObject, NSCoding {
 	let type: RoundActionType
     let position: (Int,Int)
     let role: RoundRole
+    let buttonTag: Int
     
-    init (type: RoundActionType,position: (Int,Int),role: RoundRole) {
+    init (type: RoundActionType,sensor: UIButton,role: RoundRole) {
 		self.type = type
-        self.position = position
+        self.position = (Int(sensor.frame.origin.x),Int(sensor.frame.origin.y))
         self.role = role
+        self.buttonTag = sensor.tag
 	}
 	
     func encodeWithCoder(coder: NSCoder) {
@@ -39,6 +41,7 @@ class RoundAction: NSObject, NSCoding {
         self.type = RoundActionType.Tap
         self.position = (Int(decoder.decodeIntForKey("x")),Int(decoder.decodeIntForKey("y")))
         self.role = RoundRole(rawValue: Int(decoder.decodeIntForKey("role")))!
+        self.buttonTag = 0
     }
     
 }

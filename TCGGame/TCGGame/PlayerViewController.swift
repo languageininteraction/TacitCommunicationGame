@@ -37,7 +37,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	var matchStarted = false
 	
-	
+    var itemButtons = [UIButton]()
+    
 	// MARK: - Outlets
 	
 	@IBOutlet weak var textFieldForTesting: UILabel!
@@ -62,7 +63,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         let x : Int = sender == field00 || sender == field01 ? 0 : 1;
         let y: Int = sender == field00 || sender == field10 ? 0 : 1;
 
-        self.movePawn((x,y))
+//        self.movePawn((x,y))
         
     }
 	
@@ -259,23 +260,23 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     }
 	
-    func movePawn(position: (Int,Int)) {
-
-        // Create the corresponding action:
-        let action = RoundAction(type: .Tap,position: position,role: self.currentRound.myRole!)
-        
-        println(action.role.rawValue);
-            
-		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
-		
-		// Update the model:
-		currentRound.processAction(action)
-        
-		// Update our UI (for now the transition is irrelevant):
-        self.updateUI();
-        
-	}
+//    func movePawn(position: (Int,Int)) {
+//
+//        // Create the corresponding action:
+//        let action = RoundAction(RoundActionType.Tap,position,self.currentRound.myRole!)
+//        
+//        println(action.role.rawValue);
+//            
+//		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+//		self.sendActionToOther(action)
+//		
+//		// Update the model:
+//		currentRound.processAction(action)
+//        
+//		// Update our UI (for now the transition is irrelevant):
+//        self.updateUI();
+//        
+//	}
 	
 	func sendActionToOther(action: RoundAction) {
 	
@@ -311,7 +312,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 
         boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 
-        self.view.addSubview(boardView) //This turns on the new style
+        //self.view.addSubview(boardView) //This turns on the new style
         
         // Add a pawn to the board view:
         boardView.pawnDefinition1 = currentLevel.pawnRole1
@@ -320,6 +321,52 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         boardView.placePawn1(currentState.posPawn1)
         boardView.placePawn2(currentState.posPawn2)
         
+        //Update buttons (for now newly created with every UI udpate)
+        var y = 0 as CGFloat
+        self.itemButtons = [];
+        
+        for (index,item) in enumerate(currentLevel.itemsRole1)
+        {
+                //Figure out how this button should look
+                var buttonType = "see"
+            
+                if currentLevel.itemsRole1[index].itemType == ItemType.Shoes
+                {
+                    buttonType = "move"
+                }
+            
+                var image = UIImage(named: "Button_\(buttonType) 54x54@2x")
+
+                if currentState.itemsPlayer1[index]
+                {
+                    image = UIImage(named: "Button_\(buttonType)Selected 54x54@2x")
+                }
+            
+                //Create the button
+                var currentButton = UIButton(frame: CGRectMake(0, y, 50, 50))
+
+                currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
+                currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
+                currentButton.setImage(image, forState: .Normal)
+                currentButton.opaque = true
+                currentButton.tag = index
+            
+                self.view.addSubview(currentButton)
+
+                self.itemButtons.append(currentButton)
+                y += 60;
+        }
+        
+        
+//        self.otherNavButton = UIButton()
+        
+    }
+    
+    func tapButton(sender:UIButton!)
+    {
+        var action = RoundAction(type: RoundActionType.Tap,sensor: sender, role: RoundRole.Sender)
+        self.currentRound.currentPhase = self.currentRound.currentState().nextPhase(action)
+        self.updateUI()
     }
     
     //Mark: - Depricated update GUI
