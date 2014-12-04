@@ -37,7 +37,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	var matchStarted = false
 	
-	
+    var itemButtons = [UIButton]()
+    
 	// MARK: - Outlets
 	
 	@IBOutlet weak var textFieldForTesting: UILabel!
@@ -255,6 +256,31 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         boardView.placePawn1(currentState.posPawn1)
         boardView.placePawn2(currentState.posPawn2)
         
+        //Update buttons (for now newly created with every UI udpate)
+        var y = 0 as CGFloat
+        
+        for item in currentLevel.itemsRole1
+        {
+                self.itemButtons = [];
+                var currentButton = UIButton(frame: CGRectMake(0, y, 50, 50))
+
+                currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
+                currentButton.layer.backgroundColor = kColorLiILightGreen.CGColor;
+                self.view.addSubview(currentButton)
+
+                self.itemButtons.append(currentButton)
+                y += 60;
+        }
+        
+        
+//        self.otherNavButton = UIButton()
+        
+    }
+    
+    func tapButton(sender:UIButton!)
+    {
+        var action = RoundAction(RoundActionType.Tap,sender.frame.origin,RoundRole.Sender)
+        self.currentRound.currentState().nextPhase(action)
     }
     
     //Mark: - Depricated update GUI
