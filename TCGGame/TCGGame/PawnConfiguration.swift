@@ -10,10 +10,10 @@ import Foundation
 
 enum Rotation: Int
 {
-    case North
     case East
     case South
     case West
+	case North
 }
 
 class PawnConfiguration: NSObject

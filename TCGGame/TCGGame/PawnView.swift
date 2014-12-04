@@ -48,7 +48,7 @@ class PawnView: UIView {
 				
 				let path = UIBezierPath()
 				let piAsFloat = NSNumber(double: M_PI).floatValue // this is crazy…
-				var angle = 0.5 * piAsFloat
+				var angle = 0 as Float //0.5 * piAsFloat
 				
 				var crazyX = cosf(angle)
 				crazyX += 1
@@ -64,7 +64,7 @@ class PawnView: UIView {
 				path.moveToPoint(startPoint)
 				
 				
-				angle = piAsFloat * 7.0/6.0
+				angle = piAsFloat * 4.0/6.0
 				
 				crazyX = cosf(angle)
 				crazyX += 1
@@ -79,7 +79,7 @@ class PawnView: UIView {
 				path.addLineToPoint(CGPointMake(CGFloat(crazyX), CGFloat(crazyY)))
 				
 				
-				angle = piAsFloat * 11.0/6.0
+				angle = piAsFloat * 8.0/6.0
 				
 				crazyX = cosf(angle)
 				crazyX += 1
@@ -176,20 +176,23 @@ class PawnView: UIView {
 	
 	func rotateTo(rotation: Rotation) {
 		CATransaction.begin()
-		CATransaction.setAnimationDuration(2.25)
+		CATransaction.setAnimationDuration(0.35)
 		
 		for i in 0...self.shapeLayers.count - 1 {
 			
 			let shapeLayer = self.shapeLayers[i]
 			
-			let angle = rotation == Rotation.East ? 0 : rotation == Rotation.North ? 0.5 * M_PI : rotation == Rotation.West ? M_PI : 1.5 * M_PI
-			let toTransform = CATransform3DConcat(shapeLayer.transform, CATransform3DMakeRotation(CGFloat(angle), 0, 0, 1))
+			let scale: CGFloat = 1.0 - CGFloat(i) * (1.0 - CGFloat(kPawnScaleOfSecondLargestWRTLargest))
+			let scaleTransform = CATransform3DMakeScale(scale, scale, 1)
+			let angle = rotation == Rotation.East ? 0 : rotation == Rotation.South ? 0.5 * M_PI : rotation == Rotation.West ? M_PI : -0.5 * M_PI // a rotation of 0.5 * M_PI goes e.g. from east to south
+			let toTransform = CATransform3DRotate(scaleTransform, CGFloat(angle), 0, 0, 1)
+//			let toTransform = CATransform3DConcat(shapeLayer.transform, CATransform3DMakeRotation(CGFloat(angle), 0, 0, 1))
 			let fromValue = NSValue(CATransform3D: shapeLayer.transform)
 			let toValue = NSValue(CATransform3D: toTransform)
 			
 			let animation = CAKeyframeAnimation(keyPath: "transform")
 			animation.values = [fromValue, fromValue, toValue, toValue]
-			let slowiness: Float = 0.075
+			let slowiness: Float = 0.75
 			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayers.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
 			shapeLayer.addAnimation(animation, forKey: "transform")
 			shapeLayer.transform = toTransform
