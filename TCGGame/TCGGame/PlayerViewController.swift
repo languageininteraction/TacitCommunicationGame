@@ -312,7 +312,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 
         boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 
-        self.view.addSubview(boardView) //This turns on the new style
+        //self.view.addSubview(boardView) //This turns on the new style
         
         // Add a pawn to the board view:
         boardView.pawnDefinition1 = currentLevel.pawnRole1
@@ -323,14 +323,25 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         
         //Update buttons (for now newly created with every UI udpate)
         var y = 0 as CGFloat
+        self.itemButtons = [];
         
-        for item in currentLevel.itemsRole1
+        for (index,item) in enumerate(currentLevel.itemsRole1)
         {
-                self.itemButtons = [];
+                //Get whether this button is active or not
+                var color = kColorLiILightGreen.CGColor
+
+                if currentState.itemsPlayer1[index]
+                {
+                    color = kColorLiILila.CGColor
+                }
+        
                 var currentButton = UIButton(frame: CGRectMake(0, y, 50, 50))
 
                 currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
-                currentButton.layer.backgroundColor = kColorLiILightGreen.CGColor;
+                println(color)
+                currentButton.layer.backgroundColor = color;
+                currentButton.tag = index
+            
                 self.view.addSubview(currentButton)
 
                 self.itemButtons.append(currentButton)
@@ -344,8 +355,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     func tapButton(sender:UIButton!)
     {
-        var action = RoundAction(type: RoundActionType.Tap,position: sender.frame.origin,role: RoundRole.Sender)
-        self.currentRound.currentState().nextPhase(action)
+        var action = RoundAction(type: RoundActionType.Tap,sensor: sender, role: RoundRole.Sender)
+        self.currentRound.currentPhase = self.currentRound.currentState().nextPhase(action)
+        self.updateUI()
     }
     
     //Mark: - Depricated update GUI
