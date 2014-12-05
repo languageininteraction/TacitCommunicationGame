@@ -267,6 +267,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 				
 				for button in self.moveAndRotateButtons {
 					button.layer.addAnimation(appearAnimation, forKey: "opacity")
+					button.layer.opacity = 1
+					
 					button.layer.addAnimation(growAnimation, forKey: "transform")
 				}
 			}
@@ -285,6 +287,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 			
 			for button in moveAndRotateButtons {
 				button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
+				button.layer.opacity = 0
+				
 				button.layer.addAnimation(shrinkAnimation, forKey: "transform")
 			}
 			
