@@ -33,7 +33,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
 	var match: GKMatch?
-	var weDecideWhoIsWho: Bool? // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes the sender and who becomes the receiver; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewController
+	var weDecideWhoIsWho: Bool? // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes the sender and who becomes the receiver; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle
 	
 	var matchStarted = false
 	
@@ -56,6 +56,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	var tempX = 1
 	var tempY = 1
 	var tempRotation = Rotation.East
+    
+    var buttonToSwitchMovingOn: UIButton?
 	
 	// The movement buttons:
 	var buttonToMoveEast = UIButton()
@@ -525,6 +527,16 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
         
         
 //        self.otherNavButton = UIButton()
+
+        // Show a label with the level
+        let levelLabel = UILabel(frame: CGRectMake(0, 0, 200, 21))
+        levelLabel.text = "Level \(currentLevel.nr)"
+        levelLabel.userInteractionEnabled = true
+        self.view.addSubview(levelLabel)
+
+        //Add tap gesture to the label
+        let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
+        levelLabel.addGestureRecognizer(tapGesture)
         
     }
     
@@ -540,6 +552,12 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 
         // Update our UI (for now the transition is irrelevant):
         self.updateUI();
+    }
+    
+    func tapLevelLabel(sender:UILabel)
+    {
+        println("hoi")
+        //self.view.addSubview(ChooseLevelViewController().view)
     }
     
     //Mark: - Depricated update GUI

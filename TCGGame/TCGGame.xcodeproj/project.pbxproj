@@ -125,6 +125,8 @@
 		48B2C3651A248D38002FFEDF /* Button_seeSelected 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31D1A248D38002FFEDF /* Button_seeSelected 54x54@2x.png */; };
 		48B2C3661A248D38002FFEDF /* Button_seeSelectedOther 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31E1A248D38002FFEDF /* Button_seeSelectedOther 54x54.png */; };
 		48B2C3671A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */; };
+		491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */; };
+		491293081A30C0C600E0A554 /* ChooseLevelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 491293071A30C0C600E0A554 /* ChooseLevelViewController.xib */; };
 		49E83DA61A2714EC006952EE /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E83DA51A2714EC006952EE /* Game.swift */; };
 		49E83DA81A271A48006952EE /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E83DA71A271A48006952EE /* Level.swift */; };
 		49E83DAA1A271A8D006952EE /* BoardDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E83DA91A271A8D006952EE /* BoardDefinition.swift */; };
@@ -268,6 +270,8 @@
 		48B2C31D1A248D38002FFEDF /* Button_seeSelected 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelected 54x54@2x.png"; sourceTree = "<group>"; };
 		48B2C31E1A248D38002FFEDF /* Button_seeSelectedOther 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelectedOther 54x54.png"; sourceTree = "<group>"; };
 		48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelectedOther 54x54@2x.png"; sourceTree = "<group>"; };
+		491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseLevelViewController.swift; sourceTree = "<group>"; };
+		491293071A30C0C600E0A554 /* ChooseLevelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChooseLevelViewController.xib; sourceTree = "<group>"; };
 		49E83DA51A2714EC006952EE /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		49E83DA71A271A48006952EE /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		49E83DA91A271A8D006952EE /* BoardDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardDefinition.swift; sourceTree = "<group>"; };
@@ -410,6 +414,8 @@
 			children = (
 				482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */,
 				482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */,
+				491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */,
+				491293071A30C0C600E0A554 /* ChooseLevelViewController.xib */,
 			);
 			name = "For One Player";
 			sourceTree = "<group>";
@@ -657,6 +663,7 @@
 			files = (
 				483FFB931A30BC3C00C26009 /* Button_moveWest 54x54@2x.png in Resources */,
 				48B2C35F1A248D38002FFEDF /* Button_restartYellowSelectedOther 54x54@2x.png in Resources */,
+				491293081A30C0C600E0A554 /* ChooseLevelViewController.xib in Resources */,
 				48B2C3321A248D38002FFEDF /* Button_moveOther 54x54.png in Resources */,
 				48B2C3521A248D38002FFEDF /* Button_restartOrangeOther 54x54.png in Resources */,
 				483D0C6C1A321238006C5411 /* Button_rotateCounterclockwise 256x256.png in Resources */,
@@ -791,6 +798,7 @@
 				4812E62F1A0A6B65006DED82 /* Round.swift in Sources */,
 				482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
+				491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */,
 				81FE3EE61A14B304002AE287 /* BoardField.swift in Sources */,
 				4856E58A1A24908100309751 /* BoardView.swift in Sources */,
 				81FE3EE81A14B310002AE287 /* Pawn.swift in Sources */,
