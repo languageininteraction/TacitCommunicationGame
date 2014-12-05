@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Rotation: Int
+enum Rotation: Int // rename to Direction?
 {
     case East
     case South
