@@ -64,6 +64,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	var buttonToMoveNorth = UIButton()
 	var buttonToRotateClockwise = UIButton()
 	var buttonToRotateCounterclockwise = UIButton()
+	var moveAndRotateButtons = [UIButton]() // for convenience
 	var viewWithAllMoveAndRotateButtons: UIView?
 	
     
@@ -122,34 +123,36 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
 		// East:
-		buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 54x54"), forState: UIControlState.Normal)
+		buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
 		buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveEast)
 		
 		// South:
-		buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 54x54"), forState: UIControlState.Normal)
+		buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
 		buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveSouth)
 		
 		// West:
-		buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 54x54"), forState: UIControlState.Normal)
+		buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
 		buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveWest)
 		
 		// North:
-		buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 54x54"), forState: UIControlState.Normal)
+		buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
 		buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveNorth)
 		
 		// Rotate clockwise:
-		buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 54x54"), forState: UIControlState.Normal)
+		buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
 		buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToRotateClockwise)
 		
 		// Rotate counterclockwise:
-		buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 54x54"), forState: UIControlState.Normal)
+		buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
 		buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToRotateCounterclockwise)
+		
+		// Store the buttons in moveAndRotateButtons for convenience:
+		moveAndRotateButtons = [buttonToMoveEast, buttonToMoveSouth, buttonToMoveWest, buttonToMoveNorth, buttonToRotateClockwise, buttonToRotateCounterclockwise]
+		
+		// Add all six buttons:
+		for button in moveAndRotateButtons {
+			viewWithAllMoveAndRotateButtons?.addSubview(button)
+		}
 		
 		
 		// Add buttons to test stuff:
@@ -185,7 +188,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		boardView.coordsOfInflatedField = (tempX, tempY)
 		
 		// Test moving the move and rotate buttons:
-		self.centerViewWithAllMoveAndRotateButtonsAboveField(tempX, y: tempY)
+		self.centerViewWithAllMoveAndRotateButtonsAboveField(tempX, y: tempY, animated: true)
 	}
 	
 	// temp:
@@ -238,11 +241,56 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// MARK: - Update UI
 	
-	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
-		var frame = viewWithAllMoveAndRotateButtons!.frame
+	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int, animated: Bool) {
+		var newFrame = viewWithAllMoveAndRotateButtons!.frame
 		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
-		frame.origin = CGPointMake(centerOfFieldView.x - 0.5 * frame.size.width, centerOfFieldView.y - 0.5 * frame.size.height)
-		viewWithAllMoveAndRotateButtons!.frame = frame
+		newFrame.origin = CGPointMake(centerOfFieldView.x - 0.5 * newFrame.size.width, centerOfFieldView.y - 0.5 * newFrame.size.height)
+		
+		if animated {
+			
+			let somethingReallySmall: CGFloat = 0.0001
+			
+			CATransaction.begin()
+//			CATransaction.setAnimationDuration(3)
+			CATransaction.setCompletionBlock() { () -> Void in
+				self.viewWithAllMoveAndRotateButtons!.frame = newFrame
+				
+				let appearAnimation = CABasicAnimation(keyPath: "opacity")
+				appearAnimation.fromValue = NSNumber(float: 0)
+				appearAnimation.toValue = NSNumber(float: 1)
+				
+				let growAnimation = CABasicAnimation(keyPath: "transform")
+				growAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+				growAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
+				
+				for button in self.moveAndRotateButtons {
+					button.layer.addAnimation(appearAnimation, forKey: "opacity")
+					button.layer.addAnimation(growAnimation, forKey: "transform")
+				}
+			}
+			
+//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
+//			opacityAnimation.values = [NSNumber(float: 1), NSNumber(float: 0), NSNumber(float: 0), NSNumber(float: 1)]
+//			opacityAnimation.keyTimes = [NSNumber(float: 0), NSNumber(float: 0.25), NSNumber(float: 0.75), NSNumber(float: 1)]
+			
+			let dissapearAnimation = CABasicAnimation(keyPath: "opacity")
+			dissapearAnimation.fromValue = NSNumber(float: 1)
+			dissapearAnimation.toValue = NSNumber(float: 0)
+			
+			let shrinkAnimation = CABasicAnimation(keyPath: "transform")
+			shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+			shrinkAnimation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+			
+			for button in moveAndRotateButtons {
+				button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
+				button.layer.addAnimation(shrinkAnimation, forKey: "transform")
+			}
+			
+			CATransaction.commit()
+			
+		} else {
+			viewWithAllMoveAndRotateButtons!.frame = newFrame
+		}
 	}
 	
 	
