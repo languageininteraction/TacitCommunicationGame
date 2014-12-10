@@ -17,12 +17,12 @@ let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 
 // Layout of the board and stuff on top of / inside the board:
-let kBoardEdgeLength: Float = 500
+let kBoardEdgeLength: Float = 300
 let kBoardSpaceBetweenFields: Float = 10
 let kBoardLineWidthOfFields = 2
 let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
 let kAmountFieldCanInflate: CGFloat = 0.25
-let kEdgelengthMovementButtons: CGFloat = 54
+let kEdgelengthMovementButtons: CGFloat = 64
 
 // Pawns:
 let kPawnLineWidth = 2

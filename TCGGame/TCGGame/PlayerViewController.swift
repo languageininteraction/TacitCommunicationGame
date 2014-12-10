@@ -68,6 +68,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	var buttonToMoveNorth = UIButton()
 	var buttonToRotateClockwise = UIButton()
 	var buttonToRotateCounterclockwise = UIButton()
+	var moveAndRotateButtons = [UIButton]() // for convenience
 	var viewWithAllMoveAndRotateButtons: UIView?
 	
     
@@ -96,12 +97,16 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		
 		// Testing BoardView (uncomment if you want to see)
 		
+		// temp here, so I can use the state's pawnCanMoveTo method:
+		self.currentRound.currentState().boardDefinition = self.currentGame.level.board
+		
 		// Add a board view:
 		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
-		boardView.boardSize = (5, 3)
+		boardView.boardSize = (self.currentGame.level.board.width, self.currentGame.level.board.height)
 		self.view.addSubview(boardView)
 		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
+	
 		
 		
 		// Add pawns to the board view:
@@ -113,6 +118,10 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		// Pawn 2:
 		boardView.pawnDefinition2 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIYellow)
 		boardView.placePawn(false, field: (0, 1))
+		
+		// temp so I can use the state's pawnCanMoveTo method:
+		self.currentRound.currentState().posPawn1 = (tempX, tempY)
+		self.currentRound.currentState().posPawn2 = (0, 1)
 		
 		
 		// Add buttons to move and rotate:
@@ -126,34 +135,36 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
 		// East:
-		buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 54x54"), forState: UIControlState.Normal)
+		buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
 		buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveEast)
 		
 		// South:
-		buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 54x54"), forState: UIControlState.Normal)
+		buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
 		buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveSouth)
 		
 		// West:
-		buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 54x54"), forState: UIControlState.Normal)
+		buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
 		buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveWest)
 		
 		// North:
-		buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 54x54"), forState: UIControlState.Normal)
+		buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
 		buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToMoveNorth)
 		
 		// Rotate clockwise:
-		buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 54x54"), forState: UIControlState.Normal)
+		buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
 		buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToRotateClockwise)
 		
 		// Rotate counterclockwise:
-		buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 54x54"), forState: UIControlState.Normal)
+		buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
 		buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		viewWithAllMoveAndRotateButtons?.addSubview(buttonToRotateCounterclockwise)
+		
+		// Store the buttons in moveAndRotateButtons for convenience:
+		moveAndRotateButtons = [buttonToMoveEast, buttonToMoveSouth, buttonToMoveWest, buttonToMoveNorth, buttonToRotateClockwise, buttonToRotateCounterclockwise]
+		
+		// Add all six buttons:
+		for button in moveAndRotateButtons {
+			viewWithAllMoveAndRotateButtons?.addSubview(button)
+		}
 		
 		
 		// Add buttons to test stuff:
@@ -182,6 +193,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		} else if tempX == 2 && tempY == 1 {
 			tempX--
 		}
+		
+		// I set the pawn's position in the model; this is not how it should happen! But this way I can use the state's pawnCanMoveInDirection method:
+		self.currentRound.currentState().posPawn1 = (tempX, tempY)
 		
 		boardView.movePawnToField(true, field: (tempX, tempY))
 
@@ -243,10 +257,81 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	// MARK: - Update UI
 	
 	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
-		var frame = viewWithAllMoveAndRotateButtons!.frame
+		
+		// TEMP assuming this is abouth the player1's pawn.
+		
+		var newFrame = viewWithAllMoveAndRotateButtons!.frame
 		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
-		frame.origin = CGPointMake(centerOfFieldView.x - 0.5 * frame.size.width, centerOfFieldView.y - 0.5 * frame.size.height)
-		viewWithAllMoveAndRotateButtons!.frame = frame
+		newFrame.origin = CGPointMake(centerOfFieldView.x - 0.5 * newFrame.size.width, centerOfFieldView.y - 0.5 * newFrame.size.height)
+		
+		//		if animated {
+		
+		let somethingReallySmall: CGFloat = 0.0001
+		
+		CATransaction.begin()
+		//			CATransaction.setAnimationDuration(3)
+		CATransaction.setCompletionBlock() { () -> Void in
+			self.viewWithAllMoveAndRotateButtons!.frame = newFrame
+			
+			let appearAnimation = CABasicAnimation(keyPath: "opacity")
+			appearAnimation.fromValue = NSNumber(float: 0)
+			appearAnimation.toValue = NSNumber(float: 1)
+			
+			let growAnimation = CABasicAnimation(keyPath: "transform")
+			growAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+			growAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
+			
+			// temp:
+			println("pos = \(self.currentRound.currentState().posPawn1)")
+			
+			for button in self.moveAndRotateButtons {
+				
+				var buttonShouldBeVisible = true
+				let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
+				
+				println("direction = \(direction?.rawValue)")
+				
+				if let actualDirection = direction {
+					buttonShouldBeVisible = self.currentRound.currentState().pawnCanMoveInDirection(true, direction: actualDirection)
+				}
+				
+				if (buttonShouldBeVisible) {
+					button.layer.addAnimation(appearAnimation, forKey: "opacity")
+					button.layer.opacity = 1
+					
+					button.layer.addAnimation(growAnimation, forKey: "transform")
+				}
+			}
+		}
+		
+		//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
+		//			opacityAnimation.values = [NSNumber(float: 1), NSNumber(float: 0), NSNumber(float: 0), NSNumber(float: 1)]
+		//			opacityAnimation.keyTimes = [NSNumber(float: 0), NSNumber(float: 0.25), NSNumber(float: 0.75), NSNumber(float: 1)]
+		
+		let dissapearAnimation = CABasicAnimation(keyPath: "opacity")
+		dissapearAnimation.fromValue = NSNumber(float: 1)
+		dissapearAnimation.toValue = NSNumber(float: 0)
+		
+		let shrinkAnimation = CABasicAnimation(keyPath: "transform")
+		shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		shrinkAnimation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+		
+		for button in moveAndRotateButtons {
+			
+			// todo cleanup this whole method
+			dissapearAnimation.fromValue = NSNumber(float: button.layer.opacity)
+			
+			button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
+			button.layer.opacity = 0
+			
+			button.layer.addAnimation(shrinkAnimation, forKey: "transform")
+		}
+		
+		CATransaction.commit()
+		
+		//		} else {
+		//			viewWithAllMoveAndRotateButtons!.frame =
+		//		}
 	}
 	
 	
