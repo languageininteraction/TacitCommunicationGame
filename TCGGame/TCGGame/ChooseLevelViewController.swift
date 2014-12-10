@@ -8,16 +8,15 @@
 
 import UIKit
 
-class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
+class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource
 {
-    @IBOutlet weak var table: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        println("Loaded")
 
+        println("Loaded")
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -25,17 +24,19 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         println("NoRows")
         
         return 10
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "MyTestCell")
         
-        cell.textLabel.text = "Row #\(indexPath.row)"
-        cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
+        var level = indexPath.row + 1
+        
+        cell.textLabel.text = "Level \(level)"
+        cell.detailTextLabel?.text = "Wessel is de beste"
         
         println("Asking for table");
         
