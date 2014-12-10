@@ -47,6 +47,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     @IBOutlet weak var field10: UIButton!
     @IBOutlet weak var field01: UIButton!
     @IBOutlet weak var field11: UIButton!
+    
+    @IBOutlet weak var tableView: UIView!
 	
 	
 	// MARK: - Other UI
@@ -481,7 +483,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 //        self.otherNavButton = UIButton()
 
         // Show a label with the level
-        let levelLabel = UILabel(frame: CGRectMake(0, 0, 200, 21))
+        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
         levelLabel.text = "Level \(currentLevel.nr)"
         levelLabel.userInteractionEnabled = true
         self.view.addSubview(levelLabel)
@@ -508,7 +510,11 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     func tapLevelLabel(sender:UILabel)
     {
-        println("hoi")
+//        let NewView = ChooseLevelViewController()
+  
+        println("Tap Level Label")
+        let vc = ChooseLevelViewController()
+        self.presentViewController(vc, animated: false, completion: nil)
         //self.view.addSubview(ChooseLevelViewController().view)
     }
     
