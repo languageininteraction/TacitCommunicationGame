@@ -37,4 +37,9 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
         
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println(indexPath.row)
+        self.dismissViewControllerAnimated(false,completion:nil)
+    }
 }
