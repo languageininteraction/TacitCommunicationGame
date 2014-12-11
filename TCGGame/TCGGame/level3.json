@@ -1,0 +1,8 @@
+{
+    "nr": 3,
+    "name": "item_see",    
+    "board": {
+        "width": 3,
+        "height": 3
+    }
+}

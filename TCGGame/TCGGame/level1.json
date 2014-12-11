@@ -1,0 +1,8 @@
+{
+    "nr": 1,
+    "name": "walk",
+    "board": {
+        "width": 3,
+        "height": 3
+    }
+}

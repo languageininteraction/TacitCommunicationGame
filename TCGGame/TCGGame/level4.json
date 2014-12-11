@@ -1,0 +1,8 @@
+{
+    "nr": 4,
+    "name": "item_walk",    
+    "board": {
+        "width": 3,
+        "height": 3
+    }
+}
