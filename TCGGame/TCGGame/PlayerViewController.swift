@@ -21,7 +21,7 @@ protocol ManageMultiplePlayerViewControllersProtocol {
 }
 
 
-class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate, GKMatchDelegate {
+class PlayerViewController: UIViewController, PassControlToSubControllerProtocol, GKMatchmakerViewControllerDelegate, GKMatchDelegate {
 	
 	var managerOfMultiplePlayerViewControllers: ManageMultiplePlayerViewControllersProtocol?
 	
@@ -68,9 +68,15 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	var buttonToRotateClockwise = UIButton()
 	var buttonToRotateCounterclockwise = UIButton()
 	var moveAndRotateButtons = [UIButton]() // for convenience
-	var viewWithAllMoveAndRotateButtons: UIView?
+	var viewWithAllMoveAndRotateButtons = UIView()
 	
-    
+	
+	// MARK: - Sub ViewControllers
+	
+	// todo: proper use of lazy properties in Swift?
+	let chooseLevelViewController = ChooseLevelViewController()
+	
+	
     // MARK: - IB Actions
     
     @IBAction func fieldButtonPressed(sender: UIButton) {
@@ -127,9 +133,9 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		
 		// viewWithAllMoveAndRotateButtons:
 		let edgelengthViewWithAllMoveAndRotateButtons = 2.0 * CGFloat(boardView.edgeLengthFieldViewPlusMargin) + kEdgelengthMovementButtons // this way if we put the move buttons at the sides, they shouls fall exactly above the board's fields
-		viewWithAllMoveAndRotateButtons = UIView(frame: CGRectMake(300, 100, edgelengthViewWithAllMoveAndRotateButtons, edgelengthViewWithAllMoveAndRotateButtons))
-		viewWithAllMoveAndRotateButtons?.backgroundColor = UIColor.clearColor() // (white: 0, alpha: 0.05)
-		self.view.addSubview(viewWithAllMoveAndRotateButtons!)
+		viewWithAllMoveAndRotateButtons.frame = CGRectMake(300, 100, edgelengthViewWithAllMoveAndRotateButtons, edgelengthViewWithAllMoveAndRotateButtons)
+		viewWithAllMoveAndRotateButtons.backgroundColor = UIColor.clearColor() // (white: 0, alpha: 0.05)
+		self.view.addSubview(viewWithAllMoveAndRotateButtons)
 		
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
@@ -162,7 +168,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		
 		// Add all six buttons:
 		for button in moveAndRotateButtons {
-			viewWithAllMoveAndRotateButtons?.addSubview(button)
+			viewWithAllMoveAndRotateButtons.addSubview(button)
 		}
 		
 		
@@ -230,7 +236,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		
 		// temp like this, but normally the move buttons would never be visible while the fields are slightly rotated anyway:
 //		viewWithAllMoveAndRotateButtons?.hidden = boardView.fieldsAreSlightlyRotated
-		viewWithAllMoveAndRotateButtons?.hidden = true // because I want to test the animation of rotating the field views without the move buttons appearing and dissapearing
+		viewWithAllMoveAndRotateButtons.hidden = true // because I want to test the animation of rotating the field views without the move buttons appearing and dissapearing
 		boardView.coordsOfInflatedField = nil
 	}
 	
@@ -275,13 +281,25 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	}
 	
 	
+	// MARK: - PassControlToSubControllerProtocol
+	
+	func subControllerFinished(subController: AnyObject) {
+		if let actualLevel = self.chooseLevelViewController.selectedLevel {
+			self.currentGame.level = actualLevel
+			println("hatsee! level \(self.currentGame.level.nr)")
+		}
+		
+		subController.dismissViewControllerAnimated(false, completion: nil)
+	}
+	
+	
 	// MARK: - Update UI
 	
 	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
 		
 		// TEMP assuming this is abouth the player1's pawn.
 		
-		var newFrame = viewWithAllMoveAndRotateButtons!.frame
+		var newFrame = viewWithAllMoveAndRotateButtons.frame
 		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
 		newFrame.origin = CGPointMake(centerOfFieldView.x - 0.5 * newFrame.size.width, centerOfFieldView.y - 0.5 * newFrame.size.height)
 		
@@ -292,7 +310,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		CATransaction.begin()
 		//			CATransaction.setAnimationDuration(3)
 		CATransaction.setCompletionBlock() { () -> Void in
-			self.viewWithAllMoveAndRotateButtons!.frame = newFrame
+			self.viewWithAllMoveAndRotateButtons.frame = newFrame
 			
 			let appearAnimation = CABasicAnimation(keyPath: "opacity")
 			appearAnimation.fromValue = NSNumber(float: 0)
@@ -616,11 +634,8 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
     
     func tapLevelLabel(sender:UILabel)
     {
-//        let NewView = ChooseLevelViewController()
-  
-        println("Tap Level Label")
-        let vc = ChooseLevelViewController()
-        self.presentViewController(vc, animated: false, completion: nil)
+		self.chooseLevelViewController.superController = self
+        self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
         //self.view.addSubview(ChooseLevelViewController().view)
     }
     

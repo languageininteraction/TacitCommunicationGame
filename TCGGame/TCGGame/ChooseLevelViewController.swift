@@ -8,11 +8,14 @@
 
 import UIKit
 
-class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource, TakeControlFromSuperControllerProtocol
+
+
+class ChooseLevelViewController: TableViewSubController, UITableViewDelegate, UITableViewDataSource
 {
-    
-    func subControllerFinished(subController:AnyObject)//TakeControlFromSuperControllerProtocol)
-    
+	// Model; this is what clients should be interested in:
+	var selectedLevel: Level?
+	
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -42,6 +45,9 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         println(indexPath.row)
-        self.dismissViewControllerAnimated(false,completion:nil)
+		
+		self.selectedLevel = levels[indexPath.row]
+		
+		self.superController?.subControllerFinished(self)
     }
 }
