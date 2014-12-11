@@ -180,10 +180,19 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 		tempRotateButton.backgroundColor = UIColor.blueColor()
 		tempRotateButton.addTarget(self, action: "test2ButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(tempRotateButton)
+		
+		// Slight rotation of field views:
+		let tempRotateFieldsButton = UIButton(frame: CGRectMake(140, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
+		tempRotateFieldsButton.backgroundColor = UIColor.purpleColor()
+		tempRotateFieldsButton.addTarget(self, action: "testRotatingFieldView", forControlEvents: UIControlEvents.TouchUpInside)
+		self.view.addSubview(tempRotateFieldsButton)
 	}
 	
 	// temp:
 	func testButtonPressed() {
+		// movement of pawns and 'slight rotation' of field views don't work well together:
+		boardView.fieldsAreSlightlyRotated = false
+		
 		if tempX == 1 && tempY == 1 {
 			tempY++
 		} else if tempX == 1 && tempY == 2 {
@@ -208,9 +217,22 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	// temp:
 	func test2ButtonPressed() {
+		// rotating pawns and 'slight rotation' of field views don't work well together:
+		boardView.fieldsAreSlightlyRotated = false
+		
 		tempRotation = tempRotation == Rotation.North ? Rotation.East : tempRotation == Rotation.East ? Rotation.South : tempRotation == Rotation.South ? Rotation.West : Rotation.North
 		
 		boardView.rotatePawnToRotation(true, rotation: tempRotation)
+	}
+	
+	// temp:
+	func testRotatingFieldView() {
+		boardView.fieldsAreSlightlyRotated = !boardView.fieldsAreSlightlyRotated
+		
+		// temp like this, but normally the move buttons would never be visible while the fields are slightly rotated anyway:
+//		viewWithAllMoveAndRotateButtons?.hidden = boardView.fieldsAreSlightlyRotated
+		viewWithAllMoveAndRotateButtons?.hidden = true // because I want to test the animation of rotating the field views without the move buttons appearing and dissapearing
+		boardView.coordsOfInflatedField = nil
 	}
 	
 	override func didReceiveMemoryWarning() {

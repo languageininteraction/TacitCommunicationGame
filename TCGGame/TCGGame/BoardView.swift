@@ -100,6 +100,77 @@ class BoardView: UIView {
 		}
 	}
 	
+	var fieldsAreSlightlyRotated: Bool = false {
+		didSet {
+			// Do nothing if the value hasn't changed:
+			if fieldsAreSlightlyRotated == oldValue {
+				return
+			}
+			
+			let piAsCGFloat = CGFloat(NSNumber(double: M_PI).floatValue) // this is crazy…
+			let toTransformSlightRotation = fieldsAreSlightlyRotated ? CATransform3DMakeRotation(piAsCGFloat * -0.035, 0, 0, 1) : CATransform3DIdentity // todo make constant again
+			
+			// First collect all views that we wish to rotate in an array:
+			var viewsToRotate = [UIView]()
+			
+			for x in 0...boardSize.width - 1 { // idea: make a method to perform a block (called a closure in Swift I think…) on each fieldView
+				var fieldViewsInColumn = fieldViews[x]
+				for y in 0...boardSize.height - 1 {
+					viewsToRotate.append(fieldViewsInColumn[y])
+				}
+			}
+			
+			if let actualPawnView1 = pawnView1? {
+				viewsToRotate.append(actualPawnView1)
+			}
+			
+			if let actualPawnView2 = pawnView2? {
+				viewsToRotate.append(actualPawnView2)
+			}
+			
+			
+			let totalDuration = 0.5
+			
+//			[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+			
+			let numberOfViews = viewsToRotate.count
+			let durationPerView = 0.25
+			let relativeDurationPerView = durationPerView / totalDuration
+			let relativeStartLastView = 1.0 - relativeDurationPerView
+			let relativeDeltaStart = relativeStartLastView / Double(numberOfViews - 1);
+			
+			CATransaction.begin()
+			CATransaction.setAnimationDuration(totalDuration)
+			var i = 0 // temp
+			for viewToRotate in viewsToRotate {
+				let animation = CAKeyframeAnimation(keyPath: "transform")
+//				animation.fromValue = NSValue(CATransform3D: viewToRotate.layer.transform)
+//				animation.toValue = NSValue(CATransform3D: toTransform)
+				
+				
+				// test:
+				let toTransform = (fieldsAreSlightlyRotated && (i == 2 || i == 4)) ? CATransform3DRotate(toTransformSlightRotation, piAsCGFloat, 1, 1, 0) : toTransformSlightRotation
+				
+				
+				let valueFrom = NSValue(CATransform3D: viewToRotate.layer.transform)
+				let valueTo = NSValue(CATransform3D: toTransform)
+				
+				animation.values = [valueFrom, valueFrom, valueTo, valueTo]
+				let startTime = relativeDeltaStart * Double(i)
+				let endTime = startTime + relativeDurationPerView;
+				animation.keyTimes = [NSNumber(double: 0), NSNumber(double: startTime), NSNumber(double: endTime), NSNumber(double: 1)]
+
+				viewToRotate.layer.addAnimation(animation, forKey: "transform")
+				
+				viewToRotate.layer.transform = toTransform
+				
+				// temp:
+				i++
+			}
+			CATransaction.commit()
+		}
+	}
+	
 	// One or two pawns can be set. Setting a pawn means that a corresponding pawnView is added, which can be manipulated with dedicated methods (see MARK Controlling Pawns):
 	private var pawnView1: PawnView?
 	private var pawnView2: PawnView?

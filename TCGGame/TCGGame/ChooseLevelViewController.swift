@@ -35,7 +35,7 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
         
         var level = indexPath.row + 1
         
-        cell.textLabel.text = "Level \(level)"
+        cell.textLabel?.text = "Level \(level)"
         cell.detailTextLabel?.text = "Wessel is de beste"
         
         println("Asking for table");
