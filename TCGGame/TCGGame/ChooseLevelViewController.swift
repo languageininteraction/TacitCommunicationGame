@@ -8,8 +8,10 @@
 
 import UIKit
 
-class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource
+class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource, TakeControlFromSuperControllerProtocol
 {
+    
+    func subControllerFinished(subController:AnyObject)//TakeControlFromSuperControllerProtocol)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +34,7 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
         
         var level = levels[indexPath.row]
         
-        cell.textLabel.text = "Level \(level.nr)"
+        cell.textLabel?.text = "Level \(level.nr)"
         cell.detailTextLabel?.text = "\(level.name)"
         
         return cell
