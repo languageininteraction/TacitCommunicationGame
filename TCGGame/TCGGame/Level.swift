@@ -10,7 +10,9 @@ import Foundation
 
 class Level: NSObject
 {
-    var nr: Int
+    let nr: Int
+    let name: String
+    
     let board: BoardDefinition
     let pawnRole1: PawnDefinition
     let pawnRole2: PawnDefinition
@@ -23,9 +25,16 @@ class Level: NSObject
     var itemsRole1: [ItemDefinition]
     var itemsRole2: [ItemDefinition]
     
-    override init()
+    init(filename:String)
     {
-        self.nr = 1
+        //Read in the level
+        let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
+        let jsonData = NSData(contentsOfFile:path!, options: .DataReadingMappedIfSafe, error: nil)
+        var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as Dictionary<String, AnyObject>
+        
+        //Fill the vars
+        self.nr = jsonResult["nr"] as Int
+        self.name = jsonResult["name"] as String
         self.board = BoardDefinition(width:3,height:3)
         self.pawnRole1 = PawnDefinition(shape:PawnShape.Square,color:kColorLiIOrange)
         self.pawnRole2 = PawnDefinition(shape:PawnShape.Square,color:kColorLiIYellow)
