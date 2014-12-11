@@ -8,8 +8,10 @@
 
 import UIKit
 
-class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource
+class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource, TakeControlFromSuperControllerProtocol
 {
+    
+    func subControllerFinished(subController:AnyObject)//TakeControlFromSuperControllerProtocol)
     
     override func viewDidLoad() {
         super.viewDidLoad()
