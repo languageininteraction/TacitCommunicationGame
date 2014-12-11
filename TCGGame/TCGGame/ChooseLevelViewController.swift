@@ -32,7 +32,7 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
         
         var level = levels[indexPath.row]
         
-        cell.textLabel.text = "Level \(level.nr)"
+        cell.textLabel?.text = "Level \(level.nr)"
         cell.detailTextLabel?.text = "\(level.name)"
         
         return cell
