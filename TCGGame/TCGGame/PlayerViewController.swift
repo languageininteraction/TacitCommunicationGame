@@ -27,8 +27,7 @@ class PlayerViewController: UIViewController, GKMatchmakerViewControllerDelegate
 	
 	
 	// MARK: - Model
-	
-    var currentGame = Game()
+    var currentGame = Game(level: levels[0])
 	var currentRound = Round()
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?

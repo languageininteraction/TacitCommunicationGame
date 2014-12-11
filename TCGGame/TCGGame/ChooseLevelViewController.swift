@@ -14,8 +14,6 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
-        println("Loaded")
         
     }
     
@@ -25,20 +23,17 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        println("NoRows")
         
-        return 10
+        return levels.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "MyTestCell")
         
-        var level = indexPath.row + 1
+        var level = levels[indexPath.row]
         
-        cell.textLabel.text = "Level \(level)"
-        cell.detailTextLabel?.text = "Wessel is de beste"
-        
-        println("Asking for table");
+        cell.textLabel.text = "Level \(level.nr)"
+        cell.detailTextLabel?.text = "\(level.name)"
         
         return cell
     }

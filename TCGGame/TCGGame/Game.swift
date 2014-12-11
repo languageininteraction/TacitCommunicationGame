@@ -12,8 +12,8 @@ class Game: NSObject
 {
     var level:Level
     
-    override init()
+    init(level:Level)
     {
-        self.level = Level()
+        self.level = level
     }
 }
