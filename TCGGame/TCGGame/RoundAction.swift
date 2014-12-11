@@ -17,32 +17,27 @@ import UIKit
 
 class RoundAction: NSObject, NSCoding {
 	let type: RoundActionType
-    let position: (Int,Int)
     let role: RoundRole
-    let buttonTag: Int
+    let buttonIndicator: String
     
-    init (type: RoundActionType,sensor: UIButton,role: RoundRole) {
+    init (type: RoundActionType,buttonIndicator: String,role: RoundRole) {
 		self.type = type
-        self.position = (Int(sensor.frame.origin.x),Int(sensor.frame.origin.y))
         self.role = role
-        self.buttonTag = sensor.tag
+        self.buttonIndicator = buttonIndicator
 	}
 	
     func encodeWithCoder(coder: NSCoder) {
         
-        coder.encodeInt(Int32(self.position.0), forKey:"x")
-        coder.encodeInt(Int32(self.position.1), forKey:"y")
         coder.encodeInt(Int32(role.rawValue),forKey:"role")
-        coder.encodeInt(Int32(self.buttonTag),forKey:"buttonTag")
+        coder.encodeObject(self.buttonIndicator,forKey:"buttonIndicator")
     }
 	
 
     required init (coder decoder: NSCoder)
     {
         self.type = RoundActionType.Tap
-        self.position = (Int(decoder.decodeIntForKey("x")),Int(decoder.decodeIntForKey("y")))
         self.role = RoundRole(rawValue: Int(decoder.decodeIntForKey("role")))!
-        self.buttonTag = Int(decoder.decodeIntForKey("buttonTag"))
+        self.buttonIndicator = decoder.decodeObjectForKey("buttonIndicator") as String
     }
     
 }
