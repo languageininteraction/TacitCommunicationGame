@@ -108,6 +108,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// temp here, so I can use the state's pawnCanMoveTo method:
 		self.currentRound.currentState().boardDefinition = self.currentGame.level.board
 		
+        // Start a level
+        self.currentGame = Game(level: levels[0]);
+        
 		// Add a board view:
 		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (widthScreen - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (heightScreen - CGFloat(kBoardEdgeLength)) + kAmountYOfBoardViewLowerThanCenter, CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
@@ -189,31 +192,35 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
 		// East:
-		buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
-		buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		
+		self.buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
+		self.buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+        self.buttonToMoveEast.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
 		// South:
-		buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
-		buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		
+		self.buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
+		self.buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+        self.buttonToMoveSouth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
 		// West:
-		buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
-		buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		
+		self.buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
+		self.buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+        self.buttonToMoveWest.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
 		// North:
-		buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
-		buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		
+		self.buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
+		self.buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+        self.buttonToMoveNorth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
 		// Rotate clockwise:
-		buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
-		buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		self.buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
+		self.buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		
 		// Rotate counterclockwise:
-		buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
-		buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		self.buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
+		self.buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		
 		// Store the buttons in moveAndRotateButtons for convenience:
-		moveAndRotateButtons = [buttonToMoveEast, buttonToMoveSouth, buttonToMoveWest, buttonToMoveNorth, buttonToRotateClockwise, buttonToRotateCounterclockwise]
+		self.moveAndRotateButtons = [buttonToMoveEast, buttonToMoveSouth, buttonToMoveWest, buttonToMoveNorth, buttonToRotateClockwise, buttonToRotateCounterclockwise]
 		
 		// Add all six buttons:
 		for button in moveAndRotateButtons {
@@ -550,20 +557,24 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         // Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
         
         // Add a board view:
-        let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
-        boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
-        boardView.boardSize = (self.currentGame.level.board.width,self.currentGame.level.board.height)
+//        let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
+//        boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
+//        boardView.boardSize = (self.currentGame.level.board.width,self.currentGame.level.board.height)
+//
+//        boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 
-        boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
-
-        //self.view.addSubview(boardView) //This turns on the new style
+        self.view.addSubview(self.boardView)
         
         // Add a pawn to the board view:
-        boardView.pawnDefinition1 = currentLevel.pawnRole1
-        boardView.pawnDefinition2 = currentLevel.pawnRole2
+
+        //		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
+        //		boardView.placePawn(true, field: (tempX, tempY))
+
+        self.boardView.pawnDefinition1 = currentLevel.pawnRole1
+        self.boardView.pawnDefinition2 = currentLevel.pawnRole2
         
-        boardView.placePawn1(currentState.posPawn1)
-        boardView.placePawn2(currentState.posPawn2)
+        self.boardView.placePawn(true,field:currentState.posPawn1)
+        self.boardView.placePawn(false,field:currentState.posPawn2)
         
         var ownItems = [ItemDefinition]()
         var otherItems = [ItemDefinition]()
@@ -668,12 +679,41 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         //Add tap gesture to the label
         let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
         levelLabel.addGestureRecognizer(tapGesture)
+
+        // Add all six buttons:
+//        for button in moveAndRotateButtons {
+//            println("Add")
+//            viewWithAllMoveAndRotateButtons.addSubview(button)
+//        }
+        self.view.addSubview(viewWithAllMoveAndRotateButtons)
         
     }
     
     func tapButton(sender:UIButton!)
     {
-        var action = RoundAction(type: RoundActionType.Tap,sensor: sender, role: self.currentRound.myRole!)
+        //Figure out which button was pressed
+        var buttonIndicator = ""
+        
+        if sender == self.buttonToMoveEast
+        {
+            buttonIndicator = "east"
+        }
+        else if sender == self.buttonToMoveNorth
+        {
+            buttonIndicator = "north"
+        }
+        else if sender == self.buttonToMoveWest
+        {
+            buttonIndicator = "west"
+        }
+        else if sender == self.buttonToMoveSouth
+        {
+            buttonIndicator = "south"
+        }
+        
+        println(buttonIndicator)
+        
+        var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound.myRole!)
         
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
         self.sendActionToOther(action)
@@ -681,6 +721,17 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         // Update the model:
         currentRound.processAction(action)
 
+        boardView.movePawnToField(false, field: (0, 0))
+        
+        // Test inflating fields:
+        boardView.coordsOfInflatedField = (0, 0)
+
+        // Test inflating fields:
+        boardView.coordsOfInflatedField = (tempX, tempY)
+        
+        // Test moving the move and rotate buttons:
+        //self.centerViewWithAllMoveAndRotateButtonsAboveField(0, y: 0)
+        
         // Update our UI (for now the transition is irrelevant):
         self.updateUI();
     }

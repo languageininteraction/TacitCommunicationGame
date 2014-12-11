@@ -25,15 +25,36 @@ class RoundState: NSObject {
 			// The next state is the same as us, but with an increased counter:
 			nextState.posPawn1 = self.posPawn1
             nextState.posPawn2 = self.posPawn2
-
+            
             if action.role == RoundRole.Sender
             {
-                nextState.selectedItemPlayer1 = action.buttonTag
+                nextState.selectedItemPlayer1 = 0
                 nextState.selectedItemPlayer2 = self.selectedItemPlayer2
+                
+                if action.buttonIndicator == "west"
+                {
+                    nextState.posPawn1 = (self.posPawn1.0-1,self.posPawn1.1)
+                }
+                else if action.buttonIndicator == "east"
+                {
+                    nextState.posPawn1 = (self.posPawn1.0+1,self.posPawn1.1)
+                }
+                else if action.buttonIndicator == "north"
+                {
+                    nextState.posPawn1 = (self.posPawn1.0,self.posPawn1.1-1)
+                }
+                else if action.buttonIndicator == "south"
+                {
+                    nextState.posPawn1 = (self.posPawn1.0,self.posPawn1.1+1)
+                }
+                
+                println(self.posPawn1)
+                println(nextState.posPawn1)
+                
             }
             else
             {
-                nextState.selectedItemPlayer2 = action.buttonTag
+                nextState.selectedItemPlayer2 = 0
                 nextState.selectedItemPlayer1 = self.selectedItemPlayer1
             }
             
