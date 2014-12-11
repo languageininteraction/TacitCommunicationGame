@@ -24,6 +24,28 @@ let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
 let kAmountFieldCanInflate: CGFloat = 0.25
 let kEdgelengthMovementButtons: CGFloat = 64
 
+// Layout of the screen:
+let kMargeFacesY: CGFloat = 30
+let kMargeFacesX: CGFloat = 30
+let kEdgelengthFaces: CGFloat = 60
+let kSpaceBetweenFaceAndSmallPawn: CGFloat = 8
+let kEdgelengthSmallPawns: CGFloat = 20
+let kSpaceBetweenSmallPawnAndPlayerName: CGFloat = 8
+let kAmountYOfPlayerNamesLowerThanYOfSmallPawn: CGFloat = -10
+let kHeightOfPlayerNameLabels: CGFloat = 40
+let kMinimalSpaceBetweenPlayerNames: CGFloat = 40
+let kAmountYOfBoardViewLowerThanCenter: CGFloat = 20
+let kSpaceBetweenFaceAndTopItemButton: CGFloat = 14
+let kSpaceBetweenItemButtons: CGFloat = 14
+let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30
+let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 40
+
+// Fonts:
+let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: 20)
+let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 20)
+let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 15)
+let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 12)
+
 // Pawns:
 let kPawnLineWidth = 2
 let kPawnNumberOfLines = 4

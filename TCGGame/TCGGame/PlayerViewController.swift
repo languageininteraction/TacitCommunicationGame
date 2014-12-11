@@ -37,17 +37,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var matchStarted = false
 	
     var itemButtons = [UIButton]()
-    
-	// MARK: - Outlets
-	
-	@IBOutlet weak var textFieldForTesting: UILabel!
-	
-    @IBOutlet weak var field00: UIButton!
-    @IBOutlet weak var field10: UIButton!
-    @IBOutlet weak var field01: UIButton!
-    @IBOutlet weak var field11: UIButton!
-    
-    @IBOutlet weak var tableView: UIView!
 	
 	
 	// MARK: - Other UI
@@ -58,8 +47,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var tempY = 1
 	var tempRotation = Rotation.East
     
-    var buttonToSwitchMovingOn: UIButton?
-	
 	// The movement buttons:
 	var buttonToMoveEast = UIButton()
 	var buttonToMoveSouth = UIButton()
@@ -70,22 +57,22 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var moveAndRotateButtons = [UIButton]() // for convenience
 	var viewWithAllMoveAndRotateButtons = UIView()
 	
+	// The item buttons; for current player, but also for the other player (which won't actually be used as buttons, because their user interaction will be disabled):
+	var buttonMoveItem = UIButton()
+	var buttonSeeItem = UIButton()
+	var buttonGiveItem = UIButton()
+	var buttonToFinishRetryOrContinue = UIButton()
+	var buttonOtherPlayer_moveItem = UIButton()
+	var buttonOtherPlayer_seeItem = UIButton()
+	var buttonOtherPlayer_giveItem = UIButton()
+	var buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
+	
 	
 	// MARK: - Sub ViewControllers
 	
 	// todo: proper use of lazy properties in Swift?
 	let chooseLevelViewController = ChooseLevelViewController()
 	
-	
-    // MARK: - IB Actions
-    
-    @IBAction func fieldButtonPressed(sender: UIButton) {
-        let x : Int = sender == field00 || sender == field01 ? 0 : 1;
-        let y: Int = sender == field00 || sender == field10 ? 0 : 1;
-
-//        self.movePawn((x,y))
-        
-    }
 	
 	// MARK: - Flow
 	
@@ -98,21 +85,38 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			startPlayingMatch()
 		}
 		
-		self.updateUI()
+//		self.updateUI()
 		
-		// Testing BoardView (uncomment if you want to see)
+		
+		
+		/* Prepare all UI elements that are used throughout the whole game:
+		1. The board;
+		2. The players info (photos and names);
+		3. The move and rotate buttons;
+		4. The item buttons (to enable/disable move, see, and give);
+		5. The buttons to finish / retry / continue;
+		6. The label with the level; */
+		
+		
+		// todo explain
+		let widthScreen = self.view.frame.size.width
+		let heightScreen = self.view.frame.size.height
+		
+		
+		// 1. Prepare the boardView:
 		
 		// temp here, so I can use the state's pawnCanMoveTo method:
 		self.currentRound.currentState().boardDefinition = self.currentGame.level.board
 		
 		// Add a board view:
 		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
-		boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
+		boardView.frame = CGRectMake(CGFloat(0.5) * (widthScreen - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (heightScreen - CGFloat(kBoardEdgeLength)) + kAmountYOfBoardViewLowerThanCenter, CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
 		boardView.boardSize = (self.currentGame.level.board.width, self.currentGame.level.board.height)
 		self.view.addSubview(boardView)
 		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 	
-		
+
+		// todo: Adding the pawn shouldn't happen here, because it depends on the level being played!
 		
 		// Add pawns to the board view:
 		
@@ -127,6 +131,51 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// temp so I can use the state's pawnCanMoveTo method:
 		self.currentRound.currentState().posPawn1 = (tempX, tempY)
 		self.currentRound.currentState().posPawn2 = (0, 1)
+		
+		
+		// 2. Prepare the players' info:
+		
+		// Local player's picture:
+		let imageViewPictureOfLocalPlayer = UIImageView(frame: CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces))
+		imageViewPictureOfLocalPlayer.backgroundColor = UIColor.redColor()
+		imageViewPictureOfLocalPlayer.layer.cornerRadius = 0.5 * kEdgelengthFaces
+		self.view.addSubview(imageViewPictureOfLocalPlayer)
+		
+		// Other player's picture:
+		let imageViewPictureOfOtherPlayer = UIImageView(frame: CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces))
+		imageViewPictureOfOtherPlayer.backgroundColor = UIColor.blueColor()
+		imageViewPictureOfOtherPlayer.layer.cornerRadius = 0.5 * kEdgelengthFaces
+		self.view.addSubview(imageViewPictureOfOtherPlayer)
+		
+		// temp: Local player's small pawn representation (this is temp because this view needs to be made each time that a level starts, because the pawn may change and PawnView assumes that its pawnConfiguration doesn't change):
+		let tempPawnViewLocalPlayer = UIView(frame: CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kSpaceBetweenFaceAndSmallPawn - kEdgelengthSmallPawns, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns))
+		tempPawnViewLocalPlayer.backgroundColor = UIColor.greenColor()
+		self.view.addSubview(tempPawnViewLocalPlayer)
+		
+		// temp: Other player's small pawn representation (this is temp because of reason see above):
+		let tempPawnViewOtherPlayer = UIView(frame: CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x + imageViewPictureOfOtherPlayer.frame.size.width + kSpaceBetweenFaceAndSmallPawn, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns))
+		tempPawnViewOtherPlayer.backgroundColor = UIColor.purpleColor()
+		self.view.addSubview(tempPawnViewOtherPlayer)
+		
+		// Local player's name label:
+		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
+		let xOfSmallPawnViewOfOtherPlayer = imageViewPictureOfOtherPlayer.frame.origin.x + imageViewPictureOfOtherPlayer.frame.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
+		let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
+		let nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
+		nameLabelLocalPlayer.font = kFontPlayerNames
+		self.view.addSubview(nameLabelLocalPlayer)
+		nameLabelLocalPlayer.backgroundColor = UIColor.yellowColor()
+		
+		// Other player's name label:
+		let nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
+		nameLabelOtherPlayer.font = kFontPlayerNames
+		self.view.addSubview(nameLabelOtherPlayer)
+		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
+		
+		// Level label:
+//		let 
+		
+		
 		
 		
 		// Add buttons to move and rotate:
@@ -441,7 +490,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             
 		}
 		let string = self.weDecideWhoIsWho! ? "We deicde!" : "They decide :("
-		textFieldForTesting.text = "\(string)"
+//		textFieldForTesting.text = "\(string)"
 
         if self.weDecideWhoIsWho == true
         {
@@ -520,7 +569,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         var otherItems = [ItemDefinition]()
         var selectedItem = 0
         var selectedItemOther = 0
-        
+		
+		
+		// todo: Buttons are now created once. Only their properties (such as whether they are hidden, selected, etc.) should be updated in response to state changes.
+		
+		/*
         //Update the buttons of the other player
         var y = 20 as CGFloat
         if self.currentRound.myRole == RoundRole.Sender
@@ -601,7 +654,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 
                 self.itemButtons.append(currentButton)
                 y += 60;
-        }
+        }*/
         
         
 //        self.otherNavButton = UIButton()
@@ -641,7 +694,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     
     //Mark: - Depricated update GUI
     
-    func old_updateUI()
+/*    func old_updateUI()
     {
         //All fields back to basic color
         for field in [field00,field10,field01,field11]
@@ -701,6 +754,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             fieldPown2.backgroundColor = UIColor.orangeColor()
         }
         
-    }
+    }*/
 
 }

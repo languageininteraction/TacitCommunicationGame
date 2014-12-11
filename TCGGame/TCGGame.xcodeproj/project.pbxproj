@@ -126,6 +126,7 @@
 		48B2C3661A248D38002FFEDF /* Button_seeSelectedOther 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31E1A248D38002FFEDF /* Button_seeSelectedOther 54x54.png */; };
 		48B2C3671A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */; };
 		48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
+		48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF63A21A39FE6500941BDA /* HandyFunctions.swift */; };
 		491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */; };
 		4940291B1A399EA400449754 /* level1.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291A1A399EA400449754 /* level1.json */; };
 		4940291D1A399ED400449754 /* level2.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291C1A399ED400449754 /* level2.json */; };
@@ -275,6 +276,7 @@
 		48B2C31D1A248D38002FFEDF /* Button_seeSelected 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelected 54x54@2x.png"; sourceTree = "<group>"; };
 		48B2C31E1A248D38002FFEDF /* Button_seeSelectedOther 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelectedOther 54x54.png"; sourceTree = "<group>"; };
 		48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelectedOther 54x54@2x.png"; sourceTree = "<group>"; };
+		48DF63A21A39FE6500941BDA /* HandyFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandyFunctions.swift; sourceTree = "<group>"; };
 		491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseLevelViewController.swift; sourceTree = "<group>"; };
 		4940291A1A399EA400449754 /* level1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level1.json; sourceTree = "<group>"; };
 		4940291C1A399ED400449754 /* level2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level2.json; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				482EEC431A123E0B00FB13FF /* Constants.swift */,
 				48B2C2D51A248CD6002FFEDF /* Resources */,
 				4812E60B1A0A655A006DED82 /* AppDelegate.swift */,
+				48DF63A11A39FE4E00941BDA /* Handy stuff */,
 				4812E62D1A0A6AFE006DED82 /* Controllers */,
 				4812E62C1A0A6AF1006DED82 /* Views */,
 				4812E62B1A0A6AEA006DED82 /* Model */,
@@ -575,6 +578,14 @@
 			name = Buttons;
 			sourceTree = "<group>";
 		};
+		48DF63A11A39FE4E00941BDA /* Handy stuff */ = {
+			isa = PBXGroup;
+			children = (
+				48DF63A21A39FE6500941BDA /* HandyFunctions.swift */,
+			);
+			name = "Handy stuff";
+			sourceTree = "<group>";
+		};
 		494029191A399E9300449754 /* Levels */ = {
 			isa = PBXGroup;
 			children = (
@@ -805,6 +816,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */,
+				48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */,
 				482EEC3D1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift in Sources */,
 				4856E58C1A24953800309751 /* FieldView.swift in Sources */,
 				4847D8151A24D99400540223 /* PawnView.swift in Sources */,
