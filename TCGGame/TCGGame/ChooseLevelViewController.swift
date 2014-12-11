@@ -30,10 +30,7 @@ class ChooseLevelViewController: UITableViewController, UITableViewDelegate, UIT
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "MyTestCell")
         
-        var level = indexPath.row + 1
-        
-        cell.textLabel?.text = "Level \(level)"
-        cell.detailTextLabel?.text = "Wessel is de beste"
+        var level = levels[indexPath.row]
         
         cell.textLabel.text = "Level \(level.nr)"
         cell.detailTextLabel?.text = "\(level.name)"
