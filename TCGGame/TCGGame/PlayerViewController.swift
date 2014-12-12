@@ -248,11 +248,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Rotate clockwise:
 		self.buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
 		self.buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		
+        self.buttonToRotateClockwise.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
 		// Rotate counterclockwise:
 		self.buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
 		self.buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		
+        self.buttonToRotateCounterclockwise.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
 		// Store the buttons in moveAndRotateButtons for convenience:
 		self.moveAndRotateButtons = [buttonToMoveEast, buttonToMoveSouth, buttonToMoveWest, buttonToMoveNorth, buttonToRotateClockwise, buttonToRotateCounterclockwise]
 		
@@ -815,26 +817,41 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     {
         //Figure out which button was pressed
         var buttonIndicator = ""
+        var buttonType = "" //using enums here would be prettier
         
         if sender == self.buttonToMoveEast
         {
             buttonIndicator = "east"
+            buttonType = "move"
         }
         else if sender == self.buttonToMoveNorth
         {
             buttonIndicator = "north"
+            buttonType = "move"
         }
         else if sender == self.buttonToMoveWest
         {
             buttonIndicator = "west"
+            buttonType = "move"
         }
         else if sender == self.buttonToMoveSouth
         {
             buttonIndicator = "south"
+            buttonType = "move"
+        }
+        else if sender == self.buttonToRotateClockwise
+        {
+            buttonIndicator = "rotClock"
+            buttonType = "rotate"
+        }
+        else if sender == self.buttonToRotateCounterclockwise
+        {
+            buttonIndicator = "rotCClock"
+            buttonType = "rotate"
         }
         
         println(buttonIndicator)
-        
+       
         var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound.myRole!)
         
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
@@ -842,16 +859,25 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 
         // Update the model:
         currentRound.processAction(action)
-        var newField = currentRound.currentState().posPawn1;
         
-        boardView.movePawnToField(true, field: newField)
-        
-        // Test inflating fields:
-        boardView.coordsOfInflatedField = newField
-        
-        // Test moving the move and rotate buttons:
-        self.centerViewWithAllMoveAndRotateButtonsAboveField(newField.x, y: newField.y)
-        
+        if buttonType == "move"
+        {
+            var newField = currentRound.currentState().posPawn1;
+            
+            self.boardView.movePawnToField(true, field: newField)
+            
+            // Test inflating fields:
+            self.boardView.coordsOfInflatedField = newField
+            
+            // Test moving the move and rotate buttons:
+            self.centerViewWithAllMoveAndRotateButtonsAboveField(newField.x, y: newField.y)
+        }
+        else if buttonType == "rotate"
+        {
+            var newRotation = currentRound.currentState().rotationPawn1;
+            self.boardView.rotatePawnToRotation(true, rotation: newRotation)
+        }
+            
         // Update our UI (for now the transition is irrelevant):
         //self.updateUI();
     }
