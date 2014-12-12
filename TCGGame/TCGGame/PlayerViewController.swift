@@ -67,6 +67,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var buttonOtherPlayer_giveItem = UIButton()
 	var buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
 	
+	// Image views for pictures of players:
+	let imageViewPictureOfLocalPlayer = UIImageView()
+	let imageViewPictureOfOtherPlayer = UIImageView()
+	
+	// Label showing which level is being played:
+	let labelLevel = UILabel()
+	
 	
 	// MARK: - Sub ViewControllers
 	
@@ -103,12 +110,12 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		let heightScreen = self.view.frame.size.height
 		
 		
-		// 1. Prepare the boardView:
+		// MARK: 1. Prepare the boardView:
 		
 		// temp here, so I can use the state's pawnCanMoveTo method:
 		self.currentRound.currentState().boardDefinition = self.currentGame.level.board
 		
-        // Start a level
+        // temp here, Start a level
         self.currentGame = Game(level: levels[0]);
         
 		// Add a board view:
@@ -136,28 +143,48 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.currentRound.currentState().posPawn2 = (0, 1)
 		
 		
-		// 2. Prepare the players' info:
+		// MARK: 2. Prepare the players' info:
 		
 		// Local player's picture:
-		let imageViewPictureOfLocalPlayer = UIImageView(frame: CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces))
+		imageViewPictureOfLocalPlayer.frame = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		imageViewPictureOfLocalPlayer.backgroundColor = UIColor.redColor()
 		imageViewPictureOfLocalPlayer.layer.cornerRadius = 0.5 * kEdgelengthFaces
+		imageViewPictureOfLocalPlayer.image = UIImage(named: "PersonPlaceholder 320x320")
 		self.view.addSubview(imageViewPictureOfLocalPlayer)
 		
 		// Other player's picture:
-		let imageViewPictureOfOtherPlayer = UIImageView(frame: CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces))
+		imageViewPictureOfOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		imageViewPictureOfOtherPlayer.backgroundColor = UIColor.blueColor()
 		imageViewPictureOfOtherPlayer.layer.cornerRadius = 0.5 * kEdgelengthFaces
+		imageViewPictureOfOtherPlayer.image = UIImage(named: "PersonPlaceholder 320x320")
 		self.view.addSubview(imageViewPictureOfOtherPlayer)
 		
+		// Add colored circles 'around' the players' pictures; todo fix colors so on both devices one player has yellow and the other orange:
+		let layerColoredCircleLocalPlayer = CALayer()
+		layerColoredCircleLocalPlayer.frame = CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.origin.y - kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.size.width + 2 * kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.size.height + 2 * kOffsetLineAroundFaces)
+		layerColoredCircleLocalPlayer.borderColor = kColorLiIYellow.CGColor
+		layerColoredCircleLocalPlayer.borderWidth = kLinewidthOfLineAroundFaces
+		layerColoredCircleLocalPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
+		self.view.layer.insertSublayer(layerColoredCircleLocalPlayer, below: imageViewPictureOfLocalPlayer.layer)
+		
+		// Other circle:
+		let layerColoredCircleOtherPlayer = CALayer()
+		layerColoredCircleOtherPlayer.frame = CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x - kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.origin.y - kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.size.width + 2 * kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.size.height + 2 * kOffsetLineAroundFaces)
+		layerColoredCircleOtherPlayer.borderColor = kColorLiIOrange.CGColor
+		layerColoredCircleOtherPlayer.borderWidth = kLinewidthOfLineAroundFaces
+		layerColoredCircleOtherPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
+		self.view.layer.insertSublayer(layerColoredCircleOtherPlayer, below: imageViewPictureOfOtherPlayer.layer)
+		
 		// temp: Local player's small pawn representation (this is temp because this view needs to be made each time that a level starts, because the pawn may change and PawnView assumes that its pawnConfiguration doesn't change):
-		let tempPawnViewLocalPlayer = UIView(frame: CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kSpaceBetweenFaceAndSmallPawn - kEdgelengthSmallPawns, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns))
-		tempPawnViewLocalPlayer.backgroundColor = UIColor.greenColor()
+		let tempPawnViewLocalPlayer = PawnView(edgelength: kEdgelengthSmallPawns, pawnDefinition: boardView.pawnDefinition2!)
+		tempPawnViewLocalPlayer.frame = CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kSpaceBetweenFaceAndSmallPawn - kEdgelengthSmallPawns, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns)
+//		tempPawnViewLocalPlayer.backgroundColor = UIColor.greenColor()
 		self.view.addSubview(tempPawnViewLocalPlayer)
 		
 		// temp: Other player's small pawn representation (this is temp because of reason see above):
-		let tempPawnViewOtherPlayer = UIView(frame: CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x + imageViewPictureOfOtherPlayer.frame.size.width + kSpaceBetweenFaceAndSmallPawn, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns))
-		tempPawnViewOtherPlayer.backgroundColor = UIColor.purpleColor()
+		let tempPawnViewOtherPlayer = PawnView(edgelength: kEdgelengthSmallPawns, pawnDefinition: boardView.pawnDefinition1!)
+		tempPawnViewOtherPlayer.frame = CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x + imageViewPictureOfOtherPlayer.frame.size.width + kSpaceBetweenFaceAndSmallPawn, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns)
+//		tempPawnViewOtherPlayer.backgroundColor = UIColor.purpleColor()
 		self.view.addSubview(tempPawnViewOtherPlayer)
 		
 		// Local player's name label:
@@ -166,26 +193,33 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
 		let nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
 		nameLabelLocalPlayer.font = kFontPlayerNames
+		nameLabelLocalPlayer.textAlignment = NSTextAlignment.Right
 		self.view.addSubview(nameLabelLocalPlayer)
-		nameLabelLocalPlayer.backgroundColor = UIColor.yellowColor()
+
+		// temp:
+//		nameLabelLocalPlayer.backgroundColor = UIColor.yellowColor()
+		nameLabelLocalPlayer.text = "Mark"
 		
 		// Other player's name label:
 		let nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
 		nameLabelOtherPlayer.font = kFontPlayerNames
 		self.view.addSubview(nameLabelOtherPlayer)
-		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
 		
-		// Level label:
-//		let 
-		
-		
+		// temp:
+//		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
+		nameLabelOtherPlayer.text = "Martin"
 		
 		
-		// Add buttons to move and rotate:
+		// Used for multiple frames:
+		let xItemButtonsLocalPlayer = imageViewPictureOfLocalPlayer.frame.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
+		let xItemButtonsOtherPlayer = imageViewPictureOfOtherPlayer.frame.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
+		
+		
+		// MARK: 3. Prepare the move and rotate buttons:
 		
 		// viewWithAllMoveAndRotateButtons:
 		let edgelengthViewWithAllMoveAndRotateButtons = 2.0 * CGFloat(boardView.edgeLengthFieldViewPlusMargin) + kEdgelengthMovementButtons // this way if we put the move buttons at the sides, they shouls fall exactly above the board's fields
-		viewWithAllMoveAndRotateButtons.frame = CGRectMake(300, 100, edgelengthViewWithAllMoveAndRotateButtons, edgelengthViewWithAllMoveAndRotateButtons)
+		viewWithAllMoveAndRotateButtons.frame = CGRectMake(0, 0, edgelengthViewWithAllMoveAndRotateButtons, edgelengthViewWithAllMoveAndRotateButtons)
 		viewWithAllMoveAndRotateButtons.backgroundColor = UIColor.clearColor() // (white: 0, alpha: 0.05)
 		self.view.addSubview(viewWithAllMoveAndRotateButtons)
 		
@@ -194,23 +228,23 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// East:
 		self.buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-        self.buttonToMoveEast.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+		self.buttonToMoveEast.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		
 		// South:
 		self.buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-        self.buttonToMoveSouth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+		self.buttonToMoveSouth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		
 		// West:
 		self.buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-        self.buttonToMoveWest.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+		self.buttonToMoveWest.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		
 		// North:
 		self.buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-        self.buttonToMoveNorth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        
+		self.buttonToMoveNorth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		
 		// Rotate clockwise:
 		self.buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
 		self.buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
@@ -227,9 +261,77 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			viewWithAllMoveAndRotateButtons.addSubview(button)
 		}
 		
+		// temp, so move buttons get a position that looks better:
+		self.testButtonPressed()
+		
+		
+		// MARK: 4. Prepare the item buttons:
+		// (to enable/disable move, see, and give)
+		
+		// Calculate vertical positioning:
+		let yItemButtonsRow0 = imageViewPictureOfOtherPlayer.frame.origin.y + imageViewPictureOfOtherPlayer.frame.size.height + kSpaceBetweenFaceAndTopItemButton
+		let yItemButtonsRow1 = yItemButtonsRow0 + kSpaceBetweenItemButtons + kEdgelengthItemButtons
+		let yItemButtonsRow2 = yItemButtonsRow1 + kSpaceBetweenItemButtons + kEdgelengthItemButtons
+		
+		// Move item of local player:
+		buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonMoveItem.setImage(UIImage(named: "Button_move 256x256"), forState: UIControlState.Normal)
+		
+		// See item of local player:
+		buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonSeeItem.setImage(UIImage(named: "Button_see 256x256"), forState: UIControlState.Normal)
+		
+		// Give item of local player:
+		buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonGiveItem.setImage(UIImage(named: "Button_present 256x256"), forState: UIControlState.Normal)
+		
+		// Move item of other player:
+		buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonOtherPlayer_moveItem.setImage(UIImage(named: "Button_moveOther 256x256"), forState: UIControlState.Normal)
+		
+		// See item of other player:
+		buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonOtherPlayer_seeItem.setImage(UIImage(named: "Button_seeOther 256x256"), forState: UIControlState.Normal)
+		
+		// Give item of other player:
+		buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonOtherPlayer_giveItem.setImage(UIImage(named: "Button_presentOther 256x256"), forState: UIControlState.Normal)
+		
+		let itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
+		for itemButton in itemButtons {
+			self.view.addSubview(itemButton)
+		}
+		
+		
+		// MARK: 5. Prepare the buttons to finish / retry / continue:
+		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
+		
+		// buttonToFinishRetryOrContinue:
+		buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
+		self.view.addSubview(buttonToFinishRetryOrContinue)
+		
+		// buttonOtherPlayer_toFinishRetryOrContinue:
+		buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
+		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
+		
+		
+		// MARK: 6. Prepare the level label:
+		labelLevel.frame = CGRectMake(0.5 * (widthScreen - kWidthOfLevelLabel), heightScreen - kSpaceBetweenYOfLevelLabelAndBottom, kWidthOfLevelLabel, kSpaceBetweenYOfLevelLabelAndBottom)
+		labelLevel.font = kFontLevel
+		labelLevel.textAlignment = NSTextAlignment.Center
+		self.view.addSubview(labelLevel)
+		
+		// temp:
+//		labelLevel.backgroundColor = UIColor.blueColor()
+		labelLevel.text = "Level 3"
+		
+		
+		
 		
 		// Add buttons to test stuff:
-		
+
 		// Movement:
 		let testButton = UIButton(frame: CGRectMake(20, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
 		testButton.backgroundColor = UIColor.redColor()
@@ -322,6 +424,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	func continueWithAuthenticatedLocalPlayer() {
+		// todo: should we do this here?
+		if !kDevLocalTestingIsOn {
+			self.localPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
+				
+				println("error loading picture: \(error)")
+				
+				self.imageViewPictureOfLocalPlayer.image = image // todo check error first!
+			}) // todo check the size we need
+		}
+		
 		self.hostMatch()
 	}
 	
@@ -494,6 +606,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		if (!kDevLocalTestingIsOn) {
 			let otherPlayer = self.match!.players[0] as GKPlayer //
 			self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+			
+			// todo: do this here?
+			otherPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
+				
+				println("error loading picture of other: \(error)")
+				
+				if (image != nil) { // I don't understand why according to the documentation image can be nil, but it's not an optional
+					self.imageViewPictureOfOtherPlayer.image = image // todo check error first!
+				}
+			}) // todo check the size we need
             
 		}
 		let string = self.weDecideWhoIsWho! ? "We deicde!" : "They decide :("
@@ -515,18 +637,18 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 //
 //        // Create the corresponding action:
 //        let action = RoundAction(RoundActionType.Tap,position,self.currentRound.myRole!)
-//        
+//
 //        println(action.role.rawValue);
-//            
+//
 //		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 //		self.sendActionToOther(action)
-//		
+//
 //		// Update the model:
 //		currentRound.processAction(action)
-//        
+//
 //		// Update our UI (for now the transition is irrelevant):
 //        self.updateUI();
-//        
+//
 //	}
 	
 	func sendActionToOther(action: RoundAction) {
@@ -615,11 +737,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
                 buttonType = "move"
             }
             
-            var image = UIImage(named: "Button_\(buttonType)Other 54x54@2x")
+            var image = UIImage(named: "Button_\(buttonType)Other 256x256@2x")
             
             if selectedItemOther == index
             {
-                image = UIImage(named: "Button_\(buttonType)SelectedOther 54x54@2x")
+                image = UIImage(named: "Button_\(buttonType)SelectedOther 256x256@2x")
             }
 
             var imview = UIImageView(frame: CGRectMake(20, y, 50, 50))
@@ -645,11 +767,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
                     buttonType = "move"
                 }
             
-                var image = UIImage(named: "Button_\(buttonType) 54x54@2x")
+                var image = UIImage(named: "Button_\(buttonType) 256x256@2x")
 
                 if selectedItem == index
                 {
-                    image = UIImage(named: "Button_\(buttonType)Selected 54x54@2x")
+                    image = UIImage(named: "Button_\(buttonType)Selected 256x256@2x")
                 }
             
                 //Create the button

@@ -17,17 +17,19 @@ let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 
 // Layout of the board and stuff on top of / inside the board:
-let kBoardEdgeLength: Float = 300
+let kBoardEdgeLength: Float = 400
 let kBoardSpaceBetweenFields: Float = 10
 let kBoardLineWidthOfFields = 2
 let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
-let kAmountFieldCanInflate: CGFloat = 0.25
-let kEdgelengthMovementButtons: CGFloat = 64
+let kAmountFieldCanInflate: CGFloat = 0.30
+let kEdgelengthMovementButtons: CGFloat = 80
 
 // Layout of the screen:
 let kMargeFacesY: CGFloat = 30
 let kMargeFacesX: CGFloat = 30
-let kEdgelengthFaces: CGFloat = 60
+let kEdgelengthFaces: CGFloat = 85
+let kOffsetLineAroundFaces: CGFloat = 4
+let kLinewidthOfLineAroundFaces: CGFloat = 1.5
 let kSpaceBetweenFaceAndSmallPawn: CGFloat = 8
 let kEdgelengthSmallPawns: CGFloat = 20
 let kSpaceBetweenSmallPawnAndPlayerName: CGFloat = 8
@@ -35,14 +37,16 @@ let kAmountYOfPlayerNamesLowerThanYOfSmallPawn: CGFloat = -10
 let kHeightOfPlayerNameLabels: CGFloat = 40
 let kMinimalSpaceBetweenPlayerNames: CGFloat = 40
 let kAmountYOfBoardViewLowerThanCenter: CGFloat = 20
-let kSpaceBetweenFaceAndTopItemButton: CGFloat = 14
-let kSpaceBetweenItemButtons: CGFloat = 14
+let kSpaceBetweenFaceAndTopItemButton: CGFloat = 18
+let kEdgelengthItemButtons: CGFloat = 70
+let kSpaceBetweenItemButtons: CGFloat = 10
 let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30
-let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 40
+let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120
+let kWidthOfLevelLabel: CGFloat = 200
 
 // Fonts:
-let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: 20)
-let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 20)
+let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: 36)
+let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 36)
 let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 15)
 let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 12)
 
