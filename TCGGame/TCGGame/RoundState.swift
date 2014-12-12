@@ -11,8 +11,10 @@ import UIKit
 class RoundState: NSObject {
 	var count = 0
 	var posPawn1 = (x: 0, y: 0)
+    var rotationPawn1 = Rotation.North
 	var posPawn2 = (x: 1, y: 1)
-	var selectedItemPlayer1 = 0
+    var rotationPawn2 = Rotation.North
+    var selectedItemPlayer1 = 0
     var selectedItemPlayer2 = 0
 	
 	var boardDefinition: BoardDefinition? // alvast toegevoegd om pawnCanMoveTo te kunnen implementeren en die te gebruiken om te kijken welke move buttons beschikbaar moeten zijn
@@ -24,10 +26,17 @@ class RoundState: NSObject {
 		if (action.type == RoundActionType.Tap) {
 			// The next state is the same as us, but with an increased counter:
 			nextState.posPawn1 = self.posPawn1
+            nextState.rotationPawn1 = self.rotationPawn1
+            
             nextState.posPawn2 = self.posPawn2
+            nextState.rotationPawn2 = self.rotationPawn2
+            
+            println("Processing action")
             
             if action.role == RoundRole.Sender
             {
+                println("Button Indicator")
+                println(action.buttonIndicator)
                 nextState.selectedItemPlayer1 = 0
                 nextState.selectedItemPlayer2 = self.selectedItemPlayer2
                 
@@ -47,9 +56,27 @@ class RoundState: NSObject {
                 {
                     nextState.posPawn1 = (self.posPawn1.0,self.posPawn1.1+1)
                 }
+                else if action.buttonIndicator == "rotClock"
+                {
+                    var rotationValue = self.rotationPawn1.rawValue + 1
+                    if rotationValue > 3
+                    {
+                        rotationValue = 0
+                    }
+                    
+                    nextState.rotationPawn1 = Rotation(rawValue: rotationValue)!
+                }
+                else if action.buttonIndicator == "rotCClock"
+                {
+                    var rotationValue = self.rotationPawn1.rawValue - 1
+                    if rotationValue < 0
+                    {
+                        rotationValue = 3
+                    }
+                    
+                    nextState.rotationPawn1 = Rotation(rawValue: rotationValue)!
+                }
                 
-                println(self.posPawn1)
-                println(nextState.posPawn1)
                 
             }
             else
