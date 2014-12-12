@@ -842,20 +842,18 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 
         // Update the model:
         currentRound.processAction(action)
-
-        boardView.movePawnToField(false, field: (0, 0))
+        var newField = currentRound.currentState().posPawn1;
+        
+        boardView.movePawnToField(true, field: newField)
         
         // Test inflating fields:
-        boardView.coordsOfInflatedField = (0, 0)
-
-        // Test inflating fields:
-        boardView.coordsOfInflatedField = (tempX, tempY)
+        boardView.coordsOfInflatedField = newField
         
         // Test moving the move and rotate buttons:
-        //self.centerViewWithAllMoveAndRotateButtonsAboveField(0, y: 0)
+        self.centerViewWithAllMoveAndRotateButtonsAboveField(newField.x, y: newField.y)
         
         // Update our UI (for now the transition is irrelevant):
-        self.updateUI();
+        //self.updateUI();
     }
     
     func tapLevelLabel(sender:UILabel)

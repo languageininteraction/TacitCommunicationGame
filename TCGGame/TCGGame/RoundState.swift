@@ -75,7 +75,7 @@ class RoundState: NSObject {
 	
 	func pawnCanMoveTo(aboutPawn1: Bool, x: Int, y: Int) -> Bool {
 		// Only allow if there's a field there and no (other)pawn (notice that currently the result doesn't depend on which pawn we're taliing about):
-		return x >= 0 && x < boardDefinition?.width && y >= 0 && y < boardDefinition?.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y) 
+		return true //x >= 0 && x < boardDefinition?.width && y >= 0 && y < boardDefinition?.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y)
 	}
 	
 	func pawnCanMoveInDirection(aboutPawn1: Bool, direction: Rotation) -> Bool { // probably better to rename Rotation to Direction
