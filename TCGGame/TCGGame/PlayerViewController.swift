@@ -323,14 +323,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		labelLevel.frame = CGRectMake(0.5 * (widthScreen - kWidthOfLevelLabel), heightScreen - kSpaceBetweenYOfLevelLabelAndBottom, kWidthOfLevelLabel, kSpaceBetweenYOfLevelLabelAndBottom)
 		labelLevel.font = kFontLevel
 		labelLevel.textAlignment = NSTextAlignment.Center
-		self.view.addSubview(labelLevel)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
+        labelLevel.addGestureRecognizer(tapGesture)
+        labelLevel.userInteractionEnabled = true
+        
+        self.view.addSubview(labelLevel)
 		
 		// temp:
 //		labelLevel.backgroundColor = UIColor.blueColor()
-		labelLevel.text = "Level 3"
-		
-		
-		
+		labelLevel.text = "Level \(currentGame.level.nr)"
 		
 		// Add buttons to test stuff:
 
@@ -795,14 +797,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 //        self.otherNavButton = UIButton()
 
         // Show a label with the level
-        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
-        levelLabel.text = "Level \(currentLevel.nr)"
-        levelLabel.userInteractionEnabled = true
-        self.view.addSubview(levelLabel)
+//        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
+//        levelLabel.text = "Level \(currentLevel.nr)"
+//        levelLabel.userInteractionEnabled = true
+//        self.view.addSubview(levelLabel)
 
         //Add tap gesture to the label
-        let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
-        levelLabel.addGestureRecognizer(tapGesture)
+
 
         // Add all six buttons:
 //        for button in moveAndRotateButtons {
@@ -884,6 +885,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     
     func tapLevelLabel(sender:UILabel)
     {
+        println("tapLevel")
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
         //self.view.addSubview(ChooseLevelViewController().view)
