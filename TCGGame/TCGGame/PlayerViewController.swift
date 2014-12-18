@@ -111,9 +111,12 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		
 		// MARK: 1. Prepare the boardView:
-		
+        
+        var currentState = self.currentRound.currentState()
+		var currentLevel = self.currentGame.level
+        
 		// temp here, so I can use the state's pawnCanMoveTo method:
-		self.currentRound.currentState().boardDefinition = self.currentGame.level.board
+		currentState.boardDefinition = self.currentGame.level.board
 		
         // temp here, Start a level
         self.currentGame = Game(level: levels[0]);
@@ -131,17 +134,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Add pawns to the board view:
 		
 		// Pawn 1:
-		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
-		boardView.placePawn(true, field: (tempX, tempY))
+		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnRole1.shape, color: currentLevel.pawnRole1.color)
+		boardView.placePawn(true, field: currentState.posPawn1)
 		
 		// Pawn 2:
-		boardView.pawnDefinition2 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIYellow)
-		boardView.placePawn(false, field: (0, 1))
-		
-		// temp so I can use the state's pawnCanMoveTo method:
-		self.currentRound.currentState().posPawn1 = (tempX, tempY)
-		self.currentRound.currentState().posPawn2 = (0, 1)
-		
+		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnRole2.shape, color: currentLevel.pawnRole2.color)
+		boardView.placePawn(false, field: currentState.posPawn2)
+			
 		
 		// MARK: 2. Prepare the players' info:
 		
@@ -264,9 +263,10 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 		
 		// temp, so move buttons get a position that looks better:
-		self.testButtonPressed()
-		
-		
+//		self.testButtonPressed()
+        
+        self.viewWithAllMoveAndRotateButtonsAboveMyPawn();
+        
 		// MARK: 4. Prepare the item buttons:
 		// (to enable/disable move, see, and give)
 		
@@ -503,7 +503,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 				println("direction = \(direction?.rawValue)")
 				
 				if let actualDirection = direction {
-					buttonShouldBeVisible = self.currentRound.currentState().pawnCanMoveInDirection(true, direction: actualDirection)
+					buttonShouldBeVisible = self.currentRound.currentState().pawnCanMoveInDirection(self.currentRound.myRole==RoundRole.Sender, direction: actualDirection)
 				}
 				
 				if (buttonShouldBeVisible) {
@@ -599,7 +599,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		currentRound.processAction(action)
 		
 		// Update our UI (for now the transition is irrelevant):
-        self.updateUI()
+        self.animateMovement(action)
+
+        //self.updateUI()
 
     }
 	
@@ -810,45 +812,38 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 //            println("Add")
 //            viewWithAllMoveAndRotateButtons.addSubview(button)
 //        }
-        self.view.addSubview(viewWithAllMoveAndRotateButtons)
+        //self.view.addSubview(viewWithAllMoveAndRotateButtons)
         
     }
     
     func tapButton(sender:UIButton!)
     {
         //Figure out which button was pressed
-        var buttonIndicator = ""
-        var buttonType = "" //using enums here would be prettier
+        var buttonIndicator = "" //Using enums would be better here
         
         if sender == self.buttonToMoveEast
         {
             buttonIndicator = "east"
-            buttonType = "move"
         }
         else if sender == self.buttonToMoveNorth
         {
             buttonIndicator = "north"
-            buttonType = "move"
         }
         else if sender == self.buttonToMoveWest
         {
             buttonIndicator = "west"
-            buttonType = "move"
         }
         else if sender == self.buttonToMoveSouth
         {
             buttonIndicator = "south"
-            buttonType = "move"
         }
         else if sender == self.buttonToRotateClockwise
         {
             buttonIndicator = "rotClock"
-            buttonType = "rotate"
         }
         else if sender == self.buttonToRotateCounterclockwise
         {
             buttonIndicator = "rotCClock"
-            buttonType = "rotate"
         }
         
         println(buttonIndicator)
@@ -861,25 +856,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         // Update the model:
         currentRound.processAction(action)
         
-        if buttonType == "move"
-        {
-            var newField = currentRound.currentState().posPawn1;
-            
-            self.boardView.movePawnToField(true, field: newField)
-            
-            // Test inflating fields:
-            self.boardView.coordsOfInflatedField = newField
-            
-            // Test moving the move and rotate buttons:
-            self.centerViewWithAllMoveAndRotateButtonsAboveField(newField.x, y: newField.y)
-        }
-        else if buttonType == "rotate"
-        {
-            var newRotation = currentRound.currentState().rotationPawn1;
-            self.boardView.rotatePawnToRotation(true, rotation: newRotation)
-        }
-            
         // Update our UI (for now the transition is irrelevant):
+        self.animateMovement(action)
+        
         //self.updateUI();
     }
     
@@ -889,6 +868,70 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
         //self.view.addSubview(ChooseLevelViewController().view)
+    }
+    
+    func animateMovement(action : RoundAction)
+    {
+        //Do the animation
+        if action.buttonType == "move"
+        {
+            var newField = (x: 0,y: 0)
+            
+            if action.role == RoundRole.Sender
+            {
+                newField = currentRound.currentState().posPawn1
+            }
+            else if action.role == RoundRole.Receiver
+            {
+                newField = currentRound.currentState().posPawn2
+            }
+            
+            self.boardView.movePawnToField(action.role == RoundRole.Sender, field: newField)
+            
+            if action.role == self.currentRound.myRole
+            {
+                // Inflating fields:
+                self.boardView.coordsOfInflatedField = newField
+                
+            }
+
+            // Test moving the move and rotate buttons:
+            self.viewWithAllMoveAndRotateButtonsAboveMyPawn()
+            
+        }
+        else if action.buttonType == "rotate"
+        {
+            
+            var newRotation = currentRound.currentState().rotationPawn1;
+            
+            if action.role == RoundRole.Sender
+            {
+                newRotation = currentRound.currentState().rotationPawn1
+            }
+            else if action.role == RoundRole.Receiver
+            {
+                newRotation = currentRound.currentState().rotationPawn2
+            }
+            
+            self.boardView.rotatePawnToRotation(action.role == RoundRole.Sender, rotation: newRotation)
+        }
+    }
+    
+    func viewWithAllMoveAndRotateButtonsAboveMyPawn()
+    {
+        var ownField = (x: 0, y: 0)
+        
+        if self.currentRound.myRole == RoundRole.Sender
+        {
+            ownField = currentRound.currentState().posPawn1
+        }
+        else if self.currentRound.myRole == RoundRole.Receiver
+        {
+            ownField = currentRound.currentState().posPawn2
+        }
+        
+        self.centerViewWithAllMoveAndRotateButtonsAboveField(ownField.x, y: ownField.y)
+        
     }
     
     //Mark: - Depricated update GUI
