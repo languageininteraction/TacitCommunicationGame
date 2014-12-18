@@ -16,7 +16,11 @@ class RoundState: NSObject {
     var rotationPawn2 = Rotation.North
     var selectedItemPlayer1 = 0
     var selectedItemPlayer2 = 0
-	
+    var player1Ready = false
+    var player2Ready = false
+    var nrUsesLeftPlayer1 = [99,99,99]
+    var nrUsesLeftPlayer2 = [99,99,99]
+    
 	var boardDefinition: BoardDefinition? // alvast toegevoegd om pawnCanMoveTo te kunnen implementeren en die te gebruiken om te kijken welke move buttons beschikbaar moeten zijn
     
 	func nextPhase(action: RoundAction) -> RoundPhase {
@@ -35,6 +39,12 @@ class RoundState: NSObject {
 
             nextState.selectedItemPlayer1 = self.selectedItemPlayer1
             nextState.selectedItemPlayer2 = self.selectedItemPlayer2
+            
+            nextState.nrUsesLeftPlayer1 = self.nrUsesLeftPlayer1
+            nextState.nrUsesLeftPlayer2 = self.nrUsesLeftPlayer2
+            
+            nextState.player1Ready = self.player1Ready
+            nextState.player2Ready = self.player2Ready
             
             println("Processing action")
             
@@ -89,7 +99,10 @@ class RoundState: NSObject {
                 {
                     nextState.selectedItemPlayer1 = 2
                 }
-                
+                else if action.buttonIndicator == "ready"
+                {
+                    nextState.player1Ready = true
+                }
             }
             else
             {
@@ -140,6 +153,10 @@ class RoundState: NSObject {
                 else if action.buttonIndicator == "giveItem"
                 {
                     nextState.selectedItemPlayer2 = 2
+                }
+                else if action.buttonIndicator == "ready"
+                {
+                    nextState.player2Ready = true
                 }
 
             }

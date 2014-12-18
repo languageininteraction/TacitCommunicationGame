@@ -319,13 +319,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
 		// buttonToFinishRetryOrContinue:
-		buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
+		self.buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
+        self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellowSelected 256x256"), forState: UIControlState.Selected)
+        self.buttonToFinishRetryOrContinue.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToFinishRetryOrContinue)
-		
+        
 		// buttonOtherPlayer_toFinishRetryOrContinue:
-		buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
+        self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeSelectedOther 256x256"), forState: UIControlState.Selected)
 		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
 		
 		
@@ -608,17 +611,19 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update the model:
 		currentRound.processAction(action)
 		
-		// Update our UI (for now the transition is irrelevant):
-        if action.buttonType != "item"
-        {
-            self.animateMovement(action)
-        }
-        else
+        // Update our UI
+        if action.buttonType == "item"
         {
             self.updateSelectedItem(action)
         }
-
-        //self.updateUI()
+        else if action.buttonType == "ready"
+        {
+            self.iAmReady(action)
+        }
+        else
+        {
+            self.animateMovement(action)
+        }
 
     }
 	
@@ -875,6 +880,10 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         {
             buttonIndicator = "giveItem"
         }
+        else if sender == self.buttonToFinishRetryOrContinue
+        {
+            buttonIndicator = "ready"
+        }
         
         println(buttonIndicator)
         
@@ -887,13 +896,17 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         currentRound.processAction(action)
         
         // Update our UI
-        if action.buttonType != "item"
+        if action.buttonType == "item"
         {
-            self.animateMovement(action)
+            self.updateSelectedItem(action)
+        }
+        else if action.buttonType == "ready"
+        {
+            self.iAmReady(action)
         }
         else
         {
-            self.updateSelectedItem(action)
+            self.animateMovement(action)
         }
     }
     
@@ -1007,6 +1020,19 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             {
                 self.buttonOtherPlayer_giveItem.selected = true
             }
+        }
+    }
+    
+    func iAmReady(action : RoundAction)
+    {
+        
+        if action.role == self.currentRound.myRole
+        {
+            self.buttonToFinishRetryOrContinue.selected = true
+        }
+        else
+        {
+            self.buttonOtherPlayer_toFinishRetryOrContinue.selected = true
         }
     }
     

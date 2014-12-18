@@ -55,6 +55,10 @@ func induceButtonType(buttonIndicator: String) -> String
     {
         return "item"
     }
+    else if buttonIndicator == "ready"
+    {
+        return "ready"
+    }
     else
     {
         return "rotate"
