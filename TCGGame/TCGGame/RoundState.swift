@@ -37,8 +37,6 @@ class RoundState: NSObject {
             
             if action.role == RoundRole.Sender
             {
-                println("Button Indicator")
-                println(action.buttonIndicator)
                 nextState.selectedItemPlayer1 = 0
                 nextState.selectedItemPlayer2 = self.selectedItemPlayer2
                 
@@ -83,16 +81,47 @@ class RoundState: NSObject {
             }
             else
             {
-                nextState.selectedItemPlayer2 = 0
                 nextState.selectedItemPlayer1 = self.selectedItemPlayer1
+                nextState.selectedItemPlayer2 = 0
+                
+                if action.buttonIndicator == "west"
+                {
+                    nextState.posPawn2 = (self.posPawn2.0-1,self.posPawn2.1)
+                }
+                else if action.buttonIndicator == "east"
+                {
+                    nextState.posPawn2 = (self.posPawn2.0+1,self.posPawn2.1)
+                }
+                else if action.buttonIndicator == "north"
+                {
+                    nextState.posPawn2 = (self.posPawn2.0,self.posPawn2.1-1)
+                }
+                else if action.buttonIndicator == "south"
+                {
+                    nextState.posPawn2 = (self.posPawn2.0,self.posPawn2.1+1)
+                }
+                else if action.buttonIndicator == "rotClock"
+                {
+                    var rotationValue = self.rotationPawn2.rawValue + 1
+                    if rotationValue > 3
+                    {
+                        rotationValue = 0
+                    }
+                    
+                    nextState.rotationPawn2 = Rotation(rawValue: rotationValue)!
+                }
+                else if action.buttonIndicator == "rotCClock"
+                {
+                    var rotationValue = self.rotationPawn2.rawValue - 1
+                    if rotationValue < 0
+                    {
+                        rotationValue = 3
+                    }
+                    
+                    nextState.rotationPawn2 = Rotation(rawValue: rotationValue)!
+                }
+
             }
-            
-            
-//			if (action.role == RoundRole.Sender) {
-//				nextState.posPawn1 = action.position
-//			} else {
-//				nextState.posPawn2 = action.position
-//			}
 			
             
 		} else {
