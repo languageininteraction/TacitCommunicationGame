@@ -32,13 +32,14 @@ class RoundState: NSObject {
             
             nextState.posPawn2 = self.posPawn2
             nextState.rotationPawn2 = self.rotationPawn2
+
+            nextState.selectedItemPlayer1 = self.selectedItemPlayer1
+            nextState.selectedItemPlayer2 = self.selectedItemPlayer2
             
             println("Processing action")
             
             if action.role == RoundRole.Sender
             {
-                nextState.selectedItemPlayer1 = 0
-                nextState.selectedItemPlayer2 = self.selectedItemPlayer2
                 
                 if action.buttonIndicator == "west"
                 {
@@ -76,14 +77,22 @@ class RoundState: NSObject {
                     
                     nextState.rotationPawn1 = Rotation(rawValue: rotationValue)!
                 }
-                
+                else if action.buttonIndicator == "moveItem"
+                {
+                    nextState.selectedItemPlayer1 = 0
+                }
+                else if action.buttonIndicator == "seeItem"
+                {
+                    nextState.selectedItemPlayer1 = 1
+                }
+                else if action.buttonIndicator == "giveItem"
+                {
+                    nextState.selectedItemPlayer1 = 2
+                }
                 
             }
             else
             {
-                nextState.selectedItemPlayer1 = self.selectedItemPlayer1
-                nextState.selectedItemPlayer2 = 0
-                
                 if action.buttonIndicator == "west"
                 {
                     nextState.posPawn2 = (self.posPawn2.0-1,self.posPawn2.1)
@@ -119,6 +128,18 @@ class RoundState: NSObject {
                     }
                     
                     nextState.rotationPawn2 = Rotation(rawValue: rotationValue)!
+                }
+                else if action.buttonIndicator == "moveItem"
+                {
+                    nextState.selectedItemPlayer2 = 0
+                }
+                else if action.buttonIndicator == "seeItem"
+                {
+                    nextState.selectedItemPlayer2 = 1
+                }
+                else if action.buttonIndicator == "giveItem"
+                {
+                    nextState.selectedItemPlayer2 = 2
                 }
 
             }
