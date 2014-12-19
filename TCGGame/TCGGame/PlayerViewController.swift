@@ -605,6 +605,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
 	func receiveData(data: NSData) {
+		
+		// test sending a small package:
+/*		var hashValue = 1
+		data.getBytes(&hashValue, length: 4)
+		println("hashValue = \(hashValue)")
+		
+		self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 0.1, 0, 0, 1)
+		
+		return*/
+		
 		// Decode the data, which is always a RoundAction
         var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
         
@@ -682,7 +692,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	func sendActionToOther(action: RoundAction) {
 	
 		let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
-        
+
+		// test sending a small package:
+//		var hashValue = 2
+//		let packet = NSData(bytes:&hashValue, length:4) // todo check length!
+		
 		if (!kDevLocalTestingIsOn) { // normal case
 			var error: NSError?
 			let match = self.match!
