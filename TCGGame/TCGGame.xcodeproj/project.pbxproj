@@ -53,6 +53,7 @@
 		4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847D8171A24DA3000540223 /* PawnDefinition.swift */; };
 		4856E58A1A24908100309751 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5891A24908100309751 /* BoardView.swift */; };
 		4856E58C1A24953800309751 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E58B1A24953800309751 /* FieldView.swift */; };
+		48591D171A445D7E00D57FDD /* Test Account GameCenter.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */; };
 		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
@@ -313,6 +314,7 @@
 		4847D8171A24DA3000540223 /* PawnDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PawnDefinition.swift; sourceTree = "<group>"; };
 		4856E5891A24908100309751 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4856E58B1A24953800309751 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
+		48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Account GameCenter.rtf"; sourceTree = "<group>"; };
 		486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PersonPlaceholder 320x320.png"; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
 		48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54@2x.png"; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 		4812E5FD1A0A655A006DED82 = {
 			isa = PBXGroup;
 			children = (
+				48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */,
 				4812E63F1A0B7972006DED82 /* GameKit.framework */,
 				4812E6081A0A655A006DED82 /* TCGGame */,
 				4812E61E1A0A655A006DED82 /* TCGGameTests */,
@@ -1076,6 +1079,7 @@
 				48F834C21A3A3B960098A904 /* Button_restartOrangeSelected 256x256@2x.png in Resources */,
 				48F834B31A3A3B960098A904 /* Button_moveWest 256x256@2x other.png in Resources */,
 				48B2C3611A248D38002FFEDF /* Button_see 54x54@2x.png in Resources */,
+				48591D171A445D7E00D57FDD /* Test Account GameCenter.rtf in Resources */,
 				48F834751A3A3B960098A904 /* Button_moveSouth 256x256 other.png in Resources */,
 				48F834BD1A3A3B960098A904 /* Button_presentOther 256x256@2x.png in Resources */,
 				48B2C33C1A248D38002FFEDF /* Button_nextOrangeSelected 54x54.png in Resources */,
