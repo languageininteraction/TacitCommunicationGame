@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 gametogether. All rights reserved.
 //
 
-/* todo: 
+/* todo:
 - Maybe enum RoundActionType suffices?
 - Implement NSCoding
 
@@ -16,25 +16,25 @@
 import UIKit
 
 class RoundAction: NSObject, NSCoding {
-	let type: RoundActionType
+    let type: RoundActionType
     let role: RoundRole
     let buttonIndicator: String
     let buttonType: String
-   
+    
     init (type: RoundActionType,buttonIndicator: String,role: RoundRole) {
         self.type = type
         self.role = role
         self.buttonIndicator = buttonIndicator
         self.buttonType = induceButtonType(buttonIndicator) as String
         
-	}
-	
+    }
+    
     func encodeWithCoder(coder: NSCoder) {
         
         coder.encodeInt(Int32(role.rawValue),forKey:"role")
         coder.encodeObject(self.buttonIndicator,forKey:"buttonIndicator")
     }
-
+    
     required init (coder decoder: NSCoder)
     {
         self.type = RoundActionType.Tap
@@ -47,9 +47,17 @@ class RoundAction: NSObject, NSCoding {
 
 func induceButtonType(buttonIndicator: String) -> String
 {
-    if (find(["north","east","south","west"],buttonIndicator) != nil)
+    if find(["north","east","south","west"],buttonIndicator) != nil
     {
         return "move"
+    }
+    else if find(["seeItem","moveItem","giveItem"],buttonIndicator) != nil
+    {
+        return "item"
+    }
+    else if buttonIndicator == "ready"
+    {
+        return "ready"
     }
     else
     {

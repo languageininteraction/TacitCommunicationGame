@@ -276,31 +276,41 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		let yItemButtonsRow2 = yItemButtonsRow1 + kSpaceBetweenItemButtons + kEdgelengthItemButtons
 		
 		// Move item of local player:
-		buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonMoveItem.setImage(UIImage(named: "Button_move 256x256"), forState: UIControlState.Normal)
+		self.buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		self.buttonMoveItem.setImage(UIImage(named: "Button_move 256x256"), forState: UIControlState.Normal)
+        self.buttonMoveItem.setImage(UIImage(named: "Button_moveSelected 256x256"), forState: UIControlState.Selected)
+        self.buttonMoveItem.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
 		
-		// See item of local player:
-		buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonSeeItem.setImage(UIImage(named: "Button_see 256x256"), forState: UIControlState.Normal)
+        // See item of local player:
+        
+        self.buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+        self.buttonSeeItem.setImage(UIImage(named: "Button_see 256x256"), forState: UIControlState.Normal)
+        self.buttonSeeItem.setImage(UIImage(named: "Button_seeSelected 256x256"), forState: UIControlState.Selected)
+        self.buttonSeeItem.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        // Give item of local player:
+        self.buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+        self.buttonGiveItem.setImage(UIImage(named: "Button_present 256x256"), forState: UIControlState.Normal)
+        self.buttonGiveItem.setImage(UIImage(named: "Button_presentSelected 256x256"), forState: UIControlState.Selected)
+        self.buttonGiveItem.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        // Move item of other player:
+        self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
+        self.buttonOtherPlayer_moveItem.setImage(UIImage(named: "Button_moveOther 256x256"), forState: UIControlState.Normal)
+        self.buttonOtherPlayer_moveItem.setImage(UIImage(named: "Button_moveSelectedOther 256x256"), forState: UIControlState.Selected)
+        
+        // See item of other player:
+        self.buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+        self.buttonOtherPlayer_seeItem.setImage(UIImage(named: "Button_seeOther 256x256"), forState: UIControlState.Normal)
+        self.buttonOtherPlayer_seeItem.setImage(UIImage(named: "Button_seeSelectedOther 256x256"), forState: UIControlState.Selected)
+        
+        // Give item of other player:
+        self.buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+        self.buttonOtherPlayer_giveItem.setImage(UIImage(named: "Button_presentOther 256x256"), forState: UIControlState.Normal)
+        self.buttonOtherPlayer_giveItem.setImage(UIImage(named: "Button_presentSelecetdOther 256x256"), forState: UIControlState.Selected)
 		
-		// Give item of local player:
-		buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonGiveItem.setImage(UIImage(named: "Button_present 256x256"), forState: UIControlState.Normal)
-		
-		// Move item of other player:
-		buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonOtherPlayer_moveItem.setImage(UIImage(named: "Button_moveOther 256x256"), forState: UIControlState.Normal)
-		
-		// See item of other player:
-		buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonOtherPlayer_seeItem.setImage(UIImage(named: "Button_seeOther 256x256"), forState: UIControlState.Normal)
-		
-		// Give item of other player:
-		buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonOtherPlayer_giveItem.setImage(UIImage(named: "Button_presentOther 256x256"), forState: UIControlState.Normal)
-		
-		let itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
-		for itemButton in itemButtons {
+		self.itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
+		for itemButton in self.itemButtons {
 			self.view.addSubview(itemButton)
 		}
 		
@@ -309,13 +319,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
 		// buttonToFinishRetryOrContinue:
-		buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
+		self.buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
+        self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellowSelected 256x256"), forState: UIControlState.Selected)
+        self.buttonToFinishRetryOrContinue.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToFinishRetryOrContinue)
-		
+        
 		// buttonOtherPlayer_toFinishRetryOrContinue:
-		buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
+        self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeSelectedOther 256x256"), forState: UIControlState.Selected)
 		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
 		
 		
@@ -598,10 +611,19 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update the model:
 		currentRound.processAction(action)
 		
-		// Update our UI (for now the transition is irrelevant):
-        self.animateMovement(action)
-
-        //self.updateUI()
+        // Update our UI
+        if action.buttonType == "item"
+        {
+            self.updateSelectedItem(action)
+        }
+        else if action.buttonType == "ready"
+        {
+            self.iAmReady(action)
+        }
+        else
+        {
+            self.animateMovement(action)
+        }
 
     }
 	
@@ -818,6 +840,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     
     func tapButton(sender:UIButton!)
     {
+        
         //Figure out which button was pressed
         var buttonIndicator = "" //Using enums would be better here
         
@@ -845,21 +868,46 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         {
             buttonIndicator = "rotCClock"
         }
+        else if sender == self.buttonMoveItem
+        {
+            buttonIndicator = "moveItem"
+        }
+        else if sender == self.buttonSeeItem
+        {
+            buttonIndicator = "seeItem"
+        }
+        else if sender == self.buttonGiveItem
+        {
+            buttonIndicator = "giveItem"
+        }
+        else if sender == self.buttonToFinishRetryOrContinue
+        {
+            buttonIndicator = "ready"
+        }
         
         println(buttonIndicator)
-       
+        
         var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound.myRole!)
         
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
         self.sendActionToOther(action)
-
+        
         // Update the model:
         currentRound.processAction(action)
         
-        // Update our UI (for now the transition is irrelevant):
-        self.animateMovement(action)
-        
-        //self.updateUI();
+        // Update our UI
+        if action.buttonType == "item"
+        {
+            self.updateSelectedItem(action)
+        }
+        else if action.buttonType == "ready"
+        {
+            self.iAmReady(action)
+        }
+        else
+        {
+            self.animateMovement(action)
+        }
     }
     
     func tapLevelLabel(sender:UILabel)
@@ -932,6 +980,60 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         
         self.centerViewWithAllMoveAndRotateButtonsAboveField(ownField.x, y: ownField.y)
         
+    }
+    
+    func updateSelectedItem(action : RoundAction)
+    {
+        //Reset everything
+        for button in self.itemButtons
+        {
+            button.selected = false
+        }
+        
+        //Select the right one
+        if action.role == self.currentRound.myRole
+        {
+            if action.buttonIndicator == "moveItem"
+            {
+                self.buttonMoveItem.selected = true
+            }
+            else if action.buttonIndicator == "seeItem"
+            {
+                self.buttonSeeItem.selected = true
+            }
+            else if action.buttonIndicator == "giveItem"
+            {
+                self.buttonGiveItem.selected = true
+            }
+        }
+        else
+        {
+            if action.buttonIndicator == "moveItem"
+            {
+                self.buttonOtherPlayer_moveItem.selected = true
+            }
+            else if action.buttonIndicator == "seeItem"
+            {
+                self.buttonOtherPlayer_seeItem.selected = true
+            }
+            else if action.buttonIndicator == "giveItem"
+            {
+                self.buttonOtherPlayer_giveItem.selected = true
+            }
+        }
+    }
+    
+    func iAmReady(action : RoundAction)
+    {
+        
+        if action.role == self.currentRound.myRole
+        {
+            self.buttonToFinishRetryOrContinue.selected = true
+        }
+        else
+        {
+            self.buttonOtherPlayer_toFinishRetryOrContinue.selected = true
+        }
     }
     
     //Mark: - Depricated update GUI
