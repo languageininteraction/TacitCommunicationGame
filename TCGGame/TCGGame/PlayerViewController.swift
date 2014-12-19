@@ -506,14 +506,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			growAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
 			
 			// temp:
-			println("pos = \(self.currentRound.currentState().posPawn1)")
+//			println("pos = \(self.currentRound.currentState().posPawn1)")
 			
 			for button in self.moveAndRotateButtons {
 				
 				var buttonShouldBeVisible = true
 				let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
 				
-				println("direction = \(direction?.rawValue)")
+//				println("direction = \(direction?.rawValue)")
 				
 				if let actualDirection = direction {
 					buttonShouldBeVisible = self.currentRound.currentState().pawnCanMoveInDirection(self.currentRound.myRole==RoundRole.Sender, direction: actualDirection)

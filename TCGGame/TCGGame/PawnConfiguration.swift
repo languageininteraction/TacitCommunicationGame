@@ -29,6 +29,15 @@ class PawnConfiguration: NSObject
         self.rotation = rotation
     }
 	
+	convenience init(jsonDict: [String: AnyObject])
+	{
+		// Get the rotation:
+		let rotationAsString = jsonDict["rotation"] as String
+		let rotation = rotationAsString == "east" ? Rotation.East : rotationAsString == "south" ? Rotation.South : rotationAsString == "west" ? Rotation.West : Rotation.North
+		
+		self.init(x: jsonDict["x"] as Int, y: jsonDict["y"] as Int, rotation: rotation)
+	}
+	
 	// Convenience method:
 	func coords() -> (x: Int, y: Int) {
 		return (x, y)

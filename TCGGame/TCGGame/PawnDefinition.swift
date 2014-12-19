@@ -23,4 +23,17 @@ class PawnDefinition: NSObject {
 		self.shape = shape
 		self.color = color
 	}
+	
+	convenience init(jsonDict: [String: AnyObject])
+	{
+		// Get the shape:
+		let shapeAsString = jsonDict["shape"] as String
+		let shape = shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : PawnShape.Square
+		
+		// Get the color:
+		let colorAsString = jsonDict["color"] as String
+		let color = colorAsString == "yellow" ? kColorLiIYellow : kColorLiIOrange
+		
+		self.init(shape: shape, color: color)
+	}
 }

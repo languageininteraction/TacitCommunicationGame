@@ -187,7 +187,7 @@ class RoundState: NSObject {
 		case .North:
 			resultingPosition.y--
 		}
-		println("resultingPosition = \(resultingPosition.x) x \(resultingPosition.y)")
+//		println("resultingPosition = \(resultingPosition.x) x \(resultingPosition.y)")
 		return self.pawnCanMoveTo(aboutPawn1, x: resultingPosition.x, y: resultingPosition.y)
 	}
 }

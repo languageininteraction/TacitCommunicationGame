@@ -21,6 +21,10 @@ class Level: NSObject
     let startConfigurationPawn2: PawnConfiguration
     let goalConfigurationPawn1: PawnConfiguration
     let goalConfigurationPawn2: PawnConfiguration
+	
+	let moveItemAvailable = false
+	let seeItemAvailable = false
+	let giveItemAvailable = false
 
     var itemsRole1: [ItemDefinition]
     var itemsRole2: [ItemDefinition]
@@ -35,16 +39,19 @@ class Level: NSObject
         //Fill the vars
         self.nr = jsonResult["nr"] as Int
         self.name = jsonResult["name"] as String
-        self.board = BoardDefinition(width:3,height:3)
-        self.pawnRole1 = PawnDefinition(shape:PawnShape.Square,color:kColorLiIOrange)
-        self.pawnRole2 = PawnDefinition(shape:PawnShape.Triangle,color:kColorLiIYellow)
+        self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
+        self.pawnRole1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as Dictionary)
+        self.pawnRole2 = PawnDefinition(jsonDict: jsonResult["pawn2"] as Dictionary)
         
-        self.startConfigurationPawn1 = PawnConfiguration(x: 1, y:1, rotation: Rotation.North)
-        self.startConfigurationPawn2 = PawnConfiguration(x: 2, y:2, rotation: Rotation.North)
+        self.startConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["start1"] as Dictionary)
+        self.startConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["start2"] as Dictionary)
 
-        self.goalConfigurationPawn1 = PawnConfiguration(x: 2, y:0, rotation: Rotation.South)
-        self.goalConfigurationPawn2 = PawnConfiguration(x: 0, y:2, rotation: Rotation.South)
-        
+        self.goalConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["goal1"] as Dictionary)
+        self.goalConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["goal2"] as Dictionary)
+		
+		// todo: read moveItemAvailable, seeItemAvailable, and giveItemAvailable from json
+		
+		// todo read this from json:
         self.itemsRole1 = [ItemDefinition(itemType: ItemType.Glasses, endlessUse: true, nrUses: nil),
                             ItemDefinition(itemType: ItemType.Shoes, endlessUse: true, nrUses: nil)]
 

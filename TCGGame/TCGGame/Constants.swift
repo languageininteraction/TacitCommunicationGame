@@ -13,7 +13,7 @@ import UIKit
 let kDevelopmentMode = true
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 
 // Layout of the board and stuff on top of / inside the board:
@@ -72,7 +72,4 @@ let kColorLiIYellow = UIColor(red:251.0/255.0, green:186.0/255.0, blue:0.0/255.0
 let kColorBoardFields = kColorLiIBlueLighter
 
 // Levels:
-let levels = [Level(filename:"level1"),
-                Level(filename:"level2"),
-                Level(filename:"level3"),
-                Level(filename:"level4"),]
+let levels = [Level(filename:"level1")]

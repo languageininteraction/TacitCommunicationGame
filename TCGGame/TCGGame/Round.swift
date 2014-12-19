@@ -68,8 +68,8 @@ class Round : NSObject {
     func setRole(role: RoundRole)
     {
         self.myRole = role
-        println("Role set to \(self.myRole)")
-        
+//        println("Role set to \(self.myRole)")
+		
         if role == RoundRole.Sender
         {
             self.othersRole = RoundRole.Receiver
