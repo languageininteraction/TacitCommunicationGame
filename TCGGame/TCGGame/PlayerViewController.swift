@@ -92,9 +92,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			startPlayingMatch()
 		}
 		
-//		self.updateUI()
-		
-		
 		
 		/* Prepare all UI elements that are used throughout the whole game:
 		1. The board;
@@ -111,36 +108,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		
 		// MARK: 1. Prepare the boardView:
-        
-        var currentState = self.currentRound.currentState()
-		var currentLevel = self.currentGame.level
-        
-		// temp here, so I can use the state's pawnCanMoveTo method:
-		currentState.boardDefinition = self.currentGame.level.board
 		
-        // temp here, Start a level
-        self.currentGame = Game(level: levels[0]);
-        
 		// Add a board view:
 		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (widthScreen - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (heightScreen - CGFloat(kBoardEdgeLength)) + kAmountYOfBoardViewLowerThanCenter, CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
-		boardView.boardSize = (self.currentGame.level.board.width, self.currentGame.level.board.height)
 		self.view.addSubview(boardView)
 		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
-	
 
-		// todo: Adding the pawn shouldn't happen here, because it depends on the level being played!
-		
-		// Add pawns to the board view:
-		
-		// Pawn 1:
-		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnRole1.shape, color: currentLevel.pawnRole1.color)
-		boardView.placePawn(true, field: currentState.posPawn1)
-		
-		// Pawn 2:
-		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnRole2.shape, color: currentLevel.pawnRole2.color)
-		boardView.placePawn(false, field: currentState.posPawn2)
-			
 		
 		// MARK: 2. Prepare the players' info:
 		
@@ -173,18 +147,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		layerColoredCircleOtherPlayer.borderWidth = kLinewidthOfLineAroundFaces
 		layerColoredCircleOtherPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
 		self.view.layer.insertSublayer(layerColoredCircleOtherPlayer, below: imageViewPictureOfOtherPlayer.layer)
-		
-		// temp: Local player's small pawn representation (this is temp because this view needs to be made each time that a level starts, because the pawn may change and PawnView assumes that its pawnConfiguration doesn't change):
-		let tempPawnViewLocalPlayer = PawnView(edgelength: kEdgelengthSmallPawns, pawnDefinition: boardView.pawnDefinition2!)
-		tempPawnViewLocalPlayer.frame = CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kSpaceBetweenFaceAndSmallPawn - kEdgelengthSmallPawns, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns)
-//		tempPawnViewLocalPlayer.backgroundColor = UIColor.greenColor()
-		self.view.addSubview(tempPawnViewLocalPlayer)
-		
-		// temp: Other player's small pawn representation (this is temp because of reason see above):
-		let tempPawnViewOtherPlayer = PawnView(edgelength: kEdgelengthSmallPawns, pawnDefinition: boardView.pawnDefinition1!)
-		tempPawnViewOtherPlayer.frame = CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x + imageViewPictureOfOtherPlayer.frame.size.width + kSpaceBetweenFaceAndSmallPawn, kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns), kEdgelengthSmallPawns, kEdgelengthSmallPawns)
-//		tempPawnViewOtherPlayer.backgroundColor = UIColor.purpleColor()
-		self.view.addSubview(tempPawnViewOtherPlayer)
 		
 		// Local player's name label:
 		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
@@ -265,8 +227,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// temp, so move buttons get a position that looks better:
 //		self.testButtonPressed()
         
-        self.viewWithAllMoveAndRotateButtonsAboveMyPawn();
-        
+//        self.viewWithAllMoveAndRotateButtonsAboveMyPawn();
+		
 		// MARK: 4. Prepare the item buttons:
 		// (to enable/disable move, see, and give)
 		
@@ -366,6 +328,10 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		tempRotateFieldsButton.backgroundColor = UIColor.purpleColor()
 		tempRotateFieldsButton.addTarget(self, action: "testRotatingFieldView", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(tempRotateFieldsButton)
+		
+		
+		// Update the UI:
+		self.updateUIAtStartOfLevel()
 	}
 	
 	// temp:
@@ -479,6 +445,161 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	
 	// MARK: - Update UI
+	
+	func updateUIAtStartOfLevel() {
+		
+		let currentLevel = currentGame.level
+		
+		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
+		
+		
+		// Add pawns to the board view:
+		
+		// Pawn 1:
+		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnRole1.shape, color: currentLevel.pawnRole1.color)
+		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
+		
+		// Pawn 2:
+		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnRole2.shape, color: currentLevel.pawnRole2.color)
+		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
+		
+		
+		var ownItems = [ItemDefinition]()
+		var otherItems = [ItemDefinition]()
+		var selectedItem = 0
+		var selectedItemOther = 0
+	}
+	
+	func updateUI()
+	{
+		let currentState = self.currentRound.currentState()
+		let currentLevel = self.currentGame.level
+		
+		// Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
+		
+		// Add a pawn to the board view:
+		
+		//		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
+		//		boardView.placePawn(true, field: (tempX, tempY))
+		
+		self.boardView.pawnDefinition1 = currentLevel.pawnRole1
+		self.boardView.pawnDefinition2 = currentLevel.pawnRole2
+		
+		self.boardView.placePawn(true,field:currentState.posPawn1)
+		self.boardView.placePawn(false,field:currentState.posPawn2)
+		
+		var ownItems = [ItemDefinition]()
+		var otherItems = [ItemDefinition]()
+		var selectedItem = 0
+		var selectedItemOther = 0
+		
+		
+		// todo: Buttons are now created once. Only their properties (such as whether they are hidden, selected, etc.) should be updated in response to state changes.
+		
+		/*
+		//Update the buttons of the other player
+		var y = 20 as CGFloat
+		if self.currentRound.myRole == RoundRole.Sender
+		{
+		ownItems = currentLevel.itemsRole1
+		otherItems = currentLevel.itemsRole2
+		
+		selectedItem = currentState.selectedItemPlayer1
+		selectedItemOther = currentState.selectedItemPlayer2
+		}
+		else
+		{
+		ownItems = currentLevel.itemsRole2
+		otherItems = currentLevel.itemsRole1
+		
+		selectedItem = currentState.selectedItemPlayer2
+		selectedItemOther = currentState.selectedItemPlayer1
+		}
+		
+		
+		for (index,item) in enumerate(otherItems)
+		{
+		//Figure out how this button should look
+		var buttonType = "see"
+		
+		if otherItems[index].itemType == ItemType.Shoes
+		{
+		buttonType = "move"
+		}
+		
+		var image = UIImage(named: "Button_\(buttonType)Other 256x256@2x")
+		
+		if selectedItemOther == index
+		{
+		image = UIImage(named: "Button_\(buttonType)SelectedOther 256x256@2x")
+		}
+		
+		var imview = UIImageView(frame: CGRectMake(20, y, 50, 50))
+		imview.backgroundColor = UIColor.whiteColor()
+		imview.image = image
+		
+		self.view.addSubview(imview)
+		y += 60
+		
+		}
+		
+		//Update buttons (for now newly created with every UI udpate)
+		y = 20 as CGFloat
+		self.itemButtons = [];
+		
+		for (index,item) in enumerate(ownItems)
+		{
+		//Figure out how this button should look
+		var buttonType = "see"
+		
+		if ownItems[index].itemType == ItemType.Shoes
+		{
+		buttonType = "move"
+		}
+		
+		var image = UIImage(named: "Button_\(buttonType) 256x256@2x")
+		
+		if selectedItem == index
+		{
+		image = UIImage(named: "Button_\(buttonType)Selected 256x256@2x")
+		}
+		
+		//Create the button
+		var currentButton = UIButton(frame: CGRectMake(120, y, 50, 50))
+		
+		currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
+		currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
+		currentButton.setImage(image, forState: .Normal)
+		currentButton.opaque = true
+		currentButton.tag = index
+		
+		self.view.addSubview(currentButton)
+		
+		self.itemButtons.append(currentButton)
+		y += 60;
+		}*/
+		
+		
+		//        self.otherNavButton = UIButton()
+		
+		// Show a label with the level
+		//        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
+		//        levelLabel.text = "Level \(currentLevel.nr)"
+		//        levelLabel.userInteractionEnabled = true
+		//        self.view.addSubview(levelLabel)
+		
+		//Add tap gesture to the label
+		
+		
+		// Add all six buttons:
+		//        for button in moveAndRotateButtons {
+		//            println("Add")
+		//            viewWithAllMoveAndRotateButtons.addSubview(button)
+		//        }
+		//self.view.addSubview(viewWithAllMoveAndRotateButtons)
+		
+	}
+	
 	
 	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
 		
@@ -710,147 +831,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			self.managerOfMultiplePlayerViewControllers!.sendMessageForPlayerViewController(self, packet: packet)
 		}
 	}
-    
-    //Mark: - Update GUI
-    
-    func updateUI()
-    {
-        let currentState = self.currentRound.currentState()
-        let currentLevel = self.currentGame.level
-        
-        // Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
-        
-        // Add a board view:
-//        let boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
-//        boardView.frame = CGRectMake(CGFloat(0.5) * (CGFloat(self.view.frame.size.width) - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (CGFloat(self.view.frame.size.height) - CGFloat(kBoardEdgeLength)), CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
-//        boardView.boardSize = (self.currentGame.level.board.width,self.currentGame.level.board.height)
-//
-//        boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
-
-        self.view.addSubview(self.boardView)
-        
-        // Add a pawn to the board view:
-
-        //		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
-        //		boardView.placePawn(true, field: (tempX, tempY))
-
-        self.boardView.pawnDefinition1 = currentLevel.pawnRole1
-        self.boardView.pawnDefinition2 = currentLevel.pawnRole2
-        
-        self.boardView.placePawn(true,field:currentState.posPawn1)
-        self.boardView.placePawn(false,field:currentState.posPawn2)
-        
-        var ownItems = [ItemDefinition]()
-        var otherItems = [ItemDefinition]()
-        var selectedItem = 0
-        var selectedItemOther = 0
-		
-		
-		// todo: Buttons are now created once. Only their properties (such as whether they are hidden, selected, etc.) should be updated in response to state changes.
-		
-		/*
-        //Update the buttons of the other player
-        var y = 20 as CGFloat
-        if self.currentRound.myRole == RoundRole.Sender
-        {
-            ownItems = currentLevel.itemsRole1
-            otherItems = currentLevel.itemsRole2
-
-            selectedItem = currentState.selectedItemPlayer1
-            selectedItemOther = currentState.selectedItemPlayer2
-        }
-        else
-        {
-            ownItems = currentLevel.itemsRole2
-            otherItems = currentLevel.itemsRole1
-
-            selectedItem = currentState.selectedItemPlayer2
-            selectedItemOther = currentState.selectedItemPlayer1
-        }
-        
-        
-        for (index,item) in enumerate(otherItems)
-        {
-            //Figure out how this button should look
-            var buttonType = "see"
-            
-            if otherItems[index].itemType == ItemType.Shoes
-            {
-                buttonType = "move"
-            }
-            
-            var image = UIImage(named: "Button_\(buttonType)Other 256x256@2x")
-            
-            if selectedItemOther == index
-            {
-                image = UIImage(named: "Button_\(buttonType)SelectedOther 256x256@2x")
-            }
-
-            var imview = UIImageView(frame: CGRectMake(20, y, 50, 50))
-            imview.backgroundColor = UIColor.whiteColor()
-            imview.image = image
-            
-            self.view.addSubview(imview)
-            y += 60
-        
-        }
-        
-        //Update buttons (for now newly created with every UI udpate)
-        y = 20 as CGFloat
-        self.itemButtons = [];
-        
-        for (index,item) in enumerate(ownItems)
-        {
-                //Figure out how this button should look
-                var buttonType = "see"
-            
-                if ownItems[index].itemType == ItemType.Shoes
-                {
-                    buttonType = "move"
-                }
-            
-                var image = UIImage(named: "Button_\(buttonType) 256x256@2x")
-
-                if selectedItem == index
-                {
-                    image = UIImage(named: "Button_\(buttonType)Selected 256x256@2x")
-                }
-            
-                //Create the button
-                var currentButton = UIButton(frame: CGRectMake(120, y, 50, 50))
-
-                currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
-                currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
-                currentButton.setImage(image, forState: .Normal)
-                currentButton.opaque = true
-                currentButton.tag = index
-            
-                self.view.addSubview(currentButton)
-
-                self.itemButtons.append(currentButton)
-                y += 60;
-        }*/
-        
-        
-//        self.otherNavButton = UIButton()
-
-        // Show a label with the level
-//        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
-//        levelLabel.text = "Level \(currentLevel.nr)"
-//        levelLabel.userInteractionEnabled = true
-//        self.view.addSubview(levelLabel)
-
-        //Add tap gesture to the label
-
-
-        // Add all six buttons:
-//        for button in moveAndRotateButtons {
-//            println("Add")
-//            viewWithAllMoveAndRotateButtons.addSubview(button)
-//        }
-        //self.view.addSubview(viewWithAllMoveAndRotateButtons)
-        
-    }
+	
     
     func tapButton(sender:UIButton!)
     {
