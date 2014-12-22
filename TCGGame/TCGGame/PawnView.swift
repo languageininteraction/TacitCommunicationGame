@@ -164,6 +164,7 @@ class PawnView: UIView {
 		
 		// For the GoalConfiguration style:
 		self.layer.addSublayer(shapeLayerForGoalConfiguration)
+		shapeLayerForGoalConfiguration.hidden = true
 	}
 	
 	// We don't need this, but Swift requires it:

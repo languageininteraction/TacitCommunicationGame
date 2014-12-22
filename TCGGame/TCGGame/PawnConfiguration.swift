@@ -8,14 +8,6 @@
 
 import Foundation
 
-enum Direction: Int
-{
-    case East
-    case South
-    case West
-	case North
-}
-
 class PawnConfiguration: NSObject
 {
     let x: Int

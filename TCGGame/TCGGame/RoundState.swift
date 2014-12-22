@@ -69,7 +69,9 @@ class RoundState: NSObject, NSCopying {
 			nextPosition.x += action.moveDirection == Direction.East ? 1 : action.moveDirection == Direction.West ? -1 : 0
 			nextPosition.y += action.moveDirection == Direction.South ? 1 : action.moveDirection == Direction.North ? -1 : 0
 			nextState.setPositionOfPawn(action.performedByPlayer1, position: nextPosition)
-//		case .RotatePawn:
+		case .RotatePawn:
+			let nextRotation = nextState.rotationOfPawn(action.performedByPlayer1).directionAfterRotating(action.rotateDirection)
+			nextState.setRotationOfPawn(action.performedByPlayer1, rotation: nextRotation)
 //		case .SwitchWhetherMoveItemIsEnabled:
 //		case .SwitchWhetherSeeItemIsEnabled:
 //		case .SwitchWhetherGiveItemIsEnabled:
@@ -207,17 +209,25 @@ class RoundState: NSObject, NSCopying {
 	func positionOfPawn(aboutPawn1: Bool) -> (x: Int, y: Int) {
 		return aboutPawn1 ? posPawn1 : posPawn2
 	}
-
-func setPositionOfPawn(aboutPawn1: Bool, position: (x: Int, y: Int)) {
-	if aboutPawn1 {
-		posPawn1 = position
-	} else {
-		posPawn2 = position
+	
+	func setPositionOfPawn(aboutPawn1: Bool, position: (x: Int, y: Int)) {
+		if aboutPawn1 {
+			posPawn1 = position
+		} else {
+			posPawn2 = position
+		}
 	}
-}
 	
 	func rotationOfPawn(aboutPawn1: Bool) -> Direction {
 		return aboutPawn1 ? rotationPawn1 : rotationPawn2
+	}
+	
+	func setRotationOfPawn(aboutPawn1: Bool, rotation: Direction) {
+		if aboutPawn1 {
+			rotationPawn1 = rotation
+		} else {
+			rotationPawn2 = rotation
+		}
 	}
 	
 	func pawnCanMoveTo(aboutPawn1: Bool, x: Int, y: Int) -> Bool {

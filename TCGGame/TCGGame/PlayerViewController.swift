@@ -201,32 +201,32 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// East:
 		self.buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		self.buttonToMoveEast.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		self.buttonToMoveEast.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// South:
 		self.buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		self.buttonToMoveSouth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		self.buttonToMoveSouth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// West:
 		self.buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		self.buttonToMoveWest.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		self.buttonToMoveWest.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// North:
 		self.buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
 		self.buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-		self.buttonToMoveNorth.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+		self.buttonToMoveNorth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// Rotate clockwise:
 		self.buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
 		self.buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-        self.buttonToRotateClockwise.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.buttonToRotateClockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Rotate counterclockwise:
 		self.buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
 		self.buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
-        self.buttonToRotateCounterclockwise.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.buttonToRotateCounterclockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Store the buttons in moveAndRotateButtons for convenience:
 		self.moveAndRotateButtons = [buttonToMoveEast, buttonToMoveSouth, buttonToMoveWest, buttonToMoveNorth, buttonToRotateClockwise, buttonToRotateCounterclockwise]
@@ -599,6 +599,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			
 			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
 			self.updateWhichMoveAndRotateButtonsAreVisible()
+		case .RotatePawn:
+			// Update the rotation of the other player's pawn:
+			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(!weArePlayer1))
 		default:
 			println("In receiveData we don't know what to do with the action type \(action.type)")
 		}
@@ -621,82 +624,53 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}*/
 	}
 	
-    func tapButton(sender:UIButton!) {
-		
-        //Figure out which button was pressed
-        var buttonIndicator = "" //Using enums would be better here
-        
-        if sender == self.buttonToMoveEast
-        {
-            buttonIndicator = "east"
-        }
-        else if sender == self.buttonToMoveNorth
-        {
-            buttonIndicator = "north"
-        }
-        else if sender == self.buttonToMoveWest
-        {
-            buttonIndicator = "west"
-        }
-        else if sender == self.buttonToMoveSouth
-        {
-            buttonIndicator = "south"
-        }
-        else if sender == self.buttonToRotateClockwise
-        {
-            buttonIndicator = "rotClock"
-        }
-        else if sender == self.buttonToRotateCounterclockwise
-        {
-            buttonIndicator = "rotCClock"
-        }
-        else if sender == self.buttonMoveItem
-        {
-            buttonIndicator = "moveItem"
-        }
-        else if sender == self.buttonSeeItem
-        {
-            buttonIndicator = "seeItem"
-        }
-        else if sender == self.buttonGiveItem
-        {
-            buttonIndicator = "giveItem"
-        }
-        else if sender == self.buttonToFinishRetryOrContinue
-        {
-            buttonIndicator = "ready"
-        }
-        
-        println(buttonIndicator)
-        
-//        var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound!.myRole!)
+	func moveButtonPressed(sender:UIButton!) {
+		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.MovePawn, performedByPlayer1: weArePlayer1)
 		action.moveDirection = sender == self.buttonToMoveEast ? Direction.East : sender == self.buttonToMoveNorth ? Direction.North : sender == self.buttonToMoveWest ? Direction.West : Direction.South
-		// TODO: NU AANGENOMEN DAT HET EEN MOVE ACTION IS!
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
 		
 		
-        // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-        self.sendActionToOther(action)
-        
-        // Update the model:
-        currentRound?.processAction(action)
-        
-        // Update our UI:
-		self.animateMovement(action)
-		/*
-        if action.buttonType == "item"
-        {
-            self.updateSelectedItem(action)
-        }
-        else if action.buttonType == "ready"
-        {
-            self.iAmReady(action)
-        }
-        else
-        {
-            self.animateMovement(action)
-        }*/
-    }
+		// Update our UI:
+		
+		// Update the position of the local player's pawn:
+		let newPosition = currentRound!.currentState().positionOfPawn(weArePlayer1)
+		self.boardView.movePawnToField(weArePlayer1, field: newPosition)
+		
+		// Update the position of our move and rotate buttons:
+		self.centerViewWithAllMoveAndRotateButtonsAboveField(newPosition.x, y: newPosition.y)
+		
+		// Update which fieldView is inflated:
+		boardView.coordsOfInflatedField = newPosition
+	}
+	
+	func rotateButtonPressed(sender:UIButton!) {
+		// Create a corresponding action:
+		var action = RoundAction(type: RoundActionType.RotatePawn, performedByPlayer1: weArePlayer1)
+		action.rotateDirection = sender == self.buttonToRotateClockwise ? RotateDirection.clockwise : RotateDirection.counterClockwise
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		// Update our UI:
+		self.boardView.rotatePawnToRotation(weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(weArePlayer1))
+	}
+	
+	func itemButtonPressed(sender:UIButton!) {
+		// self.updateSelectedItem(action)
+	}
+	
+	func levelButtonPressed(sender:UIButton!) {
+		// self.iAmReady(action)
+	}
     
     func tapLevelLabel(sender:UILabel) {
         println("tapLevel")
@@ -705,58 +679,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         //self.view.addSubview(ChooseLevelViewController().view)
     }
 	
-	// todo, opruimen
-    func animateMovement(action : RoundAction) {
-        //Do the animation
-//        if action.buttonType == "move"
-//        {
-		
-		self.boardView.movePawnToField(action.performedByPlayer1, field: currentRound!.currentState().positionOfPawn(action.performedByPlayer1))
-		
-	/*	var newField = (x: 0,y: 0)
-            
-            if action.role == RoundRole.Sender
-            {
-                newField = currentRound!.currentState().posPawn1
-            }
-            else if action.role == RoundRole.Receiver
-            {
-                newField = currentRound!.currentState().posPawn2
-            }
-            
-            self.boardView.movePawnToField(action.role == RoundRole.Sender, field: newField)
-            
-            if action.role == self.currentRound!.myRole
-            {
-                // Inflating fields:
-//                self.boardView.coordsOfInflatedField = newField
-				
-            }*/
-			
-			self.updateUIForMoveAndRotateButtons()
-//
-//            // Test moving the move and rotate buttons:
-//            self.viewWithAllMoveAndRotateButtonsAboveMyPawn()
-			
-/*        }
-        else if action.buttonType == "rotate"
-        {
-            
-            var newRotation = currentRound!.currentState().rotationPawn1;
-            
-            if action.role == RoundRole.Sender
-            {
-                newRotation = currentRound!.currentState().rotationPawn1
-            }
-            else if action.role == RoundRole.Receiver
-            {
-                newRotation = currentRound!.currentState().rotationPawn2
-            }
-            
-            self.boardView.rotatePawnToRotation(action.role == RoundRole.Sender, rotation: newRotation)
-        }*/
-    }
-    
+	
 /*    func viewWithAllMoveAndRotateButtonsAboveMyPawn()
     {
         var ownField = (x: 0, y: 0)
