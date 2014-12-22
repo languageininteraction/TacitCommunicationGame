@@ -500,41 +500,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	
-	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
-	func receiveData(data: NSData) {
-		
-		// test sending a small package:
-/*		var hashValue = 1
-		data.getBytes(&hashValue, length: 4)
-		println("hashValue = \(hashValue)")
-		
-		self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 0.1, 0, 0, 1)
-		
-		return*/
-		
-		// Decode the data, which is always a RoundAction
-        var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
-        
-		// Update the model:
-		currentRound?.processAction(action)
-		
-        // Update our UI
-        if action.buttonType == "item"
-        {
-            self.updateSelectedItem(action)
-        }
-        else if action.buttonType == "ready"
-        {
-            self.iAmReady(action)
-        }
-        else
-        {
-            self.animateMovement(action)
-        }
-
-    }
-	
-	
 	// MARK: - Playing the match
 	
 	func startPlayingMatch() {
@@ -608,9 +573,45 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 	}
 	
-    
+	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
+	func receiveData(data: NSData) {
+		
+		// test sending a small package:
+		/*		var hashValue = 1
+		data.getBytes(&hashValue, length: 4)
+		println("hashValue = \(hashValue)")
+		
+		self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 0.1, 0, 0, 1)
+		
+		return*/
+		
+		// Decode the data, which is always a RoundAction
+		var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		// Update all UI that may have changed as a result of the other player performing a certain action:
+		if action.buttonType == "item"
+		{
+			self.updateSelectedItem(action)
+		}
+		else if action.buttonType == "ready"
+		{
+			self.iAmReady(action)
+		}
+		else {
+			// Update the position of the other player's pawn:
+			self.boardView.movePawnToField(!weArePlayer1, field: currentRound!.currentState().positionOfPawn(!weArePlayer1))
+			
+			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
+			self.updateWhichMoveAndRotateButtonsAreVisible()
+		}
+		
+	}
+	
     func tapButton(sender:UIButton!) {
-        
+		
         //Figure out which button was pressed
         var buttonIndicator = "" //Using enums would be better here
         
@@ -709,11 +710,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             if action.role == self.currentRound!.myRole
             {
                 // Inflating fields:
-                self.boardView.coordsOfInflatedField = newField
-                
+//                self.boardView.coordsOfInflatedField = newField
+				
             }
 			
-			println("todo hier opruimen en move buttons updaten")
+			self.updateUIForMoveAndRotateButtons()
 //
 //            // Test moving the move and rotate buttons:
 //            self.viewWithAllMoveAndRotateButtonsAboveMyPawn()
@@ -1003,30 +1004,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			// We'll animate the view to its new position by animating its transform. Once this animation is finished, we'll actually set the new frame:
 			self.viewWithAllMoveAndRotateButtons.frame = newFrame
 			
-			let appearAnimation = CABasicAnimation(keyPath: "opacity")
-			appearAnimation.fromValue = NSNumber(float: 0)
-			appearAnimation.toValue = NSNumber(float: 1)
-			
-			let growAnimation = CABasicAnimation(keyPath: "transform")
-			growAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
-			growAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
-			
-			for button in self.moveAndRotateButtons {
-				
-				var buttonShouldBeVisible = true
-				let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
-				
-				if let actualDirection = direction {
-					buttonShouldBeVisible = self.currentRound!.currentState().pawnCanMoveInDirection(self.weArePlayer1, direction: actualDirection)
-				}
-				
-				if (buttonShouldBeVisible) {
-					button.layer.addAnimation(appearAnimation, forKey: "opacity")
-					button.layer.opacity = 1
-					
-					button.layer.addAnimation(growAnimation, forKey: "transform")
-				}
-			}
+			self.updateWhichMoveAndRotateButtonsAreVisible()
 		}
 		
 		//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
@@ -1037,9 +1015,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		dissapearAnimation.fromValue = NSNumber(float: 1)
 		dissapearAnimation.toValue = NSNumber(float: 0)
 		
+		let transformShrinked = CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1)
+		
 		let shrinkAnimation = CABasicAnimation(keyPath: "transform")
 		shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
-		shrinkAnimation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+		shrinkAnimation.toValue = NSValue(CATransform3D: transformShrinked)
 		
 		for button in moveAndRotateButtons {
 			
@@ -1050,12 +1030,51 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			button.layer.opacity = 0
 			
 			button.layer.addAnimation(shrinkAnimation, forKey: "transform")
+			button.layer.transform = transformShrinked
 		}
 		
 		CATransaction.commit()
 	}
 	
-    
+	func updateWhichMoveAndRotateButtonsAreVisible() {
+		
+		CATransaction.begin()
+		
+		// 
+		let somethingReallySmall: CGFloat = 0.0001
+		let transformShrinked = CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1)
+		
+		for button in self.moveAndRotateButtons {
+			
+			var buttonShouldBeVisible = true
+			let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
+			
+			if let actualDirection = direction {
+				buttonShouldBeVisible = self.currentRound!.currentState().pawnCanMoveInDirection(self.weArePlayer1, direction: actualDirection)
+			}
+			
+			let newOpacity = (buttonShouldBeVisible ? 1 : 0) as Float
+			let newTransform = buttonShouldBeVisible ? CATransform3DIdentity : transformShrinked
+			
+			let opacityAnimation = CABasicAnimation(keyPath: "opacity")
+			opacityAnimation.fromValue = NSNumber(float: button.layer.opacity)
+			opacityAnimation.toValue = NSNumber(float: newOpacity)
+			
+			let transformAnimation = CABasicAnimation(keyPath: "transform")
+			transformAnimation.fromValue = NSValue(CATransform3D: button.layer.transform)
+			transformAnimation.toValue = NSValue(CATransform3D: newTransform)
+			
+				button.layer.addAnimation(opacityAnimation, forKey: "opacity")
+				button.layer.opacity = newOpacity
+				
+				button.layer.addAnimation(transformAnimation, forKey: "transform")
+			button.layer.transform = newTransform
+		}
+		
+		CATransaction.commit()
+	}
+	
+	
     //Mark: - Depricated update GUI
     
 /*    func old_updateUI()
