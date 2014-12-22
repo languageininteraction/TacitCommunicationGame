@@ -310,6 +310,20 @@ class BoardView: UIView {
 	}
 	
 	
+	func showResultForPosition(position: (x: Int, y: Int), resultIsGood: Bool) {
+		fieldViews[position.x][position.y].imageViewWithSmallCheckmarkOrCross.image = UIImage(named: resultIsGood ? "SmallCheckMark" : "SmallCross")
+	}
+	
+	
+	func clearShownResultsForSpecificPositions() {
+		for lineOfFieldViews in fieldViews {
+			for fieldView in lineOfFieldViews {
+				fieldView.imageViewWithSmallCheckmarkOrCross.image = nil
+			}
+		}
+	}
+	
+	
 	// MARK: - Other
 	
 	func centerOfField(x: Int, y: Int) -> CGPoint {

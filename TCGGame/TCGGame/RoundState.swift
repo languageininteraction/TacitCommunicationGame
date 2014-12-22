@@ -30,6 +30,8 @@ class RoundState: NSObject, NSCopying {
 	var roundResult = RoundResult.MaySucceed
 	var player1isReadyToContinue = false
 	var player2isReadyToContinue = false
+	var player1messedUp = false
+	var player2messedUp = false
 	
 	init(level: Level) {
 		self.level = level
@@ -75,7 +77,36 @@ class RoundState: NSObject, NSCopying {
 //		case .SwitchWhetherMoveItemIsEnabled:
 //		case .SwitchWhetherSeeItemIsEnabled:
 //		case .SwitchWhetherGiveItemIsEnabled:
-//		case .Finish:
+		case .Finish:
+			// Assert that the roundResult is still MaySucceed, otherwise this action should not be possible:
+			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction if the RoundResult is still MaySucceed.")
+			
+			// Update which players are ready to continue and whether the finished player messed up:
+			if action.performedByPlayer1 {
+				nextState.player1isReadyToContinue = true
+				
+				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed:
+				if nextState.posPawn1.x != level.goalConfigurationPawn1.x || nextState.posPawn1.y != level.goalConfigurationPawn1.y || nextState.rotationPawn1 != level.goalConfigurationPawn1.rotation {
+					nextState.player1messedUp = true
+					
+					println("\(nextState.posPawn1.x) \(level.goalConfigurationPawn1.x) , \(nextState.posPawn1.y) \(level.goalConfigurationPawn1.y) , \(nextState.rotationPawn1.rawValue) \(level.goalConfigurationPawn1.rotation.rawValue) ")
+				}
+			} else {
+				nextState.player2isReadyToContinue = true
+				
+				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed:
+				if nextState.posPawn2.x != level.goalConfigurationPawn2.x || nextState.posPawn2.y != level.goalConfigurationPawn2.y || nextState.rotationPawn2 != level.goalConfigurationPawn2.rotation {
+					nextState.player2messedUp = true
+				}
+			}
+			
+			// Update the roundResult. If either one of the players messed up, the result is Failed. Otherwise, if both players finished, the result is Succeeded:
+			if nextState.player1messedUp || nextState.player2messedUp {
+				nextState.roundResult = RoundResult.Failed
+			} else if nextState.player1isReadyToContinue && nextState.player2isReadyToContinue {
+				nextState.roundResult = RoundResult.Succeeded
+			}
+			
 //		case .Retry:
 //		case .Continue:
 		default:
@@ -230,6 +261,14 @@ class RoundState: NSObject, NSCopying {
 		}
 	}
 	
+	func playerIsReadyToContinue(aboutPawn1: Bool) -> Bool {
+		return aboutPawn1 ? player1isReadyToContinue : player2isReadyToContinue
+	}
+	
+	func playerMessedUp(aboutPawn1: Bool) -> Bool {
+		return aboutPawn1 ? player1messedUp : player2messedUp
+	}
+	
 	func pawnCanMoveTo(aboutPawn1: Bool, x: Int, y: Int) -> Bool {
 		// Only allow if there's a field there and no (other)pawn (notice that the result doesn't depend on which pawn we're talking about):
 		return x >= 0 && x < level.board.width && y >= 0 && y < level.board.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y)
@@ -252,9 +291,9 @@ class RoundState: NSObject, NSCopying {
 	}
 	
 	func movementButtonsShouldBeShown(aboutPawn1: Bool) -> Bool {
-		// If the move items aren't even available, the movement buttons should always be shown; todo: improve names
+		// If the move items aren't even available, the movement buttons should always be shown, unless the player finished; todo: improve names
 		if !self.level.moveItemAvailable {
-			return true
+			return !playerIsReadyToContinue(aboutPawn1)
 		}
 		
 		// Otherwise they should only be shown if the local player had enabled his/her move item:

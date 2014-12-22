@@ -295,14 +295,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// buttonToFinishRetryOrContinue:
 		self.buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
-        self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellowSelected 256x256"), forState: UIControlState.Selected)
-        self.buttonToFinishRetryOrContinue.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellowSelected 256x256"), forState: UIControlState.Disabled)
+        self.buttonToFinishRetryOrContinue.addTarget(self, action: "levelButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToFinishRetryOrContinue)
         
 		// buttonOtherPlayer_toFinishRetryOrContinue:
 		self.buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
-        self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeSelectedOther 256x256"), forState: UIControlState.Selected)
+        self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeSelectedOther 256x256"), forState: UIControlState.Disabled)
 		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
 		
 		
@@ -518,38 +518,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			}) // todo check the size we need
             
 		}
-		let string = self.weDecideWhoIsWho! ? "We deicde!" : "They decide :("
-//		textFieldForTesting.text = "\(string)"
-
-        if self.weDecideWhoIsWho == true
-        {
-            self.currentRound?.setRole(RoundRole.Sender)
-        }
-        else
-        {
-            self.currentRound?.setRole(RoundRole.Receiver)
-        }
-
-    
     }
 	
-//    func movePawn(position: (Int,Int)) {
-//
-//        // Create the corresponding action:
-//        let action = RoundAction(RoundActionType.Tap,position,self.currentRound.myRole!)
-//
-//        println(action.role.rawValue);
-//
-//		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-//		self.sendActionToOther(action)
-//
-//		// Update the model:
-//		currentRound.processAction(action)
-//
-//		// Update our UI (for now the transition is irrelevant):
-//        self.updateUI();
-//
-//	}
 	
 	func sendActionToOther(action: RoundAction) {
 	
@@ -602,26 +572,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(!weArePlayer1))
-		default:
-			println("In receiveData we don't know what to do with the action type \(action.type)")
-		}
-		
-		/*
-		if action.buttonType == "item"
-		{
-			self.updateSelectedItem(action)
-		}
-		else if action.buttonType == "ready"
-		{
-			self.iAmReady(action)
-		}
-		else {
-			// Update the position of the other player's pawn:
-			self.boardView.movePawnToField(!weArePlayer1, field: currentRound!.currentState().positionOfPawn(!weArePlayer1))
+		case .Finish:
+			// Update what the level buttons are used for, and whether they are selected:
+			updateUIForLevelButtons()
 			
-			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
-			self.updateWhichMoveAndRotateButtonsAreVisible()
-		}*/
+			// todo: update what is shown about whether the finished pawn is correct / wrong
+		default:
+			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
+		}
 	}
 	
 	func moveButtonPressed(sender:UIButton!) {
@@ -669,32 +627,37 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	func levelButtonPressed(sender:UIButton!) {
-		// self.iAmReady(action)
+		// Create a corresponding action:
+		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		
+		// Update our UI:
+		
+		// Update what the level buttons are used for, and whether they are selected:
+		updateUIForLevelButtons()
+		
+		// Show whether we placed our pawn correctly:
+		let weMessedUp = currentRound!.currentState().playerMessedUp(weArePlayer1)
+		boardView.showResultForPosition(currentRound!.currentState().positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
+		
+		// The move and rotate buttons should no longer be shown and no field view should be inflated:
+		updateUIForMoveAndRotateButtons()
+		boardView.coordsOfInflatedField = (-1, -1)
 	}
+	
     
     func tapLevelLabel(sender:UILabel) {
         println("tapLevel")
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
-        //self.view.addSubview(ChooseLevelViewController().view)
     }
 	
-	
-/*    func viewWithAllMoveAndRotateButtonsAboveMyPawn()
-    {
-        var ownField = (x: 0, y: 0)
-        
-        if self.currentRound!.myRole == RoundRole.Sender
-        {
-            ownField = currentRound!.currentState().posPawn1
-        }
-        else if self.currentRound!.myRole == RoundRole.Receiver
-        {
-            ownField = currentRound!.currentState().posPawn2
-        }
-        
-        self.centerViewWithAllMoveAndRotateButtonsAboveField(ownField.x, y: ownField.y)
-    }*/
     
     func updateSelectedItem(action : RoundAction)
     {
@@ -736,19 +699,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             }
         }*/
     }
-    
-    func iAmReady(action : RoundAction)
-    {
-        // todo
-/*        if action.role == self.currentRound!.myRole
-        {
-            self.buttonToFinishRetryOrContinue.selected = true
-        }
-        else
-        {
-            self.buttonOtherPlayer_toFinishRetryOrContinue.selected = true
-        }*/
-    }
 	
 	
 	// MARK: - Update UI
@@ -763,12 +713,15 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Add pawns to the board view:
 		
 		// Pawn 1:
-		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnRole1.shape, color: currentLevel.pawnRole1.color)
+		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnPlayer1.shape, color: currentLevel.pawnPlayer1.color)
 		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
 		
 		// Pawn 2:
-		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnRole2.shape, color: currentLevel.pawnRole2.color)
+		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnPlayer2.shape, color: currentLevel.pawnPlayer2.color)
 		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
+		
+		// todo explain
+		boardView.clearShownResultsForSpecificPositions()
 		
 		
 		// Put the pawns in the UI at the right position:
@@ -825,8 +778,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			//		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
 			//		boardView.placePawn(true, field: (tempX, tempY))
 			
-			self.boardView.pawnDefinition1 = currentLevel.pawnRole1
-			self.boardView.pawnDefinition2 = currentLevel.pawnRole2
+			self.boardView.pawnDefinition1 = currentLevel.pawnPlayer1
+			self.boardView.pawnDefinition2 = currentLevel.pawnPlayer2
 			
 			self.boardView.placePawn(true, field: actualCurrentState.posPawn1)
 			self.boardView.placePawn(false, field: actualCurrentState.posPawn2)
@@ -1028,6 +981,17 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 		
 		CATransaction.commit()
+	}
+	
+	
+	func updateUIForLevelButtons() {
+		// Update whether they are enabled:
+		buttonToFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(weArePlayer1)
+		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(!weArePlayer1)
+		
+//		// If selected, the buttons should be disabled:
+//		buttonToFinishRetryOrContinue.enabled = !buttonToFinishRetryOrContinue.selected
+//		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !buttonOtherPlayer_toFinishRetryOrContinue.selected
 	}
 	
 	

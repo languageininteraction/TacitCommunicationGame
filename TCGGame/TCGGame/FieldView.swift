@@ -61,6 +61,8 @@ class FieldView: UIView {
 		}
 	}
 	
+	let imageViewWithSmallCheckmarkOrCross = UIImageView()
+	
 	
 	init(edgelength: CGFloat) {
 		self.edgelength = edgelength
@@ -148,6 +150,11 @@ class FieldView: UIView {
 		shapeLayer.lineWidth = CGFloat(kBoardLineWidthOfFields)
 		shapeLayer.lineJoin = kCALineJoinRound
 		self.layer.addSublayer(shapeLayer)
+		
+		
+		// Prepare imageViewWithSmallCheckmarkOrCross. Here we only set its frame, the image is set by the boardView:
+		imageViewWithSmallCheckmarkOrCross.frame = CGRectMake(edgelength - 25, edgelength - 25, 20, 20) // todo!
+		self.addSubview(imageViewWithSmallCheckmarkOrCross)
 	}
 	
 	// We don't need this, but Swift requires it:

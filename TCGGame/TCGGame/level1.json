@@ -6,11 +6,11 @@
         "height": 3
     },
 	"pawn1": {
-		"shape": "square",
+		"shape": "triangle",
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "circle",
+		"shape": "triangle",
 		"color": "orange"
 	},
 	"start1": {
