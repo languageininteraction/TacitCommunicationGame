@@ -8,7 +8,8 @@
 
 import UIKit
 
-class RoundState: NSObject {
+class RoundState: NSObject, NSCopying {
+	let level: Level // A RoundState needs a Level to know how it works
 	var count = 0
 	var posPawn1 = (x: 0, y: 0)
     var rotationPawn1 = Rotation.North
@@ -20,33 +21,35 @@ class RoundState: NSObject {
     var player2Ready = false
     var nrUsesLeftPlayer1 = [99,99,99]
     var nrUsesLeftPlayer2 = [99,99,99]
-    
-	var boardDefinition: BoardDefinition? // alvast toegevoegd om pawnCanMoveTo te kunnen implementeren en die te gebruiken om te kijken welke move buttons beschikbaar moeten zijn
-    
+	
+	init(level: Level) {
+		self.level = level
+		super.init()
+	}
+	
+	func copyWithZone(zone: NSZone) -> AnyObject {
+		let result = RoundState(level: level)
+		
+		result.count = count
+		result.posPawn1 = posPawn1
+		result.rotationPawn1 = rotationPawn1
+		result.posPawn2 = posPawn2
+		result.rotationPawn2 = rotationPawn2
+		result.selectedItemPlayer1 = selectedItemPlayer1
+		result.selectedItemPlayer2 = selectedItemPlayer2
+		result.player1Ready = player1Ready
+		result.player2Ready = player2Ready
+		result.nrUsesLeftPlayer1 = nrUsesLeftPlayer1
+		result.nrUsesLeftPlayer2 = nrUsesLeftPlayer2
+		
+		return result
+	}
+	
 	func nextPhase(action: RoundAction) -> RoundPhase {
-		// todo: implement copying protocol so we can start with a copy of ourselves:
-		let nextState = RoundState()
+		// // The next state is the same as us, but with certain values changed:
+		let nextState = self.copy() as RoundState
 		
 		if (action.type == RoundActionType.Tap) {
-			// The next state is the same as us, but with one value changed
-            nextState.boardDefinition = self.boardDefinition
-            
-            nextState.posPawn1 = self.posPawn1
-            nextState.rotationPawn1 = self.rotationPawn1
-            
-            nextState.posPawn2 = self.posPawn2
-            nextState.rotationPawn2 = self.rotationPawn2
-
-            nextState.selectedItemPlayer1 = self.selectedItemPlayer1
-            nextState.selectedItemPlayer2 = self.selectedItemPlayer2
-            
-            nextState.nrUsesLeftPlayer1 = self.nrUsesLeftPlayer1
-            nextState.nrUsesLeftPlayer2 = self.nrUsesLeftPlayer2
-            
-            nextState.player1Ready = self.player1Ready
-            nextState.player2Ready = self.player2Ready
-            
-            println("Processing action")
             
             if action.role == RoundRole.Sender
             {
@@ -169,10 +172,20 @@ class RoundState: NSObject {
 		return RoundPhase(state: nextState)
 	}
 	
+	
+	// MARK: - Useful info about the state, e.g. for a VC
+	
+	func positionOfPawn(aboutPawn1: Bool) -> (x: Int, y: Int) {
+		return aboutPawn1 ? posPawn1 : posPawn2
+	}
+	
+	func rotationOfPawn(aboutPawn1: Bool) -> Rotation {
+		return aboutPawn1 ? rotationPawn1 : rotationPawn2
+	}
+	
 	func pawnCanMoveTo(aboutPawn1: Bool, x: Int, y: Int) -> Bool {
-		// Only allow if there's a field there and no (other)pawn (notice that currently the result doesn't depend on which pawn we're taliing about):
-        
-		return x >= 0 && x < boardDefinition?.width && y >= 0 && y < boardDefinition?.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y)
+		// Only allow if there's a field there and no (other)pawn (notice that the result doesn't depend on which pawn we're talking about):
+		return x >= 0 && x < level.board.width && y >= 0 && y < level.board.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y)
 	}
 	
 	func pawnCanMoveInDirection(aboutPawn1: Bool, direction: Rotation) -> Bool { // probably better to rename Rotation to Direction
@@ -189,5 +202,16 @@ class RoundState: NSObject {
 		}
 //		println("resultingPosition = \(resultingPosition.x) x \(resultingPosition.y)")
 		return self.pawnCanMoveTo(aboutPawn1, x: resultingPosition.x, y: resultingPosition.y)
+	}
+	
+	func movementButtonsShouldBeShown(aboutPawn1: Bool) -> Bool {
+		// If the move items aren't even available, the movement buttons should always be shown; todo: improve names
+		if !self.level.moveItemAvailable {
+			return true
+		}
+		
+		// Otherwise they should only be shown if the local player had enabled his/her move item:
+		println("todo: finish movementButtonsShouldBeShown…")
+		return false
 	}
 }

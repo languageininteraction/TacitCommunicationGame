@@ -10,9 +10,9 @@ import Foundation
 
 class Game: NSObject
 {
-    var level:Level
+    var level: Level
     
-    init(level:Level)
+    init(level: Level)
     {
         self.level = level
     }

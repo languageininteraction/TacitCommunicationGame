@@ -28,11 +28,19 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	// MARK: - Model
     var currentGame = Game(level: levels[0])
-	var currentRound = Round()
+	var currentRound: Round?
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
 	var match: GKMatch?
-	var weDecideWhoIsWho: Bool? // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes the sender and who becomes the receiver; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle
+	var weDecideWhoIsWho: Bool? {
+		// one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes the sender and who becomes the receiver; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle
+		didSet {
+			if let actualValue = weDecideWhoIsWho {
+				self.weArePlayer1 = actualValue
+			}
+		}
+	}
+	var weArePlayer1 = false // for now set whenever weDecideWhoIsWho is set; player1 controls pawn1
 	
 	var matchStarted = false
 	
@@ -85,6 +93,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		// for now like this:
+		self.currentRound = Round(level: self.currentGame.level)
 				
 		if (!kDevLocalTestingIsOn) { // normal case
 			self.authenticateLocalPlayer()
@@ -110,7 +121,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// MARK: 1. Prepare the boardView:
 		
 		// Add a board view:
-		self.boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
+		boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (widthScreen - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (heightScreen - CGFloat(kBoardEdgeLength)) + kAmountYOfBoardViewLowerThanCenter, CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
 		self.view.addSubview(boardView)
 		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
@@ -179,9 +190,10 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// MARK: 3. Prepare the move and rotate buttons:
 		
 		// viewWithAllMoveAndRotateButtons:
+		boardView.boardSize = (3, 3) // todo; this is a quick fix, so we can base edgelengthViewWithAllMoveAndRotateButtons on the boardView's edgeLengthFieldViewPlusMargin), which is calculated based on the boardSize; as long as we keep the board size constant this is ok, but if we don't we need to update viewWithAllMoveAndRotateButtons whenever the boardSize changes.
 		let edgelengthViewWithAllMoveAndRotateButtons = 2.0 * CGFloat(boardView.edgeLengthFieldViewPlusMargin) + kEdgelengthMovementButtons // this way if we put the move buttons at the sides, they shouls fall exactly above the board's fields
 		viewWithAllMoveAndRotateButtons.frame = CGRectMake(0, 0, edgelengthViewWithAllMoveAndRotateButtons, edgelengthViewWithAllMoveAndRotateButtons)
-		viewWithAllMoveAndRotateButtons.backgroundColor = UIColor.clearColor() // (white: 0, alpha: 0.05)
+		viewWithAllMoveAndRotateButtons.backgroundColor = UIColor.clearColor() // UIColor(white: 0, alpha: 0.05)
 		self.view.addSubview(viewWithAllMoveAndRotateButtons)
 		
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
@@ -335,7 +347,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	// temp:
-	func testButtonPressed() {
+/*	func testButtonPressed() {
 		// movement of pawns and 'slight rotation' of field views don't work well together:
 		boardView.fieldsAreSlightlyRotated = false
 		
@@ -379,7 +391,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 //		viewWithAllMoveAndRotateButtons?.hidden = boardView.fieldsAreSlightlyRotated
 		viewWithAllMoveAndRotateButtons.hidden = true // because I want to test the animation of rotating the field views without the move buttons appearing and dissapearing
 		boardView.coordsOfInflatedField = nil
-	}
+	}*/
 	
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
@@ -444,242 +456,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	
-	// MARK: - Update UI
-	
-	func updateUIAtStartOfLevel() {
-		
-		let currentLevel = currentGame.level
-		
-		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
-		
-		
-		// Add pawns to the board view:
-		
-		// Pawn 1:
-		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnRole1.shape, color: currentLevel.pawnRole1.color)
-		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
-		
-		// Pawn 2:
-		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnRole2.shape, color: currentLevel.pawnRole2.color)
-		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
-		
-		
-		var ownItems = [ItemDefinition]()
-		var otherItems = [ItemDefinition]()
-		var selectedItem = 0
-		var selectedItemOther = 0
-	}
-	
-	func updateUI()
-	{
-		let currentState = self.currentRound.currentState()
-		let currentLevel = self.currentGame.level
-		
-		// Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
-		
-		// Add a pawn to the board view:
-		
-		//		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
-		//		boardView.placePawn(true, field: (tempX, tempY))
-		
-		self.boardView.pawnDefinition1 = currentLevel.pawnRole1
-		self.boardView.pawnDefinition2 = currentLevel.pawnRole2
-		
-		self.boardView.placePawn(true,field:currentState.posPawn1)
-		self.boardView.placePawn(false,field:currentState.posPawn2)
-		
-		var ownItems = [ItemDefinition]()
-		var otherItems = [ItemDefinition]()
-		var selectedItem = 0
-		var selectedItemOther = 0
-		
-		
-		// todo: Buttons are now created once. Only their properties (such as whether they are hidden, selected, etc.) should be updated in response to state changes.
-		
-		/*
-		//Update the buttons of the other player
-		var y = 20 as CGFloat
-		if self.currentRound.myRole == RoundRole.Sender
-		{
-		ownItems = currentLevel.itemsRole1
-		otherItems = currentLevel.itemsRole2
-		
-		selectedItem = currentState.selectedItemPlayer1
-		selectedItemOther = currentState.selectedItemPlayer2
-		}
-		else
-		{
-		ownItems = currentLevel.itemsRole2
-		otherItems = currentLevel.itemsRole1
-		
-		selectedItem = currentState.selectedItemPlayer2
-		selectedItemOther = currentState.selectedItemPlayer1
-		}
-		
-		
-		for (index,item) in enumerate(otherItems)
-		{
-		//Figure out how this button should look
-		var buttonType = "see"
-		
-		if otherItems[index].itemType == ItemType.Shoes
-		{
-		buttonType = "move"
-		}
-		
-		var image = UIImage(named: "Button_\(buttonType)Other 256x256@2x")
-		
-		if selectedItemOther == index
-		{
-		image = UIImage(named: "Button_\(buttonType)SelectedOther 256x256@2x")
-		}
-		
-		var imview = UIImageView(frame: CGRectMake(20, y, 50, 50))
-		imview.backgroundColor = UIColor.whiteColor()
-		imview.image = image
-		
-		self.view.addSubview(imview)
-		y += 60
-		
-		}
-		
-		//Update buttons (for now newly created with every UI udpate)
-		y = 20 as CGFloat
-		self.itemButtons = [];
-		
-		for (index,item) in enumerate(ownItems)
-		{
-		//Figure out how this button should look
-		var buttonType = "see"
-		
-		if ownItems[index].itemType == ItemType.Shoes
-		{
-		buttonType = "move"
-		}
-		
-		var image = UIImage(named: "Button_\(buttonType) 256x256@2x")
-		
-		if selectedItem == index
-		{
-		image = UIImage(named: "Button_\(buttonType)Selected 256x256@2x")
-		}
-		
-		//Create the button
-		var currentButton = UIButton(frame: CGRectMake(120, y, 50, 50))
-		
-		currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
-		currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
-		currentButton.setImage(image, forState: .Normal)
-		currentButton.opaque = true
-		currentButton.tag = index
-		
-		self.view.addSubview(currentButton)
-		
-		self.itemButtons.append(currentButton)
-		y += 60;
-		}*/
-		
-		
-		//        self.otherNavButton = UIButton()
-		
-		// Show a label with the level
-		//        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
-		//        levelLabel.text = "Level \(currentLevel.nr)"
-		//        levelLabel.userInteractionEnabled = true
-		//        self.view.addSubview(levelLabel)
-		
-		//Add tap gesture to the label
-		
-		
-		// Add all six buttons:
-		//        for button in moveAndRotateButtons {
-		//            println("Add")
-		//            viewWithAllMoveAndRotateButtons.addSubview(button)
-		//        }
-		//self.view.addSubview(viewWithAllMoveAndRotateButtons)
-		
-	}
-	
-	
-	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
-		
-		// TEMP assuming this is abouth the player1's pawn.
-		
-		var newFrame = viewWithAllMoveAndRotateButtons.frame
-		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
-		newFrame.origin = CGPointMake(centerOfFieldView.x - 0.5 * newFrame.size.width, centerOfFieldView.y - 0.5 * newFrame.size.height)
-		
-		//		if animated {
-		
-		let somethingReallySmall: CGFloat = 0.0001
-		
-		CATransaction.begin()
-		//			CATransaction.setAnimationDuration(3)
-		CATransaction.setCompletionBlock() { () -> Void in
-			self.viewWithAllMoveAndRotateButtons.frame = newFrame
-			
-			let appearAnimation = CABasicAnimation(keyPath: "opacity")
-			appearAnimation.fromValue = NSNumber(float: 0)
-			appearAnimation.toValue = NSNumber(float: 1)
-			
-			let growAnimation = CABasicAnimation(keyPath: "transform")
-			growAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
-			growAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
-			
-			// temp:
-//			println("pos = \(self.currentRound.currentState().posPawn1)")
-			
-			for button in self.moveAndRotateButtons {
-				
-				var buttonShouldBeVisible = true
-				let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
-				
-//				println("direction = \(direction?.rawValue)")
-				
-				if let actualDirection = direction {
-					buttonShouldBeVisible = self.currentRound.currentState().pawnCanMoveInDirection(self.currentRound.myRole==RoundRole.Sender, direction: actualDirection)
-				}
-				
-				if (buttonShouldBeVisible) {
-					button.layer.addAnimation(appearAnimation, forKey: "opacity")
-					button.layer.opacity = 1
-					
-					button.layer.addAnimation(growAnimation, forKey: "transform")
-				}
-			}
-		}
-		
-		//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
-		//			opacityAnimation.values = [NSNumber(float: 1), NSNumber(float: 0), NSNumber(float: 0), NSNumber(float: 1)]
-		//			opacityAnimation.keyTimes = [NSNumber(float: 0), NSNumber(float: 0.25), NSNumber(float: 0.75), NSNumber(float: 1)]
-		
-		let dissapearAnimation = CABasicAnimation(keyPath: "opacity")
-		dissapearAnimation.fromValue = NSNumber(float: 1)
-		dissapearAnimation.toValue = NSNumber(float: 0)
-		
-		let shrinkAnimation = CABasicAnimation(keyPath: "transform")
-		shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
-		shrinkAnimation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
-		
-		for button in moveAndRotateButtons {
-			
-			// todo cleanup this whole method
-			dissapearAnimation.fromValue = NSNumber(float: button.layer.opacity)
-			
-			button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
-			button.layer.opacity = 0
-			
-			button.layer.addAnimation(shrinkAnimation, forKey: "transform")
-		}
-		
-		CATransaction.commit()
-		
-		//		} else {
-		//			viewWithAllMoveAndRotateButtons!.frame =
-		//		}
-	}
-	
-	
 	// MARK: - GKMatchmakerViewControllerDelegate
 	
 	func matchmakerViewControllerWasCancelled(viewController: GKMatchmakerViewController!) {
@@ -740,7 +516,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
         
 		// Update the model:
-		currentRound.processAction(action)
+		currentRound?.processAction(action)
 		
         // Update our UI
         if action.buttonType == "item"
@@ -782,11 +558,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 
         if self.weDecideWhoIsWho == true
         {
-            self.currentRound.setRole(RoundRole.Sender)
+            self.currentRound?.setRole(RoundRole.Sender)
         }
         else
         {
-            self.currentRound.setRole(RoundRole.Receiver)
+            self.currentRound?.setRole(RoundRole.Receiver)
         }
 
     
@@ -833,8 +609,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
     
-    func tapButton(sender:UIButton!)
-    {
+    func tapButton(sender:UIButton!) {
         
         //Figure out which button was pressed
         var buttonIndicator = "" //Using enums would be better here
@@ -882,13 +657,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         
         println(buttonIndicator)
         
-        var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound.myRole!)
+        var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound!.myRole!)
         
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
         self.sendActionToOther(action)
         
         // Update the model:
-        currentRound.processAction(action)
+        currentRound?.processAction(action)
         
         // Update our UI
         if action.buttonType == "item"
@@ -922,60 +697,61 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             
             if action.role == RoundRole.Sender
             {
-                newField = currentRound.currentState().posPawn1
+                newField = currentRound!.currentState().posPawn1
             }
             else if action.role == RoundRole.Receiver
             {
-                newField = currentRound.currentState().posPawn2
+                newField = currentRound!.currentState().posPawn2
             }
             
             self.boardView.movePawnToField(action.role == RoundRole.Sender, field: newField)
             
-            if action.role == self.currentRound.myRole
+            if action.role == self.currentRound!.myRole
             {
                 // Inflating fields:
                 self.boardView.coordsOfInflatedField = newField
                 
             }
-
-            // Test moving the move and rotate buttons:
-            self.viewWithAllMoveAndRotateButtonsAboveMyPawn()
-            
+			
+			println("todo hier opruimen en move buttons updaten")
+//
+//            // Test moving the move and rotate buttons:
+//            self.viewWithAllMoveAndRotateButtonsAboveMyPawn()
+			
         }
         else if action.buttonType == "rotate"
         {
             
-            var newRotation = currentRound.currentState().rotationPawn1;
+            var newRotation = currentRound!.currentState().rotationPawn1;
             
             if action.role == RoundRole.Sender
             {
-                newRotation = currentRound.currentState().rotationPawn1
+                newRotation = currentRound!.currentState().rotationPawn1
             }
             else if action.role == RoundRole.Receiver
             {
-                newRotation = currentRound.currentState().rotationPawn2
+                newRotation = currentRound!.currentState().rotationPawn2
             }
             
             self.boardView.rotatePawnToRotation(action.role == RoundRole.Sender, rotation: newRotation)
         }
     }
     
-    func viewWithAllMoveAndRotateButtonsAboveMyPawn()
+/*    func viewWithAllMoveAndRotateButtonsAboveMyPawn()
     {
         var ownField = (x: 0, y: 0)
         
-        if self.currentRound.myRole == RoundRole.Sender
+        if self.currentRound!.myRole == RoundRole.Sender
         {
-            ownField = currentRound.currentState().posPawn1
+            ownField = currentRound!.currentState().posPawn1
         }
-        else if self.currentRound.myRole == RoundRole.Receiver
+        else if self.currentRound!.myRole == RoundRole.Receiver
         {
-            ownField = currentRound.currentState().posPawn2
+            ownField = currentRound!.currentState().posPawn2
         }
         
         self.centerViewWithAllMoveAndRotateButtonsAboveField(ownField.x, y: ownField.y)
-        
-    }
+    }*/
     
     func updateSelectedItem(action : RoundAction)
     {
@@ -986,7 +762,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         }
         
         //Select the right one
-        if action.role == self.currentRound.myRole
+        if action.role == self.currentRound!.myRole
         {
             if action.buttonIndicator == "moveItem"
             {
@@ -1021,7 +797,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     func iAmReady(action : RoundAction)
     {
         
-        if action.role == self.currentRound.myRole
+        if action.role == self.currentRound!.myRole
         {
             self.buttonToFinishRetryOrContinue.selected = true
         }
@@ -1030,6 +806,255 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             self.buttonOtherPlayer_toFinishRetryOrContinue.selected = true
         }
     }
+	
+	
+	// MARK: - Update UI
+	
+	func updateUIAtStartOfLevel() {
+		
+		let currentLevel = currentGame.level
+		
+		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
+		
+		
+		// Add pawns to the board view:
+		
+		// Pawn 1:
+		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnRole1.shape, color: currentLevel.pawnRole1.color)
+		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
+		
+		// Pawn 2:
+		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnRole2.shape, color: currentLevel.pawnRole2.color)
+		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
+		
+		
+		// Put the pawns in the UI at the right position:
+		self.updateUIForMoveAndRotateButtons()
+		
+		
+		var ownItems = [ItemDefinition]()
+		var otherItems = [ItemDefinition]()
+		var selectedItem = 0
+		var selectedItemOther = 0
+	}
+	
+	func updateUIForMoveAndRotateButtons() {
+		// Update whether they are hidden:
+		let movementButtonsShouldBeShown = currentRound!.currentState().movementButtonsShouldBeShown(weArePlayer1)
+		viewWithAllMoveAndRotateButtons.hidden = !movementButtonsShouldBeShown // todo animate (?)
+		let positionButtons = currentRound!.currentState().positionOfPawn(weArePlayer1)
+		boardView.coordsOfInflatedField = movementButtonsShouldBeShown ? positionButtons : (-1, -1)
+		
+		// If not hidden, update their position:
+		if movementButtonsShouldBeShown {
+			self.centerViewWithAllMoveAndRotateButtonsAboveField(positionButtons.x, y: positionButtons.y)
+		}
+	}
+	
+	func updateUI()
+	{
+		println("WARNING: Stop using updateUI!")
+		return
+		
+		let currentState = self.currentRound?.currentState()
+		let currentLevel = self.currentGame.level
+		
+		if let actualCurrentState = currentState {
+			
+			// Testing BoardView (uncomment "self.view.addSubview(boardView)" if you want to see)
+			
+			// Add a pawn to the board view:
+			
+			//		boardView.pawnDefinition1 = PawnDefinition(shape: PawnShape.Triangle, color: kColorLiIOrange)
+			//		boardView.placePawn(true, field: (tempX, tempY))
+			
+			self.boardView.pawnDefinition1 = currentLevel.pawnRole1
+			self.boardView.pawnDefinition2 = currentLevel.pawnRole2
+			
+			self.boardView.placePawn(true, field: actualCurrentState.posPawn1)
+			self.boardView.placePawn(false, field: actualCurrentState.posPawn2)
+			
+			var ownItems = [ItemDefinition]()
+			var otherItems = [ItemDefinition]()
+			var selectedItem = 0
+			var selectedItemOther = 0
+			
+			
+			// todo: Buttons are now created once. Only their properties (such as whether they are hidden, selected, etc.) should be updated in response to state changes.
+			
+			/*
+			//Update the buttons of the other player
+			var y = 20 as CGFloat
+			if self.currentRound.myRole == RoundRole.Sender
+			{
+			ownItems = currentLevel.itemsRole1
+			otherItems = currentLevel.itemsRole2
+			
+			selectedItem = currentState.selectedItemPlayer1
+			selectedItemOther = currentState.selectedItemPlayer2
+			}
+			else
+			{
+			ownItems = currentLevel.itemsRole2
+			otherItems = currentLevel.itemsRole1
+			
+			selectedItem = currentState.selectedItemPlayer2
+			selectedItemOther = currentState.selectedItemPlayer1
+			}
+			
+			
+			for (index,item) in enumerate(otherItems)
+			{
+			//Figure out how this button should look
+			var buttonType = "see"
+			
+			if otherItems[index].itemType == ItemType.Shoes
+			{
+			buttonType = "move"
+			}
+			
+			var image = UIImage(named: "Button_\(buttonType)Other 256x256@2x")
+			
+			if selectedItemOther == index
+			{
+			image = UIImage(named: "Button_\(buttonType)SelectedOther 256x256@2x")
+			}
+			
+			var imview = UIImageView(frame: CGRectMake(20, y, 50, 50))
+			imview.backgroundColor = UIColor.whiteColor()
+			imview.image = image
+			
+			self.view.addSubview(imview)
+			y += 60
+			
+			}
+			
+			//Update buttons (for now newly created with every UI udpate)
+			y = 20 as CGFloat
+			self.itemButtons = [];
+			
+			for (index,item) in enumerate(ownItems)
+			{
+			//Figure out how this button should look
+			var buttonType = "see"
+			
+			if ownItems[index].itemType == ItemType.Shoes
+			{
+			buttonType = "move"
+			}
+			
+			var image = UIImage(named: "Button_\(buttonType) 256x256@2x")
+			
+			if selectedItem == index
+			{
+			image = UIImage(named: "Button_\(buttonType)Selected 256x256@2x")
+			}
+			
+			//Create the button
+			var currentButton = UIButton(frame: CGRectMake(120, y, 50, 50))
+			
+			currentButton.addTarget(self, action:"tapButton:", forControlEvents: UIControlEvents.TouchDown)
+			currentButton.layer.backgroundColor = UIColor.whiteColor().CGColor
+			currentButton.setImage(image, forState: .Normal)
+			currentButton.opaque = true
+			currentButton.tag = index
+			
+			self.view.addSubview(currentButton)
+			
+			self.itemButtons.append(currentButton)
+			y += 60;
+			}*/
+			
+			
+			//        self.otherNavButton = UIButton()
+			
+			// Show a label with the level
+			//        let levelLabel = UILabel(frame: CGRectMake(100, 30, 200, 21))
+			//        levelLabel.text = "Level \(currentLevel.nr)"
+			//        levelLabel.userInteractionEnabled = true
+			//        self.view.addSubview(levelLabel)
+			
+			//Add tap gesture to the label
+			
+			
+			// Add all six buttons:
+			//        for button in moveAndRotateButtons {
+			//            println("Add")
+			//            viewWithAllMoveAndRotateButtons.addSubview(button)
+			//        }
+			//self.view.addSubview(viewWithAllMoveAndRotateButtons)
+		}
+	}
+	
+	
+	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
+		// Calculate the new frame of viewWithAllMoveAndRotateButtons:
+		var newFrame = viewWithAllMoveAndRotateButtons.frame
+		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
+		newFrame.origin = CGPointMake(centerOfFieldView.x - 0.5 * newFrame.size.width, centerOfFieldView.y - 0.5 * newFrame.size.height)
+		
+		// todo: add possibility to do this without animating?
+		
+		let somethingReallySmall: CGFloat = 0.0001
+		
+		CATransaction.begin()
+		CATransaction.setCompletionBlock() { () -> Void in
+			
+			// We'll animate the view to its new position by animating its transform. Once this animation is finished, we'll actually set the new frame:
+			self.viewWithAllMoveAndRotateButtons.frame = newFrame
+			
+			let appearAnimation = CABasicAnimation(keyPath: "opacity")
+			appearAnimation.fromValue = NSNumber(float: 0)
+			appearAnimation.toValue = NSNumber(float: 1)
+			
+			let growAnimation = CABasicAnimation(keyPath: "transform")
+			growAnimation.fromValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+			growAnimation.toValue = NSValue(CATransform3D: CATransform3DIdentity)
+			
+			for button in self.moveAndRotateButtons {
+				
+				var buttonShouldBeVisible = true
+				let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
+				
+				if let actualDirection = direction {
+					buttonShouldBeVisible = self.currentRound!.currentState().pawnCanMoveInDirection(self.weArePlayer1, direction: actualDirection)
+				}
+				
+				if (buttonShouldBeVisible) {
+					button.layer.addAnimation(appearAnimation, forKey: "opacity")
+					button.layer.opacity = 1
+					
+					button.layer.addAnimation(growAnimation, forKey: "transform")
+				}
+			}
+		}
+		
+		//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
+		//			opacityAnimation.values = [NSNumber(float: 1), NSNumber(float: 0), NSNumber(float: 0), NSNumber(float: 1)]
+		//			opacityAnimation.keyTimes = [NSNumber(float: 0), NSNumber(float: 0.25), NSNumber(float: 0.75), NSNumber(float: 1)]
+		
+		let dissapearAnimation = CABasicAnimation(keyPath: "opacity")
+		dissapearAnimation.fromValue = NSNumber(float: 1)
+		dissapearAnimation.toValue = NSNumber(float: 0)
+		
+		let shrinkAnimation = CABasicAnimation(keyPath: "transform")
+		shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		shrinkAnimation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1))
+		
+		for button in moveAndRotateButtons {
+			
+			// todo cleanup this whole method
+			dissapearAnimation.fromValue = NSNumber(float: button.layer.opacity)
+			
+			button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
+			button.layer.opacity = 0
+			
+			button.layer.addAnimation(shrinkAnimation, forKey: "transform")
+		}
+		
+		CATransaction.commit()
+	}
+	
     
     //Mark: - Depricated update GUI
     
