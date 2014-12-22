@@ -53,7 +53,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var boardView = BoardView(edgelength: 0)
 	var tempX = 1
 	var tempY = 1
-	var tempRotation = Rotation.East
+	var tempRotation = Direction.East
     
 	// The movement buttons:
 	var buttonToMoveEast = UIButton()
@@ -592,6 +592,18 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		currentRound?.processAction(action)
 		
 		// Update all UI that may have changed as a result of the other player performing a certain action:
+		switch action.type {
+		case .MovePawn:
+			// Update the position of the other player's pawn:
+			self.boardView.movePawnToField(!weArePlayer1, field: currentRound!.currentState().positionOfPawn(!weArePlayer1))
+			
+			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
+			self.updateWhichMoveAndRotateButtonsAreVisible()
+		default:
+			println("In receiveData we don't know what to do with the action type \(action.type)")
+		}
+		
+		/*
 		if action.buttonType == "item"
 		{
 			self.updateSelectedItem(action)
@@ -606,8 +618,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			
 			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
 			self.updateWhichMoveAndRotateButtonsAreVisible()
-		}
-		
+		}*/
 	}
 	
     func tapButton(sender:UIButton!) {
@@ -658,15 +669,21 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         
         println(buttonIndicator)
         
-        var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound!.myRole!)
-        
+//        var action = RoundAction(type: RoundActionType.Tap,buttonIndicator: buttonIndicator, role: self.currentRound!.myRole!)
+		var action = RoundAction(type: RoundActionType.MovePawn, performedByPlayer1: weArePlayer1)
+		action.moveDirection = sender == self.buttonToMoveEast ? Direction.East : sender == self.buttonToMoveNorth ? Direction.North : sender == self.buttonToMoveWest ? Direction.West : Direction.South
+		// TODO: NU AANGENOMEN DAT HET EEN MOVE ACTION IS!
+		
+		
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
         self.sendActionToOther(action)
         
         // Update the model:
         currentRound?.processAction(action)
         
-        // Update our UI
+        // Update our UI:
+		self.animateMovement(action)
+		/*
         if action.buttonType == "item"
         {
             self.updateSelectedItem(action)
@@ -678,23 +695,25 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         else
         {
             self.animateMovement(action)
-        }
+        }*/
     }
     
-    func tapLevelLabel(sender:UILabel)
-    {
+    func tapLevelLabel(sender:UILabel) {
         println("tapLevel")
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
         //self.view.addSubview(ChooseLevelViewController().view)
     }
-    
-    func animateMovement(action : RoundAction)
-    {
+	
+	// todo, opruimen
+    func animateMovement(action : RoundAction) {
         //Do the animation
-        if action.buttonType == "move"
-        {
-            var newField = (x: 0,y: 0)
+//        if action.buttonType == "move"
+//        {
+		
+		self.boardView.movePawnToField(action.performedByPlayer1, field: currentRound!.currentState().positionOfPawn(action.performedByPlayer1))
+		
+	/*	var newField = (x: 0,y: 0)
             
             if action.role == RoundRole.Sender
             {
@@ -712,14 +731,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
                 // Inflating fields:
 //                self.boardView.coordsOfInflatedField = newField
 				
-            }
+            }*/
 			
 			self.updateUIForMoveAndRotateButtons()
 //
 //            // Test moving the move and rotate buttons:
 //            self.viewWithAllMoveAndRotateButtonsAboveMyPawn()
 			
-        }
+/*        }
         else if action.buttonType == "rotate"
         {
             
@@ -735,7 +754,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             }
             
             self.boardView.rotatePawnToRotation(action.role == RoundRole.Sender, rotation: newRotation)
-        }
+        }*/
     }
     
 /*    func viewWithAllMoveAndRotateButtonsAboveMyPawn()
@@ -756,14 +775,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     
     func updateSelectedItem(action : RoundAction)
     {
-        //Reset everything
-        for button in self.itemButtons
-        {
+        // Reset everything:
+        for button in self.itemButtons {
             button.selected = false
         }
         
-        //Select the right one
-        if action.role == self.currentRound!.myRole
+        // Select the right one:
+		// todo
+/*        if action.role == self.currentRound!.myRole
         {
             if action.buttonIndicator == "moveItem"
             {
@@ -792,20 +811,20 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
             {
                 self.buttonOtherPlayer_giveItem.selected = true
             }
-        }
+        }*/
     }
     
     func iAmReady(action : RoundAction)
     {
-        
-        if action.role == self.currentRound!.myRole
+        // todo
+/*        if action.role == self.currentRound!.myRole
         {
             self.buttonToFinishRetryOrContinue.selected = true
         }
         else
         {
             self.buttonOtherPlayer_toFinishRetryOrContinue.selected = true
-        }
+        }*/
     }
 	
 	
@@ -1061,7 +1080,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		for button in self.moveAndRotateButtons {
 			
 			var buttonShouldBeVisible = true
-			let direction: Rotation? = button == self.buttonToMoveEast ? Rotation.East : button == self.buttonToMoveSouth ? Rotation.South : button == self.buttonToMoveWest ? Rotation.West : button == self.buttonToMoveNorth ? Rotation.North : nil
+			let direction: Direction? = button == self.buttonToMoveEast ? Direction.East : button == self.buttonToMoveSouth ? Direction.South : button == self.buttonToMoveWest ? Direction.West : button == self.buttonToMoveNorth ? Direction.North : nil
 			
 			if let actualDirection = direction {
 				buttonShouldBeVisible = self.currentRound!.currentState().pawnCanMoveInDirection(self.weArePlayer1, direction: actualDirection)

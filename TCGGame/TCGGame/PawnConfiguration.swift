@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Rotation: Int // rename to Direction?
+enum Direction: Int
 {
     case East
     case South
@@ -20,9 +20,9 @@ class PawnConfiguration: NSObject
 {
     let x: Int
     let y: Int
-    let rotation: Rotation
+    let rotation: Direction
     
-    init(x: Int, y: Int, rotation: Rotation)
+    init(x: Int, y: Int, rotation: Direction)
     {
         self.x = x
         self.y = y
@@ -33,7 +33,7 @@ class PawnConfiguration: NSObject
 	{
 		// Get the rotation:
 		let rotationAsString = jsonDict["rotation"] as String
-		let rotation = rotationAsString == "east" ? Rotation.East : rotationAsString == "south" ? Rotation.South : rotationAsString == "west" ? Rotation.West : Rotation.North
+		let rotation = rotationAsString == "east" ? Direction.East : rotationAsString == "south" ? Direction.South : rotationAsString == "west" ? Direction.West : Direction.North
 		
 		self.init(x: jsonDict["x"] as Int, y: jsonDict["y"] as Int, rotation: rotation)
 	}

@@ -37,7 +37,7 @@ class FieldView: UIView {
 	
 	// A field view can show the goal configuration of one pawn. For this it uses PawnView with its style set to GoalConfiguration:
 	private var pawnViewForShowingAGoalConfiguration: PawnView?
-	var pawnAndRotationToShowAsGoalConfiguration: (pawnDefinition: PawnDefinition?, rotation: Rotation?) { // if both are not nil, the fieldView shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
+	var pawnAndRotationToShowAsGoalConfiguration: (pawnDefinition: PawnDefinition?, rotation: Direction?) { // if both are not nil, the fieldView shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
 		didSet {
 			// If one of the two isn't set, don't use the pawnViewForShowingAGoalConfiguration:
 			if pawnAndRotationToShowAsGoalConfiguration.pawnDefinition == nil || pawnAndRotationToShowAsGoalConfiguration.rotation == nil {

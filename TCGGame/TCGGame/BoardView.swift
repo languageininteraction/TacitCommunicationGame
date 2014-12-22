@@ -302,7 +302,7 @@ class BoardView: UIView {
 	}
 	
 	
-	func rotatePawnToRotation(aboutPawn1: Bool, rotation: Rotation) {
+	func rotatePawnToRotation(aboutPawn1: Bool, rotation: Direction) {
 		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
 			// Let the pawnView rotate itself, because it knows how to do this in a cool, animated manner:
 			pawnView.rotateTo(rotation)

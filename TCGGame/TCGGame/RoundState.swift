@@ -8,19 +8,28 @@
 
 import UIKit
 
+enum RoundResult: Int {
+	case MaySucceed
+	case Succeeded
+	case Failed
+}
+
 class RoundState: NSObject, NSCopying {
 	let level: Level // A RoundState needs a Level to know how it works
 	var count = 0
 	var posPawn1 = (x: 0, y: 0)
-    var rotationPawn1 = Rotation.North
+    var rotationPawn1 = Direction.North
 	var posPawn2 = (x: 1, y: 1)
-    var rotationPawn2 = Rotation.North
+    var rotationPawn2 = Direction.North
     var selectedItemPlayer1 = 0
     var selectedItemPlayer2 = 0
-    var player1Ready = false
-    var player2Ready = false
     var nrUsesLeftPlayer1 = [99,99,99]
     var nrUsesLeftPlayer2 = [99,99,99]
+	
+	// todo explain
+	var roundResult = RoundResult.MaySucceed
+	var player1isReadyToContinue = false
+	var player2isReadyToContinue = false
 	
 	init(level: Level) {
 		self.level = level
@@ -37,21 +46,41 @@ class RoundState: NSObject, NSCopying {
 		result.rotationPawn2 = rotationPawn2
 		result.selectedItemPlayer1 = selectedItemPlayer1
 		result.selectedItemPlayer2 = selectedItemPlayer2
-		result.player1Ready = player1Ready
-		result.player2Ready = player2Ready
+		result.player1isReadyToContinue = player1isReadyToContinue
+		result.player2isReadyToContinue = player2isReadyToContinue
 		result.nrUsesLeftPlayer1 = nrUsesLeftPlayer1
 		result.nrUsesLeftPlayer2 = nrUsesLeftPlayer2
+		result.roundResult = roundResult
+		result.player1isReadyToContinue = player1isReadyToContinue
+		result.player2isReadyToContinue = player2isReadyToContinue
 		
 		return result
 	}
 	
 	func nextPhase(action: RoundAction) -> RoundPhase {
-		// // The next state is the same as us, but with certain values changed:
+		// The next state is the same as us, but with certain values changed:
 		let nextState = self.copy() as RoundState
 		
-		if (action.type == RoundActionType.Tap) {
-            
-            if action.role == RoundRole.Sender
+		// Depending on the action type, change the state:
+		switch action.type {
+		case .MovePawn:
+			// We assume that only move actions that are actually possible can be performed (otherwise the button isn't available), so here we don't need to check whether moving in the specified direction is possible:
+			var nextPosition = positionOfPawn(action.performedByPlayer1)
+			nextPosition.x += action.moveDirection == Direction.East ? 1 : action.moveDirection == Direction.West ? -1 : 0
+			nextPosition.y += action.moveDirection == Direction.South ? 1 : action.moveDirection == Direction.North ? -1 : 0
+			nextState.setPositionOfPawn(action.performedByPlayer1, position: nextPosition)
+//		case .RotatePawn:
+//		case .SwitchWhetherMoveItemIsEnabled:
+//		case .SwitchWhetherSeeItemIsEnabled:
+//		case .SwitchWhetherGiveItemIsEnabled:
+//		case .Finish:
+//		case .Retry:
+//		case .Continue:
+		default:
+			println("Warning in Round's processAction: don't know what to do with this action type.")			
+		}
+		
+/*            if action.role == RoundRole.Sender
             {
                 
                 if action.buttonIndicator == "west"
@@ -167,7 +196,7 @@ class RoundState: NSObject, NSCopying {
             
 		} else {
 			println("Warning in Round's processAction: don't know what to do with this action type.");
-		}
+		}*/
 		
 		return RoundPhase(state: nextState)
 	}
@@ -178,8 +207,16 @@ class RoundState: NSObject, NSCopying {
 	func positionOfPawn(aboutPawn1: Bool) -> (x: Int, y: Int) {
 		return aboutPawn1 ? posPawn1 : posPawn2
 	}
+
+func setPositionOfPawn(aboutPawn1: Bool, position: (x: Int, y: Int)) {
+	if aboutPawn1 {
+		posPawn1 = position
+	} else {
+		posPawn2 = position
+	}
+}
 	
-	func rotationOfPawn(aboutPawn1: Bool) -> Rotation {
+	func rotationOfPawn(aboutPawn1: Bool) -> Direction {
 		return aboutPawn1 ? rotationPawn1 : rotationPawn2
 	}
 	
@@ -188,7 +225,7 @@ class RoundState: NSObject, NSCopying {
 		return x >= 0 && x < level.board.width && y >= 0 && y < level.board.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y)
 	}
 	
-	func pawnCanMoveInDirection(aboutPawn1: Bool, direction: Rotation) -> Bool { // probably better to rename Rotation to Direction
+	func pawnCanMoveInDirection(aboutPawn1: Bool, direction: Direction) -> Bool { // probably better to rename Rotation to Direction
 		var resultingPosition = aboutPawn1 ? self.posPawn1 : self.posPawn2
 		switch direction {
 		case .East:
