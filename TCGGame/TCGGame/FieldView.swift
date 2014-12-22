@@ -35,6 +35,33 @@ class FieldView: UIView {
 		}
 	}
 	
+	// A field view can show the goal configuration of one pawn. For this it uses PawnView with its style set to GoalConfiguration:
+	private var pawnViewForShowingAGoalConfiguration: PawnView?
+	var pawnAndRotationToShowAsGoalConfiguration: (pawnDefinition: PawnDefinition?, rotation: Rotation?) { // if both are not nil, the fieldView shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
+		didSet {
+			// If one of the two isn't set, don't use the pawnViewForShowingAGoalConfiguration:
+			if pawnAndRotationToShowAsGoalConfiguration.pawnDefinition == nil || pawnAndRotationToShowAsGoalConfiguration.rotation == nil {
+				if let actualPawnViewForShowingAGoalConfiguration = pawnViewForShowingAGoalConfiguration {
+					actualPawnViewForShowingAGoalConfiguration.removeFromSuperview()
+					pawnViewForShowingAGoalConfiguration = nil
+				}
+			} else {
+				// We're now certain both are not nil:
+				let actualPawnDefinition = pawnAndRotationToShowAsGoalConfiguration.pawnDefinition!
+				let actualRotation = pawnAndRotationToShowAsGoalConfiguration.rotation!
+				
+				// Add a pawn view to show this goal configuration:
+				pawnViewForShowingAGoalConfiguration = PawnView(edgelength: CGFloat(kBoardEdgeLengthOfPawnsWRTFields) * self.edgelength, pawnDefinition: actualPawnDefinition)
+				pawnViewForShowingAGoalConfiguration?.style = PawnViewStyle.GoalConfiguration
+				let width = pawnViewForShowingAGoalConfiguration!.frame.size.width
+				let height = pawnViewForShowingAGoalConfiguration!.frame.size.height
+				pawnViewForShowingAGoalConfiguration!.frame = CGRectMake(0.5 * (self.frame.size.width - width), 0.5 * (self.frame.size.height - height), width, height)
+				self.addSubview(pawnViewForShowingAGoalConfiguration!)
+			}
+		}
+	}
+	
+	
 	init(edgelength: CGFloat) {
 		self.edgelength = edgelength
 		let frame = CGRectMake(0, 0, edgelength, edgelength)

@@ -10,12 +10,33 @@ import UIKit
 import QuartzCore
 
 
+enum PawnViewStyle: Int {
+	case Normal
+	case GoalConfiguration
+}
+
+
 class PawnView: UIView {
 	
+	// Model:
 	let pawnDefinition: PawnDefinition
+	var style: PawnViewStyle = PawnViewStyle.Normal {
+		didSet {
+			// Update which shapeLayers are shown:
+			
+			// For the normal style:
+			for shapeLayerNormalStyle in self.shapeLayersForNormalStyle {
+				shapeLayerNormalStyle.hidden = style != .Normal
+			}
+			
+			// For the goal configuration style:
+			shapeLayerForGoalConfiguration.hidden = style != .GoalConfiguration
+		}
+	}
 
 	let edgelength: CGFloat
-	let shapeLayers: [CAShapeLayer]
+	let shapeLayersForNormalStyle: [CAShapeLayer]
+	let shapeLayerForGoalConfiguration: CAShapeLayer
 	
 	init(edgelength: CGFloat, pawnDefinition: PawnDefinition) {
 		self.edgelength = edgelength
@@ -29,8 +50,7 @@ class PawnView: UIView {
 		// shapeLayers is a constant, therefore we start with a temporary, mutable array which we can fill, and then set the immutable shapeLayers to this array:
 		var shapeLayersTEMP: [CAShapeLayer] = []
 		
-		for i in 0...kPawnNumberOfLines - 1 {
-			
+		func createShapeLayer() -> CAShapeLayer {
 			let shapeLayer = CAShapeLayer()
 			
 			// Prepare the shape layer:
@@ -101,6 +121,13 @@ class PawnView: UIView {
 				println("todo: draw path for PawnShape \(pawnDefinition.shape)")
 			}
 			
+			return shapeLayer
+		}
+		
+		for i in 0...kPawnNumberOfLines - 1 {
+			
+			let shapeLayer = createShapeLayer()
+			
 			// Set how it draws the path:
 			shapeLayer.fillColor = UIColor.clearColor().CGColor
 			shapeLayer.strokeColor = pawnDefinition.color.CGColor
@@ -115,21 +142,35 @@ class PawnView: UIView {
 			shapeLayersTEMP.append(shapeLayer)
 		}
 		
-		self.shapeLayers = shapeLayersTEMP
+		self.shapeLayersForNormalStyle = shapeLayersTEMP
+		
+		// Create shapeLayerForGoalConfiguration:
+		self.shapeLayerForGoalConfiguration = createShapeLayer()
+		shapeLayerForGoalConfiguration.fillColor = UIColor.clearColor().CGColor
+		shapeLayerForGoalConfiguration.strokeColor = pawnDefinition.color.CGColor
+		shapeLayerForGoalConfiguration.lineWidth = CGFloat(kPawnLineWidth)
+		shapeLayerForGoalConfiguration.lineJoin = kCALineJoinRound
+		shapeLayerForGoalConfiguration.lineDashPattern = [2, 2]
 		
 		super.init(frame: frame)
 		
-		// Add the shape layers to our own layer:
-		for shapeLayer in self.shapeLayers {
+		
+		// Add all shape layers to our own layer:
+		
+		// For the normal style:
+		for shapeLayer in self.shapeLayersForNormalStyle {
 			self.layer.addSublayer(shapeLayer)
 		}
 		
+		// For the GoalConfiguration style:
+		self.layer.addSublayer(shapeLayerForGoalConfiguration)
 	}
 	
 	// We don't need this, but Swift requires it:
 	required init(coder decoder: NSCoder) {
 		self.edgelength = 0
-		self.shapeLayers = []
+		self.shapeLayersForNormalStyle = []
+		self.shapeLayerForGoalConfiguration = CAShapeLayer()
 		self.pawnDefinition = PawnDefinition(shape: PawnShape.Circle, color: UIColor.blackColor())
 		super.init(coder: decoder)
 	}
@@ -155,9 +196,9 @@ class PawnView: UIView {
 		CATransaction.begin()
 		CATransaction.setAnimationDuration(0.25)
 		
-		for i in 0...self.shapeLayers.count - 1 {
+		for i in 0...self.shapeLayersForNormalStyle.count - 1 {
 			
-			let shapeLayer = self.shapeLayers[i]
+			let shapeLayer = self.shapeLayersForNormalStyle[i]
 			
 			let fromTransform = CATransform3DConcat(shapeLayer.transform, CATransform3DMakeTranslation(-1 * deltaX, -1 * deltaY, 0))
 			let fromValue = NSValue(CATransform3D: fromTransform)
@@ -166,7 +207,7 @@ class PawnView: UIView {
 			let animation = CAKeyframeAnimation(keyPath: "transform")
 			animation.values = [fromValue, fromValue, toValue, toValue]
 			let slowiness: Float = 0.075
-			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayers.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
+			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayersForNormalStyle.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
 			shapeLayer.addAnimation(animation, forKey: "transform")
 		}
 		
@@ -178,9 +219,9 @@ class PawnView: UIView {
 		CATransaction.begin()
 		CATransaction.setAnimationDuration(0.35)
 		
-		for i in 0...self.shapeLayers.count - 1 {
+		for i in 0...self.shapeLayersForNormalStyle.count - 1 {
 			
-			let shapeLayer = self.shapeLayers[i]
+			let shapeLayer = self.shapeLayersForNormalStyle[i]
 			
 			let scale: CGFloat = 1.0 - CGFloat(i) * (1.0 - CGFloat(kPawnScaleOfSecondLargestWRTLargest))
 			let scaleTransform = CATransform3DMakeScale(scale, scale, 1)
@@ -193,7 +234,7 @@ class PawnView: UIView {
 			let animation = CAKeyframeAnimation(keyPath: "transform")
 			animation.values = [fromValue, fromValue, toValue, toValue]
 			let slowiness: Float = 0.75
-			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayers.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
+			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: slowiness * Float(self.shapeLayersForNormalStyle.count - 1 - i)), NSNumber(float: 1.0 - slowiness * Float(i)), NSNumber(float: 1)] // todo constant
 			shapeLayer.addAnimation(animation, forKey: "transform")
 			shapeLayer.transform = toTransform
 		}

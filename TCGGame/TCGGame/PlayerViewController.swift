@@ -832,6 +832,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Put the pawns in the UI at the right position:
 		self.updateUIForMoveAndRotateButtons()
 		
+		// Update whether the goal configuration is shown:
+		self.updateWhetherGoalConfigurationIsShown()
+		
 		
 		var ownItems = [ItemDefinition]()
 		var otherItems = [ItemDefinition]()
@@ -850,6 +853,17 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		if movementButtonsShouldBeShown {
 			self.centerViewWithAllMoveAndRotateButtonsAboveField(positionButtons.x, y: positionButtons.y)
 		}
+	}
+	
+	func updateWhetherGoalConfigurationIsShown() {
+		// Ask the model whether it should be shown:
+		let goalConfigurationShouldBeShown = self.currentRound!.currentState().goalConfigurationShouldBeShown(weArePlayer1)
+		
+		// todo: if it should be shown, also ask the state whether the fields should be slightly rotated (only if see item is used)
+
+		// Update what the boardView shows:
+		boardView.pawnAndGoalFiguration1 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition1, self.currentGame.level.goalConfigurationPawn1) : (nil, nil)
+		boardView.pawnAndGoalFiguration2 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition2, self.currentGame.level.goalConfigurationPawn2) : (nil, nil)
 	}
 	
 	func updateUI()

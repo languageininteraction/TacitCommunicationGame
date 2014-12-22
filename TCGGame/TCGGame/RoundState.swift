@@ -214,4 +214,15 @@ class RoundState: NSObject, NSCopying {
 		println("todo: finish movementButtonsShouldBeShown…")
 		return false
 	}
+	
+	func goalConfigurationShouldBeShown(aboutPawn1: Bool) -> Bool {
+		// If the see items aren't even available, the goal configuration should always be shown
+		if !self.level.seeItemAvailable {
+			return true
+		}
+		
+		// Otherwise they should only be shown if the local player had enabled his/her move item:
+		println("todo: finish goalConfigurationShouldBeShown…")
+		return false
+	}
 }

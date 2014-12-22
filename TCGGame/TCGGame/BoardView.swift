@@ -149,7 +149,7 @@ class BoardView: UIView {
 				
 				
 				// test:
-				let toTransform = (fieldsAreSlightlyRotated && (i == 2 || i == 4)) ? CATransform3DRotate(toTransformSlightRotation, piAsCGFloat, 1, 1, 0) : toTransformSlightRotation
+				let toTransform = toTransformSlightRotation// (fieldsAreSlightlyRotated && (i == 2 || i == 4)) ? CATransform3DRotate(toTransformSlightRotation, piAsCGFloat, 1, 1, 0) : toTransformSlightRotation
 				
 				
 				let valueFrom = NSValue(CATransform3D: viewToRotate.layer.transform)
@@ -193,7 +193,6 @@ class BoardView: UIView {
 		}
 	}
 
-    // todo add pawnDefinition2; share code?
     var pawnDefinition2: PawnDefinition? {
         willSet {
             // Remove the old pawnView, if there was one:
@@ -211,6 +210,45 @@ class BoardView: UIView {
             }
         }
     }
+	
+	var pawnAndGoalFiguration1: (pawnDefinition: PawnDefinition?, goalConfiguration: PawnConfiguration?) {  // if both are not nil, the fieldView at the goalConfiguration's position shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
+		didSet {
+			// If either one of them is nil, no goal configuation should be shown:
+			if pawnAndGoalFiguration1.pawnDefinition == nil || pawnAndGoalFiguration1.goalConfiguration == nil {
+				if let actualOldGoalConfiguration1 = oldValue.goalConfiguration {
+					fieldViews[actualOldGoalConfiguration1.x][actualOldGoalConfiguration1.y].pawnAndRotationToShowAsGoalConfiguration = (nil, nil)
+				}
+			} else {
+				// We're now certain both are not nil:
+				let actualPawnDefinition = pawnAndGoalFiguration1.pawnDefinition!
+				let actualGoalConfiguration = pawnAndGoalFiguration1.goalConfiguration!
+				
+				// Let the fieldView at the position of the goal configuration show it:
+				fieldViews[actualGoalConfiguration.x][actualGoalConfiguration.y].pawnAndRotationToShowAsGoalConfiguration = (actualPawnDefinition, actualGoalConfiguration.rotation)
+			}
+		}
+	}
+	
+	var pawnAndGoalFiguration2: (pawnDefinition: PawnDefinition?, goalConfiguration: PawnConfiguration?) {  // if both are not nil, the fieldView at the goalConfiguration's position shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
+		didSet {
+			// If either one of them is nil, no goal configuation should be shown:
+			if pawnAndGoalFiguration2.pawnDefinition == nil || pawnAndGoalFiguration2.goalConfiguration == nil {
+				if let actualOldGoalConfiguration2 = oldValue.goalConfiguration {
+					fieldViews[actualOldGoalConfiguration2.x][actualOldGoalConfiguration2.y].pawnAndRotationToShowAsGoalConfiguration = (nil, nil)
+				}
+			} else {
+				// We're now certain both are not nil:
+				let actualPawnDefinition = pawnAndGoalFiguration2.pawnDefinition!
+				let actualGoalConfiguration = pawnAndGoalFiguration2.goalConfiguration!
+				
+				// Let the fieldView at the position of the goal configuration show it:
+				fieldViews[actualGoalConfiguration.x][actualGoalConfiguration.y].pawnAndRotationToShowAsGoalConfiguration = (actualPawnDefinition, actualGoalConfiguration.rotation)
+			}
+		}
+	}
+	
+	
+	// todo: Share more code between similar properties, e.g. for pawnAndGoalFiguration1 and pawnAndGoalFiguration2?
 	
 	
 	init(edgelength: CGFloat) {
