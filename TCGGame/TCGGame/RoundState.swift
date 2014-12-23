@@ -20,6 +20,12 @@ enum UseOfLevelButton: Int {
 	case Continuing
 }
 
+enum Item: Int {
+	case Move
+	case See
+	case Give
+}
+
 class RoundState: NSObject, NSCopying {
 	let level: Level // A RoundState needs a Level to know how it works
 	var count = 0
@@ -27,14 +33,28 @@ class RoundState: NSObject, NSCopying {
     var rotationPawn1 = Direction.North
 	var posPawn2 = (x: 1, y: 1)
     var rotationPawn2 = Direction.North
-    var selectedItemPlayer1 = 0
-    var selectedItemPlayer2 = 0
+	var selectedItemPlayer1: Item?
+	var selectedItemPlayer2: Item?
     var nrUsesLeftPlayer1 = [99,99,99]
     var nrUsesLeftPlayer2 = [99,99,99]
 	
 	// todo explain
-	var player1isReadyToContinue = false
-	var player2isReadyToContinue = false
+	var player1isReadyToContinue: Bool = false {
+		didSet {
+			// Whenever a player becomes ready to continue, he/she should not have an item selected:
+			if player1isReadyToContinue {
+				self.selectedItemPlayer1 = nil
+			}
+		}
+	}
+	var player2isReadyToContinue: Bool = false {
+		didSet {
+			// Whenever a player becomes ready to continue, he/she should not have an item selected:
+			if player2isReadyToContinue {
+				self.selectedItemPlayer2 = nil
+			}
+		}
+	}
 	var player1messedUp = false
 	var player2messedUp = false
 	var roundResult: RoundResult = RoundResult.MaySucceed {
@@ -86,7 +106,9 @@ class RoundState: NSObject, NSCopying {
 		case .RotatePawn:
 			let nextRotation = nextState.rotationOfPawn(action.performedByPlayer1).directionAfterRotating(action.rotateDirection)
 			nextState.setRotationOfPawn(action.performedByPlayer1, rotation: nextRotation)
-//		case .SwitchWhetherMoveItemIsEnabled:
+		case .SwitchWhetherMoveItemIsEnabled:
+			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.Move ? nil : Item.Move
+			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
 //		case .SwitchWhetherSeeItemIsEnabled:
 //		case .SwitchWhetherGiveItemIsEnabled:
 		case .Finish:
@@ -297,6 +319,18 @@ class RoundState: NSObject, NSCopying {
 		return aboutPawn1 ? player1messedUp : player2messedUp
 	}
 	
+	func selectedItemForPlayer(aboutPawn1: Bool) -> Item? {
+		return aboutPawn1 ? selectedItemPlayer1 : selectedItemPlayer2
+	}
+	
+	func setSelectedItemForPlayer(aboutPawn1: Bool, selectedItem: Item?) {
+		if aboutPawn1 {
+			selectedItemPlayer1 = selectedItem
+		} else {
+			selectedItemPlayer2 = selectedItem
+		}
+	}
+	
 	func pawnCanMoveTo(aboutPawn1: Bool, x: Int, y: Int) -> Bool {
 		// Only allow if there's a field there and no (other)pawn (notice that the result doesn't depend on which pawn we're talking about):
 		return x >= 0 && x < level.board.width && y >= 0 && y < level.board.height && (x != self.posPawn1.x || y != self.posPawn1.y) && (x != self.posPawn2.x || y != self.posPawn2.y)
@@ -329,9 +363,8 @@ class RoundState: NSObject, NSCopying {
 			return !playerIsReadyToContinue(aboutPawn1)
 		}
 		
-		// Otherwise they should only be shown if the local player had enabled his/her move item:
-		println("todo: finish movementButtonsShouldBeShown…")
-		return false
+		// Otherwise they should only be shown if the player had enabled his/her move item:
+		return selectedItemForPlayer(aboutPawn1) == Item.Move
 	}
 	
 	func goalConfigurationShouldBeShown(aboutPawn1: Bool) -> Bool {
@@ -360,5 +393,10 @@ class RoundState: NSObject, NSCopying {
 	
 	func pawnDefinition(aboutPawn1: Bool) -> PawnDefinition {
 		return aboutPawn1 ? level.pawnPlayer1 : level.pawnPlayer2
+	}
+	
+	func playerHasItemSelected(aboutPawn1: Bool, item: Item) -> Bool {
+		let selectedItem = aboutPawn1 ? selectedItemPlayer1 : selectedItemPlayer2
+		return selectedItem == item
 	}
 }

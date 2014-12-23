@@ -247,20 +247,20 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		self.buttonMoveItem.setImage(UIImage(named: "Button_move 256x256"), forState: UIControlState.Normal)
         self.buttonMoveItem.setImage(UIImage(named: "Button_moveSelected 256x256"), forState: UIControlState.Selected)
-        self.buttonMoveItem.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.buttonMoveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
         // See item of local player:
         
         self.buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
         self.buttonSeeItem.setImage(UIImage(named: "Button_see 256x256"), forState: UIControlState.Normal)
         self.buttonSeeItem.setImage(UIImage(named: "Button_seeSelected 256x256"), forState: UIControlState.Selected)
-        self.buttonSeeItem.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.buttonSeeItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Give item of local player:
         self.buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
         self.buttonGiveItem.setImage(UIImage(named: "Button_present 256x256"), forState: UIControlState.Normal)
         self.buttonGiveItem.setImage(UIImage(named: "Button_presentSelected 256x256"), forState: UIControlState.Selected)
-        self.buttonGiveItem.addTarget(self, action: "tapButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.buttonGiveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Move item of other player:
         self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
@@ -306,10 +306,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         labelLevel.userInteractionEnabled = true
         
         self.view.addSubview(labelLevel)
-		
-		// temp:
-//		labelLevel.backgroundColor = UIColor.blueColor()
-		labelLevel.text = "Level \(currentGame.currentLevel.nr)"
 		
 		
 		// Update the UI:
@@ -518,6 +514,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1))
+		case .SwitchWhetherMoveItemIsEnabled:
+			updateWhichItemButtonsAreSelected()
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
 			updateUIForLevelButtons()
@@ -585,8 +583,25 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.boardView.rotatePawnToRotation(weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(weArePlayer1))
 	}
 	
-	func itemButtonPressed(sender:UIButton!) {
-		// self.updateSelectedItem(action)
+	func itemButtonPressed(sender: UIButton!) {
+		// Create a corresponding action:
+		let actionType = sender == buttonMoveItem ? RoundActionType.SwitchWhetherMoveItemIsEnabled : sender == buttonSeeItem ? RoundActionType.SwitchWhetherSeeItemIsEnabled : RoundActionType.SwitchWhetherGiveItemIsEnabled
+		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		
+		// Update our UI. Because turning one item on may cause another item to be turned off, we update UI related to all three items:
+		
+		// Update which buttons are selected:
+		updateWhichItemButtonsAreSelected()
+		
+		// Update whether the pawn can be moved:
+		updateUIForMoveAndRotateButtons()
 	}
 	
 	func levelButtonPressed(sender:UIButton!) {
@@ -639,55 +654,15 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
     }
 	
-    
-    func updateSelectedItem(action : RoundAction)
-    {
-        // Reset everything:
-        for button in self.itemButtons {
-            button.selected = false
-        }
-        
-        // Select the right one:
-		// todo
-/*        if action.role == self.currentRound!.myRole
-        {
-            if action.buttonIndicator == "moveItem"
-            {
-                self.buttonMoveItem.selected = true
-            }
-            else if action.buttonIndicator == "seeItem"
-            {
-                self.buttonSeeItem.selected = true
-            }
-            else if action.buttonIndicator == "giveItem"
-            {
-                self.buttonGiveItem.selected = true
-            }
-        }
-        else
-        {
-            if action.buttonIndicator == "moveItem"
-            {
-                self.buttonOtherPlayer_moveItem.selected = true
-            }
-            else if action.buttonIndicator == "seeItem"
-            {
-                self.buttonOtherPlayer_seeItem.selected = true
-            }
-            else if action.buttonIndicator == "giveItem"
-            {
-                self.buttonOtherPlayer_giveItem.selected = true
-            }
-        }*/
-    }
-	
 	
 	// MARK: - Update UI
 	
 	func updateUIAtStartOfLevel() {
 		
 		let currentLevel = currentGame.currentLevel
-		
+
+		labelLevel.text = "Level \(currentGame.currentLevel.nr)"
+
 		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
 		
 		
@@ -1003,6 +978,21 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update whether they are enabled:
 		buttonToFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(weArePlayer1)
 		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(!weArePlayer1)
+	}
+	
+	
+	func updateWhichItemButtonsAreSelected() {
+		let currentState = currentRound!.currentState()
+		
+		// Our own items:
+		buttonMoveItem.selected = currentState.playerHasItemSelected(weArePlayer1, item: Item.Move)
+		buttonSeeItem.selected = currentState.playerHasItemSelected(weArePlayer1, item: Item.See)
+		buttonGiveItem.selected = currentState.playerHasItemSelected(weArePlayer1, item: Item.Give)
+		
+		// Items of the other player:
+		buttonOtherPlayer_moveItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.Move)
+		buttonOtherPlayer_seeItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.See)
+		buttonOtherPlayer_giveItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.Give)
 	}
 	
 	

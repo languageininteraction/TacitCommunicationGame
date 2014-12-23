@@ -10,30 +10,30 @@
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "triangle",
+		"shape": "square",
 		"color": "orange"
 	},
 	"start1": {
 		"x": 0,
-		"y": 0,
-		"rotation": "north"
+		"y": 2,
+		"rotation": "south"
 	},
 	"start2": {
 		"x": 2,
-		"y": 2,
+		"y": 0,
 		"rotation": "west"
 	},
 	"goal1": {
 		"x": 1,
-		"y": 0,
-		"rotation": "south"
-	},
-	"goal2": {
-		"x": 1,
 		"y": 1,
 		"rotation": "north"
 	},
-	"moveItemAvailable": false,
+	"goal2": {
+		"x": 0,
+		"y": 2,
+		"rotation": "east"
+	},
+	"moveItemAvailable": true,
 	"seeItemAvailable": false,
 	"giveItemAvailable": false,
 	"items1": {},

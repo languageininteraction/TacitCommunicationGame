@@ -14,24 +14,24 @@
 		"color": "orange"
 	},
 	"start1": {
-		"x": 0,
+		"x": 1,
 		"y": 0,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"start2": {
-		"x": 2,
+		"x": 1,
 		"y": 2,
-		"rotation": "east"
+		"rotation": "south"
 	},
 	"goal1": {
-		"x": 2,
-		"y": 1,
-		"rotation": "east"
-	},
-	"goal2": {
 		"x": 0,
 		"y": 2,
 		"rotation": "west"
+	},
+	"goal2": {
+		"x": 2,
+		"y": 0,
+		"rotation": "east"
 	},
 	"moveItemAvailable": false,
 	"seeItemAvailable": false,

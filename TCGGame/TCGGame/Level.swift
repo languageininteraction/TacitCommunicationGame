@@ -49,7 +49,9 @@ class Level: NSObject
         self.goalConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["goal1"] as Dictionary)
         self.goalConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["goal2"] as Dictionary)
 		
-		// todo: read moveItemAvailable, seeItemAvailable, and giveItemAvailable from json
+		self.moveItemAvailable = jsonResult["moveItemAvailable"] as Bool
+		self.seeItemAvailable = jsonResult["seeItemAvailable"] as Bool
+		self.giveItemAvailable = jsonResult["giveItemAvailable"] as Bool
 		
 		// todo read this from json:
         self.itemsPlayer1 = [ItemDefinition(itemType: ItemType.Glasses, endlessUse: true, nrUses: nil),
