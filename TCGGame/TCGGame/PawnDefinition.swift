@@ -47,4 +47,9 @@ class PawnDefinition: NSObject {
 			return false
 		}
 	}
+	
+	func pawnCanRotate() -> Bool {
+		// All pawns can rotate, except the ones with a circle shape:
+		return shape != .Circle
+	}
 }

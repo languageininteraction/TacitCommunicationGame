@@ -955,6 +955,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			
 			if let actualDirection = direction {
 				buttonShouldBeVisible = self.currentRound!.currentState().pawnCanMoveInDirection(self.weArePlayer1, direction: actualDirection)
+			} else {
+				buttonShouldBeVisible = self.currentRound!.currentState().pawnDefinition(weArePlayer1).pawnCanRotate()
 			}
 			
 			let newOpacity = (buttonShouldBeVisible ? 1 : 0) as Float

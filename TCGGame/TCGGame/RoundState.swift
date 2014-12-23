@@ -357,4 +357,8 @@ class RoundState: NSObject, NSCopying {
 		let useOfLevelButtons = self.useOfLevelButtons()
 		return useOfLevelButtons == UseOfLevelButton.Finishing ? RoundActionType.Finish : useOfLevelButtons == UseOfLevelButton.Retrying ? RoundActionType.Retry : RoundActionType.Continue
 	}
+	
+	func pawnDefinition(aboutPawn1: Bool) -> PawnDefinition {
+		return aboutPawn1 ? level.pawnPlayer1 : level.pawnPlayer2
+	}
 }
