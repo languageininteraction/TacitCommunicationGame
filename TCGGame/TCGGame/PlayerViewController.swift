@@ -527,7 +527,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			boardView.showResultForPosition(currentState.positionOfPawn(!weArePlayer1), resultIsGood: !otherMessedUp)
 			
 			// 
-			updateUIForMoveAndRotateButtons()
+			updateUIForMoveAndRotateButtons() // todo: make separate method to update whether all are hidden, because this way we also animate if the buttons need to remain visible
 		case .Retry, .Continue:
 			updateUIForLevelButtons()
 			

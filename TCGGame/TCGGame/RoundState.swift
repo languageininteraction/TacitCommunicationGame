@@ -98,14 +98,14 @@ class RoundState: NSObject, NSCopying {
 				nextState.player1isReadyToContinue = true
 				
 				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed. Otherwise, if both players finished, the result is Succeeded:
-				if nextState.posPawn1.x != level.goalConfigurationPawn1.x || nextState.posPawn1.y != level.goalConfigurationPawn1.y || nextState.rotationPawn1 != level.goalConfigurationPawn1.rotation {
+				if nextState.posPawn1.x != level.goalConfigurationPawn1.x || nextState.posPawn1.y != level.goalConfigurationPawn1.y || !level.pawnPlayer1.rotationsMatch(nextState.rotationPawn1, rotation2: level.goalConfigurationPawn1.rotation) {
 					nextState.player1messedUp = true
 				}
 			} else {
 				nextState.player2isReadyToContinue = true
 				
 				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed:
-				if nextState.posPawn2.x != level.goalConfigurationPawn2.x || nextState.posPawn2.y != level.goalConfigurationPawn2.y || nextState.rotationPawn2 != level.goalConfigurationPawn2.rotation {
+				if nextState.posPawn2.x != level.goalConfigurationPawn2.x || nextState.posPawn2.y != level.goalConfigurationPawn2.y || !level.pawnPlayer2.rotationsMatch(nextState.rotationPawn2, rotation2: level.goalConfigurationPawn2.rotation) {
 					nextState.player2messedUp = true
 				}
 			}

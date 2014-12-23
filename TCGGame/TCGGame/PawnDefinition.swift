@@ -24,8 +24,7 @@ class PawnDefinition: NSObject {
 		self.color = color
 	}
 	
-	convenience init(jsonDict: [String: AnyObject])
-	{
+	convenience init(jsonDict: [String: AnyObject]) {
 		// Get the shape:
 		let shapeAsString = jsonDict["shape"] as String
 		let shape = shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : PawnShape.Square
@@ -35,5 +34,17 @@ class PawnDefinition: NSObject {
 		let color = colorAsString == "yellow" ? kColorLiIYellow : kColorLiIOrange
 		
 		self.init(shape: shape, color: color)
+	}
+	
+	func rotationsMatch(rotation1: Direction, rotation2: Direction) -> Bool {
+		switch shape {
+		case .Circle, .Square:
+			return true
+		case .Triangle:
+			return rotation1 == rotation2
+		default:
+			println("In rotationsMatch we don't know what to do given our shape.")
+			return false
+		}
 	}
 }
