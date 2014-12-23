@@ -49,10 +49,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	// The board:
 	var boardView = BoardView(edgelength: 0)
-	var tempX = 1
-	var tempY = 1
-	var tempRotation = Direction.East
-    
+	
 	// The movement buttons:
 	var buttonToMoveEast = UIButton()
 	var buttonToMoveSouth = UIButton()
@@ -95,7 +92,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// for now like this:
+		// Create a round to begin with:
 		self.currentRound = Round(level: self.currentGame.level)
 				
 		if (!kDevLocalTestingIsOn) { // normal case
@@ -221,12 +218,12 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// Rotate clockwise:
 		self.buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
-		self.buttonToRotateClockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		self.buttonToRotateClockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateClockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Rotate counterclockwise:
 		self.buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
-		self.buttonToRotateCounterclockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
+		self.buttonToRotateCounterclockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateCounterclockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Store the buttons in moveAndRotateButtons for convenience:
@@ -237,10 +234,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			viewWithAllMoveAndRotateButtons.addSubview(button)
 		}
 		
-		// temp, so move buttons get a position that looks better:
-//		self.testButtonPressed()
-        
-//        self.viewWithAllMoveAndRotateButtonsAboveMyPawn();
 		
 		// MARK: 4. Prepare the item buttons:
 		// (to enable/disable move, see, and give)
@@ -290,20 +283,16 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 		
 		
-		// MARK: 5. Prepare the buttons to finish / retry / continue:
+		// MARK: 5. Prepare the buttons to finish / retry / continue; images are set in updateUIForLevelButtons:
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
 		// buttonToFinishRetryOrContinue:
 		self.buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellow 256x256"), forState: UIControlState.Normal)
-        self.buttonToFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkYellowSelected 256x256"), forState: UIControlState.Disabled)
         self.buttonToFinishRetryOrContinue.addTarget(self, action: "levelButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToFinishRetryOrContinue)
         
 		// buttonOtherPlayer_toFinishRetryOrContinue:
 		self.buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeOther 256x256"), forState: UIControlState.Normal)
-        self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: "Button_checkmarkOrangeSelectedOther 256x256"), forState: UIControlState.Disabled)
 		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
 		
 		
@@ -322,77 +311,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 //		labelLevel.backgroundColor = UIColor.blueColor()
 		labelLevel.text = "Level \(currentGame.level.nr)"
 		
-		// Add buttons to test stuff:
-
-		// Movement:
-		let testButton = UIButton(frame: CGRectMake(20, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
-		testButton.backgroundColor = UIColor.redColor()
-		testButton.addTarget(self, action: "testButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
-		self.view.addSubview(testButton)
-		
-		// Rotation:
-		let tempRotateButton = UIButton(frame: CGRectMake(80, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
-		tempRotateButton.backgroundColor = UIColor.blueColor()
-		tempRotateButton.addTarget(self, action: "test2ButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
-		self.view.addSubview(tempRotateButton)
-		
-		// Slight rotation of field views:
-		let tempRotateFieldsButton = UIButton(frame: CGRectMake(140, boardView.frame.origin.y + boardView.frame.size.height, 44, 44))
-		tempRotateFieldsButton.backgroundColor = UIColor.purpleColor()
-		tempRotateFieldsButton.addTarget(self, action: "testRotatingFieldView", forControlEvents: UIControlEvents.TouchUpInside)
-		self.view.addSubview(tempRotateFieldsButton)
-		
 		
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
 	}
 	
-	// temp:
-/*	func testButtonPressed() {
-		// movement of pawns and 'slight rotation' of field views don't work well together:
-		boardView.fieldsAreSlightlyRotated = false
-		
-		if tempX == 1 && tempY == 1 {
-			tempY++
-		} else if tempX == 1 && tempY == 2 {
-			tempX++
-		} else if tempX == 2 && tempY == 2 {
-			tempY--
-		} else if tempX == 2 && tempY == 1 {
-			tempX--
-		}
-		
-		// I set the pawn's position in the model; this is not how it should happen! But this way I can use the state's pawnCanMoveInDirection method:
-		self.currentRound.currentState().posPawn1 = (tempX, tempY)
-		
-		boardView.movePawnToField(true, field: (tempX, tempY))
-
-		// Test inflating fields:
-		boardView.coordsOfInflatedField = (tempX, tempY)
-		
-		// Test moving the move and rotate buttons:
-		self.centerViewWithAllMoveAndRotateButtonsAboveField(tempX, y: tempY)
-	}
-	
-	// temp:
-	func test2ButtonPressed() {
-		// rotating pawns and 'slight rotation' of field views don't work well together:
-		boardView.fieldsAreSlightlyRotated = false
-		
-		tempRotation = tempRotation == Rotation.North ? Rotation.East : tempRotation == Rotation.East ? Rotation.South : tempRotation == Rotation.South ? Rotation.West : Rotation.North
-		
-		boardView.rotatePawnToRotation(true, rotation: tempRotation)
-	}
-	
-	// temp:
-	func testRotatingFieldView() {
-		boardView.fieldsAreSlightlyRotated = !boardView.fieldsAreSlightlyRotated
-		
-		// temp like this, but normally the move buttons would never be visible while the fields are slightly rotated anyway:
-//		viewWithAllMoveAndRotateButtons?.hidden = boardView.fieldsAreSlightlyRotated
-		viewWithAllMoveAndRotateButtons.hidden = true // because I want to test the animation of rotating the field views without the move buttons appearing and dissapearing
-		boardView.coordsOfInflatedField = nil
-	}*/
 	
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
@@ -522,6 +445,20 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
     }
 	
 	
+	func restartLevel() {
+		// Create a new round:
+		self.currentRound = Round(level: self.currentGame.level)
+		
+		// Update the UI:
+		self.updateUIAtStartOfLevel()
+	}
+	
+	
+	func proceedToNextLevel() {
+		println("todo proceedToNextLevel")
+	}
+	
+	
 	func sendActionToOther(action: RoundAction) {
 	
 		let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
@@ -562,22 +499,38 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update the model:
 		currentRound?.processAction(action)
 		
+		let currentState = currentRound!.currentState()
+		
 		// Update all UI that may have changed as a result of the other player performing a certain action:
 		switch action.type {
 		case .MovePawn:
 			// Update the position of the other player's pawn:
-			self.boardView.movePawnToField(!weArePlayer1, field: currentRound!.currentState().positionOfPawn(!weArePlayer1))
+			self.boardView.movePawnToField(!weArePlayer1, field: currentState.positionOfPawn(!weArePlayer1))
 			
 			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
 			self.updateWhichMoveAndRotateButtonsAreVisible()
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
-			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(!weArePlayer1))
+			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1))
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
 			updateUIForLevelButtons()
 			
-			// todo: update what is shown about whether the finished pawn is correct / wrong
+			// Show whether the other placed his or her pawn correctly:
+			let otherMessedUp = currentState.playerMessedUp(!weArePlayer1)
+			boardView.showResultForPosition(currentState.positionOfPawn(!weArePlayer1), resultIsGood: !otherMessedUp)
+			
+			// 
+			updateUIForMoveAndRotateButtons()
+		case .Retry, .Continue:
+			updateUIForLevelButtons()
+			
+			// If both players are ready to continue, either retry the level or proceed to the next level:
+			if currentState.player1isReadyToContinue && currentState.player2isReadyToContinue {
+				// for now always retry:
+				self.restartLevel()
+			}
+
 		default:
 			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
 		}
@@ -628,8 +581,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	func levelButtonPressed(sender:UIButton!) {
+		var currentState = currentRound!.currentState()
+		
 		// Create a corresponding action:
-		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
+		let actionType = currentState.actionTypeForLevelButton()
+		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
 		self.sendActionToOther(action)
@@ -637,19 +593,31 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update the model:
 		currentRound?.processAction(action)
 		
+		currentState = currentRound!.currentState()
+		
 		
 		// Update our UI:
 		
 		// Update what the level buttons are used for, and whether they are selected:
 		updateUIForLevelButtons()
 		
-		// Show whether we placed our pawn correctly:
-		let weMessedUp = currentRound!.currentState().playerMessedUp(weArePlayer1)
-		boardView.showResultForPosition(currentRound!.currentState().positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
-		
-		// The move and rotate buttons should no longer be shown and no field view should be inflated:
-		updateUIForMoveAndRotateButtons()
-		boardView.coordsOfInflatedField = (-1, -1)
+		// The rest depends on the action type:
+		switch actionType {
+		case .Finish:
+			// Show whether we placed our pawn correctly:
+			let weMessedUp = currentRound!.currentState().playerMessedUp(weArePlayer1)
+			boardView.showResultForPosition(currentState.positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
+			
+			// The move and rotate buttons should no longer be shown and no field view should be inflated:
+			updateUIForMoveAndRotateButtons()
+			boardView.coordsOfInflatedField = (-1, -1)
+		default:
+			// Otherwise the actionType was Retry or Continue. In both cases, if both players are ready to continue, either retry the level or proceed to the next level:
+			if currentState.player1isReadyToContinue && currentState.player2isReadyToContinue {
+				// for now always retry:
+				self.restartLevel()
+			}
+		}
 	}
 	
     
@@ -733,7 +701,19 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update whether the goal configuration is shown:
 		self.updateWhetherGoalConfigurationIsShown()
 		
+		// Update whether the item buttons are visible:
+		buttonMoveItem.hidden = !currentLevel.moveItemAvailable
+		buttonOtherPlayer_moveItem.hidden = !currentLevel.moveItemAvailable
+		buttonSeeItem.hidden = !currentLevel.seeItemAvailable
+		buttonOtherPlayer_seeItem.hidden = !currentLevel.seeItemAvailable
+		buttonGiveItem.hidden = !currentLevel.giveItemAvailable
+		buttonOtherPlayer_giveItem.hidden = !currentLevel.giveItemAvailable
 		
+		// todo explain
+		self.updateUIForLevelButtons()
+		
+		
+		// todo: move this elsewhere
 		var ownItems = [ItemDefinition]()
 		var otherItems = [ItemDefinition]()
 		var selectedItem = 0
@@ -988,13 +968,27 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	
 	func updateUIForLevelButtons() {
+		// Update the images used for the buttons, which depend on how the level buttons are used:
+		
+		// Ask the state what the level buttons should be used for:
+		let useOfLevelButtons = self.currentRound!.currentState().useOfLevelButtons()
+		
+		// Figure out which images to use:
+		let imageNameOwnButton = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkYellow 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartYellow 256x256" : "Button_nextYellow 256x256"
+		let imageNameOwnButtonSelected = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkYellowSelected 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartYellowSelected 256x256" : "Button_nextYellowSelected 256x256"
+		let imageNameButtonOther = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkOrangeOther 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartOrangeOther 256x256" : "Button_nextOrangeOther 256x256"
+		let imageNameButtonOtherSelected = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkOrangeSelectedOther 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartOrangeSelectedOther 256x256" : "Button_nextOrangeSelectedOther 256x256"
+		
+		// Set the images:
+		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: imageNameOwnButton), forState: UIControlState.Normal)
+		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: imageNameOwnButtonSelected), forState: UIControlState.Disabled)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOther), forState: UIControlState.Normal)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOtherSelected), forState: UIControlState.Disabled)
+
+		
 		// Update whether they are enabled:
 		buttonToFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(weArePlayer1)
 		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(!weArePlayer1)
-		
-//		// If selected, the buttons should be disabled:
-//		buttonToFinishRetryOrContinue.enabled = !buttonToFinishRetryOrContinue.selected
-//		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !buttonOtherPlayer_toFinishRetryOrContinue.selected
 	}
 	
 	

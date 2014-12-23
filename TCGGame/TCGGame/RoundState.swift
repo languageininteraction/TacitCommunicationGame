@@ -14,6 +14,12 @@ enum RoundResult: Int {
 	case Failed
 }
 
+enum UseOfLevelButton: Int {
+	case Finishing
+	case Retrying
+	case Continuing
+}
+
 class RoundState: NSObject, NSCopying {
 	let level: Level // A RoundState needs a Level to know how it works
 	var count = 0
@@ -27,11 +33,19 @@ class RoundState: NSObject, NSCopying {
     var nrUsesLeftPlayer2 = [99,99,99]
 	
 	// todo explain
-	var roundResult = RoundResult.MaySucceed
 	var player1isReadyToContinue = false
 	var player2isReadyToContinue = false
 	var player1messedUp = false
 	var player2messedUp = false
+	var roundResult: RoundResult = RoundResult.MaySucceed {
+		didSet {
+			// Whenever the roundResult changes, set player1isReadyToContinue and player2isReadyToContinue back to false, because both players need to indicate that they want to continue:
+			if (roundResult != oldValue) {
+				self.player1isReadyToContinue = false
+				self.player2isReadyToContinue = false
+			}
+		}
+	}
 	
 	init(level: Level) {
 		self.level = level
@@ -48,8 +62,6 @@ class RoundState: NSObject, NSCopying {
 		result.rotationPawn2 = rotationPawn2
 		result.selectedItemPlayer1 = selectedItemPlayer1
 		result.selectedItemPlayer2 = selectedItemPlayer2
-		result.player1isReadyToContinue = player1isReadyToContinue
-		result.player2isReadyToContinue = player2isReadyToContinue
 		result.nrUsesLeftPlayer1 = nrUsesLeftPlayer1
 		result.nrUsesLeftPlayer2 = nrUsesLeftPlayer2
 		result.roundResult = roundResult
@@ -79,17 +91,15 @@ class RoundState: NSObject, NSCopying {
 //		case .SwitchWhetherGiveItemIsEnabled:
 		case .Finish:
 			// Assert that the roundResult is still MaySucceed, otherwise this action should not be possible:
-			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction if the RoundResult is still MaySucceed.")
+			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction.Finish if the RoundResult is still .MaySucceed.")
 			
 			// Update which players are ready to continue and whether the finished player messed up:
 			if action.performedByPlayer1 {
 				nextState.player1isReadyToContinue = true
 				
-				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed:
+				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed. Otherwise, if both players finished, the result is Succeeded:
 				if nextState.posPawn1.x != level.goalConfigurationPawn1.x || nextState.posPawn1.y != level.goalConfigurationPawn1.y || nextState.rotationPawn1 != level.goalConfigurationPawn1.rotation {
 					nextState.player1messedUp = true
-					
-					println("\(nextState.posPawn1.x) \(level.goalConfigurationPawn1.x) , \(nextState.posPawn1.y) \(level.goalConfigurationPawn1.y) , \(nextState.rotationPawn1.rawValue) \(level.goalConfigurationPawn1.rotation.rawValue) ")
 				}
 			} else {
 				nextState.player2isReadyToContinue = true
@@ -107,8 +117,26 @@ class RoundState: NSObject, NSCopying {
 				nextState.roundResult = RoundResult.Succeeded
 			}
 			
-//		case .Retry:
-//		case .Continue:
+		case .Retry:
+			// Assert that the roundResult is Failed, otherwise this action should not be possible:
+			assert(roundResult == RoundResult.Failed, "It should only be possible to perform a RoundAction.Retry if the RoundResult is .Failed.")
+			
+			// Update which players are ready to continue:
+			if action.performedByPlayer1 {
+				nextState.player1isReadyToContinue = true
+			} else {
+				nextState.player2isReadyToContinue = true
+			}
+		case .Continue:
+			// Assert that the roundResult is Succeeded, otherwise this action should not be possible:
+			assert(roundResult == RoundResult.Succeeded, "It should only be possible to perform a RoundAction.Continue if the RoundResult is .Succeeded.")
+			
+			// Update which players are ready to continue:
+			if action.performedByPlayer1 {
+				nextState.player1isReadyToContinue = true
+			} else {
+				nextState.player2isReadyToContinue = true
+			}
 		default:
 			println("Warning in Round's processAction: don't know what to do with this action type.")			
 		}
@@ -291,7 +319,12 @@ class RoundState: NSObject, NSCopying {
 	}
 	
 	func movementButtonsShouldBeShown(aboutPawn1: Bool) -> Bool {
-		// If the move items aren't even available, the movement buttons should always be shown, unless the player finished; todo: improve names
+		// They should never be available if the roundResult isn't MaySucceed:
+		if self.roundResult != RoundResult.MaySucceed {
+			return false
+		}
+		
+		// If the move items aren't even available, the movement buttons should always be shown, unless the player already finished:
 		if !self.level.moveItemAvailable {
 			return !playerIsReadyToContinue(aboutPawn1)
 		}
@@ -310,5 +343,18 @@ class RoundState: NSObject, NSCopying {
 		// Otherwise they should only be shown if the local player had enabled his/her move item:
 		println("todo: finish goalConfigurationShouldBeShown…")
 		return false
+	}
+	
+	func useOfLevelButtons() -> UseOfLevelButton {
+		// This depends on our roundResult:
+		// 1. While we may still succeed, players use the level button to indicate that they are finished.
+		// 2a. Once someone messed up and the roundResult is Failed, players use the level button to indicate that they want to try again.
+		// 2b. Once both players finsihed correctly and the roundResult is Succeeded, players use the level button to indicate that they want to proceed to the next level.
+		return roundResult == RoundResult.MaySucceed ? UseOfLevelButton.Finishing : roundResult == RoundResult.Failed ? UseOfLevelButton.Retrying : UseOfLevelButton.Continuing
+	}
+	
+	func actionTypeForLevelButton() -> RoundActionType {
+		let useOfLevelButtons = self.useOfLevelButtons()
+		return useOfLevelButtons == UseOfLevelButton.Finishing ? RoundActionType.Finish : useOfLevelButtons == UseOfLevelButton.Retrying ? RoundActionType.Retry : RoundActionType.Continue
 	}
 }
