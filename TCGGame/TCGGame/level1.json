@@ -16,7 +16,7 @@
 	"start1": {
 		"x": 0,
 		"y": 0,
-		"rotation": "east"
+		"rotation": "north"
 	},
 	"start2": {
 		"x": 2,

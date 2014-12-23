@@ -53,6 +53,8 @@ class FieldView: UIView {
 				// Add a pawn view to show this goal configuration:
 				pawnViewForShowingAGoalConfiguration = PawnView(edgelength: CGFloat(kBoardEdgeLengthOfPawnsWRTFields) * self.edgelength, pawnDefinition: actualPawnDefinition)
 				pawnViewForShowingAGoalConfiguration?.style = PawnViewStyle.GoalConfiguration
+				pawnViewForShowingAGoalConfiguration?.rotateTo(actualRotation)
+				println("actualRotation = \(actualRotation.rawValue), \(pawnViewForShowingAGoalConfiguration == nil)")
 				let width = pawnViewForShowingAGoalConfiguration!.frame.size.width
 				let height = pawnViewForShowingAGoalConfiguration!.frame.size.height
 				pawnViewForShowingAGoalConfiguration!.frame = CGRectMake(0.5 * (self.frame.size.width - width), 0.5 * (self.frame.size.height - height), width, height)

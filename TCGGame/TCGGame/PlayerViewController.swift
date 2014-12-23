@@ -44,8 +44,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	var matchStarted = false
 	
-    var itemButtons = [UIButton]()
-	
 	
 	// MARK: - Other UI
 	
@@ -75,6 +73,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var buttonOtherPlayer_giveItem = UIButton()
 	var buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
 	
+	// todo explain
+	var itemButtons = [UIButton]()
+
 	// Image views for pictures of players:
 	let imageViewPictureOfLocalPlayer = UIImageView()
 	let imageViewPictureOfOtherPlayer = UIImageView()
@@ -715,10 +716,12 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Pawn 1:
 		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnPlayer1.shape, color: currentLevel.pawnPlayer1.color)
 		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
+		boardView.rotatePawnToRotation(true, rotation: currentLevel.startConfigurationPawn1.rotation)
 		
 		// Pawn 2:
 		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnPlayer2.shape, color: currentLevel.pawnPlayer2.color)
 		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
+		boardView.rotatePawnToRotation(false, rotation: currentLevel.startConfigurationPawn2.rotation)
 		
 		// todo explain
 		boardView.clearShownResultsForSpecificPositions()
