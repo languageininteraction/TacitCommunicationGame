@@ -10,10 +10,10 @@ import Foundation
 
 class Game: NSObject
 {
-    var level: Level
-    
-    init(level: Level)
-    {
-        self.level = level
-    }
+	// Levels:
+	let levels = [Level(filename:"level1"), Level(filename:"level2"), Level(filename:"level3"), Level(filename:"level4")]
+	var indexCurrentLevel = 0
+	var currentLevel: Level {
+		return levels[indexCurrentLevel]
+	}
 }

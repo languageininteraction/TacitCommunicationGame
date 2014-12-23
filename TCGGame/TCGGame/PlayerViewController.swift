@@ -27,7 +27,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	
 	// MARK: - Model
-    var currentGame = Game(level: levels[0])
+    var currentGame = Game()
 	var currentRound: Round?
 	
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
@@ -93,7 +93,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		super.viewDidLoad()
 		
 		// Create a round to begin with:
-		self.currentRound = Round(level: self.currentGame.level)
+		self.currentRound = Round(level: self.currentGame.currentLevel)
 				
 		if (!kDevLocalTestingIsOn) { // normal case
 			self.authenticateLocalPlayer()
@@ -309,7 +309,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// temp:
 //		labelLevel.backgroundColor = UIColor.blueColor()
-		labelLevel.text = "Level \(currentGame.level.nr)"
+		labelLevel.text = "Level \(currentGame.currentLevel.nr)"
 		
 		
 		// Update the UI:
@@ -372,8 +372,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func subControllerFinished(subController: AnyObject) {
 		if let actualLevel = self.chooseLevelViewController.selectedLevel {
-			self.currentGame.level = actualLevel
-			println("hatsee! level \(self.currentGame.level.nr)")
+			println("todo hier weer fixen dat level geset wordt")
+//			self.currentGame.currentLevel = actualLevel
+			println("hatsee! level \(self.currentGame.currentLevel.nr)")
 		}
 		
 		subController.dismissViewControllerAnimated(false, completion: nil)
@@ -447,7 +448,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func restartLevel() {
 		// Create a new round:
-		self.currentRound = Round(level: self.currentGame.level)
+		self.currentRound = Round(level: self.currentGame.currentLevel)
 		
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
@@ -455,7 +456,12 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	
 	func proceedToNextLevel() {
-		println("todo proceedToNextLevel")
+		// Go to the next level and create a new round:
+		self.currentGame.indexCurrentLevel++
+		self.currentRound = Round(level: self.currentGame.currentLevel)
+		
+		// Update the UI:
+		self.updateUIAtStartOfLevel()
 	}
 	
 	
@@ -527,8 +533,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			
 			// If both players are ready to continue, either retry the level or proceed to the next level:
 			if currentState.player1isReadyToContinue && currentState.player2isReadyToContinue {
-				// for now always retry:
-				self.restartLevel()
+				if currentState.roundResult == RoundResult.Failed {
+					self.restartLevel()
+				} else {
+					self.proceedToNextLevel()
+				}
 			}
 
 		default:
@@ -614,8 +623,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		default:
 			// Otherwise the actionType was Retry or Continue. In both cases, if both players are ready to continue, either retry the level or proceed to the next level:
 			if currentState.player1isReadyToContinue && currentState.player2isReadyToContinue {
-				// for now always retry:
-				self.restartLevel()
+				if currentState.roundResult == RoundResult.Failed {
+					self.restartLevel()
+				} else {
+					self.proceedToNextLevel()
+				}
 			}
 		}
 	}
@@ -674,7 +686,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func updateUIAtStartOfLevel() {
 		
-		let currentLevel = currentGame.level
+		let currentLevel = currentGame.currentLevel
 		
 		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
 		
@@ -740,8 +752,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// todo: if it should be shown, also ask the state whether the fields should be slightly rotated (only if see item is used)
 
 		// Update what the boardView shows:
-		boardView.pawnAndGoalFiguration1 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition1, self.currentGame.level.goalConfigurationPawn1) : (nil, nil)
-		boardView.pawnAndGoalFiguration2 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition2, self.currentGame.level.goalConfigurationPawn2) : (nil, nil)
+		boardView.pawnAndGoalFiguration1 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition1, self.currentGame.currentLevel.goalConfigurationPawn1) : (nil, nil)
+		boardView.pawnAndGoalFiguration2 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition2, self.currentGame.currentLevel.goalConfigurationPawn2) : (nil, nil)
 	}
 	
 	func updateUI()
@@ -750,7 +762,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		return
 		
 		let currentState = self.currentRound?.currentState()
-		let currentLevel = self.currentGame.level
+		let currentLevel = self.currentGame.currentLevel
 		
 		if let actualCurrentState = currentState {
 			

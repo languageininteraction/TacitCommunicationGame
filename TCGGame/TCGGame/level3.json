@@ -4,5 +4,38 @@
     "board": {
         "width": 3,
         "height": 3
-    }
+	},
+	"pawn1": {
+		"shape": "triangle",
+		"color": "yellow"
+	},
+	"pawn2": {
+		"shape": "triangle",
+		"color": "orange"
+	},
+	"start1": {
+		"x": 0,
+		"y": 0,
+		"rotation": "north"
+	},
+	"start2": {
+		"x": 2,
+		"y": 2,
+		"rotation": "west"
+	},
+	"goal1": {
+		"x": 1,
+		"y": 0,
+		"rotation": "south"
+	},
+	"goal2": {
+		"x": 1,
+		"y": 1,
+		"rotation": "north"
+	},
+	"moveItemAvailable": false,
+	"seeItemAvailable": false,
+	"giveItemAvailable": false,
+	"items1": {},
+	"items2": {}
 }

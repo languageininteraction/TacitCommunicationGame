@@ -71,5 +71,3 @@ let kColorLiIYellow = UIColor(red:251.0/255.0, green:186.0/255.0, blue:0.0/255.0
 
 let kColorBoardFields = kColorLiIBlueLighter
 
-// Levels:
-let levels = [Level(filename:"level1")]

@@ -13,6 +13,7 @@ import UIKit
 class ChooseLevelViewController: TableViewSubController, UITableViewDelegate, UITableViewDataSource
 {
 	// Model; this is what clients should be interested in:
+	var levels: [Level] = []
 	var selectedLevel: Level?
 	
 	
