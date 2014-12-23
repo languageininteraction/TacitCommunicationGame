@@ -109,8 +109,12 @@ class RoundState: NSObject, NSCopying {
 		case .SwitchWhetherMoveItemIsEnabled:
 			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.Move ? nil : Item.Move
 			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
-//		case .SwitchWhetherSeeItemIsEnabled:
-//		case .SwitchWhetherGiveItemIsEnabled:
+		case .SwitchWhetherSeeItemIsEnabled:
+			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.See ? nil : Item.See
+			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
+		case .SwitchWhetherGiveItemIsEnabled:
+			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.Give ? nil : Item.Give
+			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
 		case .Finish:
 			// Assert that the roundResult is still MaySucceed, otherwise this action should not be possible:
 			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction.Finish if the RoundResult is still .MaySucceed.")
@@ -368,14 +372,18 @@ class RoundState: NSObject, NSCopying {
 	}
 	
 	func goalConfigurationShouldBeShown(aboutPawn1: Bool) -> Bool {
+		// They should never be available if the roundResult isn't MaySucceed:
+		if self.roundResult != RoundResult.MaySucceed {
+			return false
+		}
+		
 		// If the see items aren't even available, the goal configuration should always be shown
 		if !self.level.seeItemAvailable {
 			return true
 		}
 		
-		// Otherwise they should only be shown if the local player had enabled his/her move item:
-		println("todo: finish goalConfigurationShouldBeShown…")
-		return false
+		// Otherwise they should only be shown if the local player had enabled his/her see item:
+		return selectedItemForPlayer(aboutPawn1) == Item.See
 	}
 	
 	func useOfLevelButtons() -> UseOfLevelButton {

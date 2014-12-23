@@ -514,7 +514,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1))
-		case .SwitchWhetherMoveItemIsEnabled:
+		case .SwitchWhetherMoveItemIsEnabled, .SwitchWhetherSeeItemIsEnabled, .SwitchWhetherGiveItemIsEnabled:
 			updateWhichItemButtonsAreSelected()
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
@@ -602,6 +602,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// Update whether the pawn can be moved:
 		updateUIForMoveAndRotateButtons()
+		
+		// Update whether the goal configuration is shown:
+		updateWhetherGoalConfigurationIsShown()
 	}
 	
 	func levelButtonPressed(sender:UIButton!) {
@@ -724,8 +727,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Ask the model whether it should be shown:
 		let goalConfigurationShouldBeShown = self.currentRound!.currentState().goalConfigurationShouldBeShown(weArePlayer1)
 		
-		// todo: if it should be shown, also ask the state whether the fields should be slightly rotated (only if see item is used)
-
 		// Update what the boardView shows:
 		boardView.pawnAndGoalFiguration1 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition1, self.currentGame.currentLevel.goalConfigurationPawn1) : (nil, nil)
 		boardView.pawnAndGoalFiguration2 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition2, self.currentGame.currentLevel.goalConfigurationPawn2) : (nil, nil)
@@ -993,6 +994,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		buttonOtherPlayer_moveItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.Move)
 		buttonOtherPlayer_seeItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.See)
 		buttonOtherPlayer_giveItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.Give)
+		
+		// Whenever our see item is selected, make the board look different:
+		boardView.fieldsAreSlightlyRotated = buttonSeeItem.selected
 	}
 	
 	
