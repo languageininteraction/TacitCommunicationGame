@@ -609,7 +609,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.boardView.movePawnToField(weArePlayer1, field: newPosition)
 		
 		// Update the position of our move and rotate buttons:
-		self.centerViewWithAllMoveAndRotateButtonsAboveField(newPosition.x, y: newPosition.y)
+		self.centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(newPosition.x, y: newPosition.y)
 		
 		// Update which fieldView is inflated:
 		boardView.coordsOfInflatedField = newPosition
@@ -761,16 +761,28 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	func updateUIForMoveAndRotateButtons() {
+		println("updateUIForMoveAndRotateButtons \(weArePlayer1)")
+		
 		// Update whether they are hidden:
 		let movementButtonsShouldBeShown = currentRound!.currentState().movementButtonsShouldBeShown(weArePlayer1)
-		viewWithAllMoveAndRotateButtons.hidden = !movementButtonsShouldBeShown // todo animate (?)
 		let positionButtons = currentRound!.currentState().positionOfPawn(weArePlayer1)
 		boardView.coordsOfInflatedField = movementButtonsShouldBeShown ? positionButtons : (-1, -1)
 		
-		// If not hidden, update their position:
-		if movementButtonsShouldBeShown {
-			self.centerViewWithAllMoveAndRotateButtonsAboveField(positionButtons.x, y: positionButtons.y)
+		// Animate:
+		if viewWithAllMoveAndRotateButtons.hidden {
+			viewWithAllMoveAndRotateButtons.layer.opacity = 0
+			viewWithAllMoveAndRotateButtons.hidden = false
 		}
+		let animation = CABasicAnimation(keyPath: "opacity")
+		animation.fromValue = viewWithAllMoveAndRotateButtons.layer.opacity
+		animation.toValue = movementButtonsShouldBeShown ? 1 : 0
+		viewWithAllMoveAndRotateButtons.layer.addAnimation(animation, forKey: "opacity")
+		viewWithAllMoveAndRotateButtons.layer.opacity = movementButtonsShouldBeShown ? 1 : 0
+		
+		// If not hidden, update their position:
+//		if movementButtonsShouldBeShown {
+			self.centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(positionButtons.x, y: positionButtons.y)
+//		}
 	}
 	
 	func updateWhetherGoalConfigurationIsShown() {
@@ -913,52 +925,61 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	
-	func centerViewWithAllMoveAndRotateButtonsAboveField(x: Int, y: Int) {
+	func centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(x: Int, y: Int) {
+		println("centerViewWithAllMoveAndRotateButtonsAboveField \(weArePlayer1)")
+		
 		// Calculate the new frame of viewWithAllMoveAndRotateButtons:
-		var newFrame = viewWithAllMoveAndRotateButtons.frame
+		let oldFrame = viewWithAllMoveAndRotateButtons.frame
+		var newFrame = oldFrame
 		let centerOfFieldView = self.view.convertPoint(boardView.centerOfField(x, y: y), fromView: boardView)
 		newFrame.origin = CGPointMake(centerOfFieldView.x - 0.5 * newFrame.size.width, centerOfFieldView.y - 0.5 * newFrame.size.height)
 		
-		// todo: add possibility to do this without animating?
-		
-		let somethingReallySmall: CGFloat = 0.0001
-		
-		CATransaction.begin()
-		CATransaction.setCompletionBlock() { () -> Void in
+		// If the frame has changed, ... todo explain:
+		if oldFrame != newFrame {
 			
-			// We'll animate the view to its new position by animating its transform. Once this animation is finished, we'll actually set the new frame:
-			self.viewWithAllMoveAndRotateButtons.frame = newFrame
+			// todo: add possibility to do this without animating?
 			
+			let somethingReallySmall: CGFloat = 0.0001
+			
+			CATransaction.begin()
+			CATransaction.setCompletionBlock() { () -> Void in
+				
+				// We'll animate the view to its new position by animating its transform. Once this animation is finished, we'll actually set the new frame:
+				self.viewWithAllMoveAndRotateButtons.frame = newFrame
+				
+				self.updateWhichMoveAndRotateButtonsAreVisible()
+			}
+			
+			//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
+			//			opacityAnimation.values = [NSNumber(float: 1), NSNumber(float: 0), NSNumber(float: 0), NSNumber(float: 1)]
+			//			opacityAnimation.keyTimes = [NSNumber(float: 0), NSNumber(float: 0.25), NSNumber(float: 0.75), NSNumber(float: 1)]
+			
+			let dissapearAnimation = CABasicAnimation(keyPath: "opacity")
+			dissapearAnimation.fromValue = NSNumber(float: 1)
+			dissapearAnimation.toValue = NSNumber(float: 0)
+			
+			let transformShrinked = CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1)
+			
+			let shrinkAnimation = CABasicAnimation(keyPath: "transform")
+			shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+			shrinkAnimation.toValue = NSValue(CATransform3D: transformShrinked)
+			
+			for button in moveAndRotateButtons {
+				
+				// todo cleanup this whole method
+				dissapearAnimation.fromValue = NSNumber(float: button.layer.opacity)
+				
+				button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
+				button.layer.opacity = 0
+				
+				button.layer.addAnimation(shrinkAnimation, forKey: "transform")
+				button.layer.transform = transformShrinked
+			}
+			
+			CATransaction.commit()
+		} else {
 			self.updateWhichMoveAndRotateButtonsAreVisible()
 		}
-		
-		//			let opacityAnimation = CAKeyframeAnimation(keyPath: "opacity")
-		//			opacityAnimation.values = [NSNumber(float: 1), NSNumber(float: 0), NSNumber(float: 0), NSNumber(float: 1)]
-		//			opacityAnimation.keyTimes = [NSNumber(float: 0), NSNumber(float: 0.25), NSNumber(float: 0.75), NSNumber(float: 1)]
-		
-		let dissapearAnimation = CABasicAnimation(keyPath: "opacity")
-		dissapearAnimation.fromValue = NSNumber(float: 1)
-		dissapearAnimation.toValue = NSNumber(float: 0)
-		
-		let transformShrinked = CATransform3DMakeScale(somethingReallySmall, somethingReallySmall, 1)
-		
-		let shrinkAnimation = CABasicAnimation(keyPath: "transform")
-		shrinkAnimation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
-		shrinkAnimation.toValue = NSValue(CATransform3D: transformShrinked)
-		
-		for button in moveAndRotateButtons {
-			
-			// todo cleanup this whole method
-			dissapearAnimation.fromValue = NSNumber(float: button.layer.opacity)
-			
-			button.layer.addAnimation(dissapearAnimation, forKey: "opacity")
-			button.layer.opacity = 0
-			
-			button.layer.addAnimation(shrinkAnimation, forKey: "transform")
-			button.layer.transform = transformShrinked
-		}
-		
-		CATransaction.commit()
 	}
 	
 	func updateWhichMoveAndRotateButtonsAreVisible() {

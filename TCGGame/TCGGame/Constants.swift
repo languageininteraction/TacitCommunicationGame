@@ -14,7 +14,7 @@ let kDevelopmentMode = true
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 
 // Layout of the board and stuff on top of / inside the board:
 let kBoardEdgeLength: Float = 400
