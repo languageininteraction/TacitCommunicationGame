@@ -339,14 +339,18 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// MARK: 8. Prepare the buttons to give items to the other player:
 
 		// To give our move item:
-		buttonToGiveMoveItemToOtherPlayer.frame = CGRectMake(buttonMoveItem.frame.origin.x - 46, self.buttonMoveItem.frame.origin.y, 110, 70) // todo
+		buttonToGiveMoveItemToOtherPlayer.frame = CGRectMake(buttonMoveItem.frame.origin.x - 17, self.buttonMoveItem.frame.origin.y + 12, 73, 47) // todo
 		buttonToGiveMoveItemToOtherPlayer.setImage(UIImage(named: "ButtonToGiveMove"), forState: UIControlState.Normal)
+		buttonToGiveMoveItemToOtherPlayer.addTarget(self, action: "buttonToGiveItemToOtherPlayerPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToGiveMoveItemToOtherPlayer)
+		buttonToGiveMoveItemToOtherPlayer.hidden = true
 		
 		// To give our see item:
-		buttonToGiveSeeItemToOtherPlayer.frame = CGRectMake(buttonSeeItem.frame.origin.x - 46, self.buttonSeeItem.frame.origin.y, 110, 70) // todo
+		buttonToGiveSeeItemToOtherPlayer.frame = CGRectMake(buttonSeeItem.frame.origin.x - 17, self.buttonSeeItem.frame.origin.y + 12, 73, 47) // todo
 		buttonToGiveSeeItemToOtherPlayer.setImage(UIImage(named: "ButtonToGiveSee"), forState: UIControlState.Normal)
+		buttonToGiveSeeItemToOtherPlayer.addTarget(self, action: "buttonToGiveItemToOtherPlayerPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToGiveSeeItemToOtherPlayer)
+		buttonToGiveSeeItemToOtherPlayer.hidden = true
 		
 		
 		// Update the UI:
@@ -557,6 +561,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1))
 		case .SwitchWhetherMoveItemIsEnabled, .SwitchWhetherSeeItemIsEnabled, .SwitchWhetherGiveItemIsEnabled:
 			updateUIOfItems()
+		case .GiveMoveItem, .GiveSeeItem:
+			updateUIOfItems()
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
 			updateUIForLevelButtons()
@@ -691,6 +697,23 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 	}
 	
+	
+	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {
+		// Create a corresponding action:
+		let actionType = sender == buttonToGiveMoveItemToOtherPlayer ? RoundActionType.GiveMoveItem : RoundActionType.GiveSeeItem
+		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		
+		// Update our UI:
+		updateUIOfItems()
+	}
+	
     
     func tapLevelLabel(sender:UILabel) {
         println("tapLevel")
@@ -731,14 +754,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// Update whether the goal configuration is shown:
 		self.updateWhetherGoalConfigurationIsShown()
-		
-		// Update whether the item buttons are visible:
-		buttonMoveItem.hidden = !currentLevel.moveItemAvailable
-		buttonOtherPlayer_moveItem.hidden = !currentLevel.moveItemAvailable
-		buttonSeeItem.hidden = !currentLevel.seeItemAvailable
-		buttonOtherPlayer_seeItem.hidden = !currentLevel.seeItemAvailable
-		buttonGiveItem.hidden = !currentLevel.giveItemAvailable
-		buttonOtherPlayer_giveItem.hidden = !currentLevel.giveItemAvailable
 		
 		// todo explain
 		self.updateUIForLevelButtons()
@@ -1014,6 +1029,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func updateUIOfItems() {
 		let currentState = currentRound!.currentState()
+		let currentLevel = currentState.level
 		
 		// Define a function which updates both the button and the label for 1 item:
 		func updateUIForItem(forPlayer1: Bool, itemType: ItemType, label: UILabel, button: UIButton) {
@@ -1044,6 +1060,21 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		updateUIForItem(!weArePlayer1, ItemType.Move, labelNMoveItemsOther, buttonOtherPlayer_moveItem)
 		updateUIForItem(!weArePlayer1, ItemType.See, labelNSeeItemsOther, buttonOtherPlayer_seeItem)
 		updateUIForItem(!weArePlayer1, ItemType.Give, labelNGiveItemsOther, buttonOtherPlayer_giveItem)
+		
+		
+		// Update whether the item buttons are visible:
+		let givingIsSelected = currentState.selectedItemForPlayer(weArePlayer1)?.itemType == ItemType.Give
+		buttonMoveItem.hidden = !currentLevel.moveItemAvailable || givingIsSelected
+		buttonOtherPlayer_moveItem.hidden = !currentLevel.moveItemAvailable
+		buttonSeeItem.hidden = !currentLevel.seeItemAvailable || givingIsSelected
+		buttonOtherPlayer_seeItem.hidden = !currentLevel.seeItemAvailable
+		buttonGiveItem.hidden = !currentLevel.giveItemAvailable
+		buttonOtherPlayer_giveItem.hidden = !currentLevel.giveItemAvailable
+		
+		// Update ..
+		buttonToGiveMoveItemToOtherPlayer.hidden = !givingIsSelected
+		buttonToGiveSeeItemToOtherPlayer.hidden = !givingIsSelected
+		
 		
 		
 		// Whenever our see item is selected, make the board look different:

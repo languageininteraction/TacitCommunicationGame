@@ -52,6 +52,8 @@ enum RoundActionType: Int {
 	case SwitchWhetherMoveItemIsEnabled
 	case SwitchWhetherSeeItemIsEnabled
 	case SwitchWhetherGiveItemIsEnabled
+	case GiveMoveItem
+	case GiveSeeItem
 	case Finish
 	case Retry
 	case Continue

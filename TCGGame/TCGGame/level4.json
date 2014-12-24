@@ -38,10 +38,12 @@
 	"giveItemAvailable": false,
 	"itemsPlayer1": {
 		"move": 1,
-		"see": 10
+		"see": 10,
+		"give": 0
 	},
 	"itemsPlayer2": {
 		"move": 5,
-		"see": 1
+		"see": 1,
+		"give": 0
 	}
 }

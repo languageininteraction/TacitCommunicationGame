@@ -18,7 +18,7 @@ enum ItemType: Int {
 class ItemDefinition: NSObject
 {
     let itemType: ItemType
-    let endlessUse: Bool
+    var endlessUse: Bool
     var nrUses: Int? // Not used if endlessUse == true
     
     init(itemType: ItemType, endlessUse: Bool, nrUses: Int?) {
@@ -48,6 +48,25 @@ class ItemDefinition: NSObject
 			return true
 		}
 		return nrUses! > 0
+	}
+	
+	func updateNrUsesAsAResultOfReceivingAnItem(receivedItem: ItemDefinition) {
+		// Assert that the passed item is of the same type as ourselves:
+		assert(receivedItem.itemType == itemType, "In updateNrUsesAsAResultOfReceivingAnItem, the passed item should be of the same itemType as we have.")
+		
+		endlessUse = endlessUse || receivedItem.endlessUse
+		if !endlessUse {
+			if let actualNrUses = nrUses {
+				nrUses = actualNrUses + receivedItem.nrUses!
+			} else {
+				nrUses = receivedItem.nrUses
+			}
+		}
+	}
+	
+	func updateNrUsesAsAResultOfGivingTheItemToTheOtherPlayer() {
+		endlessUse = false
+		nrUses = 0
 	}
 }
 

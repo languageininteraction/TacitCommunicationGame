@@ -36,6 +36,14 @@
 	"moveItemAvailable": false,
 	"seeItemAvailable": false,
 	"giveItemAvailable": false,
-	"itemsPlayer1": {},
-	"itemsPlayer2": {}
+	"itemsPlayer1": {
+		"move": 0,
+		"see": 0,
+		"give": 0
+	},
+	"itemsPlayer2": {
+		"move": 0,
+		"see": 0,
+		"give": 0
+	}
 }

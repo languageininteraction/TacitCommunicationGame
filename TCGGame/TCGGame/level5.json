@@ -37,12 +37,13 @@
 	"seeItemAvailable": true,
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 100,
-		"see": 100,
-		"give": 100
+		"move": 2,
+		"see": 1,
+		"give": 5
 	},
 	"itemsPlayer2": {
-		"see": 100,
+		"move": 5,
+		"see": 1,
 		"give": 100
 	}
 }

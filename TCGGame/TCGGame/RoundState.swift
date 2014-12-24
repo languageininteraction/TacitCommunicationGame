@@ -119,6 +119,18 @@ class RoundState: NSObject, NSCopying {
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
 			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
 			
+		case .GiveMoveItem, .GiveSeeItem: // MARK: Actions .GiveMoveItem and .GiveSeeItem
+			// For the given item, the giver doesn't have uses left and the receiver's number of uses is increased:
+			let itemType = action.type == .GiveMoveItem ? ItemType.Move : ItemType.See
+			let itemOfGiver = nextState.itemOfTypeForPlayer(action.performedByPlayer1, itemType: itemType)!
+			let itemOfReceiver = nextState.itemOfTypeForPlayer(!action.performedByPlayer1, itemType: itemType)!
+			itemOfReceiver.updateNrUsesAsAResultOfReceivingAnItem(itemOfGiver)
+			itemOfGiver.updateNrUsesAsAResultOfGivingTheItemToTheOtherPlayer()
+			
+			// The giver no longer has his or her give item selected:
+			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nil)
+			
+			
 		case .Finish: // MARK: Action .Finish
 			// Assert that the roundResult is still MaySucceed, otherwise this action should not be possible:
 			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction.Finish if the RoundResult is still .MaySucceed.")
