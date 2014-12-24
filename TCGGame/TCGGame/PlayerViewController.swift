@@ -997,47 +997,36 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	func updateUIOfItems() {
 		let currentState = currentRound!.currentState()
 		
-		// Which of our own items is selected:
-		buttonMoveItem.selected = currentState.playerHasItemTypeSelected(weArePlayer1, itemType: ItemType.Move)
-		buttonSeeItem.selected = currentState.playerHasItemTypeSelected(weArePlayer1, itemType: ItemType.See)
-		buttonGiveItem.selected = currentState.playerHasItemTypeSelected(weArePlayer1, itemType: ItemType.Give)
-		
-		// Which of the other player's items is selected:
-		buttonOtherPlayer_moveItem.selected = currentState.playerHasItemTypeSelected(!weArePlayer1, itemType: ItemType.Move)
-		buttonOtherPlayer_seeItem.selected = currentState.playerHasItemTypeSelected(!weArePlayer1, itemType: ItemType.See)
-		buttonOtherPlayer_giveItem.selected = currentState.playerHasItemTypeSelected(!weArePlayer1, itemType: ItemType.Give)
-		
-		// Update the numbers next to the item buttons that indicate how often the items can be used:
-		func updateLabel(forPlayer1: Bool, itemType: ItemType, label: UILabel) {
+		// Define a function which updates both the button and the label for 1 item:
+		func updateUIForItem(forPlayer1: Bool, itemType: ItemType, label: UILabel, button: UIButton) {
+			// Update whether the button is selected:
+			button.selected = currentState.playerHasItemTypeSelected(forPlayer1, itemType: itemType)
+			
+			let itemIsStillAvailable = currentState.itemIsAvailableForPlayer(forPlayer1, itemType: itemType)
+			
+			// Disable buttons for items with 0 uses left and that are not already selected and make them less opaque:
+			button.enabled = itemIsStillAvailable || button.selected
+			button.layer.opacity = button.enabled ? 1 : 0.25
+			
 			label.hidden = !currentState.level.itemOfTypeIsAvailable(itemType)
 			if let item = currentState.itemOfTypeForPlayer(forPlayer1, itemType: itemType) {
-				if item.endlessUse{
+				if item.endlessUse {
 					label.text = "∞"
 					label.font = kFontAttributeInfinity
 				} else {
 					label.text = "\(item.nrUses!)"
 					label.font = kFontAttributeNumber
+					label.layer.opacity = itemIsStillAvailable ? 1 : 0.2
 				}
 			}
 		}
-		updateLabel(weArePlayer1, ItemType.Move, labelNMoveItems)
-		updateLabel(weArePlayer1, ItemType.See, labelNSeeItems)
-		updateLabel(weArePlayer1, ItemType.Give, labelNGiveItems)
-		updateLabel(!weArePlayer1, ItemType.Move, labelNMoveItemsOther)
-		updateLabel(!weArePlayer1, ItemType.See, labelNSeeItemsOther)
-		updateLabel(!weArePlayer1, ItemType.Give, labelNGiveItemsOther)
+		updateUIForItem(weArePlayer1, ItemType.Move, labelNMoveItems, buttonMoveItem)
+		updateUIForItem(weArePlayer1, ItemType.See, labelNSeeItems, buttonSeeItem)
+		updateUIForItem(weArePlayer1, ItemType.Give, labelNGiveItems, buttonGiveItem)
+		updateUIForItem(!weArePlayer1, ItemType.Move, labelNMoveItemsOther, buttonOtherPlayer_moveItem)
+		updateUIForItem(!weArePlayer1, ItemType.See, labelNSeeItemsOther, buttonOtherPlayer_seeItem)
+		updateUIForItem(!weArePlayer1, ItemType.Give, labelNGiveItemsOther, buttonOtherPlayer_giveItem)
 		
-/*		let nrUsesLeftForLocalPlayer = currentState.nrUsesLeftForPlayer(weArePlayer1)
-		labelNMoveItems.text = "\(nrUsesLeftForLocalPlayer[Item.Move]!)"
-		labelNSeeItems.text = "\(nrUsesLeftForLocalPlayer[Item.See]!)"
-		labelNGiveItems.text = "\(nrUsesLeftForLocalPlayer[Item.Give]!)"
-		
-		// For the other player:
-		let nrUsesLeftForOtherPlayer = currentState.nrUsesLeftForPlayer(!weArePlayer1)
-		labelNMoveItemsOther.text = "\(nrUsesLeftForOtherPlayer[Item.Move]!)"
-		labelNSeeItemsOther.text = "\(nrUsesLeftForOtherPlayer[Item.See]!)"
-		labelNGiveItemsOther.text = "\(nrUsesLeftForOtherPlayer[Item.Give]!)"
-		*/
 		
 		// Whenever our see item is selected, make the board look different:
 		boardView.fieldsAreSlightlyRotated = buttonSeeItem.selected

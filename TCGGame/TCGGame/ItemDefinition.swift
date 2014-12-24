@@ -19,7 +19,7 @@ class ItemDefinition: NSObject
 {
     let itemType: ItemType
     let endlessUse: Bool
-    let nrUses: Int? //Not used if endlessUse == true
+    var nrUses: Int? // Not used if endlessUse == true
     
     init(itemType: ItemType, endlessUse: Bool, nrUses: Int?) {
         self.itemType = itemType
@@ -34,4 +34,23 @@ class ItemDefinition: NSObject
 		
 		self.init(itemType: itemType, endlessUse: endlessUse, nrUses: optionalNrUses)
 	}
+	
+	func updateNrUsesAsAResultOfItemBeingUsed() {
+		if !endlessUse {
+			// Assert that the item is only being used if the nrUses wasn't 0 yet:
+			assert(nrUses! > 0, "An item shouldn't be used once its nrUses <= 0!")
+			nrUses = nrUses! - 1
+		}
+	}
+	
+	func itemIsStillAvailable() -> Bool {
+		if endlessUse {
+			return true
+		}
+		return nrUses! > 0
+	}
 }
+
+
+
+

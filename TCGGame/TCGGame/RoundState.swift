@@ -91,25 +91,35 @@ class RoundState: NSObject, NSCopying {
 		
 		// Depending on the action type, change the state:
 		switch action.type {
-		case .MovePawn:
+			
+		case .MovePawn: // MARK: Action .MovePawn
 			// We assume that only move actions that are actually possible can be performed (otherwise the button isn't available), so here we don't need to check whether moving in the specified direction is possible:
 			var nextPosition = positionOfPawn(action.performedByPlayer1)
 			nextPosition.x += action.moveDirection == Direction.East ? 1 : action.moveDirection == Direction.West ? -1 : 0
 			nextPosition.y += action.moveDirection == Direction.South ? 1 : action.moveDirection == Direction.North ? -1 : 0
 			nextState.setPositionOfPawn(action.performedByPlayer1, position: nextPosition)
-		case .RotatePawn:
+			
+		case .RotatePawn: // MARK: Action .RotatePawn
 			let nextRotation = nextState.rotationOfPawn(action.performedByPlayer1).directionAfterRotating(action.rotateDirection)
 			nextState.setRotationOfPawn(action.performedByPlayer1, rotation: nextRotation)
-		case .SwitchWhetherMoveItemIsEnabled:
+			
+			// todo: Combine SwitchWhetherMoveItemIsEnabled, SwitchWhetherSeeItemIsEnabled, and SwitchWhetherGiveItemIsEnabled
+		case .SwitchWhetherMoveItemIsEnabled: // MARK: Action .SwitchWhetherMoveItemIsEnabled
 			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.Move ? nil : ItemType.Move
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
-		case .SwitchWhetherSeeItemIsEnabled:
+			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
+			
+		case .SwitchWhetherSeeItemIsEnabled: // MARK: Action .SwitchWhetherSeeItemIsEnabled
 			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.See ? nil : ItemType.See
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
-		case .SwitchWhetherGiveItemIsEnabled:
+			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
+			
+		case .SwitchWhetherGiveItemIsEnabled: // MARK: Action .SwitchWhetherGiveItemIsEnabled
 			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.Give ? nil : ItemType.Give
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
-		case .Finish:
+			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
+			
+		case .Finish: // MARK: Action .Finish
 			// Assert that the roundResult is still MaySucceed, otherwise this action should not be possible:
 			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction.Finish if the RoundResult is still .MaySucceed.")
 			
@@ -137,7 +147,7 @@ class RoundState: NSObject, NSCopying {
 				nextState.roundResult = RoundResult.Succeeded
 			}
 			
-		case .Retry:
+		case .Retry: // MARK: Action .Retry
 			// Assert that the roundResult is Failed, otherwise this action should not be possible:
 			assert(roundResult == RoundResult.Failed, "It should only be possible to perform a RoundAction.Retry if the RoundResult is .Failed.")
 			
@@ -147,7 +157,8 @@ class RoundState: NSObject, NSCopying {
 			} else {
 				nextState.player2isReadyToContinue = true
 			}
-		case .Continue:
+			
+		case .Continue: // MARK: Action .Continue
 			// Assert that the roundResult is Succeeded, otherwise this action should not be possible:
 			assert(roundResult == RoundResult.Succeeded, "It should only be possible to perform a RoundAction.Continue if the RoundResult is .Succeeded.")
 			
@@ -157,6 +168,7 @@ class RoundState: NSObject, NSCopying {
 			} else {
 				nextState.player2isReadyToContinue = true
 			}
+			
 		default:
 			println("Warning in Round's processAction: don't know what to do with this action type.")			
 		}
@@ -283,7 +295,7 @@ class RoundState: NSObject, NSCopying {
 	}
 	
 	
-	// MARK: - Useful info about the state, e.g. for a VC
+	// MARK: - Useful functions to ask about the state, change the stae, e.g. for a VC
 	
 	func positionOfPawn(aboutPawn1: Bool) -> (x: Int, y: Int) {
 		return aboutPawn1 ? posPawn1 : posPawn2
@@ -315,6 +327,14 @@ class RoundState: NSObject, NSCopying {
 	
 	func playerMessedUp(aboutPawn1: Bool) -> Bool {
 		return aboutPawn1 ? player1messedUp : player2messedUp
+	}
+	
+	func selectedItemForPlayer(aboutPawn1: Bool) -> ItemDefinition? {
+		let itemType = selectedItemTypeForPlayer(aboutPawn1)
+		if itemType == nil {
+			return nil
+		}
+		return itemOfTypeForPlayer(aboutPawn1, itemType: itemType!)
 	}
 	
 	func selectedItemTypeForPlayer(aboutPawn1: Bool) -> ItemType? {
@@ -411,4 +431,22 @@ class RoundState: NSObject, NSCopying {
 		}
 		return nil
 	}
+	
+	func updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(aboutPawn1: Bool) {
+		if let actualSelectedItem = selectedItemForPlayer(aboutPawn1) {
+			actualSelectedItem.updateNrUsesAsAResultOfItemBeingUsed()
+		}
+	}
+	
+	func itemIsAvailableForPlayer(aboutPawn1: Bool, itemType: ItemType) -> Bool {
+		if let actualItem = itemOfTypeForPlayer(aboutPawn1, itemType: itemType) {
+			return actualItem.itemIsStillAvailable()
+		}
+		return false
+	}
 }
+
+
+
+
+
