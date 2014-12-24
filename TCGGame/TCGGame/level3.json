@@ -1,6 +1,6 @@
 {
     "nr": 3,
-    "name": "item_see",    
+    "name": "item_move",    
     "board": {
         "width": 3,
         "height": 3
@@ -36,6 +36,10 @@
 	"moveItemAvailable": true,
 	"seeItemAvailable": false,
 	"giveItemAvailable": false,
-	"items1": {},
-	"items2": {}
+	"itemsPlayer1": {
+		"move": 100
+	},
+	"itemsPlayer2": {
+		"move": 100
+	}
 }

@@ -70,6 +70,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var buttonOtherPlayer_giveItem = UIButton()
 	var buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
 	
+	// The labels next to the item buttons to show how many uses left:
+	var labelNMoveItems = UILabel()
+	var labelNSeeItems = UILabel()
+	var labelNGiveItems = UILabel()
+	var labelNMoveItemsOther = UILabel()
+	var labelNSeeItemsOther = UILabel()
+	var labelNGiveItemsOther = UILabel()
+	
 	// todo explain
 	var itemButtons = [UIButton]()
 
@@ -107,8 +115,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		2. The players info (photos and names);
 		3. The move and rotate buttons;
 		4. The item buttons (to enable/disable move, see, and give);
-		5. The buttons to finish / retry / continue;
-		6. The label with the level; */
+		5. The labels next to the item buttons with the numbers of use left;
+		6. The buttons to finish / retry / continue;
+		7. The label with the level; */
 		
 		
 		// todo explain
@@ -168,7 +177,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 
 		// temp:
 //		nameLabelLocalPlayer.backgroundColor = UIColor.yellowColor()
-		nameLabelLocalPlayer.text = "Mark"
+		nameLabelLocalPlayer.text = "Ikzelf"
 		
 		// Other player's name label:
 		let nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
@@ -177,7 +186,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// temp:
 //		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
-		nameLabelOtherPlayer.text = "Martin"
+		nameLabelOtherPlayer.text = "Die ander"
 		
 		
 		// Used for multiple frames:
@@ -283,7 +292,21 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 		
 		
-		// MARK: 5. Prepare the buttons to finish / retry / continue; images are set in updateUIForLevelButtons:
+		// MARK: 5. Prepare the labels next to the item buttons with the numbers of use left:
+		func prepareLabelNextToItemButton(label: UILabel, itemButton: UIButton) {
+			label.frame = CGRectMake(itemButton.frame.origin.x + itemButton.frame.size.width - 5, itemButton.frame.origin.y + itemButton.frame.size.height - 17, 30, 20) // todo
+			self.view.addSubview(label)
+			label.font = kFontAttributeNumber
+		}
+		prepareLabelNextToItemButton(labelNMoveItems, buttonMoveItem)
+		prepareLabelNextToItemButton(labelNSeeItems, buttonSeeItem)
+		prepareLabelNextToItemButton(labelNGiveItems, buttonGiveItem)
+		prepareLabelNextToItemButton(labelNMoveItemsOther, buttonOtherPlayer_moveItem)
+		prepareLabelNextToItemButton(labelNSeeItemsOther, buttonOtherPlayer_seeItem)
+		prepareLabelNextToItemButton(labelNGiveItemsOther, buttonOtherPlayer_giveItem)
+		
+		
+		// MARK: 6. Prepare the buttons to finish / retry / continue; images are set in updateUIForLevelButtons:
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
 		// buttonToFinishRetryOrContinue:
@@ -296,7 +319,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
 		
 		
-		// MARK: 6. Prepare the level label:
+		// MARK: 7. Prepare the level label:
 		labelLevel.frame = CGRectMake(0.5 * (widthScreen - kWidthOfLevelLabel), heightScreen - kSpaceBetweenYOfLevelLabelAndBottom, kWidthOfLevelLabel, kSpaceBetweenYOfLevelLabelAndBottom)
 		labelLevel.font = kFontLevel
 		labelLevel.textAlignment = NSTextAlignment.Center
@@ -515,7 +538,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			// Update the rotation of the other player's pawn:
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1))
 		case .SwitchWhetherMoveItemIsEnabled, .SwitchWhetherSeeItemIsEnabled, .SwitchWhetherGiveItemIsEnabled:
-			updateWhichItemButtonsAreSelected()
+			updateUIOfItems()
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
 			updateUIForLevelButtons()
@@ -598,7 +621,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Update our UI. Because turning one item on may cause another item to be turned off, we update UI related to all three items:
 		
 		// Update which buttons are selected:
-		updateWhichItemButtonsAreSelected()
+		updateUIOfItems()
 		
 		// Update whether the pawn can be moved:
 		updateUIForMoveAndRotateButtons()
@@ -701,13 +724,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// todo explain
 		self.updateUIForLevelButtons()
-		
-		
-		// todo: move this elsewhere
-		var ownItems = [ItemDefinition]()
-		var otherItems = [ItemDefinition]()
-		var selectedItem = 0
-		var selectedItemOther = 0
+		self.updateUIOfItems()
 	}
 	
 	func updateUIForMoveAndRotateButtons() {
@@ -754,11 +771,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			
 			self.boardView.placePawn(true, field: actualCurrentState.posPawn1)
 			self.boardView.placePawn(false, field: actualCurrentState.posPawn2)
-			
-			var ownItems = [ItemDefinition]()
-			var otherItems = [ItemDefinition]()
-			var selectedItem = 0
-			var selectedItemOther = 0
 			
 			
 			// todo: Buttons are now created once. Only their properties (such as whether they are hidden, selected, etc.) should be updated in response to state changes.
@@ -982,18 +994,50 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	
-	func updateWhichItemButtonsAreSelected() {
+	func updateUIOfItems() {
 		let currentState = currentRound!.currentState()
 		
-		// Our own items:
-		buttonMoveItem.selected = currentState.playerHasItemSelected(weArePlayer1, item: Item.Move)
-		buttonSeeItem.selected = currentState.playerHasItemSelected(weArePlayer1, item: Item.See)
-		buttonGiveItem.selected = currentState.playerHasItemSelected(weArePlayer1, item: Item.Give)
+		// Which of our own items is selected:
+		buttonMoveItem.selected = currentState.playerHasItemTypeSelected(weArePlayer1, itemType: ItemType.Move)
+		buttonSeeItem.selected = currentState.playerHasItemTypeSelected(weArePlayer1, itemType: ItemType.See)
+		buttonGiveItem.selected = currentState.playerHasItemTypeSelected(weArePlayer1, itemType: ItemType.Give)
 		
-		// Items of the other player:
-		buttonOtherPlayer_moveItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.Move)
-		buttonOtherPlayer_seeItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.See)
-		buttonOtherPlayer_giveItem.selected = currentState.playerHasItemSelected(!weArePlayer1, item: Item.Give)
+		// Which of the other player's items is selected:
+		buttonOtherPlayer_moveItem.selected = currentState.playerHasItemTypeSelected(!weArePlayer1, itemType: ItemType.Move)
+		buttonOtherPlayer_seeItem.selected = currentState.playerHasItemTypeSelected(!weArePlayer1, itemType: ItemType.See)
+		buttonOtherPlayer_giveItem.selected = currentState.playerHasItemTypeSelected(!weArePlayer1, itemType: ItemType.Give)
+		
+		// Update the numbers next to the item buttons that indicate how often the items can be used:
+		func updateLabel(forPlayer1: Bool, itemType: ItemType, label: UILabel) {
+			label.hidden = !currentState.level.itemOfTypeIsAvailable(itemType)
+			if let item = currentState.itemOfTypeForPlayer(forPlayer1, itemType: itemType) {
+				if item.endlessUse{
+					label.text = "∞"
+					label.font = kFontAttributeInfinity
+				} else {
+					label.text = "\(item.nrUses!)"
+					label.font = kFontAttributeNumber
+				}
+			}
+		}
+		updateLabel(weArePlayer1, ItemType.Move, labelNMoveItems)
+		updateLabel(weArePlayer1, ItemType.See, labelNSeeItems)
+		updateLabel(weArePlayer1, ItemType.Give, labelNGiveItems)
+		updateLabel(!weArePlayer1, ItemType.Move, labelNMoveItemsOther)
+		updateLabel(!weArePlayer1, ItemType.See, labelNSeeItemsOther)
+		updateLabel(!weArePlayer1, ItemType.Give, labelNGiveItemsOther)
+		
+/*		let nrUsesLeftForLocalPlayer = currentState.nrUsesLeftForPlayer(weArePlayer1)
+		labelNMoveItems.text = "\(nrUsesLeftForLocalPlayer[Item.Move]!)"
+		labelNSeeItems.text = "\(nrUsesLeftForLocalPlayer[Item.See]!)"
+		labelNGiveItems.text = "\(nrUsesLeftForLocalPlayer[Item.Give]!)"
+		
+		// For the other player:
+		let nrUsesLeftForOtherPlayer = currentState.nrUsesLeftForPlayer(!weArePlayer1)
+		labelNMoveItemsOther.text = "\(nrUsesLeftForOtherPlayer[Item.Move]!)"
+		labelNSeeItemsOther.text = "\(nrUsesLeftForOtherPlayer[Item.See]!)"
+		labelNGiveItemsOther.text = "\(nrUsesLeftForOtherPlayer[Item.Give]!)"
+		*/
 		
 		// Whenever our see item is selected, make the board look different:
 		boardView.fieldsAreSlightlyRotated = buttonSeeItem.selected

@@ -26,17 +26,17 @@ class Level: NSObject
 	let seeItemAvailable = false
 	let giveItemAvailable = false
 
-    var itemsPlayer1: [ItemDefinition]
-    var itemsPlayer2: [ItemDefinition]
+    var startItemsPlayer1: [ItemDefinition]
+    var startItemsPlayer2: [ItemDefinition]
     
     init(filename:String)
     {
-        //Read in the level
+        // Read in the level:
         let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
         let jsonData = NSData(contentsOfFile:path!, options: .DataReadingMappedIfSafe, error: nil)
         var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as Dictionary<String, AnyObject>
         
-        //Fill the vars
+        // Fill the vars:
         self.nr = jsonResult["nr"] as Int
         self.name = jsonResult["name"] as String
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
@@ -53,11 +53,20 @@ class Level: NSObject
 		self.seeItemAvailable = jsonResult["seeItemAvailable"] as Bool
 		self.giveItemAvailable = jsonResult["giveItemAvailable"] as Bool
 		
-		// todo read this from json:
-        self.itemsPlayer1 = [ItemDefinition(itemType: ItemType.Glasses, endlessUse: true, nrUses: nil),
-                            ItemDefinition(itemType: ItemType.Shoes, endlessUse: true, nrUses: nil)]
-
-        self.itemsPlayer2 = [ItemDefinition(itemType: ItemType.Glasses, endlessUse: true, nrUses: nil),
-                            ItemDefinition(itemType: ItemType.Shoes, endlessUse: true, nrUses: nil)]
+		let itemsPlayer1 = jsonResult["itemsPlayer1"] as [String: Int]
+		startItemsPlayer1 = []
+		for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer1 {
+			startItemsPlayer1.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
+		}
+		
+		let itemsPlayer2 = jsonResult["itemsPlayer2"] as [String: Int]
+		startItemsPlayer2 = []
+		for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer2 {
+			startItemsPlayer2.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
+		}
     }
+	
+	func itemOfTypeIsAvailable(itemType: ItemType) -> Bool {
+		return itemType == ItemType.Move ? moveItemAvailable : itemType == ItemType.See ? seeItemAvailable : giveItemAvailable
+	}
 }

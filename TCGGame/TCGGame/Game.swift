@@ -11,7 +11,8 @@ import Foundation
 class Game: NSObject
 {
 	// Levels:
-	let levels = [Level(filename:"level1"), Level(filename:"level2"), Level(filename:"level3"), Level(filename:"level4")]
+	let levels = [Level(filename:"level1"), Level(filename:"level2"), Level(filename:"level3"), Level(filename:"level4"), Level(filename:"level5")]
+//	let levels = [Level(filename:"level3")]
 	var indexCurrentLevel = 3
 	var currentLevel: Level {
 		return levels[indexCurrentLevel]

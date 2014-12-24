@@ -14,7 +14,7 @@ let kDevelopmentMode = true
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 
 // Layout of the board and stuff on top of / inside the board:
 let kBoardEdgeLength: Float = 400
@@ -47,8 +47,8 @@ let kWidthOfLevelLabel: CGFloat = 200
 // Fonts:
 let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: 36)
 let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 36)
-let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 15)
-let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 12)
+let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 25)
+let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 20)
 
 // Pawns:
 let kPawnLineWidth = 2

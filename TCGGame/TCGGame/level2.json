@@ -36,6 +36,6 @@
 	"moveItemAvailable": false,
 	"seeItemAvailable": false,
 	"giveItemAvailable": false,
-	"items1": {},
-	"items2": {}
+	"itemsPlayer1": {},
+	"itemsPlayer2": {}
 }

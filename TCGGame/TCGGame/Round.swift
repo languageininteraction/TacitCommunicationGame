@@ -32,6 +32,8 @@ class Round : NSObject {
 		beginState.posPawn2 = (level.startConfigurationPawn2.x, level.startConfigurationPawn2.y)
 		beginState.rotationPawn1 = level.startConfigurationPawn1.rotation
 		beginState.rotationPawn2 = level.startConfigurationPawn2.rotation
+		beginState.itemsPlayer1 = level.startItemsPlayer1
+		beginState.itemsPlayer2 = level.startItemsPlayer2
 		
 		self.currentPhase = RoundPhase(state: beginState)
     }

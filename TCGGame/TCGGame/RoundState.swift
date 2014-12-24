@@ -20,12 +20,6 @@ enum UseOfLevelButton: Int {
 	case Continuing
 }
 
-enum Item: Int {
-	case Move
-	case See
-	case Give
-}
-
 class RoundState: NSObject, NSCopying {
 	let level: Level // A RoundState needs a Level to know how it works
 	var count = 0
@@ -33,17 +27,17 @@ class RoundState: NSObject, NSCopying {
     var rotationPawn1 = Direction.North
 	var posPawn2 = (x: 1, y: 1)
     var rotationPawn2 = Direction.North
-	var selectedItemPlayer1: Item?
-	var selectedItemPlayer2: Item?
-    var nrUsesLeftPlayer1 = [99,99,99]
-    var nrUsesLeftPlayer2 = [99,99,99]
+	var selectedItemTypePlayer1: ItemType?
+	var selectedItemTypePlayer2: ItemType?
+	var itemsPlayer1: [ItemDefinition] = []
+	var itemsPlayer2: [ItemDefinition] = []
 	
 	// todo explain
 	var player1isReadyToContinue: Bool = false {
 		didSet {
 			// Whenever a player becomes ready to continue, he/she should not have an item selected:
 			if player1isReadyToContinue {
-				self.selectedItemPlayer1 = nil
+				self.selectedItemTypePlayer1 = nil
 			}
 		}
 	}
@@ -51,7 +45,7 @@ class RoundState: NSObject, NSCopying {
 		didSet {
 			// Whenever a player becomes ready to continue, he/she should not have an item selected:
 			if player2isReadyToContinue {
-				self.selectedItemPlayer2 = nil
+				self.selectedItemTypePlayer2 = nil
 			}
 		}
 	}
@@ -80,10 +74,10 @@ class RoundState: NSObject, NSCopying {
 		result.rotationPawn1 = rotationPawn1
 		result.posPawn2 = posPawn2
 		result.rotationPawn2 = rotationPawn2
-		result.selectedItemPlayer1 = selectedItemPlayer1
-		result.selectedItemPlayer2 = selectedItemPlayer2
-		result.nrUsesLeftPlayer1 = nrUsesLeftPlayer1
-		result.nrUsesLeftPlayer2 = nrUsesLeftPlayer2
+		result.selectedItemTypePlayer1 = selectedItemTypePlayer1
+		result.selectedItemTypePlayer2 = selectedItemTypePlayer2
+		result.itemsPlayer1 = itemsPlayer1
+		result.itemsPlayer2 = itemsPlayer2
 		result.roundResult = roundResult
 		result.player1isReadyToContinue = player1isReadyToContinue
 		result.player2isReadyToContinue = player2isReadyToContinue
@@ -107,14 +101,14 @@ class RoundState: NSObject, NSCopying {
 			let nextRotation = nextState.rotationOfPawn(action.performedByPlayer1).directionAfterRotating(action.rotateDirection)
 			nextState.setRotationOfPawn(action.performedByPlayer1, rotation: nextRotation)
 		case .SwitchWhetherMoveItemIsEnabled:
-			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.Move ? nil : Item.Move
-			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
+			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.Move ? nil : ItemType.Move
+			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
 		case .SwitchWhetherSeeItemIsEnabled:
-			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.See ? nil : Item.See
-			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
+			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.See ? nil : ItemType.See
+			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
 		case .SwitchWhetherGiveItemIsEnabled:
-			let nextSelectedItem: Item? = nextState.selectedItemForPlayer(action.performedByPlayer1) == Item.Give ? nil : Item.Give
-			nextState.setSelectedItemForPlayer(action.performedByPlayer1, selectedItem: nextSelectedItem)
+			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.Give ? nil : ItemType.Give
+			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
 		case .Finish:
 			// Assert that the roundResult is still MaySucceed, otherwise this action should not be possible:
 			assert(roundResult == .MaySucceed, "It should only be possible to perform a RoundAction.Finish if the RoundResult is still .MaySucceed.")
@@ -323,15 +317,15 @@ class RoundState: NSObject, NSCopying {
 		return aboutPawn1 ? player1messedUp : player2messedUp
 	}
 	
-	func selectedItemForPlayer(aboutPawn1: Bool) -> Item? {
-		return aboutPawn1 ? selectedItemPlayer1 : selectedItemPlayer2
+	func selectedItemTypeForPlayer(aboutPawn1: Bool) -> ItemType? {
+		return aboutPawn1 ? selectedItemTypePlayer1 : selectedItemTypePlayer2
 	}
 	
-	func setSelectedItemForPlayer(aboutPawn1: Bool, selectedItem: Item?) {
+	func setSelectedItemTypeForPlayer(aboutPawn1: Bool, selectedItemType: ItemType?) {
 		if aboutPawn1 {
-			selectedItemPlayer1 = selectedItem
+			selectedItemTypePlayer1 = selectedItemType
 		} else {
-			selectedItemPlayer2 = selectedItem
+			selectedItemTypePlayer2 = selectedItemType
 		}
 	}
 	
@@ -368,7 +362,7 @@ class RoundState: NSObject, NSCopying {
 		}
 		
 		// Otherwise they should only be shown if the player had enabled his/her move item:
-		return selectedItemForPlayer(aboutPawn1) == Item.Move
+		return selectedItemTypeForPlayer(aboutPawn1) == ItemType.Move
 	}
 	
 	func goalConfigurationShouldBeShown(aboutPawn1: Bool) -> Bool {
@@ -383,7 +377,7 @@ class RoundState: NSObject, NSCopying {
 		}
 		
 		// Otherwise they should only be shown if the local player had enabled his/her see item:
-		return selectedItemForPlayer(aboutPawn1) == Item.See
+		return selectedItemTypeForPlayer(aboutPawn1) == ItemType.See
 	}
 	
 	func useOfLevelButtons() -> UseOfLevelButton {
@@ -403,8 +397,18 @@ class RoundState: NSObject, NSCopying {
 		return aboutPawn1 ? level.pawnPlayer1 : level.pawnPlayer2
 	}
 	
-	func playerHasItemSelected(aboutPawn1: Bool, item: Item) -> Bool {
-		let selectedItem = aboutPawn1 ? selectedItemPlayer1 : selectedItemPlayer2
-		return selectedItem == item
+	func playerHasItemTypeSelected(aboutPawn1: Bool, itemType: ItemType) -> Bool {
+		let selectedItemType = aboutPawn1 ? selectedItemTypePlayer1 : selectedItemTypePlayer2
+		return selectedItemType == itemType
+	}
+	
+	func itemOfTypeForPlayer(aboutPawn1: Bool, itemType: ItemType) -> ItemDefinition? {
+		let items = aboutPawn1 ? itemsPlayer1 : itemsPlayer2
+		for item in items {
+			if item.itemType == itemType {
+				return item
+			}
+		}
+		return nil
 	}
 }
