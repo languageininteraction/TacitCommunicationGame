@@ -54,6 +54,8 @@
 		4856E58C1A24953800309751 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E58B1A24953800309751 /* FieldView.swift */; };
 		48591D171A445D7E00D57FDD /* Test Account GameCenter.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */; };
 		485E1C761A49AA1F00AC88AC /* level5.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C751A49AA1F00AC88AC /* level5.json */; };
+		485E1C791A4AFE9000AC88AC /* ButtonToGiveSee.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */; };
+		485E1C7A1A4AFE9000AC88AC /* ButtonToGiveMove.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */; };
 		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
@@ -314,6 +316,8 @@
 		4856E58B1A24953800309751 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Account GameCenter.rtf"; sourceTree = "<group>"; };
 		485E1C751A49AA1F00AC88AC /* level5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level5.json; sourceTree = "<group>"; };
+		485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonToGiveSee.png; sourceTree = "<group>"; };
+		485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonToGiveMove.png; sourceTree = "<group>"; };
 		486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PersonPlaceholder 320x320.png"; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
 		48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54@2x.png"; sourceTree = "<group>"; };
@@ -710,6 +714,8 @@
 		48B2C2D61A248CDF002FFEDF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */,
+				485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */,
 				48D19EB51A48A91B0072524E /* SmallCheckMark.png */,
 				48D19EB61A48A91B0072524E /* SmallCross.png */,
 				486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */,
@@ -1137,6 +1143,7 @@
 				48F834BF1A3A3B960098A904 /* Button_presentSelected 256x256@2x.png in Resources */,
 				48B2C3231A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54@2x.png in Resources */,
 				48F834A71A3A3B960098A904 /* Button_moveEast 256x256@2x other.png in Resources */,
+				485E1C791A4AFE9000AC88AC /* ButtonToGiveSee.png in Resources */,
 				48F834A81A3A3B960098A904 /* Button_moveNorth 256x256 256x256@2x.png in Resources */,
 				48F834621A3A3B960098A904 /* Button_checkmarkOrange 256x256.png in Resources */,
 				48B2C3581A248D38002FFEDF /* Button_restartYellow 54x54.png in Resources */,
@@ -1171,6 +1178,7 @@
 				48B2C3671A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png in Resources */,
 				48F8348A1A3A3B960098A904 /* Button_restartYellow 256x256.png in Resources */,
 				48F8348C1A3A3B960098A904 /* Button_restartYellowSelected 256x256.png in Resources */,
+				485E1C7A1A4AFE9000AC88AC /* ButtonToGiveMove.png in Resources */,
 				48F834A51A3A3B960098A904 /* Button_moveEast 256x256 256x256@2x.png in Resources */,
 				48B2C35C1A248D38002FFEDF /* Button_restartYellowSelected 54x54.png in Resources */,
 				48F834821A3A3B960098A904 /* Button_present 256x256.png in Resources */,

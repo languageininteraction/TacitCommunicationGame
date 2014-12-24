@@ -51,35 +51,39 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var boardView = BoardView(edgelength: 0)
 	
 	// The movement buttons:
-	var buttonToMoveEast = UIButton()
-	var buttonToMoveSouth = UIButton()
-	var buttonToMoveWest = UIButton()
-	var buttonToMoveNorth = UIButton()
-	var buttonToRotateClockwise = UIButton()
-	var buttonToRotateCounterclockwise = UIButton()
+	let buttonToMoveEast = UIButton()
+	let buttonToMoveSouth = UIButton()
+	let buttonToMoveWest = UIButton()
+	let buttonToMoveNorth = UIButton()
+	let buttonToRotateClockwise = UIButton()
+	let buttonToRotateCounterclockwise = UIButton()
 	var moveAndRotateButtons = [UIButton]() // for convenience
-	var viewWithAllMoveAndRotateButtons = UIView()
+	let viewWithAllMoveAndRotateButtons = UIView()
 	
 	// The item buttons; for current player, but also for the other player (which won't actually be used as buttons, because their user interaction will be disabled):
-	var buttonMoveItem = UIButton()
-	var buttonSeeItem = UIButton()
-	var buttonGiveItem = UIButton()
-	var buttonToFinishRetryOrContinue = UIButton()
-	var buttonOtherPlayer_moveItem = UIButton()
-	var buttonOtherPlayer_seeItem = UIButton()
-	var buttonOtherPlayer_giveItem = UIButton()
-	var buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
+	let buttonMoveItem = UIButton()
+	let buttonSeeItem = UIButton()
+	let buttonGiveItem = UIButton()
+	let buttonToFinishRetryOrContinue = UIButton()
+	let buttonOtherPlayer_moveItem = UIButton()
+	let buttonOtherPlayer_seeItem = UIButton()
+	let buttonOtherPlayer_giveItem = UIButton()
+	let buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
 	
 	// The labels next to the item buttons to show how many uses left:
-	var labelNMoveItems = UILabel()
-	var labelNSeeItems = UILabel()
-	var labelNGiveItems = UILabel()
-	var labelNMoveItemsOther = UILabel()
-	var labelNSeeItemsOther = UILabel()
-	var labelNGiveItemsOther = UILabel()
+	let labelNMoveItems = UILabel()
+	let labelNSeeItems = UILabel()
+	let labelNGiveItems = UILabel()
+	let labelNMoveItemsOther = UILabel()
+	let labelNSeeItemsOther = UILabel()
+	let labelNGiveItemsOther = UILabel()
 	
 	// todo explain
 	var itemButtons = [UIButton]()
+	
+	// Buttons to give items to other player:
+	let buttonToGiveMoveItemToOtherPlayer = UIButton()
+	let buttonToGiveSeeItemToOtherPlayer = UIButton()
 
 	// Image views for pictures of players:
 	let imageViewPictureOfLocalPlayer = UIImageView()
@@ -117,7 +121,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		4. The item buttons (to enable/disable move, see, and give);
 		5. The labels next to the item buttons with the numbers of use left;
 		6. The buttons to finish / retry / continue;
-		7. The label with the level; */
+		7. The label with the level;
+		8. The buttons to give items to the other player. */
 		
 		
 		// todo explain
@@ -329,6 +334,19 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
         labelLevel.userInteractionEnabled = true
         
         self.view.addSubview(labelLevel)
+		
+		
+		// MARK: 8. Prepare the buttons to give items to the other player:
+
+		// To give our move item:
+		buttonToGiveMoveItemToOtherPlayer.frame = CGRectMake(buttonMoveItem.frame.origin.x - 46, self.buttonMoveItem.frame.origin.y, 110, 70) // todo
+		buttonToGiveMoveItemToOtherPlayer.setImage(UIImage(named: "ButtonToGiveMove"), forState: UIControlState.Normal)
+		self.view.addSubview(buttonToGiveMoveItemToOtherPlayer)
+		
+		// To give our see item:
+		buttonToGiveSeeItemToOtherPlayer.frame = CGRectMake(buttonSeeItem.frame.origin.x - 46, self.buttonSeeItem.frame.origin.y, 110, 70) // todo
+		buttonToGiveSeeItemToOtherPlayer.setImage(UIImage(named: "ButtonToGiveSee"), forState: UIControlState.Normal)
+		self.view.addSubview(buttonToGiveSeeItemToOtherPlayer)
 		
 		
 		// Update the UI:
