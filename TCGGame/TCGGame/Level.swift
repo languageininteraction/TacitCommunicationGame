@@ -10,7 +10,6 @@ import Foundation
 
 class Level: NSObject
 {
-    let nr: Int
     let name: String
     
     let board: BoardDefinition
@@ -37,7 +36,6 @@ class Level: NSObject
         var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as Dictionary<String, AnyObject>
         
         // Fill the vars:
-        self.nr = jsonResult["nr"] as Int
         self.name = jsonResult["name"] as String
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
         self.pawnPlayer1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as Dictionary)

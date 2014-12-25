@@ -13,7 +13,7 @@ import UIKit
 let kDevelopmentMode = true
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player2
 
 // Layout of the board and stuff on top of / inside the board:

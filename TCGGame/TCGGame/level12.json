@@ -1,11 +1,11 @@
 {
-    "name": "item_give_see",
+    "name": "één speler heeft alle drie de items, de ander heeft niks!",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "circle",
+		"shape": "triangle",
 		"color": "yellow"
 	},
 	"pawn2": {
@@ -15,7 +15,7 @@
 	"start1": {
 		"x": 0,
 		"y": 0,
-		"rotation": "east"
+		"rotation": "south"
 	},
 	"start2": {
 		"x": 2,
@@ -24,12 +24,12 @@
 	},
 	"goal1": {
 		"x": 1,
-		"y": 0,
-		"rotation": "south"
+		"y": 1,
+		"rotation": "east"
 	},
 	"goal2": {
 		"x": 1,
-		"y": 1,
+		"y": 0,
 		"rotation": "north"
 	},
 	"moveItemAvailable": true,
@@ -37,12 +37,12 @@
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
 		"move": 100,
-		"see": 0,
-		"give": 0
-	},
-	"itemsPlayer2": {
-		"move": 100,
 		"see": 100,
 		"give": 1
+	},
+	"itemsPlayer2": {
+		"move": 0,
+		"see": 0,
+		"give": 0
 	}
 }

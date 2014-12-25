@@ -66,7 +66,7 @@ class PawnView: UIView {
 				let path = UIBezierPath()
 				
 				let xRightPointRelative = CGFloat(powf(1.0 - 0.5 * 0.5, 0.5))
-				let amountXToTheRight = 0.15 * edgelength // todo constant
+				let amountXToTheRight = 0.12 * edgelength // todo constant
 				
 				path.moveToPoint(CGPointMake(amountXToTheRight, 0))
 				path.addLineToPoint(CGPointMake(edgelength * xRightPointRelative + amountXToTheRight, 0.5 * edgelength))

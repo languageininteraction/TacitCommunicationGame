@@ -33,7 +33,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
 	var match: GKMatch?
 	var weDecideWhoIsWho: Bool? {
-		// one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes the sender and who becomes the receiver; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle
+		// one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle
 		didSet {
 			if let actualValue = weDecideWhoIsWho {
 				self.weArePlayer1 = actualValue
@@ -385,14 +385,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func continueWithAuthenticatedLocalPlayer() {
 		// todo: should we do this here?
-		if !kDevLocalTestingIsOn {
+/*		if !kDevLocalTestingIsOn {
 			self.localPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
 				
 				println("error loading picture: \(error)")
 				
 				self.imageViewPictureOfLocalPlayer.image = image // todo check error first!
 			}) // todo check the size we need
-		}
+		}*/
 		
 		self.hostMatch()
 	}
@@ -413,9 +413,8 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func subControllerFinished(subController: AnyObject) {
 		if let actualLevel = self.chooseLevelViewController.selectedLevel {
-			println("todo hier weer fixen dat level geset wordt")
-//			self.currentGame.currentLevel = actualLevel
-			println("hatsee! level \(self.currentGame.currentLevel.nr)")
+			self.currentGame.currentLevel = actualLevel
+			restartLevel()
 		}
 		
 		subController.dismissViewControllerAnimated(false, completion: nil)
@@ -473,7 +472,10 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			let otherPlayer = self.match!.players[0] as GKPlayer //
 			self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
 			
-			// todo: do this here?
+			// todo: UI should be ready before it is shown; we can solve this once we do the match making in another vc:
+			restartLevel()
+			
+/*			// todo: do this here?
 			otherPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
 				
 				println("error loading picture of other: \(error)")
@@ -482,7 +484,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 					self.imageViewPictureOfOtherPlayer.image = image // todo check error first!
 				}
 			}) // todo check the size we need
-            
+            */
 		}
     }
 	
@@ -716,7 +718,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
     
     func tapLevelLabel(sender:UILabel) {
-        println("tapLevel")
+		self.chooseLevelViewController.levels = currentGame.levels
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
     }
@@ -728,7 +730,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		let currentLevel = currentGame.currentLevel
 
-		labelLevel.text = "Level \(currentGame.currentLevel.nr)"
+		labelLevel.text = "Level \(currentGame.indexCurrentLevel + 1)"
 
 		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
 		

@@ -1,9 +1,9 @@
 {
-    "name": "walk",
+    "name": "only one can see; no giving; circles",
     "board": {
         "width": 3,
         "height": 3
-    },
+	},
 	"pawn1": {
 		"shape": "circle",
 		"color": "yellow"
@@ -13,36 +13,36 @@
 		"color": "orange"
 	},
 	"start1": {
-		"x": 0,
+		"x": 1,
 		"y": 0,
-		"rotation": "east"
+		"rotation": "south"
 	},
 	"start2": {
-		"x": 2,
+		"x": 1,
 		"y": 2,
 		"rotation": "west"
 	},
 	"goal1": {
-		"x": 2,
-		"y": 0,
-		"rotation": "east"
-	},
-	"goal2": {
 		"x": 0,
-		"y": 2,
+		"y": 0,
 		"rotation": "west"
 	},
-	"moveItemAvailable": false,
-	"seeItemAvailable": false,
-	"giveItemAvailable": false,
+	"goal2": {
+		"x": 1,
+		"y": 1,
+		"rotation": "north"
+	},
+	"moveItemAvailable": true,
+	"seeItemAvailable": true,
+	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 0,
+		"move": 100,
 		"see": 0,
 		"give": 0
 	},
 	"itemsPlayer2": {
-		"move": 0,
-		"see": 0,
+		"move": 100,
+		"see": 100,
 		"give": 0
 	}
 }
