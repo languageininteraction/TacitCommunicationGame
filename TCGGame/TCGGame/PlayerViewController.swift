@@ -558,7 +558,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			self.updateWhichMoveAndRotateButtonsAreVisible()
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
-			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1))
+			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1), animated: true)
 		case .SwitchWhetherMoveItemIsEnabled, .SwitchWhetherSeeItemIsEnabled, .SwitchWhetherGiveItemIsEnabled:
 			updateUIOfItems()
 		case .GiveMoveItem, .GiveSeeItem:
@@ -627,7 +627,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		currentRound?.processAction(action)
 		
 		// Update our UI:
-		self.boardView.rotatePawnToRotation(weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(weArePlayer1))
+		self.boardView.rotatePawnToRotation(weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(weArePlayer1), animated: true)
 	}
 	
 	func itemButtonPressed(sender: UIButton!) {
@@ -644,14 +644,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// Update our UI. Because turning one item on may cause another item to be turned off, we update UI related to all three items:
 		
+		// Update whether the goal configuration is shown (note: it's not pretty, but if this is called AFTER updateUIOfItems is called, the goal configuration will be offset slightly):
+		updateWhetherGoalConfigurationIsShown()
+		
 		// Update which buttons are selected:
 		updateUIOfItems()
 		
 		// Update whether the pawn can be moved:
 		updateUIForMoveAndRotateButtons()
-		
-		// Update whether the goal configuration is shown:
-		updateWhetherGoalConfigurationIsShown()
 	}
 	
 	func levelButtonPressed(sender:UIButton!) {
@@ -738,12 +738,12 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Pawn 1:
 		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnPlayer1.shape, color: currentLevel.pawnPlayer1.color)
 		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
-		boardView.rotatePawnToRotation(true, rotation: currentLevel.startConfigurationPawn1.rotation)
+		boardView.rotatePawnToRotation(true, rotation: currentLevel.startConfigurationPawn1.rotation, animated: false)
 		
 		// Pawn 2:
 		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnPlayer2.shape, color: currentLevel.pawnPlayer2.color)
 		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
-		boardView.rotatePawnToRotation(false, rotation: currentLevel.startConfigurationPawn2.rotation)
+		boardView.rotatePawnToRotation(false, rotation: currentLevel.startConfigurationPawn2.rotation, animated: false)
 		
 		// todo explain
 		boardView.clearShownResultsForSpecificPositions()
@@ -761,8 +761,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	func updateUIForMoveAndRotateButtons() {
-		println("updateUIForMoveAndRotateButtons \(weArePlayer1)")
-		
 		// Update whether they are hidden:
 		let movementButtonsShouldBeShown = currentRound!.currentState().movementButtonsShouldBeShown(weArePlayer1)
 		let positionButtons = currentRound!.currentState().positionOfPawn(weArePlayer1)
@@ -926,8 +924,6 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	
 	func centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(x: Int, y: Int) {
-		println("centerViewWithAllMoveAndRotateButtonsAboveField \(weArePlayer1)")
-		
 		// Calculate the new frame of viewWithAllMoveAndRotateButtons:
 		let oldFrame = viewWithAllMoveAndRotateButtons.frame
 		var newFrame = oldFrame
@@ -1068,6 +1064,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 				if item.endlessUse {
 					label.text = "∞"
 					label.font = kFontAttributeInfinity
+					label.layer.opacity = 1
 				} else {
 					label.text = "\(item.nrUses!)"
 					label.font = kFontAttributeNumber

@@ -1,6 +1,6 @@
 {
     "nr": 5,
-    "name": "item_give",
+    "name": "item_give_move",
     "board": {
         "width": 3,
         "height": 3
@@ -37,13 +37,13 @@
 	"seeItemAvailable": true,
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 2,
-		"see": 1,
-		"give": 5
+		"move": 100,
+		"see": 100,
+		"give": 1
 	},
 	"itemsPlayer2": {
-		"move": 5,
-		"see": 1,
-		"give": 100
+		"move": 0,
+		"see": 100,
+		"give": 0
 	}
 }

@@ -1,12 +1,12 @@
 {
-    "nr": 4,
-    "name": "item_see",    
+    "nr": 5,
+    "name": "item_give_move",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "triangle",
+		"shape": "circle",
 		"color": "yellow"
 	},
 	"pawn2": {
@@ -16,12 +16,12 @@
 	"start1": {
 		"x": 0,
 		"y": 0,
-		"rotation": "north"
+		"rotation": "east"
 	},
 	"start2": {
 		"x": 2,
 		"y": 2,
-		"rotation": "west"
+		"rotation": "east"
 	},
 	"goal1": {
 		"x": 1,
@@ -35,15 +35,15 @@
 	},
 	"moveItemAvailable": true,
 	"seeItemAvailable": true,
-	"giveItemAvailable": false,
+	"giveItemAvailable": true,
 	"itemsPlayer1": {
 		"move": 100,
-		"see": 100,
+		"see": 0,
 		"give": 0
 	},
 	"itemsPlayer2": {
 		"move": 100,
 		"see": 100,
-		"give": 0
+		"give": 1
 	}
 }

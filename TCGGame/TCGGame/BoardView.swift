@@ -212,7 +212,7 @@ class BoardView: UIView {
     }
 	
 	var pawnAndGoalFiguration1: (pawnDefinition: PawnDefinition?, goalConfiguration: PawnConfiguration?) {  // if both are not nil, the fieldView at the goalConfiguration's position shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
-		didSet {
+		didSet {				
 			// If either one of them is nil, no goal configuation should be shown:
 			if pawnAndGoalFiguration1.pawnDefinition == nil || pawnAndGoalFiguration1.goalConfiguration == nil {
 				if let actualOldGoalConfiguration1 = oldValue.goalConfiguration {
@@ -302,10 +302,10 @@ class BoardView: UIView {
 	}
 	
 	
-	func rotatePawnToRotation(aboutPawn1: Bool, rotation: Direction) {
+	func rotatePawnToRotation(aboutPawn1: Bool, rotation: Direction, animated: Bool) {
 		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
 			// Let the pawnView rotate itself, because it knows how to do this in a cool, animated manner:
-			pawnView.rotateTo(rotation)
+			pawnView.rotateTo(rotation, animated: animated)
 		}
 	}
 	

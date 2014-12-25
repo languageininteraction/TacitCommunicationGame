@@ -63,57 +63,14 @@ class PawnView: UIView {
 			case .Circle:
 				shapeLayer.path = UIBezierPath(ovalInRect: CGRectMake(0, 0, edgelength, edgelength)).CGPath
 			case .Triangle:
-				
-				// THIS IS RIDICULOUS! IS SWIFT REALLY THIS BAD AT THIS?
-				
 				let path = UIBezierPath()
-				let piAsFloat = NSNumber(double: M_PI).floatValue // this is crazy…
-				var angle = 0 as Float //0.5 * piAsFloat
 				
-				var crazyX = cosf(angle)
-				crazyX += 1
-				crazyX *= 0.5
-				crazyX *= Float(edgelength)
+				let xRightPointRelative = CGFloat(powf(1.0 - 0.5 * 0.5, 0.5))
+				let amountXToTheRight = 0.15 * edgelength // todo constant
 				
-				var crazyY = sinf(angle)
-				crazyY += 1
-				crazyY *= 0.5
-				crazyY *= Float(edgelength)
-				
-				let startPoint = CGPointMake(CGFloat(crazyX), CGFloat(crazyY))
-				path.moveToPoint(startPoint)
-				
-				
-				angle = piAsFloat * 4.0/6.0
-				
-				crazyX = cosf(angle)
-				crazyX += 1
-				crazyX *= 0.5
-				crazyX *= Float(edgelength)
-				
-				crazyY = sinf(angle)
-				crazyY += 1
-				crazyY *= 0.5
-				crazyY *= Float(edgelength)
-				
-				path.addLineToPoint(CGPointMake(CGFloat(crazyX), CGFloat(crazyY)))
-				
-				
-				angle = piAsFloat * 8.0/6.0
-				
-				crazyX = cosf(angle)
-				crazyX += 1
-				crazyX *= 0.5
-				crazyX *= Float(edgelength)
-				
-				crazyY = sinf(angle)
-				crazyY += 1
-				crazyY *= 0.5
-				crazyY *= Float(edgelength)
-				
-				path.addLineToPoint(CGPointMake(CGFloat(crazyX), CGFloat(crazyY)))
-				
-				path.addLineToPoint(startPoint)
+				path.moveToPoint(CGPointMake(amountXToTheRight, 0))
+				path.addLineToPoint(CGPointMake(edgelength * xRightPointRelative + amountXToTheRight, 0.5 * edgelength))
+				path.addLineToPoint(CGPointMake(amountXToTheRight, edgelength))
 				
 				path.closePath()
 				shapeLayer.path = path.CGPath
@@ -148,9 +105,10 @@ class PawnView: UIView {
 		self.shapeLayerForGoalConfiguration = createShapeLayer()
 		shapeLayerForGoalConfiguration.fillColor = UIColor.clearColor().CGColor
 		shapeLayerForGoalConfiguration.strokeColor = pawnDefinition.color.CGColor
-		shapeLayerForGoalConfiguration.lineWidth = CGFloat(kPawnLineWidth)
+		shapeLayerForGoalConfiguration.lineWidth = 0.75 * CGFloat(kPawnLineWidth) // todo constant
 		shapeLayerForGoalConfiguration.lineJoin = kCALineJoinRound
-		shapeLayerForGoalConfiguration.lineDashPattern = [2, 2]
+		shapeLayerForGoalConfiguration.lineCap = kCALineCapRound
+		shapeLayerForGoalConfiguration.lineDashPattern = [5, 9]
 		
 		super.init(frame: frame)
 		
@@ -216,9 +174,9 @@ class PawnView: UIView {
 	}
 	
 	
-	func rotateTo(rotation: Direction) {
+	func rotateTo(rotation: Direction, animated: Bool) {
 		CATransaction.begin()
-		CATransaction.setAnimationDuration(0.35)
+		CATransaction.setAnimationDuration(animated ? 0.35 : 0)
 		
 		let slowiness: Float = 0.75
 		
