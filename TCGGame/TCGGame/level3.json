@@ -2,7 +2,7 @@
     "name": "item_move",    
     "board": {
         "width": 3,
-        "height": 3
+        "height": 4
 	},
 	"pawn1": {
 		"shape": "triangle",

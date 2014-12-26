@@ -15,7 +15,7 @@ enum ItemType: Int {
 	case Give
 }
 
-class ItemDefinition: NSObject
+class ItemDefinition: NSObject, NSCopying
 {
     let itemType: ItemType
     var endlessUse: Bool
@@ -33,6 +33,11 @@ class ItemDefinition: NSObject
 		let optionalNrUses: Int? = endlessUse ? nil : nUsesFromJson
 		
 		self.init(itemType: itemType, endlessUse: endlessUse, nrUses: optionalNrUses)
+	}
+	
+	func copyWithZone(zone: NSZone) -> AnyObject {
+		let result = ItemDefinition(itemType: self.itemType, endlessUse: self.endlessUse, nrUses: self.nrUses)
+		return result
 	}
 	
 	func updateNrUsesAsAResultOfItemBeingUsed() {

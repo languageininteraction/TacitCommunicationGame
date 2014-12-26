@@ -5,7 +5,7 @@
         "height": 3
 	},
 	"pawn1": {
-		"shape": "circle",
+		"shape": "square",
 		"color": "yellow"
 	},
 	"pawn2": {

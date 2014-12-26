@@ -751,11 +751,11 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		boardView.clearShownResultsForSpecificPositions()
 		
 		
-		// Put the pawns in the UI at the right position:
-		self.updateUIForMoveAndRotateButtons()
-		
 		// Update whether the goal configuration is shown:
 		self.updateWhetherGoalConfigurationIsShown()
+		
+		// Put the pawns in the UI at the right position:
+		self.updateUIForMoveAndRotateButtons()
 		
 		// todo explain
 		self.updateUIForLevelButtons()

@@ -9,7 +9,7 @@
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "triangle",
+		"shape": "circle",
 		"color": "orange"
 	},
 	"start1": {
