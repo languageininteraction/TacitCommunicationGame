@@ -1,8 +1,8 @@
 {
     "name": "walk",
     "board": {
-        "width": 4,
-        "height": 4
+        "width": 3,
+        "height": 3
     },
 	"pawn1": {
 		"shape": "circle",

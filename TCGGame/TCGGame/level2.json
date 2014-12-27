@@ -1,7 +1,7 @@
 {
     "name": "turn",
     "board": {
-        "width": 2,
+        "width": 3,
         "height": 3
 	},
 	"pawn1": {
