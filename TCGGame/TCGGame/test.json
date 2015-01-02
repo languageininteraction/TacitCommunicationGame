@@ -1,0 +1,22 @@
+{
+    "name": "test",
+    "board":
+    {
+        "width": 3,
+        "height": 3
+    },
+    "possiblePawnShapes": ["triangle"],
+    "moveItemAvailable": true,
+    "seeItemAvailable": true,
+    "giveItemAvailable": false,
+    "itemsPlayer1": {
+        "move": 8,
+        "see": 100,
+        "give": 0
+    },
+    "itemsPlayer2": {
+        "move": 0,
+        "see": 10,
+        "give": 0
+    }
+}
