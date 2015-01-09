@@ -591,7 +591,6 @@
 				4812E6121A0A655A006DED82 /* Images.xcassets */,
 				4812E6141A0A655A006DED82 /* LaunchScreen.xib */,
 				4812E6091A0A655A006DED82 /* Supporting Files */,
-				49BB4E551A5691B400C93C26 /* LevelTemplate.swift */,
 			);
 			path = TCGGame;
 			sourceTree = "<group>";
@@ -628,6 +627,7 @@
 				4812E63C1A0A7671006DED82 /* Rounds */,
 				49E83DA51A2714EC006952EE /* Game.swift */,
 				49E83DA71A271A48006952EE /* Level.swift */,
+				49BB4E551A5691B400C93C26 /* LevelTemplate.swift */,
 				49E83DAB1A271F23006952EE /* PawnConfiguration.swift */,
 			);
 			name = Model;
