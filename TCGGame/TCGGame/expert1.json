@@ -1,0 +1,25 @@
+{
+    "name": "advanced1",
+    "board":
+    {
+        "width": 3,
+        "height": 3
+    },
+    "possiblePawnShapesPlayer1": ["circle","rectangle"],
+    "possiblePawnShapesPlayer2": ["triangle"],
+    "moveItemAvailable": true,
+    "seeItemAvailable": true,
+    "giveItemAvailable": true,
+    "itemsPlayer1": {
+        "move": 100,
+        "see": 100,
+        "give": 100
+    },
+    "itemsPlayer2": {
+        "move": 100,
+        "see": 100,
+        "give": 100
+    },
+    "goalPlayer2Pointing": ["outwards"],
+    "orientationRelation": ["different"],
+}
