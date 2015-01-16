@@ -382,7 +382,7 @@ class RoundState: NSObject, NSCopying {
 		return self.pawnCanMoveTo(aboutPawn1, x: resultingPosition.x, y: resultingPosition.y)
 	}
 	
-	func movementButtonsShouldBeShown(aboutPawn1: Bool) -> Bool {
+	func movementButtonsShouldBeShown(#aboutPawn1: Bool) -> Bool {
 		// They should never be available if the roundResult isn't MaySucceed:
 		if self.roundResult != RoundResult.MaySucceed {
 			return false

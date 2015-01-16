@@ -88,7 +88,7 @@ class FieldView: UIView {
 		shapePaths[kKeyFieldSquare] = path
 		
 		// Round:
-		var amountInward = kAmountFieldCanInflate * edgelength
+		var amountInward = kAmountFieldCanInflate * edgelength * 0.85 // temp * 0.95
 		path = UIBezierPath()
 		path.moveToPoint(CGPointMake(0, 0))
 		path.addQuadCurveToPoint(CGPointMake(edgelength, 0), controlPoint: CGPointMake(0.5 * edgelength, -1 * amountInward))
@@ -97,6 +97,9 @@ class FieldView: UIView {
 		path.addQuadCurveToPoint(CGPointMake(0, 0), controlPoint: CGPointMake(-1 * amountInward, 0.5 * edgelength))
 		path.closePath()
 		shapePaths[kKeyFieldRound] = path
+		
+		// temp
+		amountInward = kAmountFieldCanInflate * edgelength * 0.7
 		
 		// Dent east:
 		path = UIBezierPath()
@@ -146,8 +149,8 @@ class FieldView: UIView {
 		
 		// Set its path and how it draws the path:
 		shapeLayer.path = shapePaths[self.keyOfFieldShape]?.CGPath // square is default
-		shapeLayer.fillColor = UIColor.clearColor().CGColor
-		shapeLayer.strokeColor = kColorBoardFields.CGColor
+		shapeLayer.fillColor = kColorFillOfBoardFields.CGColor
+		shapeLayer.strokeColor = kColorLinesOfBoardFields.CGColor
 		shapeLayer.lineWidth = CGFloat(kBoardLineWidthOfFields)
 		shapeLayer.lineJoin = kCALineJoinRound
 		self.layer.addSublayer(shapeLayer)
