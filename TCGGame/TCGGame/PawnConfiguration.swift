@@ -34,4 +34,10 @@ class PawnConfiguration: NSObject
 	func coords() -> (x: Int, y: Int) {
 		return (x, y)
 	}
+    
+    //For decoding of levels
+    func getObjectsToEncode(#configName : String) -> Array<(String,AnyObject)>
+    {
+        return [(configName+"x",self.x),(configName+"y",self.y),(configName+"Rotation",self.rotation.rawValue)]
+    }
 }
