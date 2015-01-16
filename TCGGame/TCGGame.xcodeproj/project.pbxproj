@@ -67,6 +67,7 @@
 		485E1C8D1A4C3D8300AC88AC /* level14.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C891A4C3D8300AC88AC /* level14.json */; };
 		485E1C8E1A4C3D8300AC88AC /* level15.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C8A1A4C3D8300AC88AC /* level15.json */; };
 		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
+		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
 		48B2C3221A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2DA1A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png */; };
@@ -341,6 +342,7 @@
 		485E1C891A4C3D8300AC88AC /* level14.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level14.json; sourceTree = "<group>"; };
 		485E1C8A1A4C3D8300AC88AC /* level15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level15.json; sourceTree = "<group>"; };
 		486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PersonPlaceholder 320x320.png"; sourceTree = "<group>"; };
+		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
 		48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54@2x.png"; sourceTree = "<group>"; };
 		48B2C2DA1A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrangeOther 54x54.png"; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 			isa = PBXGroup;
 			children = (
 				48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */,
+				48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */,
 				4812E63F1A0B7972006DED82 /* GameKit.framework */,
 				4812E6081A0A655A006DED82 /* TCGGame */,
 				4812E61E1A0A655A006DED82 /* TCGGameTests */,
@@ -1080,6 +1083,7 @@
 				48F834911A3A3B960098A904 /* Button_rotateClockwise 256x256 256x256@2x.png in Resources */,
 				48B2C3521A248D38002FFEDF /* Button_restartOrangeOther 54x54.png in Resources */,
 				48F834A21A3A3B960098A904 /* Button_checkmarkYellowSelected 256x256@2x.png in Resources */,
+				48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */,
 				48F834601A3A3B960098A904 /* Button_seeSelected 256x256.png in Resources */,
 				48F834B41A3A3B960098A904 /* Button_nextOrange 256x256@2x.png in Resources */,
 				48F834721A3A3B960098A904 /* Button_moveSelected 256x256.png in Resources */,

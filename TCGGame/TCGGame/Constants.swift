@@ -14,7 +14,7 @@ let kDevelopmentMode = true
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 
 // Layout of the board and stuff on top of / inside the board:
 let kBoardEdgeLength: Float = 400
@@ -69,5 +69,6 @@ let kColorLiIYellow = UIColor(red:251.0/255.0, green:186.0/255.0, blue:0.0/255.0
 
 // Component colors:
 
-let kColorBoardFields = kColorLiIBlueLighter
+let kColorLinesOfBoardFields = kColorLiIBlueLighter
+let kColorFillOfBoardFields = UIColor.clearColor() // (red:142.0/255.0, green:207.0/255.0, blue:230.0/255.0, alpha:0.1)
 

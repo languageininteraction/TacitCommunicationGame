@@ -33,7 +33,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
 	var match: GKMatch?
 	var weDecideWhoIsWho: Bool? {
-		// one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle
+		// one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle; todo rename
 		didSet {
 			if let actualValue = weDecideWhoIsWho {
 				self.weArePlayer1 = actualValue
@@ -827,7 +827,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	
 	func updateUIForMoveAndRotateButtons() {
 		// Update whether they are hidden:
-		let movementButtonsShouldBeShown = currentRound!.currentState().movementButtonsShouldBeShown(weArePlayer1)
+		let movementButtonsShouldBeShown = currentRound!.currentState().movementButtonsShouldBeShown(aboutPawn1: weArePlayer1)
 		let positionButtons = currentRound!.currentState().positionOfPawn(weArePlayer1)
 		boardView.coordsOfInflatedField = movementButtonsShouldBeShown ? positionButtons : (-1, -1)
 		
