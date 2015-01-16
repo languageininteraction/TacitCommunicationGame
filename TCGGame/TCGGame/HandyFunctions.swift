@@ -17,3 +17,10 @@ func printAllAvailableFonts() {
 		}
 	}
 }
+
+extension Array {
+    func randomItem() -> T {
+        let index = Int(arc4random_uniform(UInt32(self.count)))
+        return self[index]
+    }
+}
