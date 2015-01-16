@@ -13,17 +13,17 @@ class Level: NSObject
     let name: String
     
     let board: BoardDefinition
-    let pawnPlayer1: PawnDefinition
-    let pawnPlayer2: PawnDefinition
+    var pawnPlayer1: PawnDefinition
+    var pawnPlayer2: PawnDefinition
 
-    let startConfigurationPawn1: PawnConfiguration
-    let startConfigurationPawn2: PawnConfiguration
-    let goalConfigurationPawn1: PawnConfiguration
-    let goalConfigurationPawn2: PawnConfiguration
+    var startConfigurationPawn1: PawnConfiguration
+    var startConfigurationPawn2: PawnConfiguration
+    var goalConfigurationPawn1: PawnConfiguration
+    var goalConfigurationPawn2: PawnConfiguration
 	
-	let moveItemAvailable = false
-	let seeItemAvailable = false
-	let giveItemAvailable = false
+	var moveItemAvailable = false
+	var seeItemAvailable = false
+	var giveItemAvailable = false
 
     var startItemsPlayer1: [ItemDefinition]
     var startItemsPlayer2: [ItemDefinition]
@@ -64,6 +64,29 @@ class Level: NSObject
 		}
     }
 	
+    //Loads a very basic level, for 'manual' customization
+    init(name : String)
+    {
+        self.name = name
+        self.board = BoardDefinition(width: 3, height: 3)
+        self.pawnPlayer1 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIOrange)
+        self.pawnPlayer2 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIYellow)
+        
+        self.startConfigurationPawn1 = PawnConfiguration(x: 0, y: 0, rotation: Direction.North)
+        self.startConfigurationPawn2 = PawnConfiguration(x: 0, y: 1, rotation: Direction.North)
+
+        self.goalConfigurationPawn1 = PawnConfiguration(x: 1, y: 0, rotation: Direction.North)
+        self.goalConfigurationPawn2 = PawnConfiguration(x: 1, y: 1, rotation: Direction.North)
+    
+        self.moveItemAvailable = true
+        self.seeItemAvailable = true
+        self.giveItemAvailable = true
+        
+        self.startItemsPlayer1 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil),ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
+        self.startItemsPlayer2 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil),ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
+        
+    }
+    
 	func itemOfTypeIsAvailable(itemType: ItemType) -> Bool {
 		return itemType == ItemType.Move ? moveItemAvailable : itemType == ItemType.See ? seeItemAvailable : giveItemAvailable
 	}
