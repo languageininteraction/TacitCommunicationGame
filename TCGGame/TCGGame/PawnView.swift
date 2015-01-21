@@ -139,7 +139,11 @@ class PawnView: UIView {
 	
 	func moveCenterTo(position: CGPoint) {
 		
+		
+		/*
 		// Calculate the new frame:
+//		let originalTransform = self.layer.transform
+//		self.layer.transform = CATransform3DIdentity
 		var newFrame = self.frame
 		newFrame.origin = CGPointMake(position.x - 0.5 * frame.size.width, position.y - 0.5 * frame.size.height)
 		
@@ -150,6 +154,15 @@ class PawnView: UIView {
 		// Animate our shapeLayers. Actually change our frame first and then animate as if the movement happens slower:
 		
 		self.frame = newFrame
+		
+//		self.layer.transform = originalTransform
+*/
+		
+		// todo: als dit goed werkt (nog op iPad testen) dan bovenstaande weg
+		let deltaX = position.x - self.center.x, deltaY = position.y - self.center.y
+		self.center = position
+		
+		
 		
 		
 		CATransaction.begin()
