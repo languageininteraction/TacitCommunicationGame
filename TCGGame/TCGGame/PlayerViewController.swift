@@ -70,6 +70,14 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	let buttonOtherPlayer_giveItem = UIButton()
 	let buttonOtherPlayer_toFinishRetryOrContinue = UIButton()
 	
+	// New buttons to finish, retry, go back to the home screen:
+	let buttonFinish = UIButton()
+	let buttonRetry = UIButton()
+	let buttonBackToHomeScreen = UIButton()
+	let buttonOtherPlayer_Finish = UIButton()
+	let buttonOtherPlayer_Retry = UIButton()
+	let buttonOtherPlayer_BackToHomeScreen = UIButton()
+	
 	// The labels next to the item buttons to show how many uses left:
 	let labelNMoveItems = UILabel()
 	let labelNSeeItems = UILabel()
@@ -111,6 +119,72 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			self.authenticateLocalPlayer()
 		} else {
 			startPlayingMatch()
+		}
+		
+		
+		func setImagesForButton(button: UIButton, imageNameIcon: String, baseColor: UIColor, #forOtherPlayer: Bool) {
+			// Load the icon image:
+			let iconImage = UIImage(named: imageNameIcon)!
+			let scaleFactor = UIScreen.mainScreen().scale
+			let scaledSize = CGSizeMake(iconImage.size.width * scaleFactor, iconImage.size.height * scaleFactor)
+			let rect = CGRectMake(0, 0, scaledSize.width, scaledSize.height)
+			
+			func setImageForSelected(selected: Bool) {
+				
+				UIGraphicsBeginImageContext(scaledSize)
+				let context = UIGraphicsGetCurrentContext()
+				
+				// Fill a white, partly transparent circle:
+				CGContextSetFillColorWithColor(context, UIColor(white: 1, alpha: 0.8).CGColor)
+				let circlePathFull = CGPathCreateWithEllipseInRect(rect, nil) // todo
+				CGContextAddPath(context, circlePathFull)
+				CGContextFillPath(context)
+				
+				if selected {
+					// Fill a colored circle:
+					CGContextSetFillColorWithColor(context, baseColor.CGColor)
+					let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 4 * scaleFactor, 4 * scaleFactor), nil) // todo
+					CGContextAddPath(context, circlePath)
+					CGContextFillPath(context)
+				}
+				
+				// Create a colored version of the icon:
+				let colorIcon = selected ? UIColor.whiteColor() : baseColor
+				let coloredIconCGImage = createColoredVersionOfUIImage(iconImage, colorIcon)
+				
+				// Draw the icon:
+				//				CGContextadd
+				coloredIconCGImage?.drawInRect(rect)
+				
+				
+				//				CGContextDrawImage(context, rect, coloredIconCGImage)
+				
+				// Draw a circle around it:
+				CGContextSetStrokeColorWithColor(context, kColorLiILila.CGColor)
+				if forOtherPlayer {
+					CGContextSetLineWidth(context, 1 * scaleFactor)
+					let dashArray: [CGFloat] = [4 * scaleFactor, 6 * scaleFactor] // todo constants
+					CGContextSetLineDash(context, 0, dashArray, 2);
+					CGContextSetLineCap(context, kCGLineCapRound)
+					CGContextSetLineJoin(context, kCGLineJoinRound)
+				} else {
+					CGContextSetLineWidth(context, 1.5 * scaleFactor)
+				}
+				let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
+				CGContextAddPath(context, circlePath)
+				CGContextStrokePath(context)
+				
+				
+				let resultingImage = UIGraphicsGetImageFromCurrentImageContext()
+				
+				UIGraphicsEndImageContext()
+				
+				// Set the image on the button:
+				button.setImage(resultingImage, forState: selected ? UIControlState.Selected : UIControlState.Normal)
+			}
+			
+			setImageForSelected(true)
+			setImageForSelected(false)
 		}
 		
 		
@@ -211,32 +285,32 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
 		// East:
-		self.buttonToMoveEast.setImage(UIImage(named: "Button_moveEast 256x256"), forState: UIControlState.Normal)
+		setImagesForButton(buttonToMoveEast, "Icon_Right 70x70", kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveEast.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// South:
-		self.buttonToMoveSouth.setImage(UIImage(named: "Button_moveSouth 256x256"), forState: UIControlState.Normal)
+		setImagesForButton(buttonToMoveSouth, "Icon_Down 70x70", kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveSouth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// West:
-		self.buttonToMoveWest.setImage(UIImage(named: "Button_moveWest 256x256"), forState: UIControlState.Normal)
+		setImagesForButton(buttonToMoveWest, "Icon_Left 70x70", kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveWest.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// North:
-		self.buttonToMoveNorth.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
+		setImagesForButton(buttonToMoveNorth, "Icon_Up 70x70", kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveNorth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// Rotate clockwise:
-		self.buttonToRotateClockwise.setImage(UIImage(named: "Button_rotateClockwise 256x256"), forState: UIControlState.Normal)
+		setImagesForButton(buttonToRotateClockwise, "Icon_RotateClockwise 70x70", kColorLiILightGreen, forOtherPlayer: false)
 		self.buttonToRotateClockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateClockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Rotate counterclockwise:
-		self.buttonToRotateCounterclockwise.setImage(UIImage(named: "Button_rotateCounterclockwise 256x256"), forState: UIControlState.Normal)
+		setImagesForButton(buttonToRotateCounterclockwise, "Icon_RotateCounterClockwise 70x70", kColorLiILightGreen, forOtherPlayer: false)
 		self.buttonToRotateCounterclockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateCounterclockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -259,37 +333,31 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// Move item of local player:
 		self.buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		self.buttonMoveItem.setImage(UIImage(named: "Button_move 256x256"), forState: UIControlState.Normal)
-        self.buttonMoveItem.setImage(UIImage(named: "Button_moveSelected 256x256"), forState: UIControlState.Selected)
+		setImagesForButton(buttonMoveItem, "Icon_Move 70x70", kColorLiIBlue, forOtherPlayer: false)
         self.buttonMoveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
         // See item of local player:
         
-        self.buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
-        self.buttonSeeItem.setImage(UIImage(named: "Button_see 256x256"), forState: UIControlState.Normal)
-        self.buttonSeeItem.setImage(UIImage(named: "Button_seeSelected 256x256"), forState: UIControlState.Selected)
+		self.buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonSeeItem, "Icon_See 70x70", kColorLiIDarkGreen, forOtherPlayer: false)
         self.buttonSeeItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Give item of local player:
-        self.buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
-        self.buttonGiveItem.setImage(UIImage(named: "Button_present 256x256"), forState: UIControlState.Normal)
-        self.buttonGiveItem.setImage(UIImage(named: "Button_presentSelected 256x256"), forState: UIControlState.Selected)
+		self.buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonGiveItem, "Icon_Give 70x70", kColorLiIDarkBlue, forOtherPlayer: false)
         self.buttonGiveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Move item of other player:
-        self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-        self.buttonOtherPlayer_moveItem.setImage(UIImage(named: "Button_moveOther 256x256"), forState: UIControlState.Normal)
-        self.buttonOtherPlayer_moveItem.setImage(UIImage(named: "Button_moveSelectedOther 256x256"), forState: UIControlState.Selected)
-        
+		self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonOtherPlayer_moveItem, "Icon_Move 70x70", kColorLiIBlue, forOtherPlayer: true)
+		
         // See item of other player:
-        self.buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
-        self.buttonOtherPlayer_seeItem.setImage(UIImage(named: "Button_seeOther 256x256"), forState: UIControlState.Normal)
-        self.buttonOtherPlayer_seeItem.setImage(UIImage(named: "Button_seeSelectedOther 256x256"), forState: UIControlState.Selected)
-        
+		self.buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonOtherPlayer_seeItem, "Icon_See 70x70", kColorLiIDarkGreen, forOtherPlayer: true)
+		
         // Give item of other player:
-        self.buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
-        self.buttonOtherPlayer_giveItem.setImage(UIImage(named: "Button_presentOther 256x256"), forState: UIControlState.Normal)
-        self.buttonOtherPlayer_giveItem.setImage(UIImage(named: "Button_presentSelecetdOther 256x256"), forState: UIControlState.Selected)
+		self.buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonOtherPlayer_giveItem, "Icon_Give 70x70", kColorLiIDarkBlue, forOtherPlayer: true)
 		
 		self.itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
 		for itemButton in self.itemButtons {
@@ -299,7 +367,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// MARK: 5. Prepare the labels next to the item buttons with the numbers of use left:
 		func prepareLabelNextToItemButton(label: UILabel, itemButton: UIButton) {
-			label.frame = CGRectMake(itemButton.frame.origin.x + itemButton.frame.size.width - 5, itemButton.frame.origin.y + itemButton.frame.size.height - 17, 30, 20) // todo
+			label.frame = CGRectMake(itemButton.frame.origin.x + itemButton.frame.size.width, itemButton.frame.origin.y + itemButton.frame.size.height - 12, 30, 20) // todo
 			self.view.addSubview(label)
 			label.font = kFontAttributeNumber
 		}
@@ -314,14 +382,39 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// MARK: 6. Prepare the buttons to finish / retry / continue; images are set in updateUIForLevelButtons:
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
+		// todo: remove code related to buttonToFinishRetryOrContinue. We'll now use separate buttons.
+		
 		// buttonToFinishRetryOrContinue:
 		self.buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
         self.buttonToFinishRetryOrContinue.addTarget(self, action: "levelButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-		self.view.addSubview(buttonToFinishRetryOrContinue)
-        
+//		self.view.addSubview(buttonToFinishRetryOrContinue)
+		
 		// buttonOtherPlayer_toFinishRetryOrContinue:
 		self.buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
+//		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
+		
+		
+		// New buttons:
+		
+		// Own finish:
+		buttonFinish.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonFinish, "Icon_Finish 70x70", kColorLiIDarkGreen, forOtherPlayer: false)
+		self.view.addSubview(buttonFinish)
+		
+		// Own retry:
+		buttonRetry.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonRetry, "Icon_Retry 70x70", kColorLiIOrange, forOtherPlayer: false)
+		self.view.addSubview(buttonRetry)
+		
+//		let buttonBackToHomeScreen = UIButton()
+		
+		// Other's finish:
+		buttonOtherPlayer_Finish.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		setImagesForButton(buttonOtherPlayer_Finish, "Icon_Finish 70x70", kColorLiIOrange, forOtherPlayer: true)
+		self.view.addSubview(buttonOtherPlayer_Finish)
+		
+//		let buttonOtherPlayer_Retry = UIButton()
+//		let buttonOtherPlayer_BackToHomeScreen
 		
 		
 		// MARK: 7. Prepare the level label:

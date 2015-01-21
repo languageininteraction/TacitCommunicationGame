@@ -140,6 +140,30 @@
 		48B2C3651A248D38002FFEDF /* Button_seeSelected 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31D1A248D38002FFEDF /* Button_seeSelected 54x54@2x.png */; };
 		48B2C3661A248D38002FFEDF /* Button_seeSelectedOther 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31E1A248D38002FFEDF /* Button_seeSelectedOther 54x54.png */; };
 		48B2C3671A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */; };
+		48C3C2BC1A695EA1007FBF04 /* Icon_Down 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2A41A695EA1007FBF04 /* Icon_Down 70x70.png */; };
+		48C3C2BD1A695EA1007FBF04 /* Icon_Down 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2A51A695EA1007FBF04 /* Icon_Down 70x70@2x.png */; };
+		48C3C2BE1A695EA1007FBF04 /* Icon_Finish 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2A61A695EA1007FBF04 /* Icon_Finish 70x70.png */; };
+		48C3C2BF1A695EA1007FBF04 /* Icon_Finish 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2A71A695EA1007FBF04 /* Icon_Finish 70x70@2x.png */; };
+		48C3C2C01A695EA1007FBF04 /* Icon_Give 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2A81A695EA1007FBF04 /* Icon_Give 70x70.png */; };
+		48C3C2C11A695EA1007FBF04 /* Icon_Give 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2A91A695EA1007FBF04 /* Icon_Give 70x70@2x.png */; };
+		48C3C2C21A695EA1007FBF04 /* Icon_Home 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2AA1A695EA1007FBF04 /* Icon_Home 70x70.png */; };
+		48C3C2C31A695EA1007FBF04 /* Icon_Home 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2AB1A695EA1007FBF04 /* Icon_Home 70x70@2x.png */; };
+		48C3C2C41A695EA1007FBF04 /* Icon_Left 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2AC1A695EA1007FBF04 /* Icon_Left 70x70.png */; };
+		48C3C2C51A695EA1007FBF04 /* Icon_Left 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2AD1A695EA1007FBF04 /* Icon_Left 70x70@2x.png */; };
+		48C3C2C61A695EA1007FBF04 /* Icon_Move 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2AE1A695EA1007FBF04 /* Icon_Move 70x70.png */; };
+		48C3C2C71A695EA1007FBF04 /* Icon_Move 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2AF1A695EA1007FBF04 /* Icon_Move 70x70@2x.png */; };
+		48C3C2C81A695EA1007FBF04 /* Icon_Retry 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B01A695EA1007FBF04 /* Icon_Retry 70x70.png */; };
+		48C3C2C91A695EA1007FBF04 /* Icon_Retry 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B11A695EA1007FBF04 /* Icon_Retry 70x70@2x.png */; };
+		48C3C2CA1A695EA1007FBF04 /* Icon_Right 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B21A695EA1007FBF04 /* Icon_Right 70x70.png */; };
+		48C3C2CB1A695EA1007FBF04 /* Icon_Right 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B31A695EA1007FBF04 /* Icon_Right 70x70@2x.png */; };
+		48C3C2CC1A695EA1007FBF04 /* Icon_RotateClockwise 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B41A695EA1007FBF04 /* Icon_RotateClockwise 70x70.png */; };
+		48C3C2CD1A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B51A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png */; };
+		48C3C2CE1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B61A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png */; };
+		48C3C2CF1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B71A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png */; };
+		48C3C2D01A695EA1007FBF04 /* Icon_See 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B81A695EA1007FBF04 /* Icon_See 70x70.png */; };
+		48C3C2D11A695EA1007FBF04 /* Icon_See 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B91A695EA1007FBF04 /* Icon_See 70x70@2x.png */; };
+		48C3C2D21A695EA1007FBF04 /* Icon_Up 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2BA1A695EA1007FBF04 /* Icon_Up 70x70.png */; };
+		48C3C2D31A695EA1007FBF04 /* Icon_Up 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */; };
 		48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB51A48A91B0072524E /* SmallCheckMark.png */; };
 		48D19EB81A48A91B0072524E /* SmallCross.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB61A48A91B0072524E /* SmallCross.png */; };
 		48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
@@ -415,6 +439,30 @@
 		48B2C31D1A248D38002FFEDF /* Button_seeSelected 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelected 54x54@2x.png"; sourceTree = "<group>"; };
 		48B2C31E1A248D38002FFEDF /* Button_seeSelectedOther 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelectedOther 54x54.png"; sourceTree = "<group>"; };
 		48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelectedOther 54x54@2x.png"; sourceTree = "<group>"; };
+		48C3C2A41A695EA1007FBF04 /* Icon_Down 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Down 70x70.png"; sourceTree = "<group>"; };
+		48C3C2A51A695EA1007FBF04 /* Icon_Down 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Down 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2A61A695EA1007FBF04 /* Icon_Finish 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Finish 70x70.png"; sourceTree = "<group>"; };
+		48C3C2A71A695EA1007FBF04 /* Icon_Finish 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Finish 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2A81A695EA1007FBF04 /* Icon_Give 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Give 70x70.png"; sourceTree = "<group>"; };
+		48C3C2A91A695EA1007FBF04 /* Icon_Give 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Give 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2AA1A695EA1007FBF04 /* Icon_Home 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Home 70x70.png"; sourceTree = "<group>"; };
+		48C3C2AB1A695EA1007FBF04 /* Icon_Home 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Home 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2AC1A695EA1007FBF04 /* Icon_Left 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Left 70x70.png"; sourceTree = "<group>"; };
+		48C3C2AD1A695EA1007FBF04 /* Icon_Left 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Left 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2AE1A695EA1007FBF04 /* Icon_Move 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Move 70x70.png"; sourceTree = "<group>"; };
+		48C3C2AF1A695EA1007FBF04 /* Icon_Move 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Move 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2B01A695EA1007FBF04 /* Icon_Retry 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Retry 70x70.png"; sourceTree = "<group>"; };
+		48C3C2B11A695EA1007FBF04 /* Icon_Retry 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Retry 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2B21A695EA1007FBF04 /* Icon_Right 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Right 70x70.png"; sourceTree = "<group>"; };
+		48C3C2B31A695EA1007FBF04 /* Icon_Right 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Right 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2B41A695EA1007FBF04 /* Icon_RotateClockwise 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_RotateClockwise 70x70.png"; sourceTree = "<group>"; };
+		48C3C2B51A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_RotateClockwise 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2B61A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_RotateCounterClockwise 70x70.png"; sourceTree = "<group>"; };
+		48C3C2B71A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_RotateCounterClockwise 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2B81A695EA1007FBF04 /* Icon_See 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_See 70x70.png"; sourceTree = "<group>"; };
+		48C3C2B91A695EA1007FBF04 /* Icon_See 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_See 70x70@2x.png"; sourceTree = "<group>"; };
+		48C3C2BA1A695EA1007FBF04 /* Icon_Up 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Up 70x70.png"; sourceTree = "<group>"; };
+		48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Up 70x70@2x.png"; sourceTree = "<group>"; };
 		48D19EB51A48A91B0072524E /* SmallCheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCheckMark.png; sourceTree = "<group>"; };
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
 		48DF63A21A39FE6500941BDA /* HandyFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandyFunctions.swift; sourceTree = "<group>"; };
@@ -748,6 +796,7 @@
 				48D19EB51A48A91B0072524E /* SmallCheckMark.png */,
 				48D19EB61A48A91B0072524E /* SmallCross.png */,
 				486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */,
+				48C3C2A31A695E49007FBF04 /* Button Icons */,
 				48B2C2D71A248CE6002FFEDF /* Buttons */,
 			);
 			name = Images;
@@ -832,6 +881,37 @@
 				48B2C31F1A248D38002FFEDF /* Button_seeSelectedOther 54x54@2x.png */,
 			);
 			name = Buttons;
+			sourceTree = "<group>";
+		};
+		48C3C2A31A695E49007FBF04 /* Button Icons */ = {
+			isa = PBXGroup;
+			children = (
+				48C3C2A41A695EA1007FBF04 /* Icon_Down 70x70.png */,
+				48C3C2A51A695EA1007FBF04 /* Icon_Down 70x70@2x.png */,
+				48C3C2A61A695EA1007FBF04 /* Icon_Finish 70x70.png */,
+				48C3C2A71A695EA1007FBF04 /* Icon_Finish 70x70@2x.png */,
+				48C3C2A81A695EA1007FBF04 /* Icon_Give 70x70.png */,
+				48C3C2A91A695EA1007FBF04 /* Icon_Give 70x70@2x.png */,
+				48C3C2AA1A695EA1007FBF04 /* Icon_Home 70x70.png */,
+				48C3C2AB1A695EA1007FBF04 /* Icon_Home 70x70@2x.png */,
+				48C3C2AC1A695EA1007FBF04 /* Icon_Left 70x70.png */,
+				48C3C2AD1A695EA1007FBF04 /* Icon_Left 70x70@2x.png */,
+				48C3C2AE1A695EA1007FBF04 /* Icon_Move 70x70.png */,
+				48C3C2AF1A695EA1007FBF04 /* Icon_Move 70x70@2x.png */,
+				48C3C2B01A695EA1007FBF04 /* Icon_Retry 70x70.png */,
+				48C3C2B11A695EA1007FBF04 /* Icon_Retry 70x70@2x.png */,
+				48C3C2B21A695EA1007FBF04 /* Icon_Right 70x70.png */,
+				48C3C2B31A695EA1007FBF04 /* Icon_Right 70x70@2x.png */,
+				48C3C2B41A695EA1007FBF04 /* Icon_RotateClockwise 70x70.png */,
+				48C3C2B51A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png */,
+				48C3C2B61A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png */,
+				48C3C2B71A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png */,
+				48C3C2B81A695EA1007FBF04 /* Icon_See 70x70.png */,
+				48C3C2B91A695EA1007FBF04 /* Icon_See 70x70@2x.png */,
+				48C3C2BA1A695EA1007FBF04 /* Icon_Up 70x70.png */,
+				48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */,
+			);
+			name = "Button Icons";
 			sourceTree = "<group>";
 		};
 		48DF63A11A39FE4E00941BDA /* Handy stuff */ = {
@@ -1085,6 +1165,7 @@
 				48F834A21A3A3B960098A904 /* Button_checkmarkYellowSelected 256x256@2x.png in Resources */,
 				48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */,
 				48F834601A3A3B960098A904 /* Button_seeSelected 256x256.png in Resources */,
+				48C3C2BF1A695EA1007FBF04 /* Icon_Finish 70x70@2x.png in Resources */,
 				48F834B41A3A3B960098A904 /* Button_nextOrange 256x256@2x.png in Resources */,
 				48F834721A3A3B960098A904 /* Button_moveSelected 256x256.png in Resources */,
 				48F8348F1A3A3B960098A904 /* Button_restartYellowSelectedOther 256x256@2x.png in Resources */,
@@ -1092,13 +1173,18 @@
 				48F834B81A3A3B960098A904 /* Button_nextYellow 256x256@2x.png in Resources */,
 				483FFB951A30BC3C00C26009 /* Button_rotateClockwise 54x54@2x.png in Resources */,
 				48F834851A3A3B960098A904 /* Button_presentSelected 256x256.png in Resources */,
+				48C3C2D01A695EA1007FBF04 /* Icon_See 70x70.png in Resources */,
+				48C3C2C71A695EA1007FBF04 /* Icon_Move 70x70@2x.png in Resources */,
 				48B2C3601A248D38002FFEDF /* Button_see 54x54.png in Resources */,
 				486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */,
+				48C3C2C81A695EA1007FBF04 /* Icon_Retry 70x70.png in Resources */,
 				48F834BE1A3A3B960098A904 /* Button_presentSelecetdOther 256x256@2x.png in Resources */,
 				48F834641A3A3B960098A904 /* Button_checkmarkOrangeSelected 256x256.png in Resources */,
 				48F834701A3A3B960098A904 /* Button_moveNorth 256x256@2x 256x256.png in Resources */,
 				48F834A11A3A3B960098A904 /* Button_checkmarkYellowOther 256x256@2x.png in Resources */,
+				48C3C2C21A695EA1007FBF04 /* Icon_Home 70x70.png in Resources */,
 				48F834B71A3A3B960098A904 /* Button_nextOrangeSelectedOther 256x256@2x.png in Resources */,
+				48C3C2D11A695EA1007FBF04 /* Icon_See 70x70@2x.png in Resources */,
 				48F834B01A3A3B960098A904 /* Button_moveSouth 256x256@2x other.png in Resources */,
 				48F834BB1A3A3B960098A904 /* Button_nextYellowSelectedOther 256x256@2x.png in Resources */,
 				485E1C8D1A4C3D8300AC88AC /* level14.json in Resources */,
@@ -1109,6 +1195,7 @@
 				494029211A399F0900449754 /* level4.json in Resources */,
 				48F834C41A3A3B960098A904 /* Button_restartYellow 256x256@2x.png in Resources */,
 				48F834991A3A3B960098A904 /* Button_rotateCounterclockwise 256x256@2x 256x256.png in Resources */,
+				48C3C2C51A695EA1007FBF04 /* Icon_Left 70x70@2x.png in Resources */,
 				483D0C631A321238006C5411 /* Button_moveEast 256x256@2x.png in Resources */,
 				48B2C3381A248D38002FFEDF /* Button_nextOrange 54x54.png in Resources */,
 				483D0C621A321238006C5411 /* Button_moveEast 256x256.png in Resources */,
@@ -1126,6 +1213,7 @@
 				48F834B31A3A3B960098A904 /* Button_moveWest 256x256@2x other.png in Resources */,
 				48B2C3611A248D38002FFEDF /* Button_see 54x54@2x.png in Resources */,
 				48591D171A445D7E00D57FDD /* Test Account GameCenter.rtf in Resources */,
+				48C3C2C91A695EA1007FBF04 /* Icon_Retry 70x70@2x.png in Resources */,
 				48F834751A3A3B960098A904 /* Button_moveSouth 256x256 other.png in Resources */,
 				48F834BD1A3A3B960098A904 /* Button_presentOther 256x256@2x.png in Resources */,
 				48D19EB81A48A91B0072524E /* SmallCross.png in Resources */,
@@ -1155,6 +1243,7 @@
 				48B2C3291A248D38002FFEDF /* Button_checkmarkYellow 54x54@2x.png in Resources */,
 				48B2C3621A248D38002FFEDF /* Button_seeOther 54x54.png in Resources */,
 				485E1C841A4C351D00AC88AC /* level10.json in Resources */,
+				48C3C2CB1A695EA1007FBF04 /* Icon_Right 70x70@2x.png in Resources */,
 				48F8347B1A3A3B960098A904 /* Button_nextOrangeOther 256x256.png in Resources */,
 				48F834811A3A3B960098A904 /* Button_nextYellowSelectedOther 256x256.png in Resources */,
 				48F834C91A3A3B960098A904 /* Button_checkmarkOrangeSelectedOther 256x256@2x.png in Resources */,
@@ -1162,6 +1251,7 @@
 				483D0C641A321238006C5411 /* Button_moveNorth 256x256.png in Resources */,
 				483D0C671A321238006C5411 /* Button_moveSouth 256x256@2x.png in Resources */,
 				483D0C651A321238006C5411 /* Button_moveNorth 256x256@2x.png in Resources */,
+				48C3C2C01A695EA1007FBF04 /* Icon_Give 70x70.png in Resources */,
 				48F834891A3A3B960098A904 /* Button_restartOrangeSelectedOther 256x256.png in Resources */,
 				483D0C661A321238006C5411 /* Button_moveSouth 256x256.png in Resources */,
 				485E1C7C1A4C27C400AC88AC /* level6.json in Resources */,
@@ -1183,6 +1273,7 @@
 				48F834961A3A3B960098A904 /* Button_rotateCounterclockwise 256x256 256x256.png in Resources */,
 				48B2C3311A248D38002FFEDF /* Button_move 54x54@2x.png in Resources */,
 				48F834831A3A3B960098A904 /* Button_presentOther 256x256.png in Resources */,
+				48C3C2BC1A695EA1007FBF04 /* Icon_Down 70x70.png in Resources */,
 				48F834691A3A3B960098A904 /* Button_checkmarkYellowSelectedOther 256x256.png in Resources */,
 				48B2C3301A248D38002FFEDF /* Button_move 54x54.png in Resources */,
 				48F834AF1A3A3B960098A904 /* Button_moveSouth 256x256@2x 256x256@2x.png in Resources */,
@@ -1194,6 +1285,7 @@
 				483FFB8F1A30BC3C00C26009 /* Button_moveNorth 54x54@2x.png in Resources */,
 				48F834901A3A3B960098A904 /* Button_rotateClockwise 256x256 256x256.png in Resources */,
 				48B2C3571A248D38002FFEDF /* Button_restartOrangeSelectedOther 54x54@2x.png in Resources */,
+				48C3C2D31A695EA1007FBF04 /* Icon_Up 70x70@2x.png in Resources */,
 				48F834981A3A3B960098A904 /* Button_rotateCounterclockwise 256x256 other.png in Resources */,
 				48F834A61A3A3B960098A904 /* Button_moveEast 256x256@2x 256x256@2x.png in Resources */,
 				48F8346A1A3A3B960098A904 /* Button_move 256x256.png in Resources */,
@@ -1210,6 +1302,7 @@
 				48F834AA1A3A3B960098A904 /* Button_moveNorth 256x256@2x other.png in Resources */,
 				48F834971A3A3B960098A904 /* Button_rotateCounterclockwise 256x256 256x256@2x.png in Resources */,
 				48F834761A3A3B960098A904 /* Button_moveSouth 256x256@2x 256x256.png in Resources */,
+				48C3C2CF1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png in Resources */,
 				483FFB8C1A30BC3C00C26009 /* Button_moveEast 54x54.png in Resources */,
 				48F8346F1A3A3B960098A904 /* Button_moveNorth 256x256 other.png in Resources */,
 				48B2C34F1A248D38002FFEDF /* Button_presentSelected 54x54@2x.png in Resources */,
@@ -1223,6 +1316,7 @@
 				48B2C3461A248D38002FFEDF /* Button_nextYellowSelectedOther 54x54.png in Resources */,
 				48B2C3361A248D38002FFEDF /* Button_moveSelectedOther 54x54.png in Resources */,
 				48F834921A3A3B960098A904 /* Button_rotateClockwise 256x256 other.png in Resources */,
+				48C3C2C31A695EA1007FBF04 /* Icon_Home 70x70@2x.png in Resources */,
 				48F834881A3A3B960098A904 /* Button_restartOrangeSelected 256x256.png in Resources */,
 				48F834A41A3A3B960098A904 /* Button_move 256x256@2x.png in Resources */,
 				48B2C34C1A248D38002FFEDF /* Button_presentSelecetdOther 54x54.png in Resources */,
@@ -1245,6 +1339,8 @@
 				48B2C3281A248D38002FFEDF /* Button_checkmarkYellow 54x54.png in Resources */,
 				48F834B51A3A3B960098A904 /* Button_nextOrangeOther 256x256@2x.png in Resources */,
 				48F8345E1A3A3B960098A904 /* Button_see 256x256.png in Resources */,
+				48C3C2C61A695EA1007FBF04 /* Icon_Move 70x70.png in Resources */,
+				48C3C2CC1A695EA1007FBF04 /* Icon_RotateClockwise 70x70.png in Resources */,
 				48F834631A3A3B960098A904 /* Button_checkmarkOrangeOther 256x256.png in Resources */,
 				48F834801A3A3B960098A904 /* Button_nextYellowSelected 256x256.png in Resources */,
 				483FFB901A30BC3C00C26009 /* Button_moveSouth 54x54.png in Resources */,
@@ -1256,10 +1352,12 @@
 				48B2C34E1A248D38002FFEDF /* Button_presentSelected 54x54.png in Resources */,
 				48F834B61A3A3B960098A904 /* Button_nextOrangeSelected 256x256@2x.png in Resources */,
 				48F8347D1A3A3B960098A904 /* Button_nextOrangeSelectedOther 256x256.png in Resources */,
+				48C3C2C11A695EA1007FBF04 /* Icon_Give 70x70@2x.png in Resources */,
 				48F834711A3A3B960098A904 /* Button_moveOther 256x256.png in Resources */,
 				48B2C34D1A248D38002FFEDF /* Button_presentSelecetdOther 54x54@2x.png in Resources */,
 				48B2C3541A248D38002FFEDF /* Button_restartOrangeSelected 54x54.png in Resources */,
 				48F834C01A3A3B960098A904 /* Button_restartOrange 256x256@2x.png in Resources */,
+				48C3C2CE1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png in Resources */,
 				48F834741A3A3B960098A904 /* Button_moveSouth 256x256 256x256.png in Resources */,
 				48F8345F1A3A3B960098A904 /* Button_seeOther 256x256.png in Resources */,
 				483FFB971A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png in Resources */,
@@ -1267,7 +1365,11 @@
 				48B2C32C1A248D38002FFEDF /* Button_checkmarkYellowSelected 54x54.png in Resources */,
 				48B2C3471A248D38002FFEDF /* Button_nextYellowSelectedOther 54x54@2x.png in Resources */,
 				48F834651A3A3B960098A904 /* Button_checkmarkOrangeSelectedOther 256x256.png in Resources */,
+				48C3C2D21A695EA1007FBF04 /* Icon_Up 70x70.png in Resources */,
+				48C3C2BE1A695EA1007FBF04 /* Icon_Finish 70x70.png in Resources */,
+				48C3C2BD1A695EA1007FBF04 /* Icon_Down 70x70@2x.png in Resources */,
 				48F834C11A3A3B960098A904 /* Button_restartOrangeOther 256x256@2x.png in Resources */,
+				48C3C2CA1A695EA1007FBF04 /* Icon_Right 70x70.png in Resources */,
 				48F8347A1A3A3B960098A904 /* Button_nextOrange 256x256.png in Resources */,
 				48F8347F1A3A3B960098A904 /* Button_nextYellowOther 256x256.png in Resources */,
 				48B2C35A1A248D38002FFEDF /* Button_restartYellowOther 54x54.png in Resources */,
@@ -1277,6 +1379,7 @@
 				48B2C3271A248D38002FFEDF /* Button_checkmarkOrangeSelectedOther 54x54@2x.png in Resources */,
 				48F834941A3A3B960098A904 /* Button_rotateClockwise 256x256@2x 256x256@2x.png in Resources */,
 				48B2C3501A248D38002FFEDF /* Button_restartOrange 54x54.png in Resources */,
+				48C3C2C41A695EA1007FBF04 /* Icon_Left 70x70.png in Resources */,
 				48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */,
 				483D0C681A321238006C5411 /* Button_moveWest 256x256.png in Resources */,
 				48B2C3221A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54.png in Resources */,
@@ -1299,6 +1402,7 @@
 				482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */,
 				48B2C3651A248D38002FFEDF /* Button_seeSelected 54x54@2x.png in Resources */,
 				48F834AE1A3A3B960098A904 /* Button_moveSouth 256x256 256x256@2x.png in Resources */,
+				48C3C2CD1A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png in Resources */,
 				48B2C3641A248D38002FFEDF /* Button_seeSelected 54x54.png in Resources */,
 				4812E6161A0A655A006DED82 /* LaunchScreen.xib in Resources */,
 				48B2C33D1A248D38002FFEDF /* Button_nextOrangeSelected 54x54@2x.png in Resources */,
