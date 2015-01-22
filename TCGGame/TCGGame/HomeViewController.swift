@@ -29,14 +29,16 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
     
     //Buttons
-    let tempPlayButton = UIButton()
-
+    let tempPlayButtonEasy = UIButton()
+    let tempPlayButtonAdvanced = UIButton()
+    let tempPlayButtonExpert = UIButton()
+    
     //Misc
-    var weArePlayer1 = false // for now set whenever weDecideWhoIsWho is set; player1 controls pawn1
-    var weDecideWhoIsWho: Bool? {
+    var weArePlayer1 = false // for now set whenever weMakeAllDecisions is set; player1 controls pawn1
+    var weMakeAllDecisions: Bool? {
         // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle; todo rename
         didSet {
-            if let actualValue = weDecideWhoIsWho {
+            if let actualValue = weMakeAllDecisions {
                 self.weArePlayer1 = actualValue
             }
         }
@@ -48,10 +50,17 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     {
         super.viewDidLoad()
         
-        self.tempPlayButton.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
-        self.tempPlayButton.frame = CGRectMake(50, 50, 100, 100)
-        self.tempPlayButton.addTarget(self, action: "tempPlayButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(self.tempPlayButton)
+        var x = 50 as CGFloat
+
+        for button in [self.tempPlayButtonEasy,self.tempPlayButtonAdvanced,self.tempPlayButtonExpert]
+        {
+            button.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
+            button.frame = CGRectMake(x, 50, 100, 100)
+            button.addTarget(self, action: "tempPlayButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+            self.view.addSubview(button)
+            
+            x += 150
+        }
 
     }
     
@@ -61,6 +70,14 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     {
         print("PRESS!")
 
+        switch sender
+        {
+            case self.tempPlayButtonEasy: self.currentGame.currentDifficulty = Difficulty.Beginner
+            case self.tempPlayButtonAdvanced: self.currentGame.currentDifficulty = Difficulty.Advanced
+            case self.tempPlayButtonExpert: self.currentGame.currentDifficulty = Difficulty.Expert
+            default: println("Non-existing button was pressed. Are you a magician?")
+        }
+        
         if (!kDevLocalTestingIsOn) { // normal case
             self.authenticateLocalPlayer()
         } else {
@@ -107,7 +124,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         }
         else if unpackedObject is Level
         {
-            self.levelViewController!.receiveLevel(unpackedObject as Level)
+            println("Received level")
+
+            //self.levelViewController!.receiveLevel(unpackedObject as Level)
+            self.currentGame.currentLevel = unpackedObject as Level
         }
     }
 
@@ -205,7 +225,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     func startPlayingMatch() {
         if (!kDevLocalTestingIsOn) {
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
-            self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
+            self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
             
             // todo: UI should be ready before it is shown; we can solve this once we do the match making in another vc:
             //restartLevel()
@@ -249,42 +269,51 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
             }
         }
-
-        func sendLevelToOther(level :Level)
-        {
-            print(self.GCMatch)
-            
-            let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
-            
-            // test sending a small package:
-            //		var hashValue = 2
-            //		let packet = NSData(bytes:&hashValue, length:4) // todo check length!
-            
-            if (!kDevLocalTestingIsOn) { // normal case
-                var error: NSError?
-                let match = self.GCMatch!
-                match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-                
-                if (error != nil) {
-                    println("Error in sendActionToOther: \(error)")
-                }
-            } else {
-                // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-                self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-            }
-        }
         
+        //Give info to the levelViewController
         self.levelViewController!.sendActionToOther = sendActionToOther
-        self.levelViewController!.sendLevelToOther = sendLevelToOther
+        //self.levelViewController!.sendLevelToOther = sendLevelToOther
+
+        self.levelViewController!.weArePlayer1 = self.weArePlayer1
         
-        self.levelViewController?.weArePlayer1 = self.weArePlayer1
+        if self.weMakeAllDecisions!
+        {
+            self.currentGame.goToNextLevel()
+            self.sendLevelToOther(self.currentGame.currentLevel);
+        }
+            
+        self.levelViewController!.currentLevel = self.currentGame.currentLevel
+        
         
         // Add our levelViewController's view:
         self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
         self.view.addSubview(self.levelViewController!.view)
-//        self.levelViewController!.view.layer.transform = self.view.layer.transform
-//        self.presentViewController(self.levelViewController!, animated: false, completion: nil)
         
     }
+    
+    func sendLevelToOther(level :Level)
+    {
+        print(self.GCMatch)
+        
+        let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
+        
+        // test sending a small package:
+        //		var hashValue = 2
+        //		let packet = NSData(bytes:&hashValue, length:4) // todo check length!
+        
+        if (!kDevLocalTestingIsOn) { // normal case
+            var error: NSError?
+            let match = self.GCMatch!
+            match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
+            
+            if (error != nil) {
+                println("Error in sendActionToOther: \(error)")
+            }
+        } else {
+            // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
+            self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
+        }
+    }
+    
     
 }

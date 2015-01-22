@@ -68,8 +68,8 @@ class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewCo
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		player1HomeViewController.weDecideWhoIsWho = true
-		player2HomeViewController.weDecideWhoIsWho = false
+		player1HomeViewController.weMakeAllDecisions = true
+		player2HomeViewController.weMakeAllDecisions = false
 		
 		// todo: worth it to make a function that takes a block and performs it for both or either one of the PlayerViewControllers?
 		

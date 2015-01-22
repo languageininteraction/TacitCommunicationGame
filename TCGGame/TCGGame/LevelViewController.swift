@@ -22,12 +22,12 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	var managerOfMultipleHomeViewControllers: ManageMultipleHomeViewControllersProtocol?
 	
 	// MARK: - Model
-    var currentGame = Game()
+    var currentLevel: Level?
 	var currentRound: Round?
 	
     //Temp
     var weArePlayer1 : Bool = true
-    var weDecideWhoIsWho : Bool = true
+    var weMakeAllDecisions : Bool = true
     
 	// MARK: - Other UI
 	
@@ -101,7 +101,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
         self.view.backgroundColor = UIColor.whiteColor()
 		        
 		// Create a round to begin with:
-		self.currentRound = Round(level: self.currentGame.currentLevel)
+		self.currentRound = Round(level: self.currentLevel!)
 				
 		/*if (!kDevLocalTestingIsOn) { // normal case
 			self.authenticateLocalPlayer()
@@ -459,12 +459,12 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	func restartLevel() {
 		// Create a new round:
-		self.currentRound = Round(level: self.currentGame.currentLevel)
+		self.currentRound = Round(level: self.currentLevel!)
 		
         //Communicate your level with the other
-        if self.weDecideWhoIsWho
+        if self.weMakeAllDecisions
         {
-            self.sendLevelToOther!(self.currentGame.currentLevel)
+            self.sendLevelToOther!(self.currentLevel!)
         }
         
 		// Update the UI:
@@ -475,12 +475,12 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
     func proceedToNextLevel(receivedLevel : Level? = nil) {
 		// Go to the next level and create a new round:
         
-        if receivedLevel == nil
+        /*if receivedLevel == nil
         {
             self.currentGame.goToNextLevel();
             
             //Communicate your level with the other
-            if self.weDecideWhoIsWho
+            if self.weMakeAllDecisions
             {
                 self.sendLevelToOther!(self.currentGame.currentLevel)
             }
@@ -489,9 +489,9 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
         else
         {
             self.currentGame.currentLevel = receivedLevel!
-        }
+        }*/
 
-        self.currentRound = Round(level: self.currentGame.currentLevel)
+        self.currentRound = Round(level: self.currentLevel!)
         
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
@@ -686,7 +686,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
     
     func tapLevelLabel(sender:UILabel) {
-		self.chooseLevelViewController.levels = currentGame.beginnerLevels
+		//self.chooseLevelViewController.levels = currentGame.beginnerLevels
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
     }
@@ -696,24 +696,22 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	func updateUIAtStartOfLevel() {
 		
-		let currentLevel = currentGame.currentLevel
+		labelLevel.text = "Level \(self.currentLevel!.name)"
 
-		labelLevel.text = "Level \(currentGame.indexCurrentLevel + 1)"
-
-		self.boardView.boardSize = (currentLevel.board.width, currentLevel.board.height) // todo use tuple in board as weel
+		self.boardView.boardSize = (self.currentLevel!.board.width, self.currentLevel!.board.height) // todo use tuple in board as weel
 		
 		
 		// Add pawns to the board view:
 		
 		// Pawn 1:
-		boardView.pawnDefinition1 = PawnDefinition(shape: currentLevel.pawnPlayer1.shape, color: currentLevel.pawnPlayer1.color)
-		boardView.placePawn(true, field: (currentLevel.startConfigurationPawn1.x, currentLevel.startConfigurationPawn1.y))
-		boardView.rotatePawnToRotation(true, rotation: currentLevel.startConfigurationPawn1.rotation, animated: false)
+		boardView.pawnDefinition1 = PawnDefinition(shape: self.currentLevel!.pawnPlayer1.shape, color: self.currentLevel!.pawnPlayer1.color)
+		boardView.placePawn(true, field: (self.currentLevel!.startConfigurationPawn1.x, self.currentLevel!.startConfigurationPawn1.y))
+		boardView.rotatePawnToRotation(true, rotation: self.currentLevel!.startConfigurationPawn1.rotation, animated: false)
 		
 		// Pawn 2:
-		boardView.pawnDefinition2 = PawnDefinition(shape: currentLevel.pawnPlayer2.shape, color: currentLevel.pawnPlayer2.color)
-		boardView.placePawn(false, field: (currentLevel.startConfigurationPawn2.x, currentLevel.startConfigurationPawn2.y))
-		boardView.rotatePawnToRotation(false, rotation: currentLevel.startConfigurationPawn2.rotation, animated: false)
+		boardView.pawnDefinition2 = PawnDefinition(shape: self.currentLevel!.pawnPlayer2.shape, color: self.currentLevel!.pawnPlayer2.color)
+		boardView.placePawn(false, field: (self.currentLevel!.startConfigurationPawn2.x, self.currentLevel!.startConfigurationPawn2.y))
+		boardView.rotatePawnToRotation(false, rotation: self.currentLevel!.startConfigurationPawn2.rotation, animated: false)
 		
 		// todo explain
 		boardView.clearShownResultsForSpecificPositions()
@@ -764,8 +762,8 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		let goalConfigurationShouldBeShown = self.currentRound!.currentState().goalConfigurationShouldBeShown(weArePlayer1)
 		
 		// Update what the boardView shows:
-		boardView.pawnAndGoalFiguration1 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition1, self.currentGame.currentLevel.goalConfigurationPawn1) : (nil, nil)
-		boardView.pawnAndGoalFiguration2 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition2, self.currentGame.currentLevel.goalConfigurationPawn2) : (nil, nil)
+		boardView.pawnAndGoalFiguration1 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition1, self.currentLevel!.goalConfigurationPawn1) : (nil, nil)
+		boardView.pawnAndGoalFiguration2 = goalConfigurationShouldBeShown ? (boardView.pawnDefinition2, self.currentLevel!.goalConfigurationPawn2) : (nil, nil)
 	}
 		
 	func centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(x: Int, y: Int) {
