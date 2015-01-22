@@ -459,8 +459,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		buttonToGiveSeeItemToOtherPlayer.addTarget(self, action: "buttonToGiveItemToOtherPlayerPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonToGiveSeeItemToOtherPlayer)
 		buttonToGiveSeeItemToOtherPlayer.hidden = true
-		
-		
+        
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
 	}
@@ -582,7 +581,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			
 			// todo: UI should be ready before it is shown; we can solve this once we do the match making in another vc:
 			restartLevel()
-			
+            
 /*			// todo: do this here?
 			otherPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
 				
@@ -594,6 +593,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			}) // todo check the size we need
             */
 		}
+
     }
 	
 	
@@ -601,16 +601,38 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		// Create a new round:
 		self.currentRound = Round(level: self.currentGame.currentLevel)
 		
+        //Communicate your level with the other
+        if self.weDecideWhoIsWho!
+        {
+            self.sendLevelToOther(self.currentGame.currentLevel)
+        }
+        
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
 	}
 	
 	
-	func proceedToNextLevel() {
+    func proceedToNextLevel(receivedLevel : Level? = nil) {
 		// Go to the next level and create a new round:
-		self.currentGame.indexCurrentLevel++
-		self.currentRound = Round(level: self.currentGame.currentLevel)
-		
+        
+        if receivedLevel == nil
+        {
+            self.currentGame.goToNextLevel();
+            
+            //Communicate your level with the other
+            if self.weDecideWhoIsWho!
+            {
+                self.sendLevelToOther(self.currentGame.currentLevel)
+            }
+            
+        }
+        else
+        {
+            self.currentGame.currentLevel = receivedLevel!
+        }
+
+        self.currentRound = Round(level: self.currentGame.currentLevel)
+        
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
 	}
@@ -638,6 +660,26 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		}
 	}
 	
+    func sendLevelToOther(level: Level)
+    {
+        let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
+        
+        if (!kDevLocalTestingIsOn) { // normal case
+            var error: NSError?
+            let match = self.match!
+            match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
+            
+            if (error != nil) {
+                println("Error in sendActionToOther: \(error)")
+            }
+        } else {
+            // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
+            self.managerOfMultiplePlayerViewControllers!.sendMessageForPlayerViewController(self, packet: packet)
+        }
+        
+    
+    }
+    
 	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
 	func receiveData(data: NSData) {
 		
@@ -651,8 +693,20 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		return*/
 		
 		// Decode the data, which is always a RoundAction
-		var action = NSKeyedUnarchiver.unarchiveObjectWithData(data) as RoundAction
-		
+		var unpackedObject: AnyObject! = NSKeyedUnarchiver.unarchiveObjectWithData(data) as AnyObject!
+        
+        if unpackedObject is RoundAction
+        {
+            self.receiveAction(unpackedObject as RoundAction)
+        }
+        else if unpackedObject is Level
+        {
+            self.receiveLevel(unpackedObject as Level)
+        }
+    }
+        
+    func receiveAction(action : RoundAction)
+    {
 		// Update the model:
 		currentRound?.processAction(action)
 		
@@ -699,6 +753,15 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
 		}
 	}
+    
+    func receiveLevel(level : Level)
+    {
+        println("Received level")
+        println(level.pawnPlayer1.shape.rawValue)
+        println(level.pawnPlayer2.shape.rawValue)
+        
+        self.proceedToNextLevel(receivedLevel: level)
+    }
 	
 	func moveButtonPressed(sender:UIButton!) {
 		// Create a corresponding action:

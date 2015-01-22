@@ -15,7 +15,7 @@ import UIKit
 
 class Round : NSObject {
 	
-	let level: Level
+	var level: Level
 	
 	var currentPhase: RoundPhase
 	

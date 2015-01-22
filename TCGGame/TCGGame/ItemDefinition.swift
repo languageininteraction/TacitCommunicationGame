@@ -73,6 +73,17 @@ class ItemDefinition: NSObject, NSCopying
 		endlessUse = false
 		nrUses = 0
 	}
+    
+    func asDict() -> [String: AnyObject]
+    {
+        var itemDict = [String: AnyObject]()
+        
+        itemDict["itemType"] = self.itemType.rawValue
+        itemDict["nrUses"] = self.nrUses
+        itemDict["endlessUse"] = self.endlessUse
+        
+        return itemDict
+    }
 }
 
 
