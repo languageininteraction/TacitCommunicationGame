@@ -8,15 +8,6 @@
 
 import Foundation
 
-//Two extensions to make this functionality easier
-
-extension Array {
-    func randomItem() -> T {
-        let index = Int(arc4random_uniform(UInt32(self.count)))
-        return self[index]
-    }
-}
-
 extension Array {
     func contains<T where T : Equatable>(obj: T) -> Bool {
         return self.filter({$0 as? T == obj}).count > 0

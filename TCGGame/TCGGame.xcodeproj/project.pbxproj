@@ -20,8 +20,8 @@
 		4812E6391A0A6F7C006DED82 /* RoundActionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E6381A0A6F7C006DED82 /* RoundActionTypes.swift */; };
 		4812E63B1A0A715C006DED82 /* RoundPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E63A1A0A715C006DED82 /* RoundPhase.swift */; };
 		4812E6401A0B7972006DED82 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4812E63F1A0B7972006DED82 /* GameKit.framework */; };
-		482EEC3D1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3C1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift */; };
-		482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */; };
+		482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */; };
+		482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* LevelViewController.swift */; };
 		482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
 		483D0C621A321238006C5411 /* Button_moveEast 256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 483D0C561A321238006C5411 /* Button_moveEast 256x256.png */; };
@@ -283,6 +283,9 @@
 		4940291F1A399EF200449754 /* level3.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291E1A399EF200449754 /* level3.json */; };
 		494029211A399F0900449754 /* level4.json in Resources */ = {isa = PBXBuildFile; fileRef = 494029201A399F0900449754 /* level4.json */; };
 		496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
+		49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49821A761A695C5A008CC491 /* HomeViewController.swift */; };
+		49821A791A696C31008CC491 /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
+		49821A7D1A696CD7008CC491 /* expert1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A7C1A696CD7008CC491 /* expert1.json */; };
 		49BB4E561A5691B400C93C26 /* LevelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB4E551A5691B400C93C26 /* LevelTemplate.swift */; };
 		49D87FF51A56D2DB00455DA8 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 49D87FF41A56D2DB00455DA8 /* test.json */; };
 		49E83DA61A2714EC006952EE /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E83DA51A2714EC006952EE /* Game.swift */; };
@@ -320,8 +323,8 @@
 		4812E6381A0A6F7C006DED82 /* RoundActionTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundActionTypes.swift; sourceTree = "<group>"; };
 		4812E63A1A0A715C006DED82 /* RoundPhase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundPhase.swift; sourceTree = "<group>"; };
 		4812E63F1A0B7972006DED82 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		482EEC3C1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulateTwoPlayersViewController.swift; sourceTree = "<group>"; };
-		482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulateTwoHomeViewControllers.swift; sourceTree = "<group>"; };
+		482EEC3E1A121C9300FB13FF /* LevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
 		482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		483D0C561A321238006C5411 /* Button_moveEast 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveEast 256x256.png"; sourceTree = "<group>"; };
@@ -582,6 +585,9 @@
 		4940291E1A399EF200449754 /* level3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level3.json; sourceTree = "<group>"; };
 		494029201A399F0900449754 /* level4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level4.json; sourceTree = "<group>"; };
 		496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassControlBackAndForth.swift; sourceTree = "<group>"; };
+		49821A761A695C5A008CC491 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		49821A781A696C31008CC491 /* advanced1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = advanced1.json; sourceTree = "<group>"; };
+		49821A7C1A696CD7008CC491 /* expert1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = expert1.json; sourceTree = "<group>"; };
 		49BB4E551A5691B400C93C26 /* LevelTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTemplate.swift; sourceTree = "<group>"; };
 		49D87FF41A56D2DB00455DA8 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		49E83DA51A2714EC006952EE /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -701,7 +707,7 @@
 			children = (
 				4812E60D1A0A655A006DED82 /* ViewController.swift */,
 				4812E60F1A0A655A006DED82 /* Main.storyboard */,
-				482EEC3C1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift */,
+				482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */,
 				482EEC421A121D6A00FB13FF /* For One Player */,
 				496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */,
 			);
@@ -724,9 +730,10 @@
 		482EEC421A121D6A00FB13FF /* For One Player */ = {
 			isa = PBXGroup;
 			children = (
-				482EEC3E1A121C9300FB13FF /* PlayerViewController.swift */,
+				482EEC3E1A121C9300FB13FF /* LevelViewController.swift */,
 				482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */,
 				491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */,
+				49821A761A695C5A008CC491 /* HomeViewController.swift */,
 			);
 			name = "For One Player";
 			sourceTree = "<group>";
@@ -1066,6 +1073,8 @@
 			isa = PBXGroup;
 			children = (
 				49D87FF41A56D2DB00455DA8 /* test.json */,
+				49821A781A696C31008CC491 /* advanced1.json */,
+				49821A7C1A696CD7008CC491 /* expert1.json */,
 			);
 			name = LevelTemplates;
 			sourceTree = "<group>";
@@ -1364,6 +1373,7 @@
 				48F834741A3A3B960098A904 /* Button_moveSouth 256x256 256x256.png in Resources */,
 				48F8345F1A3A3B960098A904 /* Button_seeOther 256x256.png in Resources */,
 				483FFB971A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png in Resources */,
+				49821A7D1A696CD7008CC491 /* expert1.json in Resources */,
 				48B2C3481A248D38002FFEDF /* Button_present 54x54.png in Resources */,
 				48B2C32C1A248D38002FFEDF /* Button_checkmarkYellowSelected 54x54.png in Resources */,
 				48B2C3471A248D38002FFEDF /* Button_nextYellowSelectedOther 54x54@2x.png in Resources */,
@@ -1429,9 +1439,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */,
 				48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */,
 				48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */,
-				482EEC3D1A121C7200FB13FF /* SimulateTwoPlayersViewController.swift in Sources */,
+				482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */,
 				4856E58C1A24953800309751 /* FieldView.swift in Sources */,
 				4847D8151A24D99400540223 /* PawnView.swift in Sources */,
 				4812E6311A0A6B77006DED82 /* RoundState.swift in Sources */,
@@ -1448,7 +1459,7 @@
 				49E83DA61A2714EC006952EE /* Game.swift in Sources */,
 				4812E62F1A0A6B65006DED82 /* Round.swift in Sources */,
 				49BB4E561A5691B400C93C26 /* LevelTemplate.swift in Sources */,
-				482EEC401A121C9300FB13FF /* PlayerViewController.swift in Sources */,
+				482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
 				491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */,
 				4856E58A1A24908100309751 /* BoardView.swift in Sources */,

@@ -16,10 +16,10 @@ enum PerspectiveOnTwoPlayers: Int {
 }
 
 
-class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerViewControllersProtocol {
+class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewControllersProtocol {
 
-	let player1ViewController = PlayerViewController(nibName: "PlayerViewController", bundle: nil)
-	let player2ViewController = PlayerViewController(nibName: "PlayerViewController", bundle: nil)
+	let player1HomeViewController = HomeViewController(nibName: "PlayerViewController", bundle: nil)
+	let player2HomeViewController = HomeViewController(nibName: "PlayerViewController", bundle: nil)
 	
 	var perspective: PerspectiveOnTwoPlayers = .Both {
 		didSet {
@@ -27,8 +27,8 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 				// Update the views's transforms in an animated fashion:
 				
 				// Get the old transforms:
-				let transform1 = player1ViewController.view.layer.transform
-				let transform2 = player2ViewController.view.layer.transform
+				let transform1 = player1HomeViewController.view.layer.transform
+				let transform2 = player2HomeViewController.view.layer.transform
 				
 				// Calculate the new transforms:
 				var transform1New: CATransform3D, transform2New: CATransform3D
@@ -42,7 +42,7 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 					transform2New = CATransform3DMakeTranslation(ownWidth, 0, 0);
 				} else {
 					transform2New = CATransform3DIdentity;
-					transform1New = CATransform3DMakeTranslation(-1 * player1ViewController.view.frame.size.width, 0, 0);
+					transform1New = CATransform3DMakeTranslation(-1 * player1HomeViewController.view.frame.size.width, 0, 0);
 				}
 				
 				// Animate from the old to the new transforms:
@@ -51,14 +51,14 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 				let animation1 = CABasicAnimation(keyPath: "transform")
 				animation1.fromValue = NSValue(CATransform3D: transform1)
 				animation1.toValue = NSValue(CATransform3D: transform1New)
-				player1ViewController.view.layer.addAnimation(animation1, forKey: "to new transform") // this key is just a name for ourselves
-				player1ViewController.view.layer.transform = transform1New
+				player1HomeViewController.view.layer.addAnimation(animation1, forKey: "to new transform") // this key is just a name for ourselves
+				player1HomeViewController.view.layer.transform = transform1New
 				
 				let animation2 = CABasicAnimation(keyPath: "transform")
 				animation2.fromValue = NSValue(CATransform3D: transform2)
 				animation2.toValue = NSValue(CATransform3D: transform2New)
-				player2ViewController.view.layer.addAnimation(animation2, forKey: "to new transform") // this key is just a name for ourselves
-				player2ViewController.view.layer.transform = transform2New
+				player2HomeViewController.view.layer.addAnimation(animation2, forKey: "to new transform") // this key is just a name for ourselves
+				player2HomeViewController.view.layer.transform = transform2New
 				
 				CATransaction.commit()
 			}
@@ -68,26 +68,26 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		player1ViewController.weDecideWhoIsWho = true
-		player2ViewController.weDecideWhoIsWho = false
+		player1HomeViewController.weDecideWhoIsWho = true
+		player2HomeViewController.weDecideWhoIsWho = false
 		
 		// todo: worth it to make a function that takes a block and performs it for both or either one of the PlayerViewControllers?
 		
-		player1ViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
-		self.view.addSubview(player1ViewController.view)
-//		player1ViewController.view.backgroundColor = UIColor.redColor()
-		player1ViewController.managerOfMultiplePlayerViewControllers = self
+		player1HomeViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
+		self.view.addSubview(player1HomeViewController.view)
+		player1HomeViewController.view.backgroundColor = UIColor.redColor()
+		player1HomeViewController.managerOfMultipleHomeViewControllers = self
 		
-		player2ViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
-		self.view.addSubview(player2ViewController.view)
-//		player2ViewController.view.backgroundColor = UIColor.blueColor()
-		player2ViewController.managerOfMultiplePlayerViewControllers = self
+		player2HomeViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
+		self.view.addSubview(player2HomeViewController.view)
+		player2HomeViewController.view.backgroundColor = UIColor.blueColor()
+		player2HomeViewController.managerOfMultipleHomeViewControllers = self
 		
 		
 		// todo make dependent on self.perspective:
 		let transformScale = CATransform3DMakeScale(0.5, 0.5, 1)
-		player1ViewController.view.layer.transform = CATransform3DTranslate(transformScale, -0.5 * self.view.frame.size.width, 0, 0);
-		player2ViewController.view.layer.transform = CATransform3DTranslate(transformScale, 0.5 * self.view.frame.size.width, 0, 0);
+		player1HomeViewController.view.layer.transform = CATransform3DTranslate(transformScale, -0.5 * self.view.frame.size.width, 0, 0);
+		player2HomeViewController.view.layer.transform = CATransform3DTranslate(transformScale, 0.5 * self.view.frame.size.width, 0, 0);
 		
 		
 		// Add gesture recognizers to switch between the two players:
@@ -138,16 +138,18 @@ class SimulateTwoPlayersViewController: UIViewController, ManageMultiplePlayerVi
 	}
 	
 	
-	// MARK: - Handy for working with two PlayerViewControllers
+	// MARK: - Handy for working with two HomeViewControllers
 	
-	func otherPlayerViewController(playerVC: PlayerViewController) -> PlayerViewController {
-		return playerVC == player1ViewController ? player2ViewController : player1ViewController
+	func otherHomeViewController(homeVC: HomeViewController) -> HomeViewController {
+		return homeVC == player1HomeViewController ? player2HomeViewController : player1HomeViewController
 	}
 	
 	
-	// MARK: - ManageMultiplePlayerViewControllersProtocol
+	// MARK: - ManageMultipleHomeViewControllersProtocol
 	
-	func sendMessageForPlayerViewController(playerVC: PlayerViewController, packet: NSData) {
-		otherPlayerViewController(playerVC).receiveData(packet)
+	func sendMessageForHomeViewController(homeVC: HomeViewController, packet: NSData) {
+		otherHomeViewController(homeVC).receiveData(packet)
 	}
+    
+
 }

@@ -18,12 +18,12 @@ class ViewController: UIViewController {
 		super.viewDidAppear(animated)
 		
 		if (!kDevLocalTestingIsOn) { // normal case
-			let playerViewController = PlayerViewController(nibName: "PlayerViewController", bundle: nil)
-			self.presentViewController(playerViewController, animated: false, completion: nil)
+			let homeViewController = HomeViewController(nibName: "PlayerViewController", bundle: nil)
+			self.presentViewController(homeViewController, animated: false, completion: nil)
 		} else {
 			// This is useful for testing, circumventing the need for two devices and using Game Center:
-			let simulateTwoPlayersViewController = SimulateTwoPlayersViewController()
-			self.presentViewController(simulateTwoPlayersViewController, animated: false, completion: nil)
+			let simulateTwoHomeViewControllers = SimulateTwoHomeViewControllers()
+			self.presentViewController(simulateTwoHomeViewControllers, animated: false, completion: nil)
 		}
 	}
 }
