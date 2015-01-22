@@ -43,6 +43,13 @@ func createBitmapContext(pixelsWide: UInt, pixelsHigh: UInt) -> CGContextRef? {
 	return context
 }
 
+extension Array {
+	func randomItem() -> T {
+		let index = Int(arc4random_uniform(UInt32(self.count)))
+		return self[index]
+	}
+}
+
 
 func createColoredVersionOfImage(sourceImage: CGImageRef, color: CGColorRef) -> CGImageRef? {
 	// Create a context with the proper size:
