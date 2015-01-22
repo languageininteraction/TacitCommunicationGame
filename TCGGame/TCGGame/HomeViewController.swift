@@ -28,8 +28,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     var GCMatchStarted = false
     var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
     
+    //Buttons
     let tempPlayButton = UIButton()
-    
+
+    //Misc
     var weArePlayer1 = false // for now set whenever weDecideWhoIsWho is set; player1 controls pawn1
     var weDecideWhoIsWho: Bool? {
         // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle; todo rename
@@ -67,7 +69,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
     }
     
-    // MARK: - Misc
+    // MARK: - Communication with subview
     
     func subControllerFinished(subController: AnyObject)
     {
@@ -82,6 +84,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
     }
 
+    // MARK: - Communication with other players
     
     // This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
     func receiveData(data: NSData) {
