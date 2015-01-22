@@ -402,19 +402,34 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		self.view.addSubview(buttonFinish)
 		
 		// Own retry:
-		buttonRetry.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		let edgelengthRetryButton = 0.925 * kEdgelengthItemButtons // todo constant
+		let deltaRetry = 0.5 * (kEdgelengthItemButtons - edgelengthRetryButton)
+		buttonRetry.frame = CGRectMake(xItemButtonsLocalPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
 		setImagesForButton(buttonRetry, "Icon_Retry 70x70", kColorLiIOrange, forOtherPlayer: false)
 		self.view.addSubview(buttonRetry)
 		
-//		let buttonBackToHomeScreen = UIButton()
+		// Own home:
+		let edgelengthHomeButton = 0.85 * kEdgelengthItemButtons // todo constant
+		let deltaHome = 0.5 * (kEdgelengthItemButtons - edgelengthHomeButton)
+		buttonBackToHomeScreen.frame = CGRectMake(xItemButtonsLocalPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
+		setImagesForButton(buttonBackToHomeScreen, "Icon_Home 70x70", kColorLiIYellow, forOtherPlayer: false)
+		self.view.addSubview(buttonBackToHomeScreen)
 		
 		// Other's finish:
 		buttonOtherPlayer_Finish.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_Finish, "Icon_Finish 70x70", kColorLiIOrange, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_Finish, "Icon_Finish 70x70", kColorLiIDarkGreen, forOtherPlayer: true)
 		self.view.addSubview(buttonOtherPlayer_Finish)
 		
-//		let buttonOtherPlayer_Retry = UIButton()
-//		let buttonOtherPlayer_BackToHomeScreen
+		// Own retry:
+		buttonOtherPlayer_Retry.frame = CGRectMake(xItemButtonsOtherPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
+		setImagesForButton(buttonOtherPlayer_Retry, "Icon_Retry 70x70", kColorLiIOrange, forOtherPlayer: true)
+		self.view.addSubview(buttonOtherPlayer_Retry)
+		
+		// Own home:
+		buttonOtherPlayer_BackToHomeScreen.frame = CGRectMake(xItemButtonsOtherPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
+		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, "Icon_Home 70x70", kColorLiIYellow, forOtherPlayer: true)
+		self.view.addSubview(buttonOtherPlayer_BackToHomeScreen)
+
 		
 		
 		// MARK: 7. Prepare the level label:
