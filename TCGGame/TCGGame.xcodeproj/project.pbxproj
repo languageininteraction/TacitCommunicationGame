@@ -68,6 +68,7 @@
 		485E1C8E1A4C3D8300AC88AC /* level15.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C8A1A4C3D8300AC88AC /* level15.json */; };
 		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
+		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
@@ -284,7 +285,6 @@
 		494029211A399F0900449754 /* level4.json in Resources */ = {isa = PBXBuildFile; fileRef = 494029201A399F0900449754 /* level4.json */; };
 		496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49821A761A695C5A008CC491 /* HomeViewController.swift */; };
-		49821A791A696C31008CC491 /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
 		49821A7D1A696CD7008CC491 /* expert1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A7C1A696CD7008CC491 /* expert1.json */; };
 		49BB4E561A5691B400C93C26 /* LevelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB4E551A5691B400C93C26 /* LevelTemplate.swift */; };
 		49D87FF51A56D2DB00455DA8 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 49D87FF41A56D2DB00455DA8 /* test.json */; };
@@ -1165,6 +1165,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4874D87D1A7143B100EE812D /* advanced1.json in Resources */,
 				48F8348B1A3A3B960098A904 /* Button_restartYellowOther 256x256.png in Resources */,
 				483FFB931A30BC3C00C26009 /* Button_moveWest 54x54@2x.png in Resources */,
 				48B2C35F1A248D38002FFEDF /* Button_restartYellowSelectedOther 54x54@2x.png in Resources */,
