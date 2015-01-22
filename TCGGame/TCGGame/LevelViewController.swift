@@ -88,6 +88,9 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        // Make the background white:
+        self.view.backgroundColor = UIColor.whiteColor()
 		        
 		// Create a round to begin with:
 		self.currentRound = Round(level: self.currentGame.currentLevel)
