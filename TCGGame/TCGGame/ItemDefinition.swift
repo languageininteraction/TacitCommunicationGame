@@ -79,8 +79,13 @@ class ItemDefinition: NSObject, NSCopying
         var itemDict = [String: AnyObject]()
         
         itemDict["itemType"] = self.itemType.rawValue
-        itemDict["nrUses"] = self.nrUses
         itemDict["endlessUse"] = self.endlessUse
+        itemDict["nrUses"] = self.nrUses
+
+        if self.nrUses == nil
+        {
+            itemDict["nrUses"] = 0
+        }
         
         return itemDict
     }
