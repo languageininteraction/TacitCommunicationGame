@@ -279,8 +279,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         self.levelViewController?.weArePlayer1 = self.weArePlayer1
         
-        //Start it
-        self.presentViewController(self.levelViewController!, animated: false, completion: nil)
+        // Add our levelViewController's view:
+        self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+        self.view.addSubview(self.levelViewController!.view)
+//        self.levelViewController!.view.layer.transform = self.view.layer.transform
+//        self.presentViewController(self.levelViewController!, animated: false, completion: nil)
         
     }
     
