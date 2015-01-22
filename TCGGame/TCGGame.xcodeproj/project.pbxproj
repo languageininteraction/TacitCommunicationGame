@@ -1128,7 +1128,7 @@
 				TargetAttributes = {
 					4812E6051A0A655A006DED82 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = WK5CY3FX8H;
+						DevelopmentTeam = H5HQ399A66;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;
@@ -1605,13 +1605,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Radboud University (H5HQ399A66)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Radboud University (H5HQ399A66)";
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d8fcb3aa-d83a-4504-a3bd-e2cc54cea7b6";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
