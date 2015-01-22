@@ -30,12 +30,14 @@ class Game: NSObject
     var nCompletedLevels = Dictionary<Difficulty,Int>()
     
     //Current state:
-    var indexCurrentLevel = 0
+    var indexCurrentLevel = -1 //So the first 'next' level will be 0
     var currentLevel: Level
+    var currentDifficulty: Difficulty
         
     override init()
     {
-        self.currentLevel = self.beginnerLevels[indexCurrentLevel]
+        self.currentDifficulty = Difficulty.Beginner
+        self.currentLevel = self.beginnerLevels[0]
         self.highestAvailableDifficulty = Difficulty.Beginner
         
         self.nCompletedLevels[Difficulty.Beginner] = 0
@@ -49,26 +51,18 @@ class Game: NSObject
         self.indexCurrentLevel++
         self.currentLevel = self.beginnerLevels[self.indexCurrentLevel]
     }
-
-    func goToSpecificBeginnerLevel(#levelIndex: Int)
-    {
-        self.currentLevel = self.beginnerLevels[levelIndex]
-    }
-    
-    func goToAdvancedLevel()
-    {
-        self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
-    }
-
-    func goToExpertLevel()
-    {
-        self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
-    }
     
     func goToNextLevel()
     {
         self.indexCurrentLevel++
-        self.currentLevel = self.beginnerLevels[self.indexCurrentLevel]
+        
+        switch self.currentDifficulty
+        {
+            case Difficulty.Beginner: self.currentLevel = self.beginnerLevels[self.indexCurrentLevel]
+            case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
+            case Difficulty.Expert: self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
+        }
+        
     }
 
     
