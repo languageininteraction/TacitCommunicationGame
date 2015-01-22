@@ -67,6 +67,7 @@
 		485E1C8D1A4C3D8300AC88AC /* level14.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C891A4C3D8300AC88AC /* level14.json */; };
 		485E1C8E1A4C3D8300AC88AC /* level15.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C8A1A4C3D8300AC88AC /* level15.json */; };
 		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
+		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
@@ -366,6 +367,7 @@
 		485E1C891A4C3D8300AC88AC /* level14.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level14.json; sourceTree = "<group>"; };
 		485E1C8A1A4C3D8300AC88AC /* level15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level15.json; sourceTree = "<group>"; };
 		486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PersonPlaceholder 320x320.png"; sourceTree = "<group>"; };
+		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
 		48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54@2x.png"; sourceTree = "<group>"; };
@@ -918,6 +920,7 @@
 			isa = PBXGroup;
 			children = (
 				48DF63A21A39FE6500941BDA /* HandyFunctions.swift */,
+				4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */,
 			);
 			name = "Handy stuff";
 			sourceTree = "<group>";
@@ -1439,6 +1442,7 @@
 				49E83DA81A271A48006952EE /* Level.swift in Sources */,
 				4812E6391A0A6F7C006DED82 /* RoundActionTypes.swift in Sources */,
 				49E83DAC1A271F23006952EE /* PawnConfiguration.swift in Sources */,
+				4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */,
 				49E83DAA1A271A8D006952EE /* BoardDefinition.swift in Sources */,
 				4812E6351A0A6B8D006DED82 /* RoundTransition.swift in Sources */,
 				49E83DA61A2714EC006952EE /* Game.swift in Sources */,

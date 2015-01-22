@@ -726,6 +726,9 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 	}
 	
 	func itemButtonPressed(sender: UIButton!) {
+		// If the buttons was pulsating (this happens when a button becomes first available), make it stop:
+		sender.setLayerPulsates(false)
+		
 		// Create a corresponding action:
 		let actionType = sender == buttonMoveItem ? RoundActionType.SwitchWhetherMoveItemIsEnabled : sender == buttonSeeItem ? RoundActionType.SwitchWhetherSeeItemIsEnabled : RoundActionType.SwitchWhetherGiveItemIsEnabled
 		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
@@ -852,7 +855,13 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		
 		// todo explain
 		self.updateUIForLevelButtons()
+		
+		// Update the UI of the items, such as which item buttons are visible, which items are available and how often, etc. We make buttons that were hidden before and that become visible now pulse, in order to draw the user's attention to it. This pulsation is stopped as soon as the button is pressed (or when the user goes to the next level):
+		let moveButtonWasHidden = buttonMoveItem.hidden, seeItemWasHIdden = buttonSeeItem.hidden, giveItemWasHidden = buttonGiveItem.hidden
 		self.updateUIOfItems()
+		buttonMoveItem.setLayerPulsates(moveButtonWasHidden && !buttonMoveItem.hidden)
+		buttonSeeItem.setLayerPulsates(seeItemWasHIdden && !buttonSeeItem.hidden)
+		buttonGiveItem.setLayerPulsates(giveItemWasHidden && !buttonGiveItem.hidden)
 	}
 	
 	func updateUIForMoveAndRotateButtons() {
@@ -1143,7 +1152,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		let currentState = currentRound!.currentState()
 		let currentLevel = currentState.level
 		
-		// Define a function which updates both the button and the label for 1 item:
+		// Define a function which updates both the button and the label for 1 item (updating whether they are visible is done separately):
 		func updateUIForItem(forPlayer1: Bool, itemType: ItemType, label: UILabel, button: UIButton) {
 			// Update whether the button is selected:
 			button.selected = currentState.playerHasItemTypeSelected(forPlayer1, itemType: itemType)
@@ -1175,7 +1184,7 @@ class PlayerViewController: UIViewController, PassControlToSubControllerProtocol
 		updateUIForItem(!weArePlayer1, ItemType.Give, labelNGiveItemsOther, buttonOtherPlayer_giveItem)
 		
 		
-		// Update whether the item buttons are visible:
+		// Update whether the item buttons are visible; buttons only appear/disappear in between levels, so we don't need to animate this:
 		let givingIsSelected = currentState.selectedItemForPlayer(weArePlayer1)?.itemType == ItemType.Give
 		buttonMoveItem.hidden = !currentLevel.moveItemAvailable || givingIsSelected
 		buttonOtherPlayer_moveItem.hidden = !currentLevel.moveItemAvailable
