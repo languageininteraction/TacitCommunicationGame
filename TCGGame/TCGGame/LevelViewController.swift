@@ -16,30 +16,19 @@ import UIKit
 import GameKit
 
 
-class LevelViewController: UIViewController, PassControlToSubControllerProtocol, GKMatchmakerViewControllerDelegate, GKMatchDelegate {
-	
+class LevelViewController: UIViewController, PassControlToSubControllerProtocol //GKMatchmakerViewControllerDelegate, GKMatchDelegate {
+{
+    
 	var managerOfMultipleHomeViewControllers: ManageMultipleHomeViewControllersProtocol?
-	
 	
 	// MARK: - Model
     var currentGame = Game()
 	var currentRound: Round?
 	
-	var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer() // ok?
-	var match: GKMatch?
-	var weDecideWhoIsWho: Bool? {
-		// one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle; todo rename
-		didSet {
-			if let actualValue = weDecideWhoIsWho {
-				self.weArePlayer1 = actualValue
-			}
-		}
-	}
-	var weArePlayer1 = false // for now set whenever weDecideWhoIsWho is set; player1 controls pawn1
-	
-	var matchStarted = false
-	
-	
+    //Temp
+    var weArePlayer1 : Bool = true
+    var weDecideWhoIsWho : Bool = true
+    
 	// MARK: - Other UI
 	
 	// The board:
@@ -87,27 +76,27 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 	// Label showing which level is being played:
 	let labelLevel = UILabel()
 	
-	
+    var sendActionToOther: ((RoundAction) -> ())?
+    var sendLevelToOther: ((Level) -> ())?
+    
 	// MARK: - Sub ViewControllers
 	
 	// todo: proper use of lazy properties in Swift?
 	let chooseLevelViewController = ChooseLevelViewController()
-	
-	
+    
 	// MARK: - Flow
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		        
 		// Create a round to begin with:
 		self.currentRound = Round(level: self.currentGame.currentLevel)
 				
-		if (!kDevLocalTestingIsOn) { // normal case
+		/*if (!kDevLocalTestingIsOn) { // normal case
 			self.authenticateLocalPlayer()
 		} else {
 			startPlayingMatch()
-		}
-		
+		}*/
 		
 		/* Prepare all UI elements that are used throughout the whole game:
 		1. The board;
@@ -131,7 +120,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		boardView = BoardView(edgelength: CGFloat(kBoardEdgeLength))
 		boardView.frame = CGRectMake(CGFloat(0.5) * (widthScreen - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (heightScreen - CGFloat(kBoardEdgeLength)) + kAmountYOfBoardViewLowerThanCenter, CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
 		self.view.addSubview(boardView)
-		boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
+        boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 
 		
 		// MARK: 2. Prepare the players' info:
@@ -357,141 +346,14 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		// Dispose of any resources that can be recreated.
 	}
 	
-	func authenticateLocalPlayer() {
-		self.localPlayer.authenticateHandler = {(viewController : UIViewController!, error : NSError!) -> Void in
-			
-			// Handle authentication:
-			if (viewController != nil) {
-				self.showAuthenticationDialogWhenReasonable(viewController)
-			} else if (self.localPlayer.authenticated) {
-				println("Hatsee! Local player is authenticated.")
-				self.continueWithAuthenticatedLocalPlayer();
-			}
-			else {
-				println("Oops, problem in authenticateLocalPlayer: \(error)")
-			}
-		}
-	}
-	
-	func showAuthenticationDialogWhenReasonable(viewController : UIViewController) {
-		self.showViewController(viewController, sender: nil)
-	}
-	
-	func continueWithAuthenticatedLocalPlayer() {
-		// todo: should we do this here?
-/*		if !kDevLocalTestingIsOn {
-			self.localPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
-				
-				println("error loading picture: \(error)")
-				
-				self.imageViewPictureOfLocalPlayer.image = image // todo check error first!
-			}) // todo check the size we need
-		}*/
-		
-		self.hostMatch()
-	}
-	
-	func hostMatch() {
-		let request = GKMatchRequest()
-		request.minPlayers = 2
-		request.maxPlayers = 2
-		
-		let matchmakerViewController = GKMatchmakerViewController(matchRequest: request)
-		matchmakerViewController.matchmakerDelegate = self
-		
-		self.presentViewController(matchmakerViewController, animated: true, completion: nil)
-	}
-	
-	
-	// MARK: - PassControlToSubControllerProtocol
-	
-	func subControllerFinished(subController: AnyObject) {
-		if let actualLevel = self.chooseLevelViewController.selectedLevel {
-			self.currentGame.currentLevel = actualLevel
-			restartLevel()
-		}
-		
-		subController.dismissViewControllerAnimated(false, completion: nil)
-	}
-	
-	
-	// MARK: - GKMatchmakerViewControllerDelegate
-	
-	func matchmakerViewControllerWasCancelled(viewController: GKMatchmakerViewController!) {
-		self.dismissViewControllerAnimated(true, completion: nil)
-	}
-	
-	func matchmakerViewController(viewController: GKMatchmakerViewController!, didFailWithError error: NSError!) {
-		self.dismissViewControllerAnimated(true, completion: nil)
-		
-		println("Oops, problem in matchmakerViewController didFailWithError: \(error)")
-	}
-	
-	func matchmakerViewController(viewController: GKMatchmakerViewController!, didFindMatch match: GKMatch!) {
-		println("Hatsekidee! Match found.")
-		
-		self.dismissViewControllerAnimated(true, completion: nil)
-		self.match = match
-		match.delegate = self
-		
-		if (!self.matchStarted && match.expectedPlayerCount == 0) {
-			self.matchStarted = true;
-			self.startPlayingMatch()
-		}
-	}
-	
-	
-	// MARK: - GKMatchDelegate and Local Testing
-	
-	func match(match: GKMatch!, player: GKPlayer!, didChangeConnectionState state: GKPlayerConnectionState) {
-		// We only wish to play a match with one other person, so the state isn't relevant, only the expected player count is:
-		if (!self.matchStarted && match.expectedPlayerCount == 0)
-		{
-			self.matchStarted = true
-			self.startPlayingMatch()
-		}
-	}
-	
-	func match(match: GKMatch!, didReceiveData data: NSData!, fromRemotePlayer player: GKPlayer!) {
-		// We assume that match is our match and that player is our other player. todo: how add assertions in Swift?
-		
-		receiveData(data)
-	}
-	
-	
-	// MARK: - Playing the match
-	
-	func startPlayingMatch() {
-		if (!kDevLocalTestingIsOn) {
-			let otherPlayer = self.match!.players[0] as GKPlayer //
-			self.weDecideWhoIsWho = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
-			
-			// todo: UI should be ready before it is shown; we can solve this once we do the match making in another vc:
-			restartLevel()
-            
-/*			// todo: do this here?
-			otherPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
-				
-				println("error loading picture of other: \(error)")
-				
-				if (image != nil) { // I don't understand why according to the documentation image can be nil, but it's not an optional
-					self.imageViewPictureOfOtherPlayer.image = image // todo check error first!
-				}
-			}) // todo check the size we need
-            */
-		}
-
-    }
-	
-	
 	func restartLevel() {
 		// Create a new round:
 		self.currentRound = Round(level: self.currentGame.currentLevel)
 		
         //Communicate your level with the other
-        if self.weDecideWhoIsWho!
+        if self.weDecideWhoIsWho
         {
-            self.sendLevelToOther(self.currentGame.currentLevel)
+            self.sendLevelToOther!(self.currentGame.currentLevel)
         }
         
 		// Update the UI:
@@ -507,9 +369,9 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
             self.currentGame.goToNextLevel();
             
             //Communicate your level with the other
-            if self.weDecideWhoIsWho!
+            if self.weDecideWhoIsWho
             {
-                self.sendLevelToOther(self.currentGame.currentLevel)
+                self.sendLevelToOther!(self.currentGame.currentLevel)
             }
             
         }
@@ -523,77 +385,11 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
 	}
-	
-	
-	func sendActionToOther(action: RoundAction) {
-	
-		let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
-
-		// test sending a small package:
-//		var hashValue = 2
-//		let packet = NSData(bytes:&hashValue, length:4) // todo check length!
-		
-		if (!kDevLocalTestingIsOn) { // normal case
-			var error: NSError?
-			let match = self.match!
-			match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-			
-			if (error != nil) {
-				println("Error in sendActionToOther: \(error)")
-			}
-		} else {
-			// We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-			//self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-		}
-	}
-	
-    func sendLevelToOther(level: Level)
-    {
-        let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
-        
-        if (!kDevLocalTestingIsOn) { // normal case
-            var error: NSError?
-            let match = self.match!
-            match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-            
-            if (error != nil) {
-                println("Error in sendActionToOther: \(error)")
-            }
-        } else {
-            // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-            //self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-        }
-        
     
-    }
-    
-	// This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
-	func receiveData(data: NSData) {
-		
-		// test sending a small package:
-		/*		var hashValue = 1
-		data.getBytes(&hashValue, length: 4)
-		println("hashValue = \(hashValue)")
-		
-		self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 0.1, 0, 0, 1)
-		
-		return*/
-		
-		// Decode the data, which is always a RoundAction
-		var unpackedObject: AnyObject! = NSKeyedUnarchiver.unarchiveObjectWithData(data) as AnyObject!
-        
-        if unpackedObject is RoundAction
-        {
-            self.receiveAction(unpackedObject as RoundAction)
-        }
-        else if unpackedObject is Level
-        {
-            self.receiveLevel(unpackedObject as Level)
-        }
-    }
-        
     func receiveAction(action : RoundAction)
     {
+        println("Received action!")
+        
 		// Update the model:
 		currentRound?.processAction(action)
 		
@@ -656,7 +452,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		action.moveDirection = sender == self.buttonToMoveEast ? Direction.East : sender == self.buttonToMoveNorth ? Direction.North : sender == self.buttonToMoveWest ? Direction.West : Direction.South
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
+		self.sendActionToOther!(action)
 		
 		// Update the model:
 		currentRound?.processAction(action)
@@ -681,7 +477,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		action.rotateDirection = sender == self.buttonToRotateClockwise ? RotateDirection.clockwise : RotateDirection.counterClockwise
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
+		self.sendActionToOther!(action)
 		
 		// Update the model:
 		currentRound?.processAction(action)
@@ -696,7 +492,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
+		self.sendActionToOther!(action)
 		
 		// Update the model:
 		currentRound?.processAction(action)
@@ -722,7 +518,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
+		self.sendActionToOther!(action)
 		
 		// Update the model:
 		currentRound?.processAction(action)
@@ -764,7 +560,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther(action)
+		self.sendActionToOther!(action)
 		
 		// Update the model:
 		currentRound?.processAction(action)
@@ -1159,69 +955,19 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol,
 		boardView.fieldsAreSlightlyRotated = buttonSeeItem.selected
 	}
 	
-	
-    //Mark: - Depricated update GUI
+    // MARK: - PassControlToSubControllerProtocol
     
-/*    func old_updateUI()
-    {
-        //All fields back to basic color
-        for field in [field00,field10,field01,field11]
-        {
-            field.backgroundColor = UIColor(red:0.81,green:0.82,blue:1,alpha:1);
-        }
+    func subControllerFinished(subController: AnyObject) {
 
-        //Check which fields the own and other pawn are standing on
-
-        var fieldPown1 = field00
+        println("Subcontrollerfinished")
         
-        if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 0
-        {
-            fieldPown1 = field00
+        /*if let actualLevel = self.chooseLevelViewController.selectedLevel {
+            self.currentGame.currentLevel = actualLevel
+            restartLevel()
         }
-        else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 0
-        {
-            fieldPown1 = field10
-        }
-        else if self.currentRound.currentState().posPawn1.0 == 0 && self.currentRound.currentState().posPawn1.1 == 1
-        {
-            fieldPown1 = field01
-        }
-        else if self.currentRound.currentState().posPawn1.0 == 1 && self.currentRound.currentState().posPawn1.1 == 1
-        {
-            fieldPown1 = field11
-        }
-        else
-        {
-            fieldPown1 = field00
-        }
-
-        var fieldPown2 = field00
-        
-        if self.currentRound.currentState().posPawn2.0 == 0 && self.currentRound.currentState().posPawn2.1 == 0
-        {
-            fieldPown2 = field00
-        }
-        else if self.currentRound.currentState().posPawn2.0 == 1 && self.currentRound.currentState().posPawn2.1 == 0
-        {
-            fieldPown2 = field10
-        }
-        else if self.currentRound.currentState().posPawn2.0 == 0 && self.currentRound.currentState().posPawn2.1 == 1
-        {
-            fieldPown2 = field01
-        }
-        else if self.currentRound.currentState().posPawn2.0 == 1 && self.currentRound.currentState().posPawn2.1 == 1
-        {
-            fieldPown2 = field11
-        }
-        
-        fieldPown1.backgroundColor = self.currentRound.pawn1.color
-        fieldPown2.backgroundColor = self.currentRound.pawn2.color
-        
-        if fieldPown1 == fieldPown2
-        {
-            fieldPown2.backgroundColor = UIColor.orangeColor()
-        }
-        
-    }*/
-
+    
+        subController.dismissViewControllerAnimated(false, completion: nil)*/
+    }
+	
+    
 }
