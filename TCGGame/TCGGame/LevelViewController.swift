@@ -689,7 +689,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	func updateUIAtStartOfLevel() {
 		
-		labelLevel.text = "Level \(self.currentLevel!.name)"
+		labelLevel.text = "\(self.currentLevel!.name)"
 
 		self.boardView.boardSize = (self.currentLevel!.board.width, self.currentLevel!.board.height) // todo use tuple in board as weel
 		
