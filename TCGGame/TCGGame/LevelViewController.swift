@@ -481,6 +481,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			
 			// todo explain
 			updateUIOfItems()
+		case .Continue:
             
             if currentState.roundResult == RoundResult.Succeeded
             {

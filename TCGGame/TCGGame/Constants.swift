@@ -18,7 +18,7 @@ let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", opt
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
