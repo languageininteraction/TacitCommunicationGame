@@ -90,15 +90,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     func subControllerFinished(subController: AnyObject)
     {
-        /*if let actualLevel = self.chooseLevelViewController.selectedLevel {
-            self.currentGame.currentLevel = actualLevel
-            restartLevel()
+        
+        if weMakeAllDecisions!
+        {
+            self.currentGame.goToNextLevel()
+            self.sendLevelToOther(self.currentGame.currentLevel);
+        
+            self.levelViewController!.currentLevel = self.currentGame.currentLevel
+            self.levelViewController!.restartLevel()
         }
-        
-        subController.dismissViewControllerAnimated(false, completion: nil)*/
-        
-        println("Subcontroller finished")
-        
     }
 
     // MARK: - Communication with other players
@@ -131,16 +131,29 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             }
             
             self.currentGame.currentLevel = unpackedObject as Level
-            self.levelViewController!.currentLevel = self.currentGame.currentLevel
 
 			// This is a bit of a mess, to fix sizes on iOS older than 8:
 			let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
 			let height = kOlderThanIOS8 ? self.view.frame.size.width : self.view.frame.size.height
 			
-            // Add our levelViewController's view:
-            self.levelViewController!.view.frame = CGRectMake(0, 0, width, height)
-            self.view.addSubview(self.levelViewController!.view)
+            //Start the game
+            if self.levelViewController!.currentLevel == nil
+            {
+                self.currentGame.currentLevel = unpackedObject as Level
+                self.levelViewController!.currentLevel = self.currentGame.currentLevel
+                
+                // Add our levelViewController's view:
+                self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+                self.view.addSubview(self.levelViewController!.view)
+            }
             
+            //Go to the next level
+            else
+            {
+                self.currentGame.currentLevel = unpackedObject as Level
+                self.levelViewController!.currentLevel = self.currentGame.currentLevel
+                self.levelViewController?.restartLevel()
+            }
         }
     }
 
@@ -257,6 +270,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
         //Create the LevelViewController
         self.levelViewController = LevelViewController()
+        self.levelViewController!.setSuperController(self)
 
         //The custom send functions for the levelviewcontroller
         func sendActionToOther(action :RoundAction)
@@ -285,9 +299,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         //Give info to the levelViewController
         self.levelViewController!.sendActionToOther = sendActionToOther
-        //self.levelViewController!.sendLevelToOther = sendLevelToOther
-
         self.levelViewController!.weArePlayer1 = self.weArePlayer1
+        self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
         //Generate a level, send it away and start playing
         //This part will be done by the othe player once he receives the level
@@ -297,7 +310,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.sendLevelToOther(self.currentGame.currentLevel);
             
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
-            println("Set for decision maker")
             
             // Add our levelViewController's view:
             self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)

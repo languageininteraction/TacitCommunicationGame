@@ -1,0 +1,48 @@
+{
+    "name": "Nu wat verder",
+    "board": {
+        "width": 3,
+        "height": 3
+    },
+    "pawn1": {
+        "shape": "circle",
+        "color": "yellow"
+    },
+    "pawn2": {
+        "shape": "circle",
+        "color": "orange"
+    },
+    "start1": {
+        "x": 0,
+        "y": 0,
+        "rotation": "east"
+    },
+    "start2": {
+        "x": 0,
+        "y": 2,
+        "rotation": "west"
+    },
+    "goal1": {
+        "x": 2,
+        "y": 2,
+        "rotation": "east"
+    },
+    "goal2": {
+        "x": 2,
+        "y": 0,
+        "rotation": "west"
+    },
+    "moveItemAvailable": false,
+    "seeItemAvailable": false,
+    "giveItemAvailable": false,
+    "itemsPlayer1": {
+        "move": 0,
+        "see": 0,
+        "give": 0
+    },
+    "itemsPlayer2": {
+        "move": 0,
+        "see": 0,
+        "give": 0
+    }
+}

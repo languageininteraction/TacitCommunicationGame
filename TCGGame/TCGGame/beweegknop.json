@@ -1,0 +1,48 @@
+{
+    "name": "De beweegknop",
+    "board": {
+        "width": 3,
+        "height": 3
+    },
+    "pawn1": {
+        "shape": "triangle",
+        "color": "yellow"
+    },
+    "pawn2": {
+        "shape": "square",
+        "color": "orange"
+    },
+    "start1": {
+        "x": 0,
+        "y": 2,
+        "rotation": "south"
+    },
+    "start2": {
+        "x": 2,
+        "y": 0,
+        "rotation": "west"
+    },
+    "goal1": {
+        "x": 1,
+        "y": 1,
+        "rotation": "north"
+    },
+    "goal2": {
+        "x": 0,
+        "y": 2,
+        "rotation": "east"
+    },
+    "moveItemAvailable": true,
+    "seeItemAvailable": false,
+    "giveItemAvailable": false,
+    "itemsPlayer1": {
+        "move": 100,
+        "see": 0,
+        "give": 0
+    },
+    "itemsPlayer2": {
+        "move": 100,
+        "see": 0,
+        "give": 0
+    }
+}

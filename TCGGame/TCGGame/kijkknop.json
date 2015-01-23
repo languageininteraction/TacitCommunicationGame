@@ -1,0 +1,48 @@
+{
+    "name": "De kijkknop",
+    "board": {
+        "width": 3,
+        "height": 3
+    },
+    "pawn1": {
+        "shape": "triangle",
+        "color": "yellow"
+    },
+    "pawn2": {
+        "shape": "triangle",
+        "color": "orange"
+    },
+    "start1": {
+        "x": 0,
+        "y": 0,
+        "rotation": "north"
+    },
+    "start2": {
+        "x": 2,
+        "y": 2,
+        "rotation": "west"
+    },
+    "goal1": {
+        "x": 1,
+        "y": 0,
+        "rotation": "south"
+    },
+    "goal2": {
+        "x": 1,
+        "y": 1,
+        "rotation": "north"
+    },
+    "moveItemAvailable": true,
+    "seeItemAvailable": true,
+    "giveItemAvailable": false,
+    "itemsPlayer1": {
+        "move": 100,
+        "see": 100,
+        "give": 0
+    },
+    "itemsPlayer2": {
+        "move": 100,
+        "see": 100,
+        "give": 0
+    }
+}

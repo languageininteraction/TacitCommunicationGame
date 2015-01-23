@@ -16,7 +16,7 @@ import UIKit
 import GameKit
 
 
-class LevelViewController: UIViewController, PassControlToSubControllerProtocol //GKMatchmakerViewControllerDelegate, GKMatchDelegate {
+class LevelViewController: ViewSubController, PassControlToSubControllerProtocol //GKMatchmakerViewControllerDelegate, GKMatchDelegate {
 {
     
 	var managerOfMultipleHomeViewControllers: ManageMultipleHomeViewControllersProtocol?
@@ -469,9 +469,13 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			let otherMessedUp = currentState.playerMessedUp(!weArePlayer1)
 			boardView.showResultForPosition(currentState.positionOfPawn(!weArePlayer1), resultIsGood: !otherMessedUp)
 			
-			// 
 			updateUIForMoveAndRotateButtons() // todo: make separate method to update whether all are hidden, because this way we also animate if the buttons need to remain visible
 			
+            if currentState.roundResult == RoundResult.Succeeded
+            {
+                self.superController!.subControllerFinished(self)
+            }
+            
 			// todo explain
 			updateUIOfItems()
 		case .Retry:
@@ -482,8 +486,8 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			
 			// If both players finished, proceed to the next level; if both players chose tro retry, retry the level (todo Wessel: new randomness):
 			if currentState.roundResult == RoundResult.Succeeded {
-				self.proceedToNextLevel()
-			} else if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
+
+            } else if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
 				self.restartLevel()
 			}
 
@@ -491,30 +495,18 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
 		}
 	}
-    
-    func receiveLevel(level : Level)
-    {
-        println("Received level")
-        println(level.pawnPlayer1.shape.rawValue)
-        println(level.pawnPlayer2.shape.rawValue)
-        
-        self.proceedToNextLevel(receivedLevel: level)
-    }
 	
 	func moveButtonPressed(sender:UIButton!) {
 		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.MovePawn, performedByPlayer1: weArePlayer1)
 		action.moveDirection = sender == self.buttonToMoveEast ? Direction.East : sender == self.buttonToMoveNorth ? Direction.North : sender == self.buttonToMoveWest ? Direction.West : Direction.South
 		
-		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther!(action)
-		
 		// Update the model:
 		currentRound?.processAction(action)
-		
-		
-		// Update our UI:
-		
+
+        // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+        self.sendActionToOther!(action)
+				
 		// Update the position of the local player's pawn:
 		let newPosition = currentRound!.currentState().positionOfPawn(weArePlayer1)
 		self.boardView.movePawnToField(weArePlayer1, field: newPosition)
@@ -579,9 +571,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
 		
-		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther!(action)
-		
 		// Update the model:
 		currentRound?.processAction(action)
 		
@@ -604,7 +593,17 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// The items shouldn't be avaiable anymore:
 		updateUIOfItems()
 		
-		// todo: Add a timer (?) to go to the next level automatically
+        if currentState.roundResult == RoundResult.Succeeded
+        {
+            self.superController?.subControllerFinished(self)
+        }
+
+        // The action is sent late, so we have some time to finish our own match before the new level arrives... if we are the one sending the level instead, the other won't even be interested in seeing that we finished the game
+        if !self.weMakeAllDecisions
+        {
+            self.sendActionToOther!(action)
+        }
+        
 	}
 	
 	func retryButtonPressed(sender:UIButton!) {

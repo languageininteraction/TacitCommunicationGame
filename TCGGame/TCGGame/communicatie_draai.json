@@ -1,0 +1,48 @@
+{
+    "name": "Draai me na",
+    "board": {
+        "width": 3,
+        "height": 3
+    },
+    "pawn1": {
+        "shape": "triangle",
+        "color": "yellow"
+    },
+    "pawn2": {
+        "shape": "triangle",
+        "color": "orange"
+    },
+    "start1": {
+        "x": 0,
+        "y": 2,
+        "rotation": "north"
+    },
+    "start2": {
+        "x": 1,
+        "y": 2,
+        "rotation": "east"
+    },
+    "goal1": {
+        "x": 2,
+        "y": 0,
+        "rotation": "west"
+    },
+    "goal2": {
+        "x": 1,
+        "y": 0,
+        "rotation": "east"
+    },
+    "moveItemAvailable": true,
+    "seeItemAvailable": true,
+    "giveItemAvailable": true,
+    "itemsPlayer1": {
+        "move": 0,
+        "see": 0,
+        "give": 0
+    },
+    "itemsPlayer2": {
+        "move": 2,
+        "see": 1,
+        "give": 1
+    }
+}
