@@ -11,14 +11,14 @@
     "seeItemAvailable": true,
     "giveItemAvailable": true,
     "itemsPlayer1": {
-        "move": 100,
-        "see": 100,
-        "give": 100
+        "move": 2,
+        "see": 1,
+        "give": 1
     },
     "itemsPlayer2": {
-        "move": 100,
-        "see": 100,
-        "give": 100
+        "move": 0,
+        "see": 0,
+        "give": 0
     },
     "goalPlayer2Pointing": ["outwards"],
     "orientationRelation": ["different"],
