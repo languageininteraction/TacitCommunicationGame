@@ -376,6 +376,10 @@ class RoundState: NSObject, NSCopying {
 	func playerChoseToRetry(aboutPawn1: Bool) -> Bool {
 		return aboutPawn1 ? player1isReadyToRetry : player2isReadyToRetry
 	}
+	
+	func playerShouldBeMotivatedToChooseRetry(aboutPawn1: Bool) -> Bool {
+		return roundResult == RoundResult.Failed && (aboutPawn1 ? !player1isReadyToRetry : !player2isReadyToRetry)
+	}
 }
 
 

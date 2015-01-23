@@ -621,7 +621,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		currentRound?.processAction(action)
 		
 		currentState = currentRound!.currentState()
-				
+		
 		
 		// Update our UI:
 		
@@ -966,12 +966,16 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		buttonOtherPlayer_Finish.layer.opacity = currentState.playerCanChooseToFinish(!weArePlayer1) || buttonOtherPlayer_Finish.selected ? 1 : 0.25 // todo constant
 		
 		// Update our retry button:
-//		buttonRetry.selected = currentState.playerChoseToRetry(weArePlayer1)
-//		buttonRetry.layer.opacity = currentState.playerCanChooseToRetry(weArePlayer1) ? 1 : 0.25
-//		
-//		// Update other player's retry button:
-//		buttonOtherPlayer_Retry.enabled = currentState.playerCanChooseToRetry(!weArePlayer1)
-//		buttonOtherPlayer_Retry.selected = currentState.playerChoseToRetry(!weArePlayer1)
+		buttonRetry.selected = currentState.playerChoseToRetry(weArePlayer1)
+		buttonRetry.layer.opacity = currentState.playerCanChooseToRetry(weArePlayer1) || buttonRetry.selected ? 1 : 0.25
+		
+		// Update other player's retry button:
+		buttonOtherPlayer_Retry.selected = currentState.playerChoseToRetry(!weArePlayer1)
+		buttonOtherPlayer_Retry.layer.opacity = currentState.playerCanChooseToRetry(!weArePlayer1) || buttonOtherPlayer_Retry.selected ? 1 : 0.25
+		
+		// maybe not so pretty…
+		let retryButtonShouldPulsate = currentState.playerShouldBeMotivatedToChooseRetry(weArePlayer1)
+		buttonRetry.setLayerPulsates(retryButtonShouldPulsate)
 		
 		// todo cleanup and explain
 //		for button in [buttonFinish, buttonOtherPlayer_Finish, buttonRetry, buttonOtherPlayer_Retry] {
