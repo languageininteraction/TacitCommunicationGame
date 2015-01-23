@@ -268,6 +268,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Create the LevelViewController
         self.levelViewController = LevelViewController()
         self.levelViewController!.setSuperController(self)
+        self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
 
         //The custom send functions for the levelviewcontroller
         func sendActionToOther(action :RoundAction)

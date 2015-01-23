@@ -646,9 +646,11 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
             self.superController?.subControllerFinished(self)
         }
         
-        // The action is sent late, so we have some time to finish our own match before the new level arrives
-        self.sendActionToOther!(action)
-        
+        // The action is sent late, so we have some time to finish our own match before the new level arrives... if we are the one sending the level instead, the other won't even be interested in seeing that we finished the game
+        if !self.weMakeAllDecisions
+        {
+            self.sendActionToOther!(action)
+        }
     }
 	
 	func retryButtonPressed(sender:UIButton!) {
