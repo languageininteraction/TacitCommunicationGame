@@ -6,11 +6,9 @@
 	},
 	"pawn1": {
 		"shape": "square",
-		"color": "yellow"
 	},
 	"pawn2": {
 		"shape": "circle",
-		"color": "orange"
 	},
 	"start1": {
 		"x": 0,

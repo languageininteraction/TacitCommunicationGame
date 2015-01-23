@@ -6,11 +6,9 @@
 	},
 	"pawn1": {
 		"shape": "triangle",
-		"color": "yellow"
 	},
 	"pawn2": {
 		"shape": "triangle",
-		"color": "orange"
 	},
 	"start1": {
 		"x": 0,

@@ -82,10 +82,7 @@ class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewCo
 		self.view.addSubview(player1HomeViewController.view)
 		player1HomeViewController.view.backgroundColor = UIColor.redColor()
 		player1HomeViewController.managerOfMultipleHomeViewControllers = self
-		
-		player1HomeViewController.view.layer.borderWidth = 5
-		player1HomeViewController.view.layer.borderColor = UIColor.purpleColor().CGColor
-		
+				
 		player2HomeViewController.view.frame = CGRectMake(0, 0, width, height); // ok?
 		self.view.addSubview(player2HomeViewController.view)
 		player2HomeViewController.view.backgroundColor = UIColor.blueColor()

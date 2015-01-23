@@ -87,7 +87,7 @@ class PawnView: UIView {
 			
 			// Set how it draws the path:
 			shapeLayer.fillColor = UIColor.clearColor().CGColor
-			shapeLayer.strokeColor = pawnDefinition.color.CGColor
+			shapeLayer.strokeColor = pawnDefinition.color!.CGColor
 			shapeLayer.lineWidth = CGFloat(kPawnLineWidth)
 			shapeLayer.lineJoin = kCALineJoinRound
 			
@@ -104,7 +104,7 @@ class PawnView: UIView {
 		// Create shapeLayerForGoalConfiguration:
 		self.shapeLayerForGoalConfiguration = createShapeLayer()
 		shapeLayerForGoalConfiguration.fillColor = UIColor.clearColor().CGColor
-		shapeLayerForGoalConfiguration.strokeColor = pawnDefinition.color.CGColor
+		shapeLayerForGoalConfiguration.strokeColor = pawnDefinition.color!.CGColor
 		shapeLayerForGoalConfiguration.lineWidth = 0.75 * CGFloat(kPawnLineWidth) // todo constant
 		shapeLayerForGoalConfiguration.lineJoin = kCALineJoinRound
 		shapeLayerForGoalConfiguration.lineCap = kCALineCapRound
@@ -130,7 +130,7 @@ class PawnView: UIView {
 		self.edgelength = 0
 		self.shapeLayersForNormalStyle = []
 		self.shapeLayerForGoalConfiguration = CAShapeLayer()
-		self.pawnDefinition = PawnDefinition(shape: PawnShape.Circle, color: UIColor.blackColor())
+		self.pawnDefinition = PawnDefinition(shape: PawnShape.Circle)
 		super.init(coder: decoder)
 	}
 	

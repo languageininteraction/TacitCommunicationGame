@@ -96,8 +96,8 @@ class LevelTemplate: NSObject
         level.startItemsPlayer2 = self.startItemsPlayer2
     
         //Pick shapes
-        level.pawnPlayer1 = PawnDefinition(shape: self.possiblePawnShapesPlayer1.randomItem(), color: kColorLiIOrange)
-        level.pawnPlayer2 = PawnDefinition(shape: self.possiblePawnShapesPlayer2.randomItem(), color: kColorLiIYellow)
+        level.pawnPlayer1 = PawnDefinition(shape: self.possiblePawnShapesPlayer1.randomItem())
+        level.pawnPlayer2 = PawnDefinition(shape: self.possiblePawnShapesPlayer2.randomItem())
 
         //Set standard orientations
         var pawn1StartDirection = Direction.North

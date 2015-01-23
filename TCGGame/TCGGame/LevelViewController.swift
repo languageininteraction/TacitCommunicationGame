@@ -152,7 +152,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Add colored circles 'around' the players' pictures; todo fix colors so on both devices one player has yellow and the other orange:
 		let layerColoredCircleLocalPlayer = CALayer()
 		layerColoredCircleLocalPlayer.frame = CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.origin.y - kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.size.width + 2 * kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.size.height + 2 * kOffsetLineAroundFaces)
-		layerColoredCircleLocalPlayer.borderColor = kColorLiIYellow.CGColor
+		layerColoredCircleLocalPlayer.borderColor = kColorLocalPlayer.CGColor
 		layerColoredCircleLocalPlayer.borderWidth = kLinewidthOfLineAroundFaces
 		layerColoredCircleLocalPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
 		self.view.layer.insertSublayer(layerColoredCircleLocalPlayer, below: imageViewPictureOfLocalPlayer.layer)
@@ -160,7 +160,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Other circle:
 		let layerColoredCircleOtherPlayer = CALayer()
 		layerColoredCircleOtherPlayer.frame = CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x - kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.origin.y - kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.size.width + 2 * kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.size.height + 2 * kOffsetLineAroundFaces)
-		layerColoredCircleOtherPlayer.borderColor = kColorLiIOrange.CGColor
+		layerColoredCircleOtherPlayer.borderColor = kColorOtherPlayer.CGColor
 		layerColoredCircleOtherPlayer.borderWidth = kLinewidthOfLineAroundFaces
 		layerColoredCircleOtherPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
 		self.view.layer.insertSublayer(layerColoredCircleOtherPlayer, below: imageViewPictureOfOtherPlayer.layer)
@@ -742,12 +742,16 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Add pawns to the board view:
 		
 		// Pawn 1:
-		boardView.pawnDefinition1 = PawnDefinition(shape: self.currentLevel!.pawnPlayer1.shape, color: self.currentLevel!.pawnPlayer1.color)
+		let pawnDefinition1 = PawnDefinition(shape: self.currentLevel!.pawnPlayer1.shape)
+		pawnDefinition1.color = weArePlayer1 ? kColorLocalPlayer : kColorOtherPlayer
+		boardView.pawnDefinition1 = pawnDefinition1
 		boardView.placePawn(true, field: (self.currentLevel!.startConfigurationPawn1.x, self.currentLevel!.startConfigurationPawn1.y))
 		boardView.rotatePawnToRotation(true, rotation: self.currentLevel!.startConfigurationPawn1.rotation, animated: false)
 		
 		// Pawn 2:
-		boardView.pawnDefinition2 = PawnDefinition(shape: self.currentLevel!.pawnPlayer2.shape, color: self.currentLevel!.pawnPlayer2.color)
+		let pawnDefinition2 = PawnDefinition(shape: self.currentLevel!.pawnPlayer2.shape)
+		pawnDefinition2.color = !weArePlayer1 ? kColorLocalPlayer : kColorOtherPlayer
+		boardView.pawnDefinition2 = pawnDefinition2
 		boardView.placePawn(false, field: (self.currentLevel!.startConfigurationPawn2.x, self.currentLevel!.startConfigurationPawn2.y))
 		boardView.rotatePawnToRotation(false, rotation: self.currentLevel!.startConfigurationPawn2.rotation, animated: false)
 		

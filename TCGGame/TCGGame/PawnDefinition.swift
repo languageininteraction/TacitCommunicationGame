@@ -17,23 +17,18 @@ enum PawnShape: Int {
 
 class PawnDefinition: NSObject {
 	let shape: PawnShape
-	let color: UIColor
+	var color: UIColor?
 	
-	init(shape: PawnShape, color: UIColor) {
+	init(shape: PawnShape) {
 		self.shape = shape
-		self.color = color
 	}
 	
 	convenience init(jsonDict: [String: AnyObject]) {
 		// Get the shape:
 		let shapeAsString = jsonDict["shape"] as String
 		let shape = shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : PawnShape.Square
-		
-		// Get the color:
-		let colorAsString = jsonDict["color"] as String
-		let color = colorAsString == "yellow" ? kColorLiIYellow : kColorLiIOrange
-		
-		self.init(shape: shape, color: color)
+				
+		self.init(shape: shape)
 	}
 	
 	func rotationsMatch(rotation1: Direction, rotation2: Direction) -> Bool {

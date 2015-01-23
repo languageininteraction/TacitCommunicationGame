@@ -75,8 +75,12 @@ let kColorLiIBordeaux = UIColor(red:139.0/255.0, green:34.0/255.0, blue:31.0/255
 let kColorLiIYellow = UIColor(red:251.0/255.0, green:186.0/255.0, blue:0.0/255.0, alpha:1)
 let kColorLiIRed = UIColor(red:232.0/255.0, green:68.0/255.0, blue:39.0/255.0, alpha:1)
 
-// Component colors:
+// Player colors (used for the pawn as well as for a colored circle around their photo):
+let kColorLocalPlayer = kColorLiIOrange
+let kColorOtherPlayer = kColorLiIDarkBlue
 
+// Component colors:
 let kColorLinesOfBoardFields = kColorLiIBlueLighter
 let kColorFillOfBoardFields = UIColor.clearColor() // (red:142.0/255.0, green:207.0/255.0, blue:230.0/255.0, alpha:0.1)
+
 

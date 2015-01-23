@@ -74,8 +74,8 @@ class Level: NSObject
     {
         self.name = name
         self.board = BoardDefinition(width: 3, height: 3)
-        self.pawnPlayer1 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIOrange)
-        self.pawnPlayer2 = PawnDefinition(shape: PawnShape.Circle, color: kColorLiIYellow)
+        self.pawnPlayer1 = PawnDefinition(shape: PawnShape.Circle)
+        self.pawnPlayer2 = PawnDefinition(shape: PawnShape.Circle)
         
         self.startConfigurationPawn1 = PawnConfiguration(x: 0, y: 0, rotation: Direction.North)
         self.startConfigurationPawn2 = PawnConfiguration(x: 0, y: 1, rotation: Direction.North)
@@ -167,8 +167,8 @@ class Level: NSObject
     {
         self.name = decoder.decodeObjectForKey("name") as String
         self.board = BoardDefinition(width: decoder.decodeObjectForKey("boardWidth") as Int, height: decoder.decodeObjectForKey("boardHeight") as Int)
-        self.pawnPlayer1 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer1Shape") as Int)!, color: kColorLiIOrange)
-        self.pawnPlayer2 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer2Shape") as Int)!, color: kColorLiIYellow)
+        self.pawnPlayer1 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer1Shape") as Int)!)
+        self.pawnPlayer2 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer2Shape") as Int)!)
         
         self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as Int, y: decoder.decodeObjectForKey("startConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as Int)!)
         self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
