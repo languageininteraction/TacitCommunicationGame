@@ -1,48 +1,48 @@
 {
-    "name": "…",
+    "name": "Niet praten!",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "triangle",
+		"shape": "circle",
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "triangle",
+		"shape": "square",
 		"color": "orange"
 	},
 	"start1": {
-		"x": 0,
+		"x": 1,
 		"y": 0,
 		"rotation": "north"
 	},
 	"start2": {
-		"x": 2,
+		"x": 1,
 		"y": 2,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"goal1": {
-		"x": 2,
+		"x": 0,
 		"y": 0,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"goal2": {
 		"x": 1,
 		"y": 1,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"moveItemAvailable": true,
 	"seeItemAvailable": true,
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 0,
+		"move": 100,
 		"see": 0,
 		"give": 0
 	},
 	"itemsPlayer2": {
 		"move": 100,
 		"see": 100,
-		"give": 1
+		"give": 0
 	}
 }

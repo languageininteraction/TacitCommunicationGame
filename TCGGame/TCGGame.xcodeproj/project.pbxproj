@@ -53,19 +53,15 @@
 		4856E58A1A24908100309751 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5891A24908100309751 /* BoardView.swift */; };
 		4856E58C1A24953800309751 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E58B1A24953800309751 /* FieldView.swift */; };
 		48591D171A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48591D161A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf */; };
-		485E1C761A49AA1F00AC88AC /* level5.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C751A49AA1F00AC88AC /* level5.json */; };
+		485E1C761A49AA1F00AC88AC /* geefknop.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C751A49AA1F00AC88AC /* geefknop.json */; };
 		485E1C791A4AFE9000AC88AC /* ButtonToGiveSee.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */; };
 		485E1C7A1A4AFE9000AC88AC /* ButtonToGiveMove.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */; };
-		485E1C7C1A4C27C400AC88AC /* level6.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7B1A4C27C400AC88AC /* level6.json */; };
-		485E1C811A4C351D00AC88AC /* level7.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7D1A4C351D00AC88AC /* level7.json */; };
-		485E1C821A4C351D00AC88AC /* level8.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7E1A4C351D00AC88AC /* level8.json */; };
-		485E1C831A4C351D00AC88AC /* level9.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7F1A4C351D00AC88AC /* level9.json */; };
-		485E1C841A4C351D00AC88AC /* level10.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C801A4C351D00AC88AC /* level10.json */; };
-		485E1C861A4C3D2A00AC88AC /* level11.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C851A4C3D2A00AC88AC /* level11.json */; };
-		485E1C8B1A4C3D8300AC88AC /* level12.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C871A4C3D8300AC88AC /* level12.json */; };
-		485E1C8C1A4C3D8300AC88AC /* level13.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C881A4C3D8300AC88AC /* level13.json */; };
-		485E1C8D1A4C3D8300AC88AC /* level14.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C891A4C3D8300AC88AC /* level14.json */; };
-		485E1C8E1A4C3D8300AC88AC /* level15.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C8A1A4C3D8300AC88AC /* level15.json */; };
+		485E1C7C1A4C27C400AC88AC /* geefkijken.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7B1A4C27C400AC88AC /* geefkijken.json */; };
+		485E1C811A4C351D00AC88AC /* communicatie.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7D1A4C351D00AC88AC /* communicatie.json */; };
+		485E1C821A4C351D00AC88AC /* communicatie_geven.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7E1A4C351D00AC88AC /* communicatie_geven.json */; };
+		485E1C831A4C351D00AC88AC /* communicatie_limiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C7F1A4C351D00AC88AC /* communicatie_limiet.json */; };
+		485E1C841A4C351D00AC88AC /* communicatie_gevenlimiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C801A4C351D00AC88AC /* communicatie_gevenlimiet.json */; };
+		485E1C861A4C3D2A00AC88AC /* communicatie_draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C851A4C3D2A00AC88AC /* communicatie_draai.json */; };
 		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
@@ -280,10 +276,12 @@
 		48F834C81A3A3B960098A904 /* Button_checkmarkOrangeSelected 256x256@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F8345C1A3A3B960098A904 /* Button_checkmarkOrangeSelected 256x256@2x.png */; };
 		48F834C91A3A3B960098A904 /* Button_checkmarkOrangeSelectedOther 256x256@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F8345D1A3A3B960098A904 /* Button_checkmarkOrangeSelectedOther 256x256@2x.png */; };
 		491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */; };
-		4940291B1A399EA400449754 /* level1.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291A1A399EA400449754 /* level1.json */; };
-		4940291D1A399ED400449754 /* level2.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291C1A399ED400449754 /* level2.json */; };
-		4940291F1A399EF200449754 /* level3.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291E1A399EF200449754 /* level3.json */; };
-		494029211A399F0900449754 /* level4.json in Resources */ = {isa = PBXBuildFile; fileRef = 494029201A399F0900449754 /* level4.json */; };
+		4940291B1A399EA400449754 /* beweeg.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291A1A399EA400449754 /* beweeg.json */; };
+		4940291D1A399ED400449754 /* draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291C1A399ED400449754 /* draai.json */; };
+		4940291F1A399EF200449754 /* beweegknop.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291E1A399EF200449754 /* beweegknop.json */; };
+		494029211A399F0900449754 /* kijkknop.json in Resources */ = {isa = PBXBuildFile; fileRef = 494029201A399F0900449754 /* kijkknop.json */; };
+		4951F9971A728E0F005576D2 /* geefknop_limiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 4951F9961A728E0F005576D2 /* geefknop_limiet.json */; };
+		4951F9991A72952C005576D2 /* beweegver.json in Resources */ = {isa = PBXBuildFile; fileRef = 4951F9981A72952C005576D2 /* beweegver.json */; };
 		496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49821A761A695C5A008CC491 /* HomeViewController.swift */; };
 		49821A7D1A696CD7008CC491 /* expert1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A7C1A696CD7008CC491 /* expert1.json */; };
@@ -357,19 +355,15 @@
 		4856E5891A24908100309751 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4856E58B1A24953800309751 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
 		48591D161A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on GameTogether.rtf"; sourceTree = "<group>"; };
-		485E1C751A49AA1F00AC88AC /* level5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level5.json; sourceTree = "<group>"; };
+		485E1C751A49AA1F00AC88AC /* geefknop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geefknop.json; sourceTree = "<group>"; };
 		485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonToGiveSee.png; sourceTree = "<group>"; };
 		485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonToGiveMove.png; sourceTree = "<group>"; };
-		485E1C7B1A4C27C400AC88AC /* level6.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level6.json; sourceTree = "<group>"; };
-		485E1C7D1A4C351D00AC88AC /* level7.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level7.json; sourceTree = "<group>"; };
-		485E1C7E1A4C351D00AC88AC /* level8.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level8.json; sourceTree = "<group>"; };
-		485E1C7F1A4C351D00AC88AC /* level9.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level9.json; sourceTree = "<group>"; };
-		485E1C801A4C351D00AC88AC /* level10.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level10.json; sourceTree = "<group>"; };
-		485E1C851A4C3D2A00AC88AC /* level11.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level11.json; sourceTree = "<group>"; };
-		485E1C871A4C3D8300AC88AC /* level12.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level12.json; sourceTree = "<group>"; };
-		485E1C881A4C3D8300AC88AC /* level13.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level13.json; sourceTree = "<group>"; };
-		485E1C891A4C3D8300AC88AC /* level14.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level14.json; sourceTree = "<group>"; };
-		485E1C8A1A4C3D8300AC88AC /* level15.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level15.json; sourceTree = "<group>"; };
+		485E1C7B1A4C27C400AC88AC /* geefkijken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geefkijken.json; sourceTree = "<group>"; };
+		485E1C7D1A4C351D00AC88AC /* communicatie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie.json; sourceTree = "<group>"; };
+		485E1C7E1A4C351D00AC88AC /* communicatie_geven.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_geven.json; sourceTree = "<group>"; };
+		485E1C7F1A4C351D00AC88AC /* communicatie_limiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_limiet.json; sourceTree = "<group>"; };
+		485E1C801A4C351D00AC88AC /* communicatie_gevenlimiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_gevenlimiet.json; sourceTree = "<group>"; };
+		485E1C851A4C3D2A00AC88AC /* communicatie_draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_draai.json; sourceTree = "<group>"; };
 		486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PersonPlaceholder 320x320.png"; sourceTree = "<group>"; };
 		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
@@ -582,10 +576,12 @@
 		48F8345C1A3A3B960098A904 /* Button_checkmarkOrangeSelected 256x256@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrangeSelected 256x256@2x.png"; sourceTree = "<group>"; };
 		48F8345D1A3A3B960098A904 /* Button_checkmarkOrangeSelectedOther 256x256@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrangeSelectedOther 256x256@2x.png"; sourceTree = "<group>"; };
 		491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseLevelViewController.swift; sourceTree = "<group>"; };
-		4940291A1A399EA400449754 /* level1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level1.json; sourceTree = "<group>"; };
-		4940291C1A399ED400449754 /* level2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level2.json; sourceTree = "<group>"; };
-		4940291E1A399EF200449754 /* level3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level3.json; sourceTree = "<group>"; };
-		494029201A399F0900449754 /* level4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level4.json; sourceTree = "<group>"; };
+		4940291A1A399EA400449754 /* beweeg.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweeg.json; sourceTree = "<group>"; };
+		4940291C1A399ED400449754 /* draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = draai.json; sourceTree = "<group>"; };
+		4940291E1A399EF200449754 /* beweegknop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweegknop.json; sourceTree = "<group>"; };
+		494029201A399F0900449754 /* kijkknop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = kijkknop.json; sourceTree = "<group>"; };
+		4951F9961A728E0F005576D2 /* geefknop_limiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = geefknop_limiet.json; sourceTree = "<group>"; };
+		4951F9981A72952C005576D2 /* beweegver.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweegver.json; sourceTree = "<group>"; };
 		496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassControlBackAndForth.swift; sourceTree = "<group>"; };
 		49821A761A695C5A008CC491 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		49821A781A696C31008CC491 /* advanced1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = advanced1.json; sourceTree = "<group>"; };
@@ -1053,21 +1049,19 @@
 		494029191A399E9300449754 /* Levels */ = {
 			isa = PBXGroup;
 			children = (
-				4940291A1A399EA400449754 /* level1.json */,
-				4940291C1A399ED400449754 /* level2.json */,
-				4940291E1A399EF200449754 /* level3.json */,
-				494029201A399F0900449754 /* level4.json */,
-				485E1C751A49AA1F00AC88AC /* level5.json */,
-				485E1C7B1A4C27C400AC88AC /* level6.json */,
-				485E1C7D1A4C351D00AC88AC /* level7.json */,
-				485E1C7E1A4C351D00AC88AC /* level8.json */,
-				485E1C7F1A4C351D00AC88AC /* level9.json */,
-				485E1C801A4C351D00AC88AC /* level10.json */,
-				485E1C851A4C3D2A00AC88AC /* level11.json */,
-				485E1C871A4C3D8300AC88AC /* level12.json */,
-				485E1C881A4C3D8300AC88AC /* level13.json */,
-				485E1C891A4C3D8300AC88AC /* level14.json */,
-				485E1C8A1A4C3D8300AC88AC /* level15.json */,
+				4940291A1A399EA400449754 /* beweeg.json */,
+				4951F9981A72952C005576D2 /* beweegver.json */,
+				4940291C1A399ED400449754 /* draai.json */,
+				4940291E1A399EF200449754 /* beweegknop.json */,
+				494029201A399F0900449754 /* kijkknop.json */,
+				485E1C751A49AA1F00AC88AC /* geefknop.json */,
+				4951F9961A728E0F005576D2 /* geefknop_limiet.json */,
+				485E1C7B1A4C27C400AC88AC /* geefkijken.json */,
+				485E1C7D1A4C351D00AC88AC /* communicatie.json */,
+				485E1C7E1A4C351D00AC88AC /* communicatie_geven.json */,
+				485E1C7F1A4C351D00AC88AC /* communicatie_limiet.json */,
+				485E1C801A4C351D00AC88AC /* communicatie_gevenlimiet.json */,
+				485E1C851A4C3D2A00AC88AC /* communicatie_draai.json */,
 			);
 			name = Levels;
 			sourceTree = "<group>";
@@ -1169,11 +1163,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				4874D87D1A7143B100EE812D /* advanced1.json in Resources */,
+				4940291B1A399EA400449754 /* beweeg.json in Resources */,
+				4940291F1A399EF200449754 /* beweegknop.json in Resources */,
+				4951F9991A72952C005576D2 /* beweegver.json in Resources */,
+				485E1C821A4C351D00AC88AC /* communicatie_geven.json in Resources */,
+				485E1C841A4C351D00AC88AC /* communicatie_gevenlimiet.json in Resources */,
+				485E1C831A4C351D00AC88AC /* communicatie_limiet.json in Resources */,
+				485E1C861A4C3D2A00AC88AC /* communicatie_draai.json in Resources */,
+				485E1C811A4C351D00AC88AC /* communicatie.json in Resources */,
+				4940291D1A399ED400449754 /* draai.json in Resources */,
+				49821A7D1A696CD7008CC491 /* expert1.json in Resources */,
+				485E1C7C1A4C27C400AC88AC /* geefkijken.json in Resources */,
+				4951F9971A728E0F005576D2 /* geefknop_limiet.json in Resources */,
+				485E1C761A49AA1F00AC88AC /* geefknop.json in Resources */,
+				494029211A399F0900449754 /* kijkknop.json in Resources */,
 				48F8348B1A3A3B960098A904 /* Button_restartYellowOther 256x256.png in Resources */,
 				483FFB931A30BC3C00C26009 /* Button_moveWest 54x54@2x.png in Resources */,
 				48B2C35F1A248D38002FFEDF /* Button_restartYellowSelectedOther 54x54@2x.png in Resources */,
 				48B2C3321A248D38002FFEDF /* Button_moveOther 54x54.png in Resources */,
-				485E1C831A4C351D00AC88AC /* level9.json in Resources */,
 				48F8348D1A3A3B960098A904 /* Button_restartYellowSelected 256x256@2x.png in Resources */,
 				48F834AB1A3A3B960098A904 /* Button_moveOther 256x256@2x.png in Resources */,
 				48F834911A3A3B960098A904 /* Button_rotateClockwise 256x256 256x256@2x.png in Resources */,
@@ -1204,12 +1211,10 @@
 				48F834B01A3A3B960098A904 /* Button_moveSouth 256x256@2x other.png in Resources */,
 				48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */,
 				48F834BB1A3A3B960098A904 /* Button_nextYellowSelectedOther 256x256@2x.png in Resources */,
-				485E1C8D1A4C3D8300AC88AC /* level14.json in Resources */,
 				48F8349D1A3A3B960098A904 /* Button_seeOther 256x256@2x.png in Resources */,
 				48F834B21A3A3B960098A904 /* Button_moveWest 256x256@2x 256x256@2x.png in Resources */,
 				48F834C31A3A3B960098A904 /* Button_restartOrangeSelectedOther 256x256@2x.png in Resources */,
 				48F834781A3A3B960098A904 /* Button_moveWest 256x256 other.png in Resources */,
-				494029211A399F0900449754 /* level4.json in Resources */,
 				48F834C41A3A3B960098A904 /* Button_restartYellow 256x256@2x.png in Resources */,
 				48F834991A3A3B960098A904 /* Button_rotateCounterclockwise 256x256@2x 256x256.png in Resources */,
 				48C3C2C51A695EA1007FBF04 /* Icon_Left 70x70@2x.png in Resources */,
@@ -1221,7 +1226,6 @@
 				48F834791A3A3B960098A904 /* Button_moveWest 256x256@2x 256x256.png in Resources */,
 				48F834AC1A3A3B960098A904 /* Button_moveSelected 256x256@2x.png in Resources */,
 				48F834611A3A3B960098A904 /* Button_seeSelectedOther 256x256.png in Resources */,
-				485E1C861A4C3D2A00AC88AC /* level11.json in Resources */,
 				48B2C3631A248D38002FFEDF /* Button_seeOther 54x54@2x.png in Resources */,
 				48B2C32E1A248D38002FFEDF /* Button_checkmarkYellowSelectedOther 54x54.png in Resources */,
 				48F834C61A3A3B960098A904 /* Button_checkmarkOrange 256x256@2x.png in Resources */,
@@ -1236,10 +1240,8 @@
 				48D19EB81A48A91B0072524E /* SmallCross.png in Resources */,
 				48B2C33C1A248D38002FFEDF /* Button_nextOrangeSelected 54x54.png in Resources */,
 				48B2C3661A248D38002FFEDF /* Button_seeSelectedOther 54x54.png in Resources */,
-				485E1C8C1A4C3D8300AC88AC /* level13.json in Resources */,
 				48F834A91A3A3B960098A904 /* Button_moveNorth 256x256@2x 256x256@2x.png in Resources */,
 				48B2C3561A248D38002FFEDF /* Button_restartOrangeSelectedOther 54x54.png in Resources */,
-				4940291B1A399EA400449754 /* level1.json in Resources */,
 				48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */,
 				48B2C32B1A248D38002FFEDF /* Button_checkmarkYellowOther 54x54@2x.png in Resources */,
 				48B2C3351A248D38002FFEDF /* Button_moveSelected 54x54@2x.png in Resources */,
@@ -1247,7 +1249,6 @@
 				48F834AD1A3A3B960098A904 /* Button_moveSelectedOther 256x256@2x.png in Resources */,
 				48F8349F1A3A3B960098A904 /* Button_seeSelectedOther 256x256@2x.png in Resources */,
 				48F834931A3A3B960098A904 /* Button_rotateClockwise 256x256@2x 256x256.png in Resources */,
-				485E1C811A4C351D00AC88AC /* level7.json in Resources */,
 				48B2C3241A248D38002FFEDF /* Button_checkmarkOrangeSelected 54x54.png in Resources */,
 				483FFB941A30BC3C00C26009 /* Button_rotateClockwise 54x54.png in Resources */,
 				48B2C3551A248D38002FFEDF /* Button_restartOrangeSelected 54x54@2x.png in Resources */,
@@ -1259,7 +1260,6 @@
 				48F834671A3A3B960098A904 /* Button_checkmarkYellowOther 256x256.png in Resources */,
 				48B2C3291A248D38002FFEDF /* Button_checkmarkYellow 54x54@2x.png in Resources */,
 				48B2C3621A248D38002FFEDF /* Button_seeOther 54x54.png in Resources */,
-				485E1C841A4C351D00AC88AC /* level10.json in Resources */,
 				48C3C2CB1A695EA1007FBF04 /* Icon_Right 70x70@2x.png in Resources */,
 				48F8347B1A3A3B960098A904 /* Button_nextOrangeOther 256x256.png in Resources */,
 				48F834811A3A3B960098A904 /* Button_nextYellowSelectedOther 256x256.png in Resources */,
@@ -1271,16 +1271,13 @@
 				48C3C2C01A695EA1007FBF04 /* Icon_Give 70x70.png in Resources */,
 				48F834891A3A3B960098A904 /* Button_restartOrangeSelectedOther 256x256.png in Resources */,
 				483D0C661A321238006C5411 /* Button_moveSouth 256x256.png in Resources */,
-				485E1C7C1A4C27C400AC88AC /* level6.json in Resources */,
 				483FFB911A30BC3C00C26009 /* Button_moveSouth 54x54@2x.png in Resources */,
 				48F834C81A3A3B960098A904 /* Button_checkmarkOrangeSelected 256x256@2x.png in Resources */,
 				48B2C34B1A248D38002FFEDF /* Button_presentOther 54x54@2x.png in Resources */,
 				48F8349E1A3A3B960098A904 /* Button_seeSelected 256x256@2x.png in Resources */,
 				483FFB8D1A30BC3C00C26009 /* Button_moveEast 54x54@2x.png in Resources */,
 				48F834871A3A3B960098A904 /* Button_restartOrangeOther 256x256.png in Resources */,
-				485E1C821A4C351D00AC88AC /* level8.json in Resources */,
 				48B2C3391A248D38002FFEDF /* Button_nextOrange 54x54@2x.png in Resources */,
-				4940291D1A399ED400449754 /* level2.json in Resources */,
 				48B2C3591A248D38002FFEDF /* Button_restartYellow 54x54@2x.png in Resources */,
 				48B2C3441A248D38002FFEDF /* Button_nextYellowSelected 54x54.png in Resources */,
 				48B2C33A1A248D38002FFEDF /* Button_nextOrangeOther 54x54.png in Resources */,
@@ -1294,7 +1291,6 @@
 				48F834691A3A3B960098A904 /* Button_checkmarkYellowSelectedOther 256x256.png in Resources */,
 				48B2C3301A248D38002FFEDF /* Button_move 54x54.png in Resources */,
 				48F834AF1A3A3B960098A904 /* Button_moveSouth 256x256@2x 256x256@2x.png in Resources */,
-				485E1C8E1A4C3D8300AC88AC /* level15.json in Resources */,
 				48F8346E1A3A3B960098A904 /* Button_moveNorth 256x256 256x256.png in Resources */,
 				48B2C3401A248D38002FFEDF /* Button_nextYellow 54x54.png in Resources */,
 				48F8346B1A3A3B960098A904 /* Button_moveEast 256x256 256x256.png in Resources */,
@@ -1340,7 +1336,6 @@
 				49D87FF51A56D2DB00455DA8 /* test.json in Resources */,
 				48F834861A3A3B960098A904 /* Button_restartOrange 256x256.png in Resources */,
 				48F834771A3A3B960098A904 /* Button_moveWest 256x256 256x256.png in Resources */,
-				4940291F1A399EF200449754 /* level3.json in Resources */,
 				483D0C6D1A321238006C5411 /* Button_rotateCounterclockwise 256x256@2x.png in Resources */,
 				496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */,
 				48B2C32D1A248D38002FFEDF /* Button_checkmarkYellowSelected 54x54@2x.png in Resources */,
@@ -1378,7 +1373,6 @@
 				48F834741A3A3B960098A904 /* Button_moveSouth 256x256 256x256.png in Resources */,
 				48F8345F1A3A3B960098A904 /* Button_seeOther 256x256.png in Resources */,
 				483FFB971A30BC3C00C26009 /* Button_rotateCounterclockwise 54x54@2x.png in Resources */,
-				49821A7D1A696CD7008CC491 /* expert1.json in Resources */,
 				48B2C3481A248D38002FFEDF /* Button_present 54x54.png in Resources */,
 				48B2C32C1A248D38002FFEDF /* Button_checkmarkYellowSelected 54x54.png in Resources */,
 				48B2C3471A248D38002FFEDF /* Button_nextYellowSelectedOther 54x54@2x.png in Resources */,
@@ -1409,11 +1403,9 @@
 				48F834C71A3A3B960098A904 /* Button_checkmarkOrangeOther 256x256@2x.png in Resources */,
 				48F8346D1A3A3B960098A904 /* Button_moveEast 256x256@2x 256x256.png in Resources */,
 				483D0C6B1A321238006C5411 /* Button_rotateClockwise 256x256@2x.png in Resources */,
-				485E1C761A49AA1F00AC88AC /* level5.json in Resources */,
 				48F834841A3A3B960098A904 /* Button_presentSelecetdOther 256x256.png in Resources */,
 				48F834681A3A3B960098A904 /* Button_checkmarkYellowSelected 256x256.png in Resources */,
 				483FFB921A30BC3C00C26009 /* Button_moveWest 54x54.png in Resources */,
-				485E1C8B1A4C3D8300AC88AC /* level12.json in Resources */,
 				48B2C3431A248D38002FFEDF /* Button_nextYellowOther 54x54@2x.png in Resources */,
 				483FFB8E1A30BC3C00C26009 /* Button_moveNorth 54x54.png in Resources */,
 				48F8349B1A3A3B960098A904 /* Button_rotateCounterclockwise 256x256@2x other.png in Resources */,

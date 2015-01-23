@@ -1,48 +1,48 @@
 {
-    "name": "only one can see; no giving; circles; other way around",
+    "name": "Draai me na",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "square",
+		"shape": "triangle",
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "circle",
+		"shape": "triangle",
 		"color": "orange"
 	},
 	"start1": {
 		"x": 0,
-		"y": 0,
-		"rotation": "east"
+		"y": 2,
+		"rotation": "north"
 	},
 	"start2": {
-		"x": 2,
+		"x": 1,
 		"y": 2,
 		"rotation": "east"
 	},
 	"goal1": {
-		"x": 1,
+		"x": 2,
 		"y": 0,
-		"rotation": "south"
+		"rotation": "west"
 	},
 	"goal2": {
 		"x": 1,
-		"y": 1,
-		"rotation": "north"
+		"y": 0,
+		"rotation": "east"
 	},
 	"moveItemAvailable": true,
 	"seeItemAvailable": true,
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 100,
-		"see": 100,
+		"move": 0,
+		"see": 0,
 		"give": 0
 	},
 	"itemsPlayer2": {
-		"move": 100,
-		"see": 0,
-		"give": 0
+		"move": 2,
+		"see": 1,
+		"give": 1
 	}
 }

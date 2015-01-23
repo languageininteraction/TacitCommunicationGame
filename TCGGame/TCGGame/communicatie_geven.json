@@ -1,35 +1,35 @@
 {
-    "name": "één speler heeft alle drie de items, de ander heeft niks!",
+    "name": "Na elkaar lopen",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "triangle",
+		"shape": "square",
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "triangle",
+		"shape": "circle",
 		"color": "orange"
 	},
 	"start1": {
 		"x": 0,
 		"y": 0,
-		"rotation": "south"
+		"rotation": "north"
 	},
 	"start2": {
 		"x": 2,
 		"y": 2,
-		"rotation": "east"
+		"rotation": "north"
 	},
 	"goal1": {
 		"x": 1,
-		"y": 1,
-		"rotation": "east"
+		"y": 0,
+		"rotation": "north"
 	},
 	"goal2": {
 		"x": 1,
-		"y": 0,
+		"y": 1,
 		"rotation": "north"
 	},
 	"moveItemAvailable": true,
@@ -42,7 +42,7 @@
 	},
 	"itemsPlayer2": {
 		"move": 0,
-		"see": 0,
+		"see": 	0,
 		"give": 0
 	}
 }

@@ -31,7 +31,7 @@ class Level: NSObject
     // MARK: - Starting the level from a JSON file
     
     init(filename:String)
-    {
+    {        
         // Read in the level:
         let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
         let jsonData = NSData(contentsOfFile:path!, options: .DataReadingMappedIfSafe, error: nil)

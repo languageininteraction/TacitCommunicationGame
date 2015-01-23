@@ -6,19 +6,19 @@
         "height": 3
     },
     "possiblePawnShapesPlayer1": ["triangle"],
-    "possiblePawnShapesPlayer2": ["triangle"],
+    "possiblePawnShapesPlayer2": ["triangle","square","circle"],
     "moveItemAvailable": true,
     "seeItemAvailable": true,
     "giveItemAvailable": true,
     "itemsPlayer1": {
-        "move": 100,
-        "see": 100,
-        "give": 100
+        "move": 2,
+        "see": 1,
+        "give": 1
     },
     "itemsPlayer2": {
-        "move": 100,
-        "see": 100,
-        "give": 100
+        "move": 0,
+        "see": 0,
+        "give": 0
     },
     "goalPlayer2Pointing": ["inwards"],
     "orientationRelation": ["different","same"],

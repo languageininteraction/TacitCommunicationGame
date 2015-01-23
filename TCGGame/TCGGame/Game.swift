@@ -20,7 +20,7 @@ class Game: NSObject
 	// Levels:
     
     //Fow now, we assume beginner levels are static
-	let beginnerLevels = [Level(filename:"level1"), Level(filename:"level2"), Level(filename:"level3"), Level(filename:"level4"), Level(filename:"level5"), Level(filename:"level6"), Level(filename:"level7"), Level(filename:"level8"), Level(filename:"level9"), Level(filename:"level10"), Level(filename:"level11"), Level(filename:"level12"), Level(filename:"level13"), Level(filename:"level14"), Level(filename:"level15")]
+	let beginnerLevels = [Level(filename:"beweeg"), Level(filename:"beweegver"), Level(filename:"draai"), Level(filename:"beweegknop"), Level(filename:"kijkknop"), Level(filename:"geefknop"), Level(filename:"geefknop_limiet"), Level(filename:"geefkijken"), Level(filename:"communicatie"), Level(filename:"communicatie_geven"), Level(filename:"communicatie_limiet"), Level(filename:"communicatie_gevenlimiet"), Level(filename:"communicatie_draai")]
 
     let AdvancedLevelTemplates = [LevelTemplate(filename: "advanced1")]
     let ExpertLevelTemplates = [LevelTemplate(filename: "expert1")]

@@ -1,11 +1,11 @@
 {
-    "name": "…",
+    "name": "De geefknop",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "triangle",
+		"shape": "circle",
 		"color": "yellow"
 	},
 	"pawn2": {
@@ -13,36 +13,36 @@
 		"color": "orange"
 	},
 	"start1": {
-		"x": 1,
-		"y": 1,
-		"rotation": "east"
+		"x": 0,
+		"y": 0,
+		"rotation": "north"
 	},
 	"start2": {
 		"x": 2,
 		"y": 2,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"goal1": {
-		"x": 0,
+		"x": 1,
 		"y": 0,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"goal2": {
-		"x": 0,
+		"x": 1,
 		"y": 1,
-		"rotation": "west"
+		"rotation": "north"
 	},
 	"moveItemAvailable": true,
 	"seeItemAvailable": true,
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 0,
-		"see": 0,
-		"give": 0
+		"move": 100,
+		"see": 100,
+		"give": 1
 	},
 	"itemsPlayer2": {
-		"move": 2,
-		"see": 2,
-		"give": 1
+		"move": 0,
+		"see": 100,
+		"give": 0
 	}
 }

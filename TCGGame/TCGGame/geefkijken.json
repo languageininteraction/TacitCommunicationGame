@@ -1,48 +1,48 @@
 {
-    "name": "beperkt gebruik: beiden kunnen zien; 1 heeft move (2) en give",
+    "name": "Na elkaar kijken",
     "board": {
         "width": 3,
         "height": 3
 	},
 	"pawn1": {
-		"shape": "square",
+		"shape": "circle",
 		"color": "yellow"
 	},
 	"pawn2": {
-		"shape": "square",
+		"shape": "triangle",
 		"color": "orange"
 	},
 	"start1": {
 		"x": 0,
 		"y": 0,
-		"rotation": "south"
+		"rotation": "east"
 	},
 	"start2": {
 		"x": 2,
 		"y": 2,
-		"rotation": "north"
+		"rotation": "east"
 	},
 	"goal1": {
 		"x": 1,
-		"y": 1,
-		"rotation": "west"
+		"y": 0,
+		"rotation": "south"
 	},
 	"goal2": {
-		"x": 2,
-		"y": 0,
+		"x": 1,
+		"y": 1,
 		"rotation": "north"
 	},
 	"moveItemAvailable": true,
 	"seeItemAvailable": true,
 	"giveItemAvailable": true,
 	"itemsPlayer1": {
-		"move": 2,
-		"see": 100,
-		"give": 1
+		"move": 100,
+		"see": 0,
+		"give": 0
 	},
 	"itemsPlayer2": {
-		"move": 0,
+		"move": 100,
 		"see": 100,
-		"give": 0
+		"give": 1
 	}
 }
