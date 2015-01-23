@@ -16,7 +16,7 @@ import UIKit
 import GameKit
 
 
-class LevelViewController: UIViewController, PassControlToSubControllerProtocol //GKMatchmakerViewControllerDelegate, GKMatchDelegate {
+class LevelViewController: ViewSubController, PassControlToSubControllerProtocol //GKMatchmakerViewControllerDelegate, GKMatchDelegate {
 {
     
 	var managerOfMultipleHomeViewControllers: ManageMultipleHomeViewControllersProtocol?
@@ -84,7 +84,14 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	// Label showing which level is being played:
 	let labelLevel = UILabel()
 	
+    // Communication
     var sendActionToOther: ((RoundAction) -> ())?
+
+    // MARK: - Super ViewController
+//    func setSuperViewController(superViewController: PassControlToSubControllerProtocol)
+//    {
+//        self.superViewController = superViewController;
+//    }
     
 	// MARK: - Sub ViewControllers
 	
@@ -433,13 +440,11 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
     
     func receiveAction(action : RoundAction)
     {
-        println("Received action!")
-        
 		// Update the model:
 		currentRound?.processAction(action)
 		
 		let currentState = currentRound!.currentState()
-		
+        
 		// Update all UI that may have changed as a result of the other player performing a certain action:
 		switch action.type {
 		case .MovePawn:
@@ -468,12 +473,20 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			
 			// todo explain
 			updateUIOfItems()
+            
+            if currentState.roundResult == RoundResult.Succeeded
+            {
+                self.superController!.subControllerFinished(self)
+            }
+            
 		case .Retry, .Continue:
 			updateUIForButtonsHomeRetryAndFinish()
 			
 			// If both players finished, proceed to the next level; if both players chose tro retry, retry the level (todo Wessel: new randomness):
-			if currentState.roundResult == RoundResult.Succeeded {
-				self.proceedToNextLevel()
+            
+			if currentState.roundResult == RoundResult.Succeeded
+            {
+               
 			} else if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
 				self.restartLevel()
 			}
@@ -482,15 +495,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
 		}
 	}
-    
-    func receiveLevel(level : Level)
-    {
-        println("Received level")
-        println(level.pawnPlayer1.shape.rawValue)
-        println(level.pawnPlayer2.shape.rawValue)
-        
-        self.proceedToNextLevel(receivedLevel: level)
-    }
 	
 	func moveButtonPressed(sender:UIButton!) {
 		// Create a corresponding action:
@@ -613,10 +617,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		
 		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
-		
-		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther!(action)
-		
+				
 		// Update the model:
 		currentRound?.processAction(action)
 		
@@ -640,7 +641,15 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		updateUIOfItems()
 		
 		// todo: Add a timer (?) to go to the next level automatically
-	}
+        if currentState.roundResult == RoundResult.Succeeded
+        {
+            self.superController?.subControllerFinished(self)
+        }
+        
+        // The action is sent late, so we have some time to finish our own match before the new level arrives
+        self.sendActionToOther!(action)
+        
+    }
 	
 	func retryButtonPressed(sender:UIButton!) {
 		var currentState = currentRound!.currentState()

@@ -90,15 +90,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     func subControllerFinished(subController: AnyObject)
     {
-        /*if let actualLevel = self.chooseLevelViewController.selectedLevel {
-            self.currentGame.currentLevel = actualLevel
-            restartLevel()
+        
+        if weMakeAllDecisions!
+        {
+            self.currentGame.goToNextLevel()
+            self.sendLevelToOther(self.currentGame.currentLevel);
+        
+            self.levelViewController!.currentLevel = self.currentGame.currentLevel
+            self.levelViewController!.restartLevel()
         }
-        
-        subController.dismissViewControllerAnimated(false, completion: nil)*/
-        
-        println("Subcontroller finished")
-        
     }
 
     // MARK: - Communication with other players
@@ -124,18 +124,32 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         }
         else if unpackedObject is Level
         {
+            println("ReceivedLevel")
+            
             //When in dev mode, and the other player has not started the match yet, quickly start the match
             if kDevLocalTestingIsOn && self.levelViewController == nil
             {
                 self.startPlayingMatch()
             }
-            
-            self.currentGame.currentLevel = unpackedObject as Level
-            self.levelViewController!.currentLevel = self.currentGame.currentLevel
 
-            // Add our levelViewController's view:
-            self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-            self.view.addSubview(self.levelViewController!.view)
+            //Start the game
+            if self.levelViewController!.currentLevel == nil
+            {
+                self.currentGame.currentLevel = unpackedObject as Level
+                self.levelViewController!.currentLevel = self.currentGame.currentLevel
+
+                // Add our levelViewController's view:
+                self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+                self.view.addSubview(self.levelViewController!.view)
+            }
+                
+            //Go to the next level
+            else
+            {
+                self.currentGame.currentLevel = unpackedObject as Level
+                self.levelViewController!.currentLevel = self.currentGame.currentLevel
+                self.levelViewController?.restartLevel()
+            }
             
         }
     }
@@ -253,6 +267,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
         //Create the LevelViewController
         self.levelViewController = LevelViewController()
+        self.levelViewController!.setSuperController(self)
 
         //The custom send functions for the levelviewcontroller
         func sendActionToOther(action :RoundAction)
@@ -293,7 +308,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.sendLevelToOther(self.currentGame.currentLevel);
             
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
-            println("Set for decision maker")
             
             // Add our levelViewController's view:
             self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
