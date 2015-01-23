@@ -94,7 +94,11 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-        
+		
+		// This is a bit of a mess, to fix sizes on iOS older than 8:
+		let widthScreen = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
+		let heightScreen = kOlderThanIOS8 ? self.view.frame.size.width : self.view.frame.size.height
+		
         // Make the background white:
         self.view.backgroundColor = UIColor.whiteColor()
 		        
@@ -118,10 +122,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		7. The label with the level;
 		8. The buttons to give items to the other player. */
 		
-		
-		// todo explain
-		let widthScreen = self.view.frame.size.width
-		let heightScreen = self.view.frame.size.height
 		
 		
 		// MARK: 1. Prepare the boardView:
