@@ -48,7 +48,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	let buttonMoveItem = UIButton()
 	let buttonSeeItem = UIButton()
 	let buttonGiveItem = UIButton()
-	let buttonToFinishRetryOrContinue = UIButton()
 	let buttonOtherPlayer_moveItem = UIButton()
 	let buttonOtherPlayer_seeItem = UIButton()
 	let buttonOtherPlayer_giveItem = UIButton()
@@ -306,17 +305,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// MARK: 6. Prepare the buttons to finish / retry / continue; images are set in updateUIForButtonsHomeRetryAndFinish:
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
-		// todo: remove code related to buttonToFinishRetryOrContinue. We'll now use separate buttons.
-		
-		// buttonToFinishRetryOrContinue:
-		self.buttonToFinishRetryOrContinue.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-        self.buttonToFinishRetryOrContinue.addTarget(self, action: "levelButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-//		self.view.addSubview(buttonToFinishRetryOrContinue)
-		
-		// buttonOtherPlayer_toFinishRetryOrContinue:
-		self.buttonOtherPlayer_toFinishRetryOrContinue.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-//		self.view.addSubview(buttonOtherPlayer_toFinishRetryOrContinue)
-		
 		
 		// New buttons:
 		
@@ -565,51 +553,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Update whether the pawn can be moved:
 		updateUIForMoveAndRotateButtons()
 	}
-	
-	// todo: delete this function once we use separate functions for separate buttons
-/*	func levelButtonPressed(sender:UIButton!) {
-		var currentState = currentRound!.currentState()
 		
-		// Create a corresponding action:
-		let actionType = currentState.actionTypeForLevelButton()
-		var action = RoundAction(type: actionType, performedByPlayer1: weArePlayer1)
-		
-		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-		self.sendActionToOther!(action)
-		
-		// Update the model:
-		currentRound?.processAction(action)
-		
-		currentState = currentRound!.currentState()
-		
-		
-		// Update our UI:
-		
-		// Update what the level buttons are used for, and whether they are selected:
-		updateUIForButtonsHomeRetryAndFinish()
-		
-		// The rest depends on the action type:
-		switch actionType {
-		case .Finish:
-			// Show whether we placed our pawn correctly:
-			let weMessedUp = currentRound!.currentState().playerMessedUp(weArePlayer1)
-			boardView.showResultForPosition(currentState.positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
-			
-			// The move and rotate buttons should no longer be shown and no field view should be inflated:
-			updateUIForMoveAndRotateButtons()
-			boardView.coordsOfInflatedField = (-1, -1)
-		default:
-			// Otherwise the actionType was Retry or Continue. In both cases, if both players are ready to continue, either retry the level or proceed to the next level:
-			if currentState.player1isReadyToContinue && currentState.player2isReadyToContinue {
-				if currentState.roundResult == RoundResult.Failed {
-					self.restartLevel()
-				} else {
-					self.proceedToNextLevel()
-				}
-			}
-		}
-	}*/
-	
 	func finishButtonPressed(sender:UIButton!) {
 		var currentState = currentRound!.currentState()
 		
@@ -943,28 +887,9 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	
 	func updateUIForButtonsHomeRetryAndFinish() {
-		// Update the images used for the buttons, which depend on how the level buttons are used:
-		
-		// todo: delete this; we now use separate buttons
-/*		// Ask the state what the level buttons should be used for:
-		let useOfLevelButtons = self.currentRound!.currentState().useOfLevelButtons()
-		
-		// Figure out which images to use:
-		let imageNameOwnButton = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkYellow 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartYellow 256x256" : "Button_nextYellow 256x256"
-		let imageNameOwnButtonSelected = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkYellowSelected 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartYellowSelected 256x256" : "Button_nextYellowSelected 256x256"
-		let imageNameButtonOther = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkOrangeOther 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartOrangeOther 256x256" : "Button_nextOrangeOther 256x256"
-		let imageNameButtonOtherSelected = useOfLevelButtons == UseOfLevelButton.Finishing ? "Button_checkmarkOrangeSelectedOther 256x256" : useOfLevelButtons == UseOfLevelButton.Retrying ? "Button_restartOrangeSelectedOther 256x256" : "Button_nextOrangeSelectedOther 256x256"
-		
-		// Set the images:
-		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: imageNameOwnButton), forState: UIControlState.Normal)
-		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: imageNameOwnButtonSelected), forState: UIControlState.Disabled)
-		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOther), forState: UIControlState.Normal)
-		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOtherSelected), forState: UIControlState.Disabled)*/
-
 		let currentState = self.currentRound!.currentState()
 		
-		
-		// Update our finish button; todo explain more
+		// Update our finish button:
 		buttonFinish.selected = currentState.playerChoseToFinish(weArePlayer1)
 		buttonFinish.layer.opacity = currentState.playerCanChooseToFinish(weArePlayer1) || buttonFinish.selected ? 1 : 0.25 // todo constant
 		
@@ -983,14 +908,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// maybe not so pretty…
 		let retryButtonShouldPulsate = currentState.playerShouldBeMotivatedToChooseRetry(weArePlayer1)
 		buttonRetry.setLayerPulsates(retryButtonShouldPulsate)
-		
-		// todo cleanup and explain
-//		for button in [buttonFinish, buttonOtherPlayer_Finish, buttonRetry, buttonOtherPlayer_Retry] {
-//			button.layer.opacity = !button.enabled && button.selected ? 0.25 : 1 // todo constant
-//		}
-		
-//		buttonToFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(weArePlayer1)
-//		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(!weArePlayer1)
 	}
 	
 	

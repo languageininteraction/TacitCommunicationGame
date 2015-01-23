@@ -313,21 +313,6 @@ class RoundState: NSObject, NSCopying {
 		return selectedItemTypeForPlayer(aboutPawn1) == ItemType.See
 	}
 	
-	// todo: delete this; we now use separate buttons
-	func useOfLevelButtons() -> UseOfLevelButton {
-		// This depends on our roundResult:
-		// 1. While we may still succeed, players use the level button to indicate that they are finished.
-		// 2a. Once someone messed up and the roundResult is Failed, players use the level button to indicate that they want to try again.
-		// 2b. Once both players finsihed correctly and the roundResult is Succeeded, players use the level button to indicate that they want to proceed to the next level.
-		return roundResult == RoundResult.MaySucceed ? UseOfLevelButton.Finishing : roundResult == RoundResult.Failed ? UseOfLevelButton.Retrying : UseOfLevelButton.Continuing
-	}
-	
-	// todo: delete this; we now use separate buttons
-	func actionTypeForLevelButton() -> RoundActionType {
-		let useOfLevelButtons = self.useOfLevelButtons()
-		return useOfLevelButtons == UseOfLevelButton.Finishing ? RoundActionType.Finish : useOfLevelButtons == UseOfLevelButton.Retrying ? RoundActionType.Retry : RoundActionType.Continue
-	}
-	
 	func pawnDefinition(aboutPawn1: Bool) -> PawnDefinition {
 		return aboutPawn1 ? level.pawnPlayer1 : level.pawnPlayer2
 	}
