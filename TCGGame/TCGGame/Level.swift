@@ -1,5 +1,5 @@
 //
-//  Number.swift
+//  Level.swift
 //  TCGGame
 //
 //  Created by Wessel Stoop on 27/11/14.

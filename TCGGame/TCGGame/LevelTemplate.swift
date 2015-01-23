@@ -1,5 +1,5 @@
 //
-//  GenerateLevel.swift
+//  LevelTemplate.swift
 //  TCGGame
 //
 //  Created by Wessel Stoop on 02/01/15.

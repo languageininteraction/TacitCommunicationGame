@@ -1,5 +1,5 @@
 //
-//  PlayerViewController.swift
+//  LevelViewController.swift
 //  TCGGame
 //
 //  Created by Jop van Heesch on 11-11-14.
