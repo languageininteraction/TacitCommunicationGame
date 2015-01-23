@@ -1,5 +1,5 @@
 //
-//  PlayerViewController.swift
+//  LevelViewController.swift
 //  TCGGame
 //
 //  Created by Jop van Heesch on 11-11-14.
@@ -85,7 +85,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	let labelLevel = UILabel()
 	
     var sendActionToOther: ((RoundAction) -> ())?
-    var sendLevelToOther: ((Level) -> ())?
     
 	// MARK: - Sub ViewControllers
 	
@@ -401,12 +400,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	func restartLevel() {
 		// Create a new round:
 		self.currentRound = Round(level: self.currentLevel!)
-		
-        //Communicate your level with the other
-        if self.weMakeAllDecisions
-        {
-            self.sendLevelToOther!(self.currentLevel!)
-        }
         
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
@@ -768,7 +761,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	func updateUIAtStartOfLevel() {
 		
-		labelLevel.text = "Level \(self.currentLevel!.name)"
+		labelLevel.text = "\(self.currentLevel!.name)"
 
 		self.boardView.boardSize = (self.currentLevel!.board.width, self.currentLevel!.board.height) // todo use tuple in board as weel
 		

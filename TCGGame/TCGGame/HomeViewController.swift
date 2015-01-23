@@ -124,10 +124,19 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         }
         else if unpackedObject is Level
         {
-            println("Received level")
-
-            //self.levelViewController!.receiveLevel(unpackedObject as Level)
+            //When in dev mode, and the other player has not started the match yet, quickly start the match
+            if kDevLocalTestingIsOn && self.levelViewController == nil
+            {
+                self.startPlayingMatch()
+            }
+            
             self.currentGame.currentLevel = unpackedObject as Level
+            self.levelViewController!.currentLevel = self.currentGame.currentLevel
+
+            // Add our levelViewController's view:
+            self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+            self.view.addSubview(self.levelViewController!.view)
+            
         }
     }
 
@@ -276,24 +285,25 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
         self.levelViewController!.weArePlayer1 = self.weArePlayer1
         
+        //Generate a level, send it away and start playing
+        //This part will be done by the othe player once he receives the level
         if self.weMakeAllDecisions!
         {
             self.currentGame.goToNextLevel()
             self.sendLevelToOther(self.currentGame.currentLevel);
-        }
             
-        self.levelViewController!.currentLevel = self.currentGame.currentLevel
-        
-        
-        // Add our levelViewController's view:
-        self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-        self.view.addSubview(self.levelViewController!.view)
+            self.levelViewController!.currentLevel = self.currentGame.currentLevel
+            println("Set for decision maker")
+            
+            // Add our levelViewController's view:
+            self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+            self.view.addSubview(self.levelViewController!.view)
+        }
         
     }
     
     func sendLevelToOther(level :Level)
     {
-        print(self.GCMatch)
         
         let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
         

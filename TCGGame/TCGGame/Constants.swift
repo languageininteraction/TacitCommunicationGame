@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-let kDevelopmentMode = true
+let kDevelopmentMode = false
 
 let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone
 
