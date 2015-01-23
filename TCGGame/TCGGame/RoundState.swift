@@ -71,12 +71,11 @@ class RoundState: NSObject, NSCopying {
 	var player2messedUp = false
 	var roundResult: RoundResult = RoundResult.MaySucceed {
 		didSet {
-			// Whenever the roundResult changes, set player1isReadyToContinue and player2isReadyToContinue back to false, because both players need to indicate that they want to continue:
-//			if (roundResult != oldValue) {
-//				self.player1isReadyToContinue = false
-//				self.player2isReadyToContinue = false
-//			}
-			// todo: what to do here with new system?
+			// If the round has failed, the players can no longer do anything except retyr or go back to the home screen:
+			if roundResult == RoundResult.Failed {
+				selectedItemTypePlayer1 = nil
+				selectedItemTypePlayer2 = nil
+			}
 		}
 	}
 	
@@ -314,21 +313,6 @@ class RoundState: NSObject, NSCopying {
 		return selectedItemTypeForPlayer(aboutPawn1) == ItemType.See
 	}
 	
-	// todo: delete this; we now use separate buttons
-	func useOfLevelButtons() -> UseOfLevelButton {
-		// This depends on our roundResult:
-		// 1. While we may still succeed, players use the level button to indicate that they are finished.
-		// 2a. Once someone messed up and the roundResult is Failed, players use the level button to indicate that they want to try again.
-		// 2b. Once both players finsihed correctly and the roundResult is Succeeded, players use the level button to indicate that they want to proceed to the next level.
-		return roundResult == RoundResult.MaySucceed ? UseOfLevelButton.Finishing : roundResult == RoundResult.Failed ? UseOfLevelButton.Retrying : UseOfLevelButton.Continuing
-	}
-	
-	// todo: delete this; we now use separate buttons
-	func actionTypeForLevelButton() -> RoundActionType {
-		let useOfLevelButtons = self.useOfLevelButtons()
-		return useOfLevelButtons == UseOfLevelButton.Finishing ? RoundActionType.Finish : useOfLevelButtons == UseOfLevelButton.Retrying ? RoundActionType.Retry : RoundActionType.Continue
-	}
-	
 	func pawnDefinition(aboutPawn1: Bool) -> PawnDefinition {
 		return aboutPawn1 ? level.pawnPlayer1 : level.pawnPlayer2
 	}
@@ -355,6 +339,11 @@ class RoundState: NSObject, NSCopying {
 	}
 	
 	func itemIsAvailableForPlayer(aboutPawn1: Bool, itemType: ItemType) -> Bool {
+		// If the round has failed, no items are available:
+		if roundResult == RoundResult.Failed {
+			return false
+		}
+		
 		if let actualItem = itemOfTypeForPlayer(aboutPawn1, itemType: itemType) {
 			return actualItem.itemIsStillAvailable()
 		}

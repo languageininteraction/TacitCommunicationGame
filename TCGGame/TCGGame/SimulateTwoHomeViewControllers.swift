@@ -30,16 +30,18 @@ class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewCo
 				let transform1 = player1HomeViewController.view.layer.transform
 				let transform2 = player2HomeViewController.view.layer.transform
 				
+				// Fix a strange difference between iOS 7 and 8:
+				let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
+				
 				// Calculate the new transforms:
 				var transform1New: CATransform3D, transform2New: CATransform3D
-				let ownWidth = self.view.frame.size.width
 				if (perspective == .Both) {
 					let transformScale = CATransform3DMakeScale(0.5, 0.5, 1)
-					transform1New = CATransform3DTranslate(transformScale, -0.5 * ownWidth, 0, 0);
-					transform2New = CATransform3DTranslate(transformScale, 0.5 * ownWidth, 0, 0);
+					transform1New = CATransform3DTranslate(transformScale, -0.5 * width, 0, 0);
+					transform2New = CATransform3DTranslate(transformScale, 0.5 * width, 0, 0);
 				} else if (perspective == .Player1) {
 					transform1New = CATransform3DIdentity;
-					transform2New = CATransform3DMakeTranslation(ownWidth, 0, 0);
+					transform2New = CATransform3DMakeTranslation(width, 0, 0);
 				} else {
 					transform2New = CATransform3DIdentity;
 					transform1New = CATransform3DMakeTranslation(-1 * player1HomeViewController.view.frame.size.width, 0, 0);
@@ -73,12 +75,18 @@ class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewCo
 		
 		// todo: worth it to make a function that takes a block and performs it for both or either one of the PlayerViewControllers?
 		
-		player1HomeViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
+		let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
+		let height = kOlderThanIOS8 ? self.view.frame.size.width : self.view.frame.size.height;
+		
+		player1HomeViewController.view.frame = CGRectMake(0, 0, width, height); // ok?
 		self.view.addSubview(player1HomeViewController.view)
 		player1HomeViewController.view.backgroundColor = UIColor.redColor()
 		player1HomeViewController.managerOfMultipleHomeViewControllers = self
 		
-		player2HomeViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height); // ok?
+		player1HomeViewController.view.layer.borderWidth = 5
+		player1HomeViewController.view.layer.borderColor = UIColor.purpleColor().CGColor
+		
+		player2HomeViewController.view.frame = CGRectMake(0, 0, width, height); // ok?
 		self.view.addSubview(player2HomeViewController.view)
 		player2HomeViewController.view.backgroundColor = UIColor.blueColor()
 		player2HomeViewController.managerOfMultipleHomeViewControllers = self
@@ -86,8 +94,8 @@ class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewCo
 		
 		// todo make dependent on self.perspective:
 		let transformScale = CATransform3DMakeScale(0.5, 0.5, 1)
-		player1HomeViewController.view.layer.transform = CATransform3DTranslate(transformScale, -0.5 * self.view.frame.size.width, 0, 0);
-		player2HomeViewController.view.layer.transform = CATransform3DTranslate(transformScale, 0.5 * self.view.frame.size.width, 0, 0);
+		player1HomeViewController.view.layer.transform = CATransform3DTranslate(transformScale, -0.5 * width, 0, 0);
+		player2HomeViewController.view.layer.transform = CATransform3DTranslate(transformScale, 0.5 * width, 0, 0);
 		
 		
 		// Add gesture recognizers to switch between the two players:
