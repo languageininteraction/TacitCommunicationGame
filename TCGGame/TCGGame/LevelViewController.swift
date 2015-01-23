@@ -259,11 +259,18 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
         // See item of local player:
         
 		self.buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		if kOnPhone {
+			self.buttonSeeItem.frame.origin.x -= 10
+		}
 		setImagesForButton(buttonSeeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: false)
         self.buttonSeeItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Give item of local player:
 		self.buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		if kOnPhone {
+			self.buttonGiveItem.frame.origin.x -= 50
+			self.buttonGiveItem.frame.origin.y -= 90
+		}
 		setImagesForButton(buttonGiveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: false)
         self.buttonGiveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -274,11 +281,18 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		
         // See item of other player:
 		self.buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		if kOnPhone {
+			self.buttonOtherPlayer_seeItem.frame.origin.x += 10
+		}
 		setImagesForButton(buttonOtherPlayer_seeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
 		buttonOtherPlayer_seeItem.adjustsImageWhenHighlighted = false
 		
         // Give item of other player:
 		self.buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
+		if kOnPhone {
+			self.buttonOtherPlayer_giveItem.frame.origin.x += 50
+			self.buttonOtherPlayer_giveItem.frame.origin.y -= 90
+		}
 		setImagesForButton(buttonOtherPlayer_giveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: true)
 		buttonOtherPlayer_giveItem.adjustsImageWhenHighlighted = false
 		
@@ -290,7 +304,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		
 		// MARK: 5. Prepare the labels next to the item buttons with the numbers of use left:
 		func prepareLabelNextToItemButton(label: UILabel, itemButton: UIButton) {
-			label.frame = CGRectMake(itemButton.frame.origin.x + itemButton.frame.size.width, itemButton.frame.origin.y + itemButton.frame.size.height - 12, 30, 20) // todo
+			label.frame = CGRectMake(itemButton.frame.origin.x + itemButton.frame.size.width - (kOnPhone ? 4 : 0), itemButton.frame.origin.y + itemButton.frame.size.height - 12, 30, 20) // todo
 			self.view.addSubview(label)
 			label.font = kFontAttributeNumber
 		}
@@ -317,7 +331,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Own retry:
 		let edgelengthRetryButton = 0.925 * kEdgelengthItemButtons // todo constant
 		let deltaRetry = 0.5 * (kEdgelengthItemButtons - edgelengthRetryButton)
-		buttonRetry.frame = CGRectMake(xItemButtonsLocalPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
+		buttonRetry.frame = !kOnPhone ? CGRectMake(xItemButtonsLocalPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton) : CGRectMake(xItemButtonsLocalPlayer - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons + 10, buttonFinish.frame.origin.y - 15, edgelengthRetryButton, edgelengthRetryButton) // todo cleanup mess
 		setImagesForButton(buttonRetry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: false)
 		buttonRetry.addTarget(self, action: "retryButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonRetry)
@@ -325,7 +339,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Own home:
 		let edgelengthHomeButton = 0.85 * kEdgelengthItemButtons // todo constant
 		let deltaHome = 0.5 * (kEdgelengthItemButtons - edgelengthHomeButton)
-		buttonBackToHomeScreen.frame = CGRectMake(xItemButtonsLocalPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
+		buttonBackToHomeScreen.frame = !kOnPhone ? CGRectMake(xItemButtonsLocalPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton) : CGRectMake(xItemButtonsLocalPlayer - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons + 48, buttonFinish.frame.origin.y - 49, edgelengthHomeButton, edgelengthHomeButton) // todo cleanup mess
 		setImagesForButton(buttonBackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: false)
 		buttonBackToHomeScreen.addTarget(self, action: "homeButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonBackToHomeScreen)
@@ -337,13 +351,13 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		self.view.addSubview(buttonOtherPlayer_Finish)
 		
 		// Other's retry:
-		buttonOtherPlayer_Retry.frame = CGRectMake(xItemButtonsOtherPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
+		buttonOtherPlayer_Retry.frame = !kOnPhone ? CGRectMake(xItemButtonsOtherPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton) : CGRectMake(xItemButtonsOtherPlayer + kSpaceBetweenReadyButtonAndBottom + kEdgelengthItemButtons - 10, buttonRetry.frame.origin.y, edgelengthRetryButton, edgelengthRetryButton) // todo cleanup mess
 		setImagesForButton(buttonOtherPlayer_Retry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: true)
 		buttonOtherPlayer_Retry.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_Retry)
 		
 		// Other's home:
-		buttonOtherPlayer_BackToHomeScreen.frame = CGRectMake(xItemButtonsOtherPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
+		buttonOtherPlayer_BackToHomeScreen.frame = !kOnPhone ? CGRectMake(xItemButtonsOtherPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton) : CGRectMake(xItemButtonsOtherPlayer + kSpaceBetweenReadyButtonAndBottom + kEdgelengthItemButtons - 48, buttonBackToHomeScreen.frame.origin.y, edgelengthHomeButton, edgelengthHomeButton) // todo cleanup mess
 		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: true)
 		buttonOtherPlayer_BackToHomeScreen.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_BackToHomeScreen)
@@ -553,7 +567,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Update whether the pawn can be moved:
 		updateUIForMoveAndRotateButtons()
 	}
-		
+	
 	func finishButtonPressed(sender:UIButton!) {
 		var currentState = currentRound!.currentState()
 		
@@ -615,7 +629,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		
 		// Update our UI:
 		
-		// If both players chose tro retry, retry the level (todo Wessel: new randomness):
+		// If both players chose to retry, retry the level (todo Wessel: new randomness):
 		if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
 			self.restartLevel() // in this case all UI is already updated
 		} else {

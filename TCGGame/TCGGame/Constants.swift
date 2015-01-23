@@ -16,7 +16,7 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
@@ -42,7 +42,7 @@ let kHeightOfPlayerNameLabels: CGFloat = 40 * kDefaultScaling
 let kMinimalSpaceBetweenPlayerNames: CGFloat = 40 * kDefaultScaling
 let kAmountYOfBoardViewLowerThanCenter: CGFloat = kOnPhone ? 10 : 20
 let kSpaceBetweenFaceAndTopItemButton: CGFloat = 28 * kDefaultScaling
-let kEdgelengthItemButtons: CGFloat = 60 * kDefaultScaling
+let kEdgelengthItemButtons: CGFloat = kOnPhone ? 40 : 60 * kDefaultScaling
 let kSpaceBetweenItemButtons: CGFloat = 20 * kDefaultScaling
 let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
 let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120 * kDefaultScaling
