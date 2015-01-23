@@ -71,12 +71,11 @@ class RoundState: NSObject, NSCopying {
 	var player2messedUp = false
 	var roundResult: RoundResult = RoundResult.MaySucceed {
 		didSet {
-			// Whenever the roundResult changes, set player1isReadyToContinue and player2isReadyToContinue back to false, because both players need to indicate that they want to continue:
-//			if (roundResult != oldValue) {
-//				self.player1isReadyToContinue = false
-//				self.player2isReadyToContinue = false
-//			}
-			// todo: what to do here with new system?
+			// If the round has failed, the players can no longer do anything except retyr or go back to the home screen:
+			if roundResult == RoundResult.Failed {
+				selectedItemTypePlayer1 = nil
+				selectedItemTypePlayer2 = nil
+			}
 		}
 	}
 	
@@ -355,6 +354,11 @@ class RoundState: NSObject, NSCopying {
 	}
 	
 	func itemIsAvailableForPlayer(aboutPawn1: Bool, itemType: ItemType) -> Bool {
+		// If the round has failed, no items are available:
+		if roundResult == RoundResult.Failed {
+			return false
+		}
+		
 		if let actualItem = itemOfTypeForPlayer(aboutPawn1, itemType: itemType) {
 			return actualItem.itemIsStillAvailable()
 		}

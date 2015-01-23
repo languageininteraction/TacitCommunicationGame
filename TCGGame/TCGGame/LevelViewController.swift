@@ -271,14 +271,17 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
         // Move item of other player:
 		self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		setImagesForButton(buttonOtherPlayer_moveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorLiIBlue, forOtherPlayer: true)
+		buttonOtherPlayer_moveItem.adjustsImageWhenHighlighted = false
 		
         // See item of other player:
 		self.buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		setImagesForButton(buttonOtherPlayer_seeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
+		buttonOtherPlayer_seeItem.adjustsImageWhenHighlighted = false
 		
         // Give item of other player:
 		self.buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		setImagesForButton(buttonOtherPlayer_giveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: true)
+		buttonOtherPlayer_giveItem.adjustsImageWhenHighlighted = false
 		
 		self.itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
 		for itemButton in self.itemButtons {
@@ -342,16 +345,19 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Other's finish:
 		buttonOtherPlayer_Finish.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
 		setImagesForButton(buttonOtherPlayer_Finish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
+		buttonOtherPlayer_Finish.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_Finish)
 		
-		// Own retry:
+		// Other's retry:
 		buttonOtherPlayer_Retry.frame = CGRectMake(xItemButtonsOtherPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
 		setImagesForButton(buttonOtherPlayer_Retry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: true)
+		buttonOtherPlayer_Retry.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_Retry)
 		
-		// Own home:
+		// Other's home:
 		buttonOtherPlayer_BackToHomeScreen.frame = CGRectMake(xItemButtonsOtherPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
 		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: true)
+		buttonOtherPlayer_BackToHomeScreen.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_BackToHomeScreen)
 
 		
@@ -433,8 +439,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
     
     func receiveAction(action : RoundAction)
     {
-        println("Received action!")
-        
 		// Update the model:
 		currentRound?.processAction(action)
 		
@@ -468,8 +472,11 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			
 			// todo explain
 			updateUIOfItems()
-		case .Retry, .Continue:
+		case .Retry:
 			updateUIForButtonsHomeRetryAndFinish()
+			
+			// todo explain
+			updateUIOfItems()
 			
 			// If both players finished, proceed to the next level; if both players chose tro retry, retry the level (todo Wessel: new randomness):
 			if currentState.roundResult == RoundResult.Succeeded {
