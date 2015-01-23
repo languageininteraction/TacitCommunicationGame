@@ -606,19 +606,22 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	func finishButtonPressed(sender:UIButton!) {
 		var currentState = currentRound!.currentState()
 		
+		// todo explain:
+		if !currentState.playerCanChooseToFinish(weArePlayer1) {
+			return
+		}
+		
 		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
 		
 		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
-//		self.sendActionToOther!(action)
+		self.sendActionToOther!(action)
 		
 		// Update the model:
 		currentRound?.processAction(action)
 		
 		currentState = currentRound!.currentState()
-		
-		println("we player 1 ? \(weArePlayer1), we chose finish ? \(currentState.playerChoseToFinish(weArePlayer1)), other chose finish ? \(currentState.playerChoseToFinish(!weArePlayer1))")
-		
+				
 		
 		// Update our UI:
 		
@@ -641,6 +644,11 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	func retryButtonPressed(sender:UIButton!) {
 		var currentState = currentRound!.currentState()
+		
+		// todo explain:
+		if !currentState.playerCanChooseToRetry(weArePlayer1) {
+			return
+		}
 		
 		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.Retry, performedByPlayer1: weArePlayer1)
@@ -949,41 +957,21 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		let currentState = self.currentRound!.currentState()
 		
 		
-		// Update our finish button:
-		
-		// Set whether it is enabled and whether it is enabled:
-		buttonFinish.enabled = currentState.playerCanChooseToFinish(weArePlayer1)
+		// Update our finish button; todo explain more
 		buttonFinish.selected = currentState.playerChoseToFinish(weArePlayer1)
-		
-		println("In updateUIForButtonsHomeRetryAndFinish: weArePlayer1 = \(weArePlayer1), buttonFinish.enabled = \(buttonFinish.enabled), buttonFinish.selected = \(buttonFinish.selected)")
-		
-		// If the button is enabled the images are always correct, but in the case that it is disabled, we must update the images:
-		if !buttonFinish.enabled {
-			let imageIfDisabled = UIImage(named: "SmallCross") // buttonFinish.selected ? buttonRetry.imageForState(UIControlState.Normal) : nil // todo explain
-			println("is ie nil ? \(imageIfDisabled)")
-			buttonFinish.adjustsImageWhenDisabled = false
-			buttonFinish.setImage(imageIfDisabled, forState: UIControlState.Disabled)
-			buttonFinish.layer.opacity = 0.25
-			
-			buttonFinish.setImage(imageIfDisabled, forState: UIControlState.Disabled)
-			buttonFinish.enabled = false
-			buttonFinish.selected = true
-		} else {
-			buttonFinish.layer.opacity = 1
-		}
-		
+		buttonFinish.layer.opacity = currentState.playerCanChooseToFinish(weArePlayer1) || buttonFinish.selected ? 1 : 0.25 // todo constant
 		
 		// Update the other player's finish button:
-		buttonOtherPlayer_Finish.enabled = currentState.playerCanChooseToFinish(!weArePlayer1)
 		buttonOtherPlayer_Finish.selected = currentState.playerChoseToFinish(!weArePlayer1)
+		buttonOtherPlayer_Finish.layer.opacity = currentState.playerCanChooseToFinish(!weArePlayer1) || buttonOtherPlayer_Finish.selected ? 1 : 0.25 // todo constant
 		
 		// Update our retry button:
-		buttonRetry.enabled = currentState.playerCanChooseToRetry(weArePlayer1)
-		buttonRetry.selected = currentState.playerChoseToRetry(weArePlayer1)
-		
-		// Update other player's retry button:
-		buttonOtherPlayer_Retry.enabled = currentState.playerCanChooseToRetry(!weArePlayer1)
-		buttonOtherPlayer_Retry.selected = currentState.playerChoseToRetry(!weArePlayer1)
+//		buttonRetry.selected = currentState.playerChoseToRetry(weArePlayer1)
+//		buttonRetry.layer.opacity = currentState.playerCanChooseToRetry(weArePlayer1) ? 1 : 0.25
+//		
+//		// Update other player's retry button:
+//		buttonOtherPlayer_Retry.enabled = currentState.playerCanChooseToRetry(!weArePlayer1)
+//		buttonOtherPlayer_Retry.selected = currentState.playerChoseToRetry(!weArePlayer1)
 		
 		// todo cleanup and explain
 //		for button in [buttonFinish, buttonOtherPlayer_Finish, buttonRetry, buttonOtherPlayer_Retry] {
