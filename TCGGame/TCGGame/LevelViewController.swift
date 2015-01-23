@@ -476,13 +476,11 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			let otherMessedUp = currentState.playerMessedUp(!weArePlayer1)
 			boardView.showResultForPosition(currentState.positionOfPawn(!weArePlayer1), resultIsGood: !otherMessedUp)
 			
-			// 
 			updateUIForMoveAndRotateButtons() // todo: make separate method to update whether all are hidden, because this way we also animate if the buttons need to remain visible
 			
 			// todo explain
 			updateUIOfItems()
-		case .Continue:
-            
+
             if currentState.roundResult == RoundResult.Succeeded
             {
                 self.superController!.subControllerFinished(self)
