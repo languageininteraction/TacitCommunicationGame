@@ -52,7 +52,7 @@
 		4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847D8171A24DA3000540223 /* PawnDefinition.swift */; };
 		4856E58A1A24908100309751 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E5891A24908100309751 /* BoardView.swift */; };
 		4856E58C1A24953800309751 /* FieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4856E58B1A24953800309751 /* FieldView.swift */; };
-		48591D171A445D7E00D57FDD /* Test Account GameCenter.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */; };
+		48591D171A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48591D161A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf */; };
 		485E1C761A49AA1F00AC88AC /* level5.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C751A49AA1F00AC88AC /* level5.json */; };
 		485E1C791A4AFE9000AC88AC /* ButtonToGiveSee.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */; };
 		485E1C7A1A4AFE9000AC88AC /* ButtonToGiveMove.png in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */; };
@@ -168,6 +168,7 @@
 		48C3C2D31A695EA1007FBF04 /* Icon_Up 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */; };
 		48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB51A48A91B0072524E /* SmallCheckMark.png */; };
 		48D19EB81A48A91B0072524E /* SmallCross.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB61A48A91B0072524E /* SmallCross.png */; };
+		48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */; };
 		48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF63A21A39FE6500941BDA /* HandyFunctions.swift */; };
 		48F8345E1A3A3B960098A904 /* Button_see 256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F833F21A3A3B960098A904 /* Button_see 256x256.png */; };
@@ -355,7 +356,7 @@
 		4847D8171A24DA3000540223 /* PawnDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PawnDefinition.swift; sourceTree = "<group>"; };
 		4856E5891A24908100309751 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4856E58B1A24953800309751 /* FieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldView.swift; sourceTree = "<group>"; };
-		48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Account GameCenter.rtf"; sourceTree = "<group>"; };
+		48591D161A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on GameTogether.rtf"; sourceTree = "<group>"; };
 		485E1C751A49AA1F00AC88AC /* level5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = level5.json; sourceTree = "<group>"; };
 		485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonToGiveSee.png; sourceTree = "<group>"; };
 		485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonToGiveMove.png; sourceTree = "<group>"; };
@@ -470,6 +471,7 @@
 		48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Up 70x70@2x.png"; sourceTree = "<group>"; };
 		48D19EB51A48A91B0072524E /* SmallCheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCheckMark.png; sourceTree = "<group>"; };
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
+		48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on RU.rtf"; sourceTree = "<group>"; };
 		48DF63A21A39FE6500941BDA /* HandyFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandyFunctions.swift; sourceTree = "<group>"; };
 		48F833F21A3A3B960098A904 /* Button_see 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_see 256x256.png"; sourceTree = "<group>"; };
 		48F833F31A3A3B960098A904 /* Button_seeOther 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeOther 256x256.png"; sourceTree = "<group>"; };
@@ -619,7 +621,8 @@
 		4812E5FD1A0A655A006DED82 = {
 			isa = PBXGroup;
 			children = (
-				48591D161A445D7E00D57FDD /* Test Account GameCenter.rtf */,
+				48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */,
+				48591D161A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf */,
 				48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */,
 				4812E63F1A0B7972006DED82 /* GameKit.framework */,
 				4812E6081A0A655A006DED82 /* TCGGame */,
@@ -730,10 +733,10 @@
 		482EEC421A121D6A00FB13FF /* For One Player */ = {
 			isa = PBXGroup;
 			children = (
+				49821A761A695C5A008CC491 /* HomeViewController.swift */,
 				482EEC3E1A121C9300FB13FF /* LevelViewController.swift */,
 				482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */,
 				491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */,
-				49821A761A695C5A008CC491 /* HomeViewController.swift */,
 			);
 			name = "For One Player";
 			sourceTree = "<group>";
@@ -1199,6 +1202,7 @@
 				48F834B71A3A3B960098A904 /* Button_nextOrangeSelectedOther 256x256@2x.png in Resources */,
 				48C3C2D11A695EA1007FBF04 /* Icon_See 70x70@2x.png in Resources */,
 				48F834B01A3A3B960098A904 /* Button_moveSouth 256x256@2x other.png in Resources */,
+				48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */,
 				48F834BB1A3A3B960098A904 /* Button_nextYellowSelectedOther 256x256@2x.png in Resources */,
 				485E1C8D1A4C3D8300AC88AC /* level14.json in Resources */,
 				48F8349D1A3A3B960098A904 /* Button_seeOther 256x256@2x.png in Resources */,
@@ -1225,7 +1229,7 @@
 				48F834C21A3A3B960098A904 /* Button_restartOrangeSelected 256x256@2x.png in Resources */,
 				48F834B31A3A3B960098A904 /* Button_moveWest 256x256@2x other.png in Resources */,
 				48B2C3611A248D38002FFEDF /* Button_see 54x54@2x.png in Resources */,
-				48591D171A445D7E00D57FDD /* Test Account GameCenter.rtf in Resources */,
+				48591D171A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf in Resources */,
 				48C3C2C91A695EA1007FBF04 /* Icon_Retry 70x70@2x.png in Resources */,
 				48F834751A3A3B960098A904 /* Button_moveSouth 256x256 other.png in Resources */,
 				48F834BD1A3A3B960098A904 /* Button_presentOther 256x256@2x.png in Resources */,
@@ -1590,13 +1594,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wessel Stoop (Y36RD39Y8K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wessel Stoop (Y36RD39Y8K)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "95ad876c-a0fe-4281-a044-61edb7778336";
+				PROVISIONING_PROFILE = "5d458453-2152-4eb2-be57-74a80e7dcf0e";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;

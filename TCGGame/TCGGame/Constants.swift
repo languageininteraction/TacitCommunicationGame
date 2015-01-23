@@ -12,43 +12,47 @@ import UIKit
 
 let kDevelopmentMode = true
 
+let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone
+
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
+let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 
 // Layout of the board and stuff on top of / inside the board:
-let kBoardEdgeLength: Float = 400
+let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
+let kDefaultScaling: CGFloat = kOnPhone ? kDefaultScalePhoneWRTIpad : 1
+let kBoardEdgeLength: CGFloat = 400 * kDefaultScaling
 let kBoardSpaceBetweenFields: Float = 10
 let kBoardLineWidthOfFields = 2
 let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
 let kAmountFieldCanInflate: CGFloat = 0.30
-let kEdgelengthMovementButtons: CGFloat = 66
+let kEdgelengthMovementButtons: CGFloat = 66 * kDefaultScaling
 
 // Layout of the screen:
-let kMargeFacesY: CGFloat = 30
-let kMargeFacesX: CGFloat = 30
-let kEdgelengthFaces: CGFloat = 85
+let kMargeFacesY: CGFloat = 30 * kDefaultScaling
+let kMargeFacesX: CGFloat = 30 * kDefaultScaling
+let kEdgelengthFaces: CGFloat = kOnPhone ? 35 : 85
 let kOffsetLineAroundFaces: CGFloat = 4
 let kLinewidthOfLineAroundFaces: CGFloat = 1.5
-let kSpaceBetweenFaceAndSmallPawn: CGFloat = 8
-let kEdgelengthSmallPawns: CGFloat = 20
-let kSpaceBetweenSmallPawnAndPlayerName: CGFloat = 8
-let kAmountYOfPlayerNamesLowerThanYOfSmallPawn: CGFloat = -10
-let kHeightOfPlayerNameLabels: CGFloat = 40
-let kMinimalSpaceBetweenPlayerNames: CGFloat = 40
-let kAmountYOfBoardViewLowerThanCenter: CGFloat = 20
-let kSpaceBetweenFaceAndTopItemButton: CGFloat = 28
-let kEdgelengthItemButtons: CGFloat = 60
-let kSpaceBetweenItemButtons: CGFloat = 20
-let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30
-let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120
-let kWidthOfLevelLabel: CGFloat = 200
+let kSpaceBetweenFaceAndSmallPawn: CGFloat = 8 * kDefaultScaling
+let kEdgelengthSmallPawns: CGFloat = 20 * kDefaultScaling
+let kSpaceBetweenSmallPawnAndPlayerName: CGFloat = kOnPhone ? -10 : 8 * kDefaultScaling
+let kAmountYOfPlayerNamesLowerThanYOfSmallPawn: CGFloat = kOnPhone ? -10 : -10 * kDefaultScaling
+let kHeightOfPlayerNameLabels: CGFloat = 40 * kDefaultScaling
+let kMinimalSpaceBetweenPlayerNames: CGFloat = 40 * kDefaultScaling
+let kAmountYOfBoardViewLowerThanCenter: CGFloat = kOnPhone ? 10 : 20
+let kSpaceBetweenFaceAndTopItemButton: CGFloat = 28 * kDefaultScaling
+let kEdgelengthItemButtons: CGFloat = 60 * kDefaultScaling
+let kSpaceBetweenItemButtons: CGFloat = 20 * kDefaultScaling
+let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
+let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120 * kDefaultScaling
+let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
 // Fonts:
-let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: 36)
-let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 36)
-let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 25)
-let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 20)
+let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: kOnPhone ? 16 : 36)
+let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 36 * kDefaultScaling)
+let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 25 * kDefaultScaling)
+let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 20 * kDefaultScaling)
 
 // Pawns:
 let kPawnLineWidth = 2

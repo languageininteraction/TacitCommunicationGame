@@ -33,19 +33,37 @@ class RoundState: NSObject, NSCopying {
 	var itemsPlayer2: [ItemDefinition] = []
 	
 	// todo explain
-	var player1isReadyToContinue: Bool = false {
+	var player1isReadyToFinish: Bool = false {
 		didSet {
-			// Whenever a player becomes ready to continue, he/she should not have an item selected:
-			if player1isReadyToContinue {
+			// Whenever a player becomes ready to finish, he/she should not have an item selected:
+			if player1isReadyToFinish {
 				self.selectedItemTypePlayer1 = nil
 			}
 		}
 	}
-	var player2isReadyToContinue: Bool = false {
+	var player2isReadyToFinish: Bool = false {
 		didSet {
-			// Whenever a player becomes ready to continue, he/she should not have an item selected:
-			if player2isReadyToContinue {
+			// Whenever a player becomes ready to finish, he/she should not have an item selected:
+			if player2isReadyToFinish {
 				self.selectedItemTypePlayer2 = nil
+			}
+		}
+	}
+	var player1isReadyToRetry: Bool = false {
+		didSet {
+			// Whenever a player becomes ready to retry, he/she should not have an item selected, and the round result becomes Failed:
+			if player1isReadyToRetry {
+				self.selectedItemTypePlayer1 = nil
+				self.roundResult = RoundResult.Failed
+			}
+		}
+	}
+	var player2isReadyToRetry: Bool = false {
+		didSet {
+			// Whenever a player becomes ready to retry, he/she should not have an item selected, and the round result becomes Failed:
+			if player2isReadyToRetry {
+				self.selectedItemTypePlayer2 = nil
+				self.roundResult = RoundResult.Failed
 			}
 		}
 	}
@@ -54,10 +72,11 @@ class RoundState: NSObject, NSCopying {
 	var roundResult: RoundResult = RoundResult.MaySucceed {
 		didSet {
 			// Whenever the roundResult changes, set player1isReadyToContinue and player2isReadyToContinue back to false, because both players need to indicate that they want to continue:
-			if (roundResult != oldValue) {
-				self.player1isReadyToContinue = false
-				self.player2isReadyToContinue = false
-			}
+//			if (roundResult != oldValue) {
+//				self.player1isReadyToContinue = false
+//				self.player2isReadyToContinue = false
+//			}
+			// todo: what to do here with new system?
 		}
 	}
 	
@@ -79,8 +98,12 @@ class RoundState: NSObject, NSCopying {
 		result.itemsPlayer1 = itemsPlayer1
 		result.itemsPlayer2 = itemsPlayer2
 		result.roundResult = roundResult
-		result.player1isReadyToContinue = player1isReadyToContinue
-		result.player2isReadyToContinue = player2isReadyToContinue
+		result.player1isReadyToFinish = player1isReadyToFinish
+		result.player2isReadyToFinish = player2isReadyToFinish
+		result.player1isReadyToRetry = player1isReadyToRetry
+		result.player2isReadyToRetry = player2isReadyToRetry
+		result.player1messedUp = player1messedUp
+		result.player2messedUp = player2messedUp
 		
 		return result
 	}
@@ -137,14 +160,14 @@ class RoundState: NSObject, NSCopying {
 			
 			// Update which players are ready to continue and whether the finished player messed up:
 			if action.performedByPlayer1 {
-				nextState.player1isReadyToContinue = true
+				nextState.player1isReadyToFinish = true
 				
 				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed. Otherwise, if both players finished, the result is Succeeded:
 				if nextState.posPawn1.x != level.goalConfigurationPawn1.x || nextState.posPawn1.y != level.goalConfigurationPawn1.y || !level.pawnPlayer1.rotationsMatch(nextState.rotationPawn1, rotation2: level.goalConfigurationPawn1.rotation) {
 					nextState.player1messedUp = true
 				}
 			} else {
-				nextState.player2isReadyToContinue = true
+				nextState.player2isReadyToFinish = true
 				
 				// If one of the players finished but his or her pawn doesn't have the goal configuration, the roundResult is Failed:
 				if nextState.posPawn2.x != level.goalConfigurationPawn2.x || nextState.posPawn2.y != level.goalConfigurationPawn2.y || !level.pawnPlayer2.rotationsMatch(nextState.rotationPawn2, rotation2: level.goalConfigurationPawn2.rotation) {
@@ -155,22 +178,23 @@ class RoundState: NSObject, NSCopying {
 			// Update the roundResult. If either one of the players messed up, the result is Failed. Otherwise, if both players finished, the result is Succeeded:
 			if nextState.player1messedUp || nextState.player2messedUp {
 				nextState.roundResult = RoundResult.Failed
-			} else if nextState.player1isReadyToContinue && nextState.player2isReadyToContinue {
+			} else if nextState.player1isReadyToFinish && nextState.player2isReadyToFinish {
 				nextState.roundResult = RoundResult.Succeeded
 			}
-			
+						
 		case .Retry: // MARK: Action .Retry
-			// Assert that the roundResult is Failed, otherwise this action should not be possible:
-			assert(roundResult == RoundResult.Failed, "It should only be possible to perform a RoundAction.Retry if the RoundResult is .Failed.")
+			// The roundResult becomes Failed as soon as someone presses retry:
+			roundResult = RoundResult.Failed
 			
-			// Update which players are ready to continue:
+			// Update which players are ready to retry:
 			if action.performedByPlayer1 {
-				nextState.player1isReadyToContinue = true
+				nextState.player1isReadyToRetry = true
 			} else {
-				nextState.player2isReadyToContinue = true
+				nextState.player2isReadyToRetry = true
 			}
 			
-		case .Continue: // MARK: Action .Continue
+			// todo: do we tsill use this one?
+/*		case .Continue: // MARK: Action .Continue
 			// Assert that the roundResult is Succeeded, otherwise this action should not be possible:
 			assert(roundResult == RoundResult.Succeeded, "It should only be possible to perform a RoundAction.Continue if the RoundResult is .Succeeded.")
 			
@@ -179,129 +203,11 @@ class RoundState: NSObject, NSCopying {
 				nextState.player1isReadyToContinue = true
 			} else {
 				nextState.player2isReadyToContinue = true
-			}
+			}*/
 			
 		default:
 			println("Warning in Round's processAction: don't know what to do with this action type.")			
 		}
-		
-/*            if action.role == RoundRole.Sender
-            {
-                
-                if action.buttonIndicator == "west"
-                {
-                    nextState.posPawn1 = (self.posPawn1.0-1,self.posPawn1.1)
-                }
-                else if action.buttonIndicator == "east"
-                {
-                    nextState.posPawn1 = (self.posPawn1.0+1,self.posPawn1.1)
-                }
-                else if action.buttonIndicator == "north"
-                {
-                    nextState.posPawn1 = (self.posPawn1.0,self.posPawn1.1-1)
-                }
-                else if action.buttonIndicator == "south"
-                {
-                    nextState.posPawn1 = (self.posPawn1.0,self.posPawn1.1+1)
-                }
-                else if action.buttonIndicator == "rotClock"
-                {
-                    var rotationValue = self.rotationPawn1.rawValue + 1
-                    if rotationValue > 3
-                    {
-                        rotationValue = 0
-                    }
-                    
-                    nextState.rotationPawn1 = Rotation(rawValue: rotationValue)!
-                }
-                else if action.buttonIndicator == "rotCClock"
-                {
-                    var rotationValue = self.rotationPawn1.rawValue - 1
-                    if rotationValue < 0
-                    {
-                        rotationValue = 3
-                    }
-                    
-                    nextState.rotationPawn1 = Rotation(rawValue: rotationValue)!
-                }
-                else if action.buttonIndicator == "moveItem"
-                {
-                    nextState.selectedItemPlayer1 = 0
-                }
-                else if action.buttonIndicator == "seeItem"
-                {
-                    nextState.selectedItemPlayer1 = 1
-                }
-                else if action.buttonIndicator == "giveItem"
-                {
-                    nextState.selectedItemPlayer1 = 2
-                }
-                else if action.buttonIndicator == "ready"
-                {
-                    nextState.player1Ready = true
-                }
-            }
-            else
-            {
-                if action.buttonIndicator == "west"
-                {
-                    nextState.posPawn2 = (self.posPawn2.0-1,self.posPawn2.1)
-                }
-                else if action.buttonIndicator == "east"
-                {
-                    nextState.posPawn2 = (self.posPawn2.0+1,self.posPawn2.1)
-                }
-                else if action.buttonIndicator == "north"
-                {
-                    nextState.posPawn2 = (self.posPawn2.0,self.posPawn2.1-1)
-                }
-                else if action.buttonIndicator == "south"
-                {
-                    nextState.posPawn2 = (self.posPawn2.0,self.posPawn2.1+1)
-                }
-                else if action.buttonIndicator == "rotClock"
-                {
-                    var rotationValue = self.rotationPawn2.rawValue + 1
-                    if rotationValue > 3
-                    {
-                        rotationValue = 0
-                    }
-                    
-                    nextState.rotationPawn2 = Rotation(rawValue: rotationValue)!
-                }
-                else if action.buttonIndicator == "rotCClock"
-                {
-                    var rotationValue = self.rotationPawn2.rawValue - 1
-                    if rotationValue < 0
-                    {
-                        rotationValue = 3
-                    }
-                    
-                    nextState.rotationPawn2 = Rotation(rawValue: rotationValue)!
-                }
-                else if action.buttonIndicator == "moveItem"
-                {
-                    nextState.selectedItemPlayer2 = 0
-                }
-                else if action.buttonIndicator == "seeItem"
-                {
-                    nextState.selectedItemPlayer2 = 1
-                }
-                else if action.buttonIndicator == "giveItem"
-                {
-                    nextState.selectedItemPlayer2 = 2
-                }
-                else if action.buttonIndicator == "ready"
-                {
-                    nextState.player2Ready = true
-                }
-
-            }
-			
-            
-		} else {
-			println("Warning in Round's processAction: don't know what to do with this action type.");
-		}*/
 		
 		return RoundPhase(state: nextState)
 	}
@@ -331,10 +237,6 @@ class RoundState: NSObject, NSCopying {
 		} else {
 			rotationPawn2 = rotation
 		}
-	}
-	
-	func playerIsReadyToContinue(aboutPawn1: Bool) -> Bool {
-		return aboutPawn1 ? player1isReadyToContinue : player2isReadyToContinue
 	}
 	
 	func playerMessedUp(aboutPawn1: Bool) -> Bool {
@@ -390,7 +292,7 @@ class RoundState: NSObject, NSCopying {
 		
 		// If the move items aren't even available, the movement buttons should always be shown, unless the player already finished:
 		if !self.level.moveItemAvailable {
-			return !playerIsReadyToContinue(aboutPawn1)
+			return !playerChoseToFinish(aboutPawn1) && !playerChoseToRetry(aboutPawn1)
 		}
 		
 		// Otherwise they should only be shown if the player had enabled his/her move item:
@@ -412,6 +314,7 @@ class RoundState: NSObject, NSCopying {
 		return selectedItemTypeForPlayer(aboutPawn1) == ItemType.See
 	}
 	
+	// todo: delete this; we now use separate buttons
 	func useOfLevelButtons() -> UseOfLevelButton {
 		// This depends on our roundResult:
 		// 1. While we may still succeed, players use the level button to indicate that they are finished.
@@ -420,6 +323,7 @@ class RoundState: NSObject, NSCopying {
 		return roundResult == RoundResult.MaySucceed ? UseOfLevelButton.Finishing : roundResult == RoundResult.Failed ? UseOfLevelButton.Retrying : UseOfLevelButton.Continuing
 	}
 	
+	// todo: delete this; we now use separate buttons
 	func actionTypeForLevelButton() -> RoundActionType {
 		let useOfLevelButtons = self.useOfLevelButtons()
 		return useOfLevelButtons == UseOfLevelButton.Finishing ? RoundActionType.Finish : useOfLevelButtons == UseOfLevelButton.Retrying ? RoundActionType.Retry : RoundActionType.Continue
@@ -455,6 +359,22 @@ class RoundState: NSObject, NSCopying {
 			return actualItem.itemIsStillAvailable()
 		}
 		return false
+	}
+	
+	func playerCanChooseToFinish(aboutPawn1: Bool) -> Bool {
+		return roundResult == RoundResult.MaySucceed && (aboutPawn1 ? !player1isReadyToFinish : !player2isReadyToFinish)
+	}
+	
+	func playerChoseToFinish(aboutPawn1: Bool) -> Bool {
+		return aboutPawn1 ? player1isReadyToFinish : player2isReadyToFinish
+	}
+	
+	func playerCanChooseToRetry(aboutPawn1: Bool) -> Bool {
+		return roundResult != RoundResult.Succeeded && (aboutPawn1 ? !player1isReadyToRetry : !player2isReadyToRetry)
+	}
+	
+	func playerChoseToRetry(aboutPawn1: Bool) -> Bool {
+		return aboutPawn1 ? player1isReadyToRetry : player2isReadyToRetry
 	}
 }
 

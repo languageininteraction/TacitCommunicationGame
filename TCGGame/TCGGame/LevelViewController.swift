@@ -109,71 +109,6 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			startPlayingMatch()
 		}*/
 		
-		func setImagesForButton(button: UIButton, imageNameIcon: String, baseColor: UIColor, #forOtherPlayer: Bool) {
-			// Load the icon image:
-			let iconImage = UIImage(named: imageNameIcon)!
-			let scaleFactor = UIScreen.mainScreen().scale
-			let scaledSize = CGSizeMake(iconImage.size.width * scaleFactor, iconImage.size.height * scaleFactor)
-			let rect = CGRectMake(0, 0, scaledSize.width, scaledSize.height)
-			
-			func setImageForSelected(selected: Bool) {
-				
-				UIGraphicsBeginImageContext(scaledSize)
-				let context = UIGraphicsGetCurrentContext()
-				
-				// Fill a white, partly transparent circle:
-				CGContextSetFillColorWithColor(context, UIColor(white: 1, alpha: 0.8).CGColor)
-				let circlePathFull = CGPathCreateWithEllipseInRect(rect, nil) // todo
-				CGContextAddPath(context, circlePathFull)
-				CGContextFillPath(context)
-				
-				if selected {
-					// Fill a colored circle:
-					CGContextSetFillColorWithColor(context, baseColor.CGColor)
-					let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 4 * scaleFactor, 4 * scaleFactor), nil) // todo
-					CGContextAddPath(context, circlePath)
-					CGContextFillPath(context)
-				}
-				
-				// Create a colored version of the icon:
-				let colorIcon = selected ? UIColor.whiteColor() : baseColor
-				let coloredIconCGImage = createColoredVersionOfUIImage(iconImage, colorIcon)
-				
-				// Draw the icon:
-				//				CGContextadd
-				coloredIconCGImage?.drawInRect(rect)
-				
-				
-				//				CGContextDrawImage(context, rect, coloredIconCGImage)
-				
-				// Draw a circle around it:
-				CGContextSetStrokeColorWithColor(context, kColorLiILila.CGColor)
-				if forOtherPlayer {
-					CGContextSetLineWidth(context, 1 * scaleFactor)
-					let dashArray: [CGFloat] = [4 * scaleFactor, 6 * scaleFactor] // todo constants
-					CGContextSetLineDash(context, 0, dashArray, 2);
-					CGContextSetLineCap(context, kCGLineCapRound)
-					CGContextSetLineJoin(context, kCGLineJoinRound)
-				} else {
-					CGContextSetLineWidth(context, 1.5 * scaleFactor)
-				}
-				let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
-				CGContextAddPath(context, circlePath)
-				CGContextStrokePath(context)
-				
-				
-				let resultingImage = UIGraphicsGetImageFromCurrentImageContext()
-				
-				UIGraphicsEndImageContext()
-				
-				// Set the image on the button:
-				button.setImage(resultingImage, forState: selected ? UIControlState.Selected : UIControlState.Normal)
-			}
-			
-			setImageForSelected(true)
-			setImageForSelected(false)
-		}
-		
 		
 		/* Prepare all UI elements that are used throughout the whole game:
 		1. The board;
@@ -272,32 +207,32 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
 		// East:
-		setImagesForButton(buttonToMoveEast, "Icon_Right 70x70", kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveEast, imageNameIcon: "Icon_Right 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveEast.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// South:
-		setImagesForButton(buttonToMoveSouth, "Icon_Down 70x70", kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveSouth, imageNameIcon: "Icon_Down 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveSouth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// West:
-		setImagesForButton(buttonToMoveWest, "Icon_Left 70x70", kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveWest, imageNameIcon: "Icon_Left 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveWest.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// North:
-		setImagesForButton(buttonToMoveNorth, "Icon_Up 70x70", kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveNorth, imageNameIcon: "Icon_Up 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
 		self.buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveNorth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// Rotate clockwise:
-		setImagesForButton(buttonToRotateClockwise, "Icon_RotateClockwise 70x70", kColorLiILightGreen, forOtherPlayer: false)
+		setImagesForButton(buttonToRotateClockwise, imageNameIcon: "Icon_RotateClockwise 70x70", baseColor: kColorLiILightGreen, forOtherPlayer: false)
 		self.buttonToRotateClockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateClockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Rotate counterclockwise:
-		setImagesForButton(buttonToRotateCounterclockwise, "Icon_RotateCounterClockwise 70x70", kColorLiILightGreen, forOtherPlayer: false)
+		setImagesForButton(buttonToRotateCounterclockwise, imageNameIcon: "Icon_RotateCounterClockwise 70x70", baseColor: kColorLiILightGreen, forOtherPlayer: false)
 		self.buttonToRotateCounterclockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateCounterclockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -320,31 +255,31 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		
 		// Move item of local player:
 		self.buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonMoveItem, "Icon_Move 70x70", kColorLiIBlue, forOtherPlayer: false)
+		setImagesForButton(buttonMoveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorLiIBlue, forOtherPlayer: false)
         self.buttonMoveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
         // See item of local player:
         
 		self.buttonSeeItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonSeeItem, "Icon_See 70x70", kColorLiIDarkGreen, forOtherPlayer: false)
+		setImagesForButton(buttonSeeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: false)
         self.buttonSeeItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Give item of local player:
 		self.buttonGiveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonGiveItem, "Icon_Give 70x70", kColorLiIDarkBlue, forOtherPlayer: false)
+		setImagesForButton(buttonGiveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: false)
         self.buttonGiveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Move item of other player:
 		self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_moveItem, "Icon_Move 70x70", kColorLiIBlue, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_moveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorLiIBlue, forOtherPlayer: true)
 		
         // See item of other player:
 		self.buttonOtherPlayer_seeItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow1, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_seeItem, "Icon_See 70x70", kColorLiIDarkGreen, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_seeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
 		
         // Give item of other player:
 		self.buttonOtherPlayer_giveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow2, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_giveItem, "Icon_Give 70x70", kColorLiIDarkBlue, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_giveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: true)
 		
 		self.itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
 		for itemButton in self.itemButtons {
@@ -366,7 +301,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		prepareLabelNextToItemButton(labelNGiveItemsOther, buttonOtherPlayer_giveItem)
 		
 		
-		// MARK: 6. Prepare the buttons to finish / retry / continue; images are set in updateUIForLevelButtons:
+		// MARK: 6. Prepare the buttons to finish / retry / continue; images are set in updateUIForButtonsHomeRetryAndFinish:
 		// todo fix colors of buttons so on both devices one player has yellow and the other orange.
 		
 		// todo: remove code related to buttonToFinishRetryOrContinue. We'll now use separate buttons.
@@ -385,36 +320,39 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		
 		// Own finish:
 		buttonFinish.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonFinish, "Icon_Finish 70x70", kColorLiIDarkGreen, forOtherPlayer: false)
+		setImagesForButton(buttonFinish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: false)
+		buttonFinish.addTarget(self, action: "finishButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonFinish)
-		
+				
 		// Own retry:
 		let edgelengthRetryButton = 0.925 * kEdgelengthItemButtons // todo constant
 		let deltaRetry = 0.5 * (kEdgelengthItemButtons - edgelengthRetryButton)
 		buttonRetry.frame = CGRectMake(xItemButtonsLocalPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
-		setImagesForButton(buttonRetry, "Icon_Retry 70x70", kColorLiIOrange, forOtherPlayer: false)
+		setImagesForButton(buttonRetry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: false)
+		buttonRetry.addTarget(self, action: "retryButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonRetry)
 		
 		// Own home:
 		let edgelengthHomeButton = 0.85 * kEdgelengthItemButtons // todo constant
 		let deltaHome = 0.5 * (kEdgelengthItemButtons - edgelengthHomeButton)
 		buttonBackToHomeScreen.frame = CGRectMake(xItemButtonsLocalPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
-		setImagesForButton(buttonBackToHomeScreen, "Icon_Home 70x70", kColorLiIYellow, forOtherPlayer: false)
+		setImagesForButton(buttonBackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: false)
+		buttonBackToHomeScreen.addTarget(self, action: "homeButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonBackToHomeScreen)
 		
 		// Other's finish:
 		buttonOtherPlayer_Finish.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_Finish, "Icon_Finish 70x70", kColorLiIDarkGreen, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_Finish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
 		self.view.addSubview(buttonOtherPlayer_Finish)
 		
 		// Own retry:
 		buttonOtherPlayer_Retry.frame = CGRectMake(xItemButtonsOtherPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton)
-		setImagesForButton(buttonOtherPlayer_Retry, "Icon_Retry 70x70", kColorLiIOrange, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_Retry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: true)
 		self.view.addSubview(buttonOtherPlayer_Retry)
 		
 		// Own home:
 		buttonOtherPlayer_BackToHomeScreen.frame = CGRectMake(xItemButtonsOtherPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton)
-		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, "Icon_Home 70x70", kColorLiIYellow, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: true)
 		self.view.addSubview(buttonOtherPlayer_BackToHomeScreen)
 
 		
@@ -426,7 +364,10 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 
         let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
         labelLevel.addGestureRecognizer(tapGesture)
-        labelLevel.userInteractionEnabled = true
+        labelLevel.userInteractionEnabled = false // NOTE: I disabled this!!!
+		if kOnPhone {
+			labelLevel.hidden = true // todo
+		}
         
         self.view.addSubview(labelLevel)
 		
@@ -523,7 +464,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			updateUIOfItems()
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
-			updateUIForLevelButtons()
+			updateUIForButtonsHomeRetryAndFinish()
 			
 			// Show whether the other placed his or her pawn correctly:
 			let otherMessedUp = currentState.playerMessedUp(!weArePlayer1)
@@ -531,16 +472,17 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			
 			// 
 			updateUIForMoveAndRotateButtons() // todo: make separate method to update whether all are hidden, because this way we also animate if the buttons need to remain visible
-		case .Retry, .Continue:
-			updateUIForLevelButtons()
 			
-			// If both players are ready to continue, either retry the level or proceed to the next level:
-			if currentState.player1isReadyToContinue && currentState.player2isReadyToContinue {
-				if currentState.roundResult == RoundResult.Failed {
-					self.restartLevel()
-				} else {
-					self.proceedToNextLevel()
-				}
+			// todo explain
+			updateUIOfItems()
+		case .Retry, .Continue:
+			updateUIForButtonsHomeRetryAndFinish()
+			
+			// If both players finished, proceed to the next level; if both players chose tro retry, retry the level (todo Wessel: new randomness):
+			if currentState.roundResult == RoundResult.Succeeded {
+				self.proceedToNextLevel()
+			} else if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
+				self.restartLevel()
 			}
 
 		default:
@@ -624,7 +566,8 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		updateUIForMoveAndRotateButtons()
 	}
 	
-	func levelButtonPressed(sender:UIButton!) {
+	// todo: delete this function once we use separate functions for separate buttons
+/*	func levelButtonPressed(sender:UIButton!) {
 		var currentState = currentRound!.currentState()
 		
 		// Create a corresponding action:
@@ -643,7 +586,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		// Update our UI:
 		
 		// Update what the level buttons are used for, and whether they are selected:
-		updateUIForLevelButtons()
+		updateUIForButtonsHomeRetryAndFinish()
 		
 		// The rest depends on the action type:
 		switch actionType {
@@ -665,8 +608,72 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 				}
 			}
 		}
+	}*/
+	
+	func finishButtonPressed(sender:UIButton!) {
+		var currentState = currentRound!.currentState()
+		
+		// Create a corresponding action:
+		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+//		self.sendActionToOther!(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		currentState = currentRound!.currentState()
+		
+		println("we player 1 ? \(weArePlayer1), we chose finish ? \(currentState.playerChoseToFinish(weArePlayer1)), other chose finish ? \(currentState.playerChoseToFinish(!weArePlayer1))")
+		
+		
+		// Update our UI:
+		
+		// Update what the level buttons are used for, and whether they are selected:
+		updateUIForButtonsHomeRetryAndFinish()
+		
+		// Show whether we placed our pawn correctly:
+		let weMessedUp = currentRound!.currentState().playerMessedUp(weArePlayer1)
+		boardView.showResultForPosition(currentState.positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
+		
+		// The move and rotate buttons should no longer be shown and no field view should be inflated:
+		updateUIForMoveAndRotateButtons()
+		boardView.coordsOfInflatedField = (-1, -1)
+		
+		// The items shouldn't be avaiable anymore:
+		updateUIOfItems()
+		
+		// todo: Add a timer (?) to go to the next level automatically
 	}
 	
+	func retryButtonPressed(sender:UIButton!) {
+		var currentState = currentRound!.currentState()
+		
+		// Create a corresponding action:
+		var action = RoundAction(type: RoundActionType.Retry, performedByPlayer1: weArePlayer1)
+		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther!(action)
+		
+		// Update the model:
+		currentRound?.processAction(action)
+		
+		currentState = currentRound!.currentState()
+		
+		
+		// Update our UI:
+		
+		// If both players chose tro retry, retry the level (todo Wessel: new randomness):
+		if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
+			self.restartLevel() // in this case all UI is already updated
+		} else {
+			// Update what the level buttons are used for, and whether they are selected:
+			updateUIForButtonsHomeRetryAndFinish()
+			
+			// todo explain
+			updateUIOfItems()
+		}
+	}
 	
 	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {
 		// Create a corresponding action:
@@ -693,6 +700,71 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	
 	
 	// MARK: - Update UI
+	
+	func setImagesForButton(button: UIButton, imageNameIcon: String, baseColor: UIColor, forOtherPlayer: Bool) {
+		// Load the icon image:
+		let iconImage = UIImage(named: imageNameIcon)!
+		let scaleFactor = UIScreen.mainScreen().scale
+		let scaledSize = CGSizeMake(iconImage.size.width * scaleFactor, iconImage.size.height * scaleFactor)
+		let rect = CGRectMake(0, 0, scaledSize.width, scaledSize.height)
+		
+		func setImageForSelected(selected: Bool) {
+			
+			UIGraphicsBeginImageContext(scaledSize)
+			let context = UIGraphicsGetCurrentContext()
+			
+			// Fill a white, partly transparent circle:
+			CGContextSetFillColorWithColor(context, UIColor(white: 1, alpha: 0.8).CGColor)
+			let circlePathFull = CGPathCreateWithEllipseInRect(rect, nil) // todo
+			CGContextAddPath(context, circlePathFull)
+			CGContextFillPath(context)
+			
+			if selected {
+				// Fill a colored circle:
+				CGContextSetFillColorWithColor(context, baseColor.CGColor)
+				let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 4 * scaleFactor, 4 * scaleFactor), nil) // todo
+				CGContextAddPath(context, circlePath)
+				CGContextFillPath(context)
+			}
+			
+			// Create a colored version of the icon:
+			let colorIcon = selected ? UIColor.whiteColor() : baseColor
+			let coloredIconCGImage = createColoredVersionOfUIImage(iconImage, colorIcon)
+			
+			// Draw the icon:
+			//				CGContextadd
+			coloredIconCGImage?.drawInRect(rect)
+			
+			
+			//				CGContextDrawImage(context, rect, coloredIconCGImage)
+			
+			// Draw a circle around it:
+			CGContextSetStrokeColorWithColor(context, kColorLiILila.CGColor)
+			if forOtherPlayer {
+				CGContextSetLineWidth(context, 1 * scaleFactor)
+				let dashArray: [CGFloat] = [4 * scaleFactor, 6 * scaleFactor] // todo constants
+				CGContextSetLineDash(context, 0, dashArray, 2);
+				CGContextSetLineCap(context, kCGLineCapRound)
+				CGContextSetLineJoin(context, kCGLineJoinRound)
+			} else {
+				CGContextSetLineWidth(context, 1.5 * scaleFactor)
+			}
+			let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
+			CGContextAddPath(context, circlePath)
+			CGContextStrokePath(context)
+			
+			
+			let resultingImage = UIGraphicsGetImageFromCurrentImageContext()
+			
+			UIGraphicsEndImageContext()
+			
+			// Set the image on the button:
+			button.setImage(resultingImage, forState: selected ? UIControlState.Selected : UIControlState.Normal)
+		}
+		
+		setImageForSelected(true)
+		setImageForSelected(false)
+	}
 	
 	func updateUIAtStartOfLevel() {
 		
@@ -724,7 +796,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		self.updateUIForMoveAndRotateButtons()
 		
 		// todo explain
-		self.updateUIForLevelButtons()
+		self.updateUIForButtonsHomeRetryAndFinish()
 		
 		// Update the UI of the items, such as which item buttons are visible, which items are available and how often, etc. We make buttons that were hidden before and that become visible now pulse, in order to draw the user's attention to it. This pulsation is stopped as soon as the button is pressed (or when the user goes to the next level):
 		let moveButtonWasHidden = buttonMoveItem.hidden, seeItemWasHIdden = buttonSeeItem.hidden, giveItemWasHidden = buttonGiveItem.hidden
@@ -862,10 +934,11 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 	}
 	
 	
-	func updateUIForLevelButtons() {
+	func updateUIForButtonsHomeRetryAndFinish() {
 		// Update the images used for the buttons, which depend on how the level buttons are used:
 		
-		// Ask the state what the level buttons should be used for:
+		// todo: delete this; we now use separate buttons
+/*		// Ask the state what the level buttons should be used for:
 		let useOfLevelButtons = self.currentRound!.currentState().useOfLevelButtons()
 		
 		// Figure out which images to use:
@@ -878,12 +951,54 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: imageNameOwnButton), forState: UIControlState.Normal)
 		self.buttonToFinishRetryOrContinue.setImage(UIImage(named: imageNameOwnButtonSelected), forState: UIControlState.Disabled)
 		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOther), forState: UIControlState.Normal)
-		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOtherSelected), forState: UIControlState.Disabled)
+		self.buttonOtherPlayer_toFinishRetryOrContinue.setImage(UIImage(named: imageNameButtonOtherSelected), forState: UIControlState.Disabled)*/
 
+		let currentState = self.currentRound!.currentState()
 		
-		// Update whether they are enabled:
-		buttonToFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(weArePlayer1)
-		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(!weArePlayer1)
+		
+		// Update our finish button:
+		
+		// Set whether it is enabled and whether it is enabled:
+		buttonFinish.enabled = currentState.playerCanChooseToFinish(weArePlayer1)
+		buttonFinish.selected = currentState.playerChoseToFinish(weArePlayer1)
+		
+		println("In updateUIForButtonsHomeRetryAndFinish: weArePlayer1 = \(weArePlayer1), buttonFinish.enabled = \(buttonFinish.enabled), buttonFinish.selected = \(buttonFinish.selected)")
+		
+		// If the button is enabled the images are always correct, but in the case that it is disabled, we must update the images:
+		if !buttonFinish.enabled {
+			let imageIfDisabled = UIImage(named: "SmallCross") // buttonFinish.selected ? buttonRetry.imageForState(UIControlState.Normal) : nil // todo explain
+			println("is ie nil ? \(imageIfDisabled)")
+			buttonFinish.adjustsImageWhenDisabled = false
+			buttonFinish.setImage(imageIfDisabled, forState: UIControlState.Disabled)
+			buttonFinish.layer.opacity = 0.25
+			
+			buttonFinish.setImage(imageIfDisabled, forState: UIControlState.Disabled)
+			buttonFinish.enabled = false
+			buttonFinish.selected = true
+		} else {
+			buttonFinish.layer.opacity = 1
+		}
+		
+		
+		// Update the other player's finish button:
+		buttonOtherPlayer_Finish.enabled = currentState.playerCanChooseToFinish(!weArePlayer1)
+		buttonOtherPlayer_Finish.selected = currentState.playerChoseToFinish(!weArePlayer1)
+		
+		// Update our retry button:
+		buttonRetry.enabled = currentState.playerCanChooseToRetry(weArePlayer1)
+		buttonRetry.selected = currentState.playerChoseToRetry(weArePlayer1)
+		
+		// Update other player's retry button:
+		buttonOtherPlayer_Retry.enabled = currentState.playerCanChooseToRetry(!weArePlayer1)
+		buttonOtherPlayer_Retry.selected = currentState.playerChoseToRetry(!weArePlayer1)
+		
+		// todo cleanup and explain
+//		for button in [buttonFinish, buttonOtherPlayer_Finish, buttonRetry, buttonOtherPlayer_Retry] {
+//			button.layer.opacity = !button.enabled && button.selected ? 0.25 : 1 // todo constant
+//		}
+		
+//		buttonToFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(weArePlayer1)
+//		buttonOtherPlayer_toFinishRetryOrContinue.enabled = !self.currentRound!.currentState().playerIsReadyToContinue(!weArePlayer1)
 	}
 	
 	
@@ -900,7 +1015,7 @@ class LevelViewController: UIViewController, PassControlToSubControllerProtocol 
 			
 			// Disable buttons for items with 0 uses left and that are not already selected and make them less opaque:
 			button.enabled = itemIsStillAvailable || button.selected
-			button.layer.opacity = button.enabled ? 1 : 0.25
+			button.layer.opacity = button.enabled ? 1 : 0.25 // todo constant
 			
 			label.hidden = !currentState.level.itemOfTypeIsAvailable(itemType)
 			if let item = currentState.itemOfTypeForPlayer(forPlayer1, itemType: itemType) {
