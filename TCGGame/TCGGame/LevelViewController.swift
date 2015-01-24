@@ -656,7 +656,6 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		// Update the model:
 		currentRound?.processAction(action)
 		
-		
 		// Update our UI:
 		updateUIOfItems()
 	}
@@ -781,6 +780,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		buttonMoveItem.setLayerPulsates(moveButtonWasHidden && !buttonMoveItem.hidden)
 		buttonSeeItem.setLayerPulsates(seeItemWasHIdden && !buttonSeeItem.hidden)
 		buttonGiveItem.setLayerPulsates(giveItemWasHidden && !buttonGiveItem.hidden)
+		
+		
+		// Test:
+		boardView.animateTransform(CATransform3DMakeScale(0.001, 0.001, 1), toTransform: CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: false)
 	}
 	
 	func updateUIForMoveAndRotateButtons() {

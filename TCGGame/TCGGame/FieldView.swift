@@ -63,6 +63,9 @@ class FieldView: UIView {
 				pawnViewForShowingAGoalConfiguration!.hidden = true
 				self.addSubview(pawnViewForShowingAGoalConfiguration!)
 				
+				let piAsCGFloat = CGFloat(NSNumber(double: M_PI).floatValue) // this is crazy…
+				pawnViewForShowingAGoalConfiguration!.layer.transform = CATransform3DMakeRotation(piAsCGFloat, 1, 1, 0)
+				
 				// This isn't very pretty, but we wait half the time of kAnimationDurationSlightlyRotatingFieldsOfBoard before we actually show the pawnView, because the boardView rotates the fieldView such that it appears that it is 'flipped' and the pawnView is on its back:
 				JvHClosureBasedTimer(interval: kAnimationDurationSlightlyRotatingFieldsOfBoard * 0.5, repeats: false, closure: { () -> Void in
 					self.pawnViewForShowingAGoalConfiguration!.hidden = false

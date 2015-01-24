@@ -43,6 +43,10 @@ enum Direction: Int
 		
 		return directionsClockWise[indexInArray]
 	}
+	
+	func isSameOrOpositeTo(otherDirection: Direction) -> Bool {
+		return self == otherDirection || self == otherDirection.directionAfterRotating(RotateDirection.clockwise).directionAfterRotating(RotateDirection.clockwise)
+	}
 }
 
 // It would make sense to use associated values (e.g. a Direction for MovePawn), but I don't know how to let the enum perform encoding and decoding, therefore I decided to define these 'associated values' in RoundAction.

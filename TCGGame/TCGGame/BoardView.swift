@@ -102,6 +102,9 @@ class BoardView: UIView {
 	
 	var coordsOfFieldsThatFlipWhenTheyAreSlightlyRotated: [(x: Int, y: Int)] = []
 	
+	private var fieldPawn1: (x: Int, y: Int)?
+	private var fieldPawn2: (x: Int, y: Int)?
+	
 	var fieldsAreSlightlyRotated: Bool = false {
 		didSet {
 			// Do nothing if the value hasn't changed:
@@ -181,6 +184,17 @@ class BoardView: UIView {
 				// temp:
 				i++
 			}
+			
+			// Make the pawns jump if they are on a field that is flipped:
+			for fieldCoords in coordsOfFieldsThatFlipWhenTheyAreSlightlyRotated {
+				if fieldCoords.x == fieldPawn1!.x && fieldCoords.y == fieldPawn1!.y {
+					pawnView1?.performJumpAnimation(kAnimationDurationSlightlyRotatingFieldsOfBoard * 1.5)
+				}
+				if fieldCoords.x == fieldPawn2!.x && fieldCoords.y == fieldPawn2!.y {
+					pawnView2?.performJumpAnimation(kAnimationDurationSlightlyRotatingFieldsOfBoard * 1.5)
+				}
+			}
+			
 			CATransaction.commit()
 		}
 	}
@@ -284,7 +298,6 @@ class BoardView: UIView {
 	// These methods can be used to set a pawn's (initial) position. They don't animate:
 	
 	func placePawn1(field: (x: Int, y: Int)) {
-        println(field)
 		self.placePawn(true, field: field)
 	}
 	
@@ -303,6 +316,13 @@ class BoardView: UIView {
 			var framePawnView = pawnView.frame
 			framePawnView.origin = CGPointMake(frameField.origin.x + 0.5 * (frameField.size.width - framePawnView.size.width), frameField.origin.y + 0.5 * (frameField.size.height - framePawnView.size.height))
 			pawnView.frame = framePawnView
+			
+			// Remember the position:
+			if aboutPawn1 {
+				fieldPawn1 = field
+			} else {
+				fieldPawn2 = field
+			}
 		}
 	}
 	
@@ -312,6 +332,13 @@ class BoardView: UIView {
 			// Let the pawnView move itself, because it knows how to do this in a cool, animated manner:
 			let frameField = self.fieldViews[field.x][field.y].frame
 			pawnView.moveCenterTo(CGPointMake(frameField.origin.x + 0.5 * frameField.size.width, frameField.origin.y + 0.5 * frameField.size.height))
+			
+			// Remember the position:
+			if aboutPawn1 {
+				fieldPawn1 = field
+			} else {
+				fieldPawn2 = field
+			}
 		}
 	}
 	

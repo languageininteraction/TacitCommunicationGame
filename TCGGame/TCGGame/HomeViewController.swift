@@ -90,7 +90,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     func subControllerFinished(subController: AnyObject)
     {
-        
         if weMakeAllDecisions!
         {
             self.currentGame.goToNextLevel()
@@ -124,7 +123,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         }
         else if unpackedObject is Level
         {
-            //When in dev mode, and the other player has not started the match yet, quickly start the match
+            // When local testing is on and the other player has not started the match yet, quickly start the match
             if kDevLocalTestingIsOn && self.levelViewController == nil
             {
                 self.startPlayingMatch()

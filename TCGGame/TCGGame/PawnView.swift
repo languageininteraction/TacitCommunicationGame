@@ -74,6 +74,44 @@ class PawnView: UIView {
 				
 				path.closePath()
 				shapeLayer.path = path.CGPath
+			case .Line:
+				let path = UIBezierPath()
+				path.moveToPoint(CGPointMake(edgelength, 0))
+				path.addLineToPoint(CGPointMake(edgelength, edgelength))
+				shapeLayer.path = path.CGPath
+			case .Bar:
+				let x: CGFloat = 0.25
+				shapeLayer.path = UIBezierPath(rect: CGRectMake(edgelength * x, 0, edgelength * (1 - 2 * x), edgelength)).CGPath
+			case .CornerTriangle:
+				let path = UIBezierPath()
+				path.moveToPoint(CGPointMake(edgelength * 0.1, edgelength * 0.1))
+				path.addLineToPoint(CGPointMake(edgelength * 1, edgelength * 0.25))
+				path.addLineToPoint(CGPointMake(edgelength * 0.25, edgelength * 1))
+				path.closePath()
+				shapeLayer.path = path.CGPath
+			case .Star:
+				let xCenter = Double(edgelength) * 0.5, yCenter = xCenter
+				let rSmall: Double = 0.35 * Double(edgelength)
+				let rBig: Double = 0.55 * Double(edgelength)
+				let nPoints = 5
+				let anglePerPoint = M_PI * 2 / Double(nPoints)
+				
+				let path = UIBezierPath()
+				
+				var angle: Double = -0.5 * anglePerPoint
+				let x = xCenter + rSmall * cos(angle), y = yCenter + rSmall * sin(angle)
+				path.moveToPoint(CGPointMake(CGFloat(x), CGFloat(y)))
+				
+				for i in 0 ... nPoints - 1 {
+					angle += 0.5 * anglePerPoint
+					path.addLineToPoint(CGPointMake(CGFloat(xCenter + rBig * cos(angle)), CGFloat(yCenter + rBig * sin(angle))))
+					angle += 0.5 * anglePerPoint
+					path.addLineToPoint(CGPointMake(CGFloat(xCenter + rSmall * cos(angle)), CGFloat(yCenter + rSmall * sin(angle))))
+				}
+				
+				path.closePath()
+				shapeLayer.path = path.CGPath
+				
 			default:
 				println("todo: draw path for PawnShape \(pawnDefinition.shape)")
 			}
@@ -138,35 +176,13 @@ class PawnView: UIView {
 	// MARK: - Manipulating Pawns
 	
 	func moveCenterTo(position: CGPoint) {
-		
-		
-		/*
-		// Calculate the new frame:
-//		let originalTransform = self.layer.transform
-//		self.layer.transform = CATransform3DIdentity
-		var newFrame = self.frame
-		newFrame.origin = CGPointMake(position.x - 0.5 * frame.size.width, position.y - 0.5 * frame.size.height)
-		
-		// Calculate the displacement:
-		let deltaX = newFrame.origin.x - self.frame.origin.x, deltaY = newFrame.origin.y - self.frame.origin.y
-		
-		
-		// Animate our shapeLayers. Actually change our frame first and then animate as if the movement happens slower:
-		
-		self.frame = newFrame
-		
-//		self.layer.transform = originalTransform
-*/
-		
 		// todo: als dit goed werkt (nog op iPad testen) dan bovenstaande weg
 		let deltaX = position.x - self.center.x, deltaY = position.y - self.center.y
 		self.center = position
 		
 		
-		
-		
 		CATransaction.begin()
-		CATransaction.setAnimationDuration(0.25)
+		CATransaction.setAnimationDuration(kAnimationDurationMovePawn)
 		
 		for i in 0...self.shapeLayersForNormalStyle.count - 1 {
 			
@@ -188,10 +204,12 @@ class PawnView: UIView {
 	
 	
 	func rotateTo(rotation: Direction, animated: Bool) {
-		CATransaction.begin()
-		CATransaction.setAnimationDuration(animated ? 0.35 : 0)
 		
-		let slowiness: Float = 0.75
+		CATransaction.begin()
+		CATransaction.setDisableActions(true)
+		CATransaction.setAnimationDuration(animated ? kAnimationDurationRotatePawn : 0)
+		
+		let slowiness: Float = 0.075
 		
 		// Define a function to rotate one shape layer. We'll use this to rotate both the shape layers for the normal style as well as the shape layer for the goalConfiguration style:
 		func rotateShapeLayer(shapeLayer: CAShapeLayer, scale: CGFloat, relativeStart: Float, relativeEnd: Float) {
@@ -215,11 +233,49 @@ class PawnView: UIView {
 			let scale: CGFloat = 1.0 - CGFloat(i) * (1.0 - CGFloat(kPawnScaleOfSecondLargestWRTLargest))
 			let relativeStart = slowiness * Float(self.shapeLayersForNormalStyle.count - 1 - i)
 			let relativeEnd = 1.0 - slowiness * Float(i)
+			
 			rotateShapeLayer(shapeLayer, scale, relativeStart, relativeEnd)
 		}
 		
 		// Rotate the shape layer for the goalConfiguration style:
 		rotateShapeLayer(self.shapeLayerForGoalConfiguration, 1, 0, 1)
+		
+		CATransaction.commit()
+	}
+	
+	func performJumpAnimation(duration: NSTimeInterval) {
+		CATransaction.begin()
+		CATransaction.setDisableActions(true)
+		CATransaction.setAnimationDuration(duration)
+		
+		let slowiness: Float = 0.1
+		
+		// Define a function to make one shape layer jump. We'll use this to rotate the shape layers for the normal style:
+		func letShapeLayerJump(shapeLayer: CAShapeLayer, relativeStart: Float, relativeEnd: Float) {
+			let normalTransform = shapeLayer.transform
+			let extraScaling: CGFloat = 1.15, lessScaling: CGFloat = 0.9
+			let fromValue = NSValue(CATransform3D: shapeLayer.transform)
+			let valueAt2 = NSValue(CATransform3D: CATransform3DScale(normalTransform, extraScaling, extraScaling, 1))
+			let valueAt3 = NSValue(CATransform3D: CATransform3DScale(normalTransform, lessScaling, lessScaling, 1))
+			
+			let actualRelativeDuration = relativeEnd - relativeStart
+			let relativeTime2 = relativeStart + 0.3 * actualRelativeDuration
+			let relativeTime3 = relativeTime2 + 0.45 * actualRelativeDuration
+			
+			let animation = CAKeyframeAnimation(keyPath: "transform")
+			animation.values = [fromValue, fromValue, valueAt2, valueAt3, fromValue, fromValue]
+			animation.keyTimes = [NSNumber(float: 0), NSNumber(float: relativeStart), NSNumber(float: relativeTime2), NSNumber(float: relativeTime3), NSNumber(float: relativeEnd), NSNumber(float: 1)]
+			shapeLayer.addAnimation(animation, forKey: "transform")
+		}
+		
+		// Rotate all shape layers for the normal style:
+		for i in 0...self.shapeLayersForNormalStyle.count - 1 {
+			let shapeLayer = self.shapeLayersForNormalStyle[i]
+			let relativeStart = slowiness * Float(self.shapeLayersForNormalStyle.count - 1 - i)
+			let relativeEnd = 1.0 - slowiness * Float(i)
+			
+			letShapeLayerJump(shapeLayer, relativeStart, relativeEnd)
+		}
 		
 		CATransaction.commit()
 	}
