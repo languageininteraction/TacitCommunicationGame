@@ -30,7 +30,7 @@ class Game: NSObject
     var nCompletedLevels = Dictionary<Difficulty,Int>()
     
     //Current state:
-    var indexCurrentLevel = -1 //So the first 'next' level will be 0
+    var indexCurrentLevel = -1 + kDevIndexLevelToStartWith // Normally kDevIndexLevelToStartWith is 0, so the first 'next' level will be 0
     var currentLevel: Level
     var currentDifficulty: Difficulty
         

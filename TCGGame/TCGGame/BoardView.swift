@@ -100,6 +100,8 @@ class BoardView: UIView {
 		}
 	}
 	
+	var coordsOfFieldsThatFlipWhenTheyAreSlightlyRotated: [(x: Int, y: Int)] = []
+	
 	var fieldsAreSlightlyRotated: Bool = false {
 		didSet {
 			// Do nothing if the value hasn't changed:
@@ -113,28 +115,39 @@ class BoardView: UIView {
 			// First collect all views that we wish to rotate in an array:
 			var viewsToRotate = [UIView]()
 			
+			// We collect the field views that should flip separately:
+			var viewsToAlsoFlip = [UIView]()
+			
+			// Add all field views:
 			for x in 0...boardSize.width - 1 { // idea: make a method to perform a block (called a closure in Swift I think…) on each fieldView
 				var fieldViewsInColumn = fieldViews[x]
 				for y in 0...boardSize.height - 1 {
-					viewsToRotate.append(fieldViewsInColumn[y])
+					let fieldView = fieldViewsInColumn[y]
+					viewsToRotate.append(fieldView)
+					
+					// See if this is one of the fields whose view should also be flipped:
+					for coords in coordsOfFieldsThatFlipWhenTheyAreSlightlyRotated {
+						if coords.x == x && coords.y == y {
+							viewsToAlsoFlip.append(fieldView)
+						}
+					}
 				}
 			}
 			
+			// Add the pawn views, because we'll rotate these as well:
 			if let actualPawnView1 = pawnView1? {
 				viewsToRotate.append(actualPawnView1)
 			}
-			
 			if let actualPawnView2 = pawnView2? {
 				viewsToRotate.append(actualPawnView2)
 			}
 			
 			
-			let totalDuration = 0.5
+			let totalDuration = kAnimationDurationSlightlyRotatingFieldsOfBoard
 			
-//			[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
 			
 			let numberOfViews = viewsToRotate.count
-			let durationPerView = 0.25
+			let durationPerView = 0.5 * kAnimationDurationSlightlyRotatingFieldsOfBoard
 			let relativeDurationPerView = durationPerView / totalDuration
 			let relativeStartLastView = 1.0 - relativeDurationPerView
 			let relativeDeltaStart = relativeStartLastView / Double(numberOfViews - 1);
@@ -148,16 +161,17 @@ class BoardView: UIView {
 //				animation.toValue = NSValue(CATransform3D: toTransform)
 				
 				
-				// test:
-				let toTransform = toTransformSlightRotation// (fieldsAreSlightlyRotated && (i == 2 || i == 4)) ? CATransform3DRotate(toTransformSlightRotation, piAsCGFloat, 1, 1, 0) : toTransformSlightRotation
+				//
+				let flip = viewsToAlsoFlip.contains(viewToRotate)
+				let toTransform = (fieldsAreSlightlyRotated && flip) ? CATransform3DRotate(toTransformSlightRotation, piAsCGFloat, 1, 1, 0) : toTransformSlightRotation
 				
 				
 				let valueFrom = NSValue(CATransform3D: viewToRotate.layer.transform)
 				let valueTo = NSValue(CATransform3D: toTransform)
 				
 				animation.values = [valueFrom, valueFrom, valueTo, valueTo]
-				let startTime = relativeDeltaStart * Double(i)
-				let endTime = startTime + relativeDurationPerView;
+				let startTime = flip ? 0 : relativeDeltaStart * Double(i)
+				let endTime = flip ? 1 : startTime + relativeDurationPerView;
 				animation.keyTimes = [NSNumber(double: 0), NSNumber(double: startTime), NSNumber(double: endTime), NSNumber(double: 1)]
 
 				viewToRotate.layer.addAnimation(animation, forKey: "transform")
@@ -208,15 +222,15 @@ class BoardView: UIView {
                 pawnView2 = PawnView(edgelength: CGFloat(edgeLength), pawnDefinition: newPawnDefinition)
                 self.addSubview(pawnView2!)
             }
-        }
-    }
+		}
+	}
 	
 	var pawnAndGoalFiguration1: (pawnDefinition: PawnDefinition?, goalConfiguration: PawnConfiguration?) {  // if both are not nil, the fieldView at the goalConfiguration's position shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
-		didSet {				
+		didSet {
 			// If either one of them is nil, no goal configuation should be shown:
 			if pawnAndGoalFiguration1.pawnDefinition == nil || pawnAndGoalFiguration1.goalConfiguration == nil {
 				if let actualOldGoalConfiguration1 = oldValue.goalConfiguration {
-					fieldViews[actualOldGoalConfiguration1.x][actualOldGoalConfiguration1.y].pawnAndRotationToShowAsGoalConfiguration = (nil, nil)
+					self.fieldViews[actualOldGoalConfiguration1.x][actualOldGoalConfiguration1.y].pawnAndRotationToShowAsGoalConfiguration = (nil, nil)
 				}
 			} else {
 				// We're now certain both are not nil:
@@ -224,7 +238,7 @@ class BoardView: UIView {
 				let actualGoalConfiguration = pawnAndGoalFiguration1.goalConfiguration!
 				
 				// Let the fieldView at the position of the goal configuration show it:
-				fieldViews[actualGoalConfiguration.x][actualGoalConfiguration.y].pawnAndRotationToShowAsGoalConfiguration = (actualPawnDefinition, actualGoalConfiguration.rotation)
+				self.fieldViews[actualGoalConfiguration.x][actualGoalConfiguration.y].pawnAndRotationToShowAsGoalConfiguration = (actualPawnDefinition, actualGoalConfiguration.rotation)
 			}
 		}
 	}

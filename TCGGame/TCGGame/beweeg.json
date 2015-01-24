@@ -5,10 +5,10 @@
         "height": 3
     },
     "pawn1": {
-        "shape": "circle",
+        "shape": "circle"
     },
     "pawn2": {
-        "shape": "circle",
+        "shape": "circle"
     },
     "start1": {
         "x": 1,

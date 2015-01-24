@@ -388,6 +388,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		self.view.addSubview(buttonToGiveMoveItemToOtherPlayer)
 		buttonToGiveMoveItemToOtherPlayer.hidden = true
 		
+		
 		// To give our see item:
 		buttonToGiveSeeItemToOtherPlayer.frame = CGRectMake(buttonSeeItem.frame.origin.x - 17, self.buttonSeeItem.frame.origin.y + 12, 73, 47) // todo
 		buttonToGiveSeeItemToOtherPlayer.setImage(UIImage(named: "ButtonToGiveSee"), forState: UIControlState.Normal)
@@ -640,6 +641,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		}
 	}
 	
+	func homeButtonPressed(sender:UIButton!) {
+		println("todo: implement homeButtonPressed")
+	}
+	
 	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {
 		// Create a corresponding action:
 		let actionType = sender == buttonToGiveMoveItemToOtherPlayer ? RoundActionType.GiveMoveItem : RoundActionType.GiveSeeItem
@@ -756,6 +761,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// todo explain
 		boardView.clearShownResultsForSpecificPositions()
+		
+		// todo explain
+		boardView.coordsOfFieldsThatFlipWhenTheyAreSlightlyRotated = [(x: self.currentLevel!.goalConfigurationPawn1.x, y: self.currentLevel!.goalConfigurationPawn1.y), (x: self.currentLevel!.goalConfigurationPawn2.x, y: self.currentLevel!.goalConfigurationPawn2.y)]
 		
 		
 		// Update whether the goal configuration is shown:

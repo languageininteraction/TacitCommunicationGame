@@ -169,6 +169,7 @@
 		48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */; };
 		48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF63A21A39FE6500941BDA /* HandyFunctions.swift */; };
+		48DF9E1F1A73F76A00624C80 /* JvHClosureBasedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */; };
 		48F8345E1A3A3B960098A904 /* Button_see 256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F833F21A3A3B960098A904 /* Button_see 256x256.png */; };
 		48F8345F1A3A3B960098A904 /* Button_seeOther 256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F833F31A3A3B960098A904 /* Button_seeOther 256x256.png */; };
 		48F834601A3A3B960098A904 /* Button_seeSelected 256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 48F833F41A3A3B960098A904 /* Button_seeSelected 256x256.png */; };
@@ -469,6 +470,7 @@
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
 		48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on RU.rtf"; sourceTree = "<group>"; };
 		48DF63A21A39FE6500941BDA /* HandyFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandyFunctions.swift; sourceTree = "<group>"; };
+		48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JvHClosureBasedTimer.swift; sourceTree = "<group>"; };
 		48F833F21A3A3B960098A904 /* Button_see 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_see 256x256.png"; sourceTree = "<group>"; };
 		48F833F31A3A3B960098A904 /* Button_seeOther 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeOther 256x256.png"; sourceTree = "<group>"; };
 		48F833F41A3A3B960098A904 /* Button_seeSelected 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_seeSelected 256x256.png"; sourceTree = "<group>"; };
@@ -927,6 +929,7 @@
 			children = (
 				48DF63A21A39FE6500941BDA /* HandyFunctions.swift */,
 				4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */,
+				48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */,
 			);
 			name = "Handy stuff";
 			sourceTree = "<group>";
@@ -1456,6 +1459,7 @@
 				49E83DA61A2714EC006952EE /* Game.swift in Sources */,
 				4812E62F1A0A6B65006DED82 /* Round.swift in Sources */,
 				49BB4E561A5691B400C93C26 /* LevelTemplate.swift in Sources */,
+				48DF9E1F1A73F76A00624C80 /* JvHClosureBasedTimer.swift in Sources */,
 				482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
 				491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */,
@@ -1592,7 +1596,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5d458453-2152-4eb2-be57-74a80e7dcf0e";
+				PROVISIONING_PROFILE = "db80b127-f1e9-46d1-b007-f2e6684180f8";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;

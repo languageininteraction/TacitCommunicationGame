@@ -19,13 +19,14 @@ let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", opt
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
+let kDevIndexLevelToStartWith = kDevelopmentMode ? 5 : 0
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
 let kDefaultScaling: CGFloat = kOnPhone ? kDefaultScalePhoneWRTIpad : 1
 let kBoardEdgeLength: CGFloat = 400 * kDefaultScaling
 let kBoardSpaceBetweenFields: Float = 10
-let kBoardLineWidthOfFields = 2
+let kBoardLineWidthOfFields = kOnPhone ? 1.5 : 2
 let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
 let kAmountFieldCanInflate: CGFloat = 0.30
 let kEdgelengthMovementButtons: CGFloat = 66 * kDefaultScaling
@@ -82,5 +83,8 @@ let kColorOtherPlayer = kColorLiIDarkBlue
 // Component colors:
 let kColorLinesOfBoardFields = kColorLiIBlueLighter
 let kColorFillOfBoardFields = UIColor.clearColor() // (red:142.0/255.0, green:207.0/255.0, blue:230.0/255.0, alpha:0.1)
+
+// Animations:
+let kAnimationDurationSlightlyRotatingFieldsOfBoard: NSTimeInterval = 0.5
 
 

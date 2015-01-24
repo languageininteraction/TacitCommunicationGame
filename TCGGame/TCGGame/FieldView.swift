@@ -35,15 +35,18 @@ class FieldView: UIView {
 		}
 	}
 	
-	// A field view can show the goal configuration of one pawn. For this it uses PawnView with its style set to GoalConfiguration:
+	// A field view can show the goal configuration of one pawn. For this it uses a PawnView with its style set to GoalConfiguration:
 	private var pawnViewForShowingAGoalConfiguration: PawnView?
 	var pawnAndRotationToShowAsGoalConfiguration: (pawnDefinition: PawnDefinition?, rotation: Direction?) { // if both are not nil, the fieldView shows a PawnView (pawnViewForShowingAGoalConfiguration) with the GoalConfiguration style
 		didSet {
 			// If one of the two isn't set, don't use the pawnViewForShowingAGoalConfiguration:
 			if pawnAndRotationToShowAsGoalConfiguration.pawnDefinition == nil || pawnAndRotationToShowAsGoalConfiguration.rotation == nil {
 				if let actualPawnViewForShowingAGoalConfiguration = pawnViewForShowingAGoalConfiguration {
-					actualPawnViewForShowingAGoalConfiguration.removeFromSuperview()
-					pawnViewForShowingAGoalConfiguration = nil
+					// This isn't very pretty, but we wait half the time of kAnimationDurationSlightlyRotatingFieldsOfBoard before we actually hide the pawnView, because the boardView rotates the fieldView such that it appears that it is 'flipped' and the pawnView is on its back:
+					JvHClosureBasedTimer(interval: kAnimationDurationSlightlyRotatingFieldsOfBoard * 0.5, repeats: false, closure: { () -> Void in
+						actualPawnViewForShowingAGoalConfiguration.removeFromSuperview()
+						self.pawnViewForShowingAGoalConfiguration = nil
+					})
 				}
 			} else {
 				// We're now certain both are not nil:
@@ -57,7 +60,13 @@ class FieldView: UIView {
 				let width = pawnViewForShowingAGoalConfiguration!.frame.size.width
 				let height = pawnViewForShowingAGoalConfiguration!.frame.size.height
 				pawnViewForShowingAGoalConfiguration!.frame = CGRectMake(0.5 * (self.frame.size.width - width), 0.5 * (self.frame.size.height - height), width, height)
+				pawnViewForShowingAGoalConfiguration!.hidden = true
 				self.addSubview(pawnViewForShowingAGoalConfiguration!)
+				
+				// This isn't very pretty, but we wait half the time of kAnimationDurationSlightlyRotatingFieldsOfBoard before we actually show the pawnView, because the boardView rotates the fieldView such that it appears that it is 'flipped' and the pawnView is on its back:
+				JvHClosureBasedTimer(interval: kAnimationDurationSlightlyRotatingFieldsOfBoard * 0.5, repeats: false, closure: { () -> Void in
+					self.pawnViewForShowingAGoalConfiguration!.hidden = false
+				})				
 			}
 		}
 	}
