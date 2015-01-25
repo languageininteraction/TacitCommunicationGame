@@ -3,7 +3,6 @@
 //  TCGGame
 //
 //  Created by Wessel Stoop on 02/01/15.
-//  Copyright (c) 2015 gametogether. All rights reserved.
 //
 
 import Foundation

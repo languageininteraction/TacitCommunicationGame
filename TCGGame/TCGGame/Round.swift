@@ -3,7 +3,6 @@
 //  TCGGame
 //
 //  Created by Jop van Heesch on 05-11-14.
-//  Copyright (c) 2014 gametogether. All rights reserved.
 //
 
 /* In a round we only model stuff that stays the same during the whole round.

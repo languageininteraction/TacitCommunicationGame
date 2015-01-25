@@ -3,7 +3,6 @@
 //  Mextra
 //
 //  Created by Jop van Heesch on 15-01-15.
-//  Copyright (c) 2015 gametogether. All rights reserved.
 //
 
 
