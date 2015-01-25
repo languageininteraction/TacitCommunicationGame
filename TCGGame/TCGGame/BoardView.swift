@@ -113,7 +113,7 @@ class BoardView: UIView {
 			}
 			
 			let piAsCGFloat = CGFloat(NSNumber(double: M_PI).floatValue) // this is crazy…
-			let toTransformSlightRotation = fieldsAreSlightlyRotated ? CATransform3DMakeRotation(piAsCGFloat * -0.035, 0, 0, 1) : CATransform3DIdentity // todo make constant again
+			let toTransformNormalFields = fieldsAreSlightlyRotated ? CATransform3DMakeRotation(piAsCGFloat * -0.035, 0, 0, 1) : CATransform3DIdentity // todo make constant again
 			
 			// First collect all views that we wish to rotate in an array:
 			var viewsToRotate = [UIView]()
@@ -160,26 +160,41 @@ class BoardView: UIView {
 			var i = 0 // temp
 			for viewToRotate in viewsToRotate {
 				let animation = CAKeyframeAnimation(keyPath: "transform")
-//				animation.fromValue = NSValue(CATransform3D: viewToRotate.layer.transform)
-//				animation.toValue = NSValue(CATransform3D: toTransform)
 				
 				
 				//
 				let flip = viewsToAlsoFlip.contains(viewToRotate)
-				let toTransform = (fieldsAreSlightlyRotated && flip) ? CATransform3DRotate(toTransformSlightRotation, piAsCGFloat, 1, 1, 0) : toTransformSlightRotation
 				
-				
-				let valueFrom = NSValue(CATransform3D: viewToRotate.layer.transform)
-				let valueTo = NSValue(CATransform3D: toTransform)
-				
-				animation.values = [valueFrom, valueFrom, valueTo, valueTo]
-				let startTime = flip ? 0 : relativeDeltaStart * Double(i)
-				let endTime = flip ? 1 : startTime + relativeDurationPerView;
-				animation.keyTimes = [NSNumber(double: 0), NSNumber(double: startTime), NSNumber(double: endTime), NSNumber(double: 1)]
-
-				viewToRotate.layer.addAnimation(animation, forKey: "transform")
-				
-				viewToRotate.layer.transform = toTransform
+				if flip {
+					// Animate as if it seems that the field 'flips', so we see its backside. But we don't actually flip it, otherwise the fieldView's pawnViewForShowingAGoalConfiguration would be flipped as well, depicting the wrong rotation:
+					let transformHalfway = CATransform3DRotate(viewToRotate.layer.transform, 0.5 * piAsCGFloat, 1, 1, 0)
+					
+					let valueFrom = NSValue(CATransform3D: viewToRotate.layer.transform)
+					let valueHalfway = NSValue(CATransform3D: transformHalfway)
+					let valueTo = NSValue(CATransform3D: toTransformNormalFields)
+					
+					animation.values = [valueFrom, valueFrom, valueHalfway, valueTo, valueTo]
+					let startTime = flip ? 0 : relativeDeltaStart * Double(i)
+					let endTime = flip ? 1 : startTime + relativeDurationPerView;
+					let halfwayTime = 0.5 * (startTime + endTime)
+					animation.keyTimes = [NSNumber(double: 0), NSNumber(double: startTime), NSNumber(double: halfwayTime), NSNumber(double: endTime), NSNumber(double: 1)]
+					
+					viewToRotate.layer.addAnimation(animation, forKey: "transform")
+					
+					viewToRotate.layer.transform = toTransformNormalFields
+				} else {
+					let valueFrom = NSValue(CATransform3D: viewToRotate.layer.transform)
+					let valueTo = NSValue(CATransform3D: toTransformNormalFields)
+					
+					animation.values = [valueFrom, valueFrom, valueTo, valueTo]
+					let startTime = relativeDeltaStart * Double(i)
+					let endTime = startTime + relativeDurationPerView;
+					animation.keyTimes = [NSNumber(double: 0), NSNumber(double: startTime), NSNumber(double: endTime), NSNumber(double: 1)]
+					
+					viewToRotate.layer.addAnimation(animation, forKey: "transform")
+					
+					viewToRotate.layer.transform = toTransformNormalFields
+				}
 				
 				// temp:
 				i++
