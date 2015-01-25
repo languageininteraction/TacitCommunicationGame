@@ -46,7 +46,7 @@ class Game: NSObject
         self.nCompletedLevels[Difficulty.Expert] = 0
     }
 	
-	// temp!
+	// temp! to test why too many Games are initialized
 	convenience init(test: Int) {
 		self.init()
 		println("test = \(test)")
@@ -55,6 +55,7 @@ class Game: NSObject
     func goToHighestBeginnerLevel() //Not finished yet, this will be much more smart/complicated
     {
         self.indexCurrentLevel++
+		
         self.currentLevel = self.beginnerLevels[self.indexCurrentLevel]
     }
     
@@ -64,24 +65,10 @@ class Game: NSObject
         
         switch self.currentDifficulty
         {
-            case Difficulty.Beginner: self.currentLevel = self.beginnerLevels[self.indexCurrentLevel]
+            case Difficulty.Beginner: self.currentLevel = self.beginnerLevels[self.indexCurrentLevel % self.beginnerLevels.count]
             case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
             case Difficulty.Expert: self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
         }
         
     }
-
-    
-    
-/*        {
-		get {
-			return levels[indexCurrentLevel]
-		}
-		
-		set(newCurrentLevel) {
-			indexCurrentLevel = NSArray(array: levels).indexOfObject(newCurrentLevel)
-		}
-	}
-*/
-    
 }

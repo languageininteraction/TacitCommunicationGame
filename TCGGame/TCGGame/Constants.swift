@@ -19,7 +19,7 @@ let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", opt
 let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 0 : 0
-let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? true : false
+let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
 
 // Layout of the board and stuff on top of / inside the board:
@@ -59,7 +59,7 @@ let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 25 * k
 let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 20 * kDefaultScaling)
 
 // Pawns:
-let kPawnLineWidth = 2
+let kPawnLineWidth = kOnPhone ? 1.3 : 2
 let kPawnNumberOfLines = 5
 let kPawnScaleOfSecondLargestWRTLargest: Float = 0.85
 
