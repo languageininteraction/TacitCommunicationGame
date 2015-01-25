@@ -19,7 +19,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
     var managerOfMultipleHomeViewControllers: ManageMultipleHomeViewControllersProtocol?
     
-    var currentGame = Game()
+    var currentGame = Game(test: 3) // temp om zeker te weten dat dit dubbel wordt gedraaid
     var levelViewController : LevelViewController?
     
     //GameKit variables
@@ -44,10 +44,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     }
 
     // MARK: - Actions to do when first loading view
-    
+	
     override func viewDidLoad()
     {
         super.viewDidLoad()
+		
+		println("viewDidLoad of HomeViewController")
         
         var x = 50 as CGFloat
 
@@ -65,10 +67,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     // MARK: - Respond to button presses
     
-    func tempPlayButtonPressed(sender:UIButton!)
+    func tempPlayButtonPressed(sender: UIButton!)
     {
-        print("PRESS!")
-
         switch sender
         {
             case self.tempPlayButtonEasy: self.currentGame.currentDifficulty = Difficulty.Beginner
@@ -82,20 +82,30 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         } else {
             startPlayingMatch()
         }        
-        
     }
     
-    // MARK: - Communication with subview
+    // MARK: - Communication with subController
     
-    func subControllerFinished(subController: AnyObject)
-    {
+    func subControllerFinished(subController: AnyObject) {
+		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
         if weMakeAllDecisions!
-        {
-            self.currentGame.goToNextLevel()
-            self.sendLevelToOther(self.currentGame.currentLevel);
-        
-            self.levelViewController!.currentLevel = self.currentGame.currentLevel
-            self.levelViewController!.restartLevel()
+		{
+			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
+			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
+				self.currentGame.goToNextLevel()
+				self.sendLevelToOther(self.currentGame.currentLevel);
+				
+				CATransaction.begin()
+				CATransaction.setAnimationDuration(0.75) // todo constant
+				CATransaction.setCompletionBlock({ () -> Void in
+					self.levelViewController!.currentLevel = self.currentGame.currentLevel
+					self.levelViewController?.restartLevel()
+				})
+				
+				self.levelViewController!.animateLeavingTheLevel()
+				
+				CATransaction.commit()
+			})
         }
     }
 
@@ -148,9 +158,16 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             //Go to the next level
             else
             {
-                self.currentGame.currentLevel = unpackedObject as Level
-                self.levelViewController!.currentLevel = self.currentGame.currentLevel
-                self.levelViewController?.restartLevel()
+				CATransaction.begin()
+				CATransaction.setCompletionBlock({ () -> Void in
+					self.currentGame.currentLevel = unpackedObject as Level
+					self.levelViewController!.currentLevel = self.currentGame.currentLevel
+					self.levelViewController?.restartLevel()
+				})
+				
+				self.levelViewController!.animateLeavingTheLevel()
+				
+				CATransaction.commit()
             }
         }
     }
@@ -247,7 +264,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     // MARK: - Playing the match
     
     func startPlayingMatch() {
-        if (!kDevLocalTestingIsOn) {
+        if (!kDevLocalTestingIsOn) { // normal case
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
             
@@ -273,13 +290,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //The custom send functions for the levelviewcontroller
         func sendActionToOther(action :RoundAction)
         {
-            print(self.GCMatch)
-            
             let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
-            
-            // test sending a small package:
-            //		var hashValue = 2
-            //		let packet = NSData(bytes:&hashValue, length:4) // todo check length!
             
             if (!kDevLocalTestingIsOn) { // normal case
                 var error: NSError?
@@ -300,7 +311,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.levelViewController!.weArePlayer1 = self.weArePlayer1
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
-        //Generate a level, send it away and start playing
+        //Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
         //This part will be done by the othe player once he receives the level
         if self.weMakeAllDecisions!
         {
@@ -313,12 +324,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
             self.view.addSubview(self.levelViewController!.view)
         }
-        
     }
     
     func sendLevelToOther(level :Level)
     {
-        
         let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
         
         // test sending a small package:

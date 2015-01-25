@@ -29,8 +29,8 @@ class Level: NSObject
     
     // MARK: - Starting the level from a JSON file
     
-    init(filename:String)
-    {
+    init(filename: String)
+    {		
         // Read in the level:
         let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
         let jsonData = NSData(contentsOfFile:path!, options: .DataReadingMappedIfSafe, error: nil)
@@ -72,22 +72,25 @@ class Level: NSObject
     init(name : String)
     {
         self.name = name
-        self.board = BoardDefinition(width: 3, height: 3)
+		
+		// These defaults are simple on purpose, so if we use them by accident, it shows:
+		
+        self.board = BoardDefinition(width: 1, height: 1)
         self.pawnPlayer1 = PawnDefinition(shape: PawnShape.Circle)
         self.pawnPlayer2 = PawnDefinition(shape: PawnShape.Circle)
         
         self.startConfigurationPawn1 = PawnConfiguration(x: 0, y: 0, rotation: Direction.North)
-        self.startConfigurationPawn2 = PawnConfiguration(x: 0, y: 1, rotation: Direction.North)
+        self.startConfigurationPawn2 = PawnConfiguration(x: 0, y: 0, rotation: Direction.North)
 
-        self.goalConfigurationPawn1 = PawnConfiguration(x: 1, y: 0, rotation: Direction.North)
-        self.goalConfigurationPawn2 = PawnConfiguration(x: 1, y: 1, rotation: Direction.North)
+        self.goalConfigurationPawn1 = PawnConfiguration(x: 0, y: 0, rotation: Direction.North)
+        self.goalConfigurationPawn2 = PawnConfiguration(x: 0, y: 0, rotation: Direction.North)
     
         self.moveItemAvailable = true
         self.seeItemAvailable = true
         self.giveItemAvailable = true
         
-        self.startItemsPlayer1 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil),ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
-        self.startItemsPlayer2 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil),ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
+        self.startItemsPlayer1 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil), ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
+        self.startItemsPlayer2 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil), ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
         
     }
     
@@ -173,9 +176,16 @@ class Level: NSObject
         self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
         
         self.goalConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig1x") as Int, y: decoder.decodeObjectForKey("goalConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig1Rotation") as Int)!)
-        
-        self.goalConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig2x") as Int, y: decoder.decodeObjectForKey("goalConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig2Rotation") as Int)!)
-        
+		self.goalConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig2x") as Int, y: decoder.decodeObjectForKey("goalConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig2Rotation") as Int)!)
+		
+		if !kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals {
+			self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as Int, y: decoder.decodeObjectForKey("startConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as Int)!)
+			self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
+		} else {
+			self.startConfigurationPawn1 = self.goalConfigurationPawn1
+			self.startConfigurationPawn2 = self.goalConfigurationPawn2
+		}
+		
         self.moveItemAvailable = decoder.decodeBoolForKey("moveItemAvailable")
         self.seeItemAvailable = decoder.decodeBoolForKey("seeItemAvailable")
         self.giveItemAvailable = decoder.decodeBoolForKey("giveItemAvailable")
@@ -199,6 +209,5 @@ class Level: NSObject
             itemTypeRawValue = itemDict["itemType"] as Int
             self.startItemsPlayer2.append(ItemDefinition(itemType: ItemType(rawValue: itemTypeRawValue)!, endlessUse: itemDict["endlessUse"] as Bool, nrUses: (itemDict["nrUses"] as Int)))
         }
-        
     }
 }

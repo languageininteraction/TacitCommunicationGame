@@ -36,7 +36,7 @@
     "itemsPlayer1": {
         "move": 100,
         "see": 100,
-        "give": 1
+        "give": 100
     },
     "itemsPlayer2": {
         "move": 0,

@@ -17,8 +17,8 @@ enum PerspectiveOnTwoPlayers: Int {
 
 class SimulateTwoHomeViewControllers: UIViewController, ManageMultipleHomeViewControllersProtocol {
 
-	let player1HomeViewController = HomeViewController(nibName: "PlayerViewController", bundle: nil)
-	let player2HomeViewController = HomeViewController(nibName: "PlayerViewController", bundle: nil)
+	let player1HomeViewController = HomeViewController()
+	let player2HomeViewController = HomeViewController()
 	
 	var perspective: PerspectiveOnTwoPlayers = .Both {
 		didSet {

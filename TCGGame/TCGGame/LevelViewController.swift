@@ -368,13 +368,16 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		labelLevel.font = kFontLevel
 		labelLevel.textAlignment = NSTextAlignment.Center
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
-        labelLevel.addGestureRecognizer(tapGesture)
-        labelLevel.userInteractionEnabled = false // NOTE: I disabled this!!!
 		if kOnPhone {
 			labelLevel.hidden = true // todo
 		}
-        
+		
+		if kDevUseLevelLabelForLevelSelection {
+			let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
+			labelLevel.addGestureRecognizer(tapGesture)
+			labelLevel.userInteractionEnabled = true
+		}
+		
         self.view.addSubview(labelLevel)
 		
 		
@@ -469,7 +472,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			let otherMessedUp = currentState.playerMessedUp(!weArePlayer1)
 			boardView.showResultForPosition(currentState.positionOfPawn(!weArePlayer1), resultIsGood: !otherMessedUp)
 			
-			updateUIForMoveAndRotateButtons() // todo: make separate method to update whether all are hidden, because this way we also animate if the buttons need to remain visible
+			updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 			
             if currentState.roundResult == RoundResult.Succeeded
             {
@@ -483,11 +486,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			
 			// todo explain
 			updateUIOfItems()
+			updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 			
-			// If both players finished, proceed to the next level; if both players chose tro retry, retry the level (todo Wessel: new randomness):
-			if currentState.roundResult == RoundResult.Succeeded {
-
-            } else if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
+			// If both players chose to retry, retry the level (todo Wessel: new randomness):
+			if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
 				self.restartLevel()
 			}
 
@@ -557,27 +559,29 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		updateUIOfItems()
 		
 		// Update whether the pawn can be moved:
-		updateUIForMoveAndRotateButtons()
+		updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 	}
 	
 	func finishButtonPressed(sender:UIButton!) {
-		var currentState = currentRound!.currentState()
-		
 		// todo explain:
-		if !currentState.playerCanChooseToFinish(weArePlayer1) {
+		if !currentRound!.currentState().playerCanChooseToFinish(weArePlayer1) {
 			return
 		}
 		
 		// Create a corresponding action:
 		var action = RoundAction(type: RoundActionType.Finish, performedByPlayer1: weArePlayer1)
 		
+		// Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+		self.sendActionToOther!(action)
+		
 		// Update the model:
 		currentRound?.processAction(action)
 		
-		currentState = currentRound!.currentState()
-		
 		
 		// Update our UI:
+		
+		// Get the current state:
+		let currentState = currentRound!.currentState()
 		
 		// Update what the level buttons are used for, and whether they are selected:
 		updateUIForButtonsHomeRetryAndFinish()
@@ -587,23 +591,16 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		boardView.showResultForPosition(currentState.positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
 		
 		// The move and rotate buttons should no longer be shown and no field view should be inflated:
-		updateUIForMoveAndRotateButtons()
+		updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 		boardView.coordsOfInflatedField = (-1, -1)
 		
 		// The items shouldn't be avaiable anymore:
 		updateUIOfItems()
 		
-        if currentState.roundResult == RoundResult.Succeeded
-        {
+		// If the roundResult is finished, we want to go to the next level. To do this, we inform our superController (which is a HomeViewController) that we finished. In response the HomeViewController will wait a short time (giving the players the opportunity to see the end state) and then start a new level:
+        if currentState.roundResult == RoundResult.Succeeded {
             self.superController?.subControllerFinished(self)
         }
-
-        // The action is sent late, so we have some time to finish our own match before the new level arrives... if we are the one sending the level instead, the other won't even be interested in seeing that we finished the game
-        if !self.weMakeAllDecisions
-        {
-            self.sendActionToOther!(action)
-        }
-        
 	}
 	
 	func retryButtonPressed(sender:UIButton!) {
@@ -637,6 +634,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			
 			// todo explain
 			updateUIOfItems()
+			updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 		}
 	}
 	
@@ -768,7 +766,14 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		self.updateWhetherGoalConfigurationIsShown()
 		
 		// Put the pawns in the UI at the right position:
-		self.updateUIForMoveAndRotateButtons()
+		viewWithAllMoveAndRotateButtons.layer.opacity = 0
+		JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: {
+			// Not pretty, but otherwise move button will flash as part of updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons:
+			for button in self.moveAndRotateButtons {
+				button.layer.opacity = 0
+			}
+			self.updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
+		})
 		
 		// todo explain
 		self.updateUIForButtonsHomeRetryAndFinish()
@@ -781,15 +786,20 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		buttonGiveItem.setLayerPulsates(giveItemWasHidden && !buttonGiveItem.hidden)
 		
 		
-		// Test:
-		boardView.animateTransform(CATransform3DMakeScale(0.001, 0.001, 1), toTransform: CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: false)
+		// Animate the board appearing:
+		boardView.animateTransform(CATransform3DMakeScale(0.001, 0.001, 1), toTransform: CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 	}
 	
-	func updateUIForMoveAndRotateButtons() {
+	func updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons() {
 		// Update whether they are hidden:
 		let movementButtonsShouldBeShown = currentRound!.currentState().movementButtonsShouldBeShown(aboutPawn1: weArePlayer1)
 		let positionButtons = currentRound!.currentState().positionOfPawn(weArePlayer1)
 		boardView.coordsOfInflatedField = movementButtonsShouldBeShown ? positionButtons : (-1, -1)
+		
+		// If not hidden, update their position:
+		//		if movementButtonsShouldBeShown {
+		self.centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(positionButtons.x, y: positionButtons.y)
+		//		}
 		
 		// Animate:
 		if viewWithAllMoveAndRotateButtons.hidden {
@@ -801,11 +811,6 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		animation.toValue = movementButtonsShouldBeShown ? 1 : 0
 		viewWithAllMoveAndRotateButtons.layer.addAnimation(animation, forKey: "opacity")
 		viewWithAllMoveAndRotateButtons.layer.opacity = movementButtonsShouldBeShown ? 1 : 0
-		
-		// If not hidden, update their position:
-//		if movementButtonsShouldBeShown {
-			self.centerViewWithAllMoveAndRotateButtonsAboveFieldAndUpdateWhichButtonsAreVisible(positionButtons.x, y: positionButtons.y)
-//		}
 	}
 	
 	func updateWhetherGoalConfigurationIsShown() {
@@ -993,11 +998,17 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		boardView.fieldsAreSlightlyRotated = buttonSeeItem.selected
 	}
 	
+	func animateLeavingTheLevel() {
+		// Animate the board disappearing:
+		boardView.animateTransform(CATransform3DIdentity, toTransform: CATransform3DMakeScale(0.001, 0.001, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+	}
+	
+	
     // MARK: - PassControlToSubControllerProtocol
     
     func subControllerFinished(subController: AnyObject) {
 
-        println("Subcontrollerfinished")
+        println("Subcontrollerfinished in LevelViewController")
         
         /*if let actualLevel = self.chooseLevelViewController.selectedLevel {
             self.currentGame.currentLevel = actualLevel

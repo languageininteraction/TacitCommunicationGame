@@ -22,7 +22,6 @@
 		4812E6401A0B7972006DED82 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4812E63F1A0B7972006DED82 /* GameKit.framework */; };
 		482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */; };
 		482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* LevelViewController.swift */; };
-		482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
 		483D0C621A321238006C5411 /* Button_moveEast 256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 483D0C561A321238006C5411 /* Button_moveEast 256x256.png */; };
 		483D0C631A321238006C5411 /* Button_moveEast 256x256@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 483D0C571A321238006C5411 /* Button_moveEast 256x256@2x.png */; };
@@ -325,7 +324,6 @@
 		4812E63F1A0B7972006DED82 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulateTwoHomeViewControllers.swift; sourceTree = "<group>"; };
 		482EEC3E1A121C9300FB13FF /* LevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
-		482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerViewController.xib; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		483D0C561A321238006C5411 /* Button_moveEast 256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveEast 256x256.png"; sourceTree = "<group>"; };
 		483D0C571A321238006C5411 /* Button_moveEast 256x256@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_moveEast 256x256@2x.png"; sourceTree = "<group>"; };
@@ -733,7 +731,6 @@
 			children = (
 				49821A761A695C5A008CC491 /* HomeViewController.swift */,
 				482EEC3E1A121C9300FB13FF /* LevelViewController.swift */,
-				482EEC3F1A121C9300FB13FF /* PlayerViewController.xib */,
 				491293051A30B4D900E0A554 /* ChooseLevelViewController.swift */,
 			);
 			name = "For One Player";
@@ -1412,7 +1409,6 @@
 				48B2C3431A248D38002FFEDF /* Button_nextYellowOther 54x54@2x.png in Resources */,
 				483FFB8E1A30BC3C00C26009 /* Button_moveNorth 54x54.png in Resources */,
 				48F8349B1A3A3B960098A904 /* Button_rotateCounterclockwise 256x256@2x other.png in Resources */,
-				482EEC411A121C9300FB13FF /* PlayerViewController.xib in Resources */,
 				48B2C3651A248D38002FFEDF /* Button_seeSelected 54x54@2x.png in Resources */,
 				48F834AE1A3A3B960098A904 /* Button_moveSouth 256x256 256x256@2x.png in Resources */,
 				48C3C2CD1A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png in Resources */,

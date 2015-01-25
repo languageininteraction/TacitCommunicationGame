@@ -35,6 +35,8 @@ class Game: NSObject
         
     override init()
     {
+		println("Game init")
+		
         self.currentDifficulty = Difficulty.Beginner
         self.currentLevel = self.beginnerLevels[0]
         self.highestAvailableDifficulty = Difficulty.Beginner
@@ -42,8 +44,13 @@ class Game: NSObject
         self.nCompletedLevels[Difficulty.Beginner] = 0
         self.nCompletedLevels[Difficulty.Advanced] = 0
         self.nCompletedLevels[Difficulty.Expert] = 0
-        
     }
+	
+	// temp!
+	convenience init(test: Int) {
+		self.init()
+		println("test = \(test)")
+	}
 
     func goToHighestBeginnerLevel() //Not finished yet, this will be much more smart/complicated
     {

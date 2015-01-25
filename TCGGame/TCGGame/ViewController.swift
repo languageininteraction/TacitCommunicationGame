@@ -15,9 +15,9 @@ class ViewController: UIViewController {
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
-		
+				
 		if (!kDevLocalTestingIsOn) { // normal case
-			let homeViewController = HomeViewController(nibName: "PlayerViewController", bundle: nil)
+			let homeViewController = HomeViewController()
 			self.presentViewController(homeViewController, animated: false, completion: nil)
 		} else {
 			// This is useful for testing, circumventing the need for two devices and using Game Center:

@@ -183,6 +183,7 @@ class RoundState: NSObject, NSCopying {
 		case .Retry: // MARK: Action .Retry
 			// The roundResult becomes Failed as soon as someone presses retry:
 			roundResult = RoundResult.Failed
+			println("roundResult became RoundResult.Failed")
 			
 			// Update which players are ready to retry:
 			if action.performedByPlayer1 {
@@ -190,18 +191,6 @@ class RoundState: NSObject, NSCopying {
 			} else {
 				nextState.player2isReadyToRetry = true
 			}
-			
-			// todo: do we tsill use this one?
-/*		case .Continue: // MARK: Action .Continue
-			// Assert that the roundResult is Succeeded, otherwise this action should not be possible:
-			assert(roundResult == RoundResult.Succeeded, "It should only be possible to perform a RoundAction.Continue if the RoundResult is .Succeeded.")
-			
-			// Update which players are ready to continue:
-			if action.performedByPlayer1 {
-				nextState.player1isReadyToContinue = true
-			} else {
-				nextState.player2isReadyToContinue = true
-			}*/
 			
 		default:
 			println("Warning in Round's processAction: don't know what to do with this action type.")			
