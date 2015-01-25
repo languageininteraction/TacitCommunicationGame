@@ -24,9 +24,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
     var currentLevel: Level?
 	var currentRound: Round?
 	
-    //Temp
-    var weArePlayer1 : Bool = true
-    var weMakeAllDecisions : Bool = true
+    // todo explain:
+    var weArePlayer1: Bool = true
+    var weMakeAllDecisions: Bool = true
+	var userChoseToGoBackHome: Bool = false
     
 	// MARK: - Other UI
 	
@@ -476,6 +477,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			
             if currentState.roundResult == RoundResult.Succeeded
             {
+				self.userChoseToGoBackHome = false
                 self.superController!.subControllerFinished(self)
             }
             
@@ -639,7 +641,12 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	}
 	
 	func homeButtonPressed(sender:UIButton!) {
-		println("todo: implement homeButtonPressed")
+
+		// temp:
+//		let alertView = UIAlertView(title: "Oops!", message: ", delegate: <#AnyObject?#>, cancelButtonTitle: <#String?#>)
+		
+//		self.userChoseToGoBackHome = true
+//		self.superController!.subControllerFinished(self)
 	}
 	
 	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {

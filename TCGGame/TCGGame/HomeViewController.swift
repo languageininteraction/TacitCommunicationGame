@@ -87,9 +87,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     // MARK: - Communication with subController
     
     func subControllerFinished(subController: AnyObject) {
-		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
-        if weMakeAllDecisions!
-		{
+		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished <todo update comments> if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
+		if levelViewController!.userChoseToGoBackHome {
+			
+			// todo: make this work…
+			levelViewController!.view.removeFromSuperview() // todo explain
+			
+		} else if weMakeAllDecisions! {
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
 			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
 				self.currentGame.goToNextLevel()
