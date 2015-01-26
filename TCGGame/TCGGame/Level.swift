@@ -75,7 +75,7 @@ class Level: NSObject
 		
 		// These defaults are simple on purpose, so if we use them by accident, it shows:
 		
-        self.board = BoardDefinition(width: 1, height: 1)
+        self.board = BoardDefinition(width: 3, height: 3) // This should be 1, 1 and then the app should still work (this reveals a bug)
         self.pawnPlayer1 = PawnDefinition(shape: PawnShape.Circle)
         self.pawnPlayer2 = PawnDefinition(shape: PawnShape.Circle)
         
@@ -98,12 +98,15 @@ class Level: NSObject
     
     func encodeWithCoder(coder: NSCoder)
     {
-
         // MARK: 1. Collect the things we want to encode
         
         //Basic info
-        var objectsToEncode : Array<(String,AnyObject)>= [("name",self.name), ("boardWidth",self.board.width),("boardHeight",self.board.height),
-            ("pawnPlayer1Shape",self.pawnPlayer1.shape.rawValue),("pawnPlayer2Shape",self.pawnPlayer2.shape.rawValue),
+        var objectsToEncode : Array<(String, AnyObject)> = [
+			("name", self.name),
+			("boardWidth", self.board.width),
+			("boardHeight", self.board.height),
+            ("pawnPlayer1Shape", self.pawnPlayer1.shape.rawValue),
+			("pawnPlayer2Shape", self.pawnPlayer2.shape.rawValue),
         ]
  
         //The configurations

@@ -91,7 +91,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		if levelViewController!.userChoseToGoBackHome {
 			
 			// todo: make this work…
-			levelViewController!.view.removeFromSuperview() // todo explain
+//			GCMatch?.disconnect()
+//			levelViewController!.view.removeFromSuperview() // todo explain
+//			levelViewController!.currentLevel = nil // hack: when a home VC receives a level, it checks whether levelViewController!.currentLevel is nil to know whether to start te game or go to the next level
 			
 		} else if weMakeAllDecisions! {
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
@@ -316,7 +318,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
         //Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
-        //This part will be done by the othe player once he receives the level
+        //This part will be done by the other player once he receives the level
         if self.weMakeAllDecisions!
         {
             self.currentGame.goToNextLevel()

@@ -641,12 +641,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	}
 	
 	func homeButtonPressed(sender:UIButton!) {
-
-		// temp:
-//		let alertView = UIAlertView(title: "Oops!", message: ", delegate: <#AnyObject?#>, cancelButtonTitle: <#String?#>)
-		
-//		self.userChoseToGoBackHome = true
-//		self.superController!.subControllerFinished(self)
+		self.userChoseToGoBackHome = true
+		self.superController!.subControllerFinished(self)
 	}
 	
 	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {
