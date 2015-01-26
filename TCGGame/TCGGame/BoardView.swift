@@ -322,10 +322,7 @@ class BoardView: UIView {
 	func placePawn(aboutPawn1: Bool, field: (x: Int, y: Int)) {
 		if let pawnView = aboutPawn1 ? self.pawnView1 : self.pawnView2 {
 			// Change the pawnView's origin so it's in the center of the corresponding field view:
-			
-			println("field.x = \(field.x), field.y = \(field.y)")
-			println("boardSize = \(boardSize)")
-			
+						
 			// Get the frame of the fieldView:
 			let frameField = self.fieldViews[field.x][field.y].frame
 			
