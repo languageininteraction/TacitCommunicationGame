@@ -59,4 +59,5 @@ enum RoundActionType: Int {
 	case GiveSeeItem
 	case Finish
 	case Retry
+    case QuitPlaying
 }
