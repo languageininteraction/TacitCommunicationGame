@@ -17,9 +17,6 @@ extension Array {
 class LevelTemplate: NSObject
 {
     let name: String
-    
-    let decisionMakerPlayer1Possibilities: [Bool]
-    
     let board: BoardDefinition
     
     var possiblePawnShapesPlayer1: [PawnShape]
@@ -46,15 +43,6 @@ class LevelTemplate: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
-        
-        var boolsAsStrings = jsonResult["decisionMakerPlayer1"] as NSArray
-        self.decisionMakerPlayer1Possibilities = []
-        
-        for boolAsString in boolsAsStrings
-        {
-            self.decisionMakerPlayer1Possibilities.append(boolAsString as NSString == "true" ? true : false)
-        }
-        
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
         self.possiblePawnShapesPlayer1 = []
         
@@ -106,9 +94,6 @@ class LevelTemplate: NSObject
         level.startItemsPlayer1 = self.startItemsPlayer1
         level.startItemsPlayer2 = self.startItemsPlayer2
     
-        //Pick who's player 1
-        //level.decisionMakerPlayer1 = array(self.decisionMakerPlayer1
-        
         //Pick shapes
         level.pawnPlayer1 = PawnDefinition(shape: self.possiblePawnShapesPlayer1.randomItem())
         level.pawnPlayer2 = PawnDefinition(shape: self.possiblePawnShapesPlayer2.randomItem())

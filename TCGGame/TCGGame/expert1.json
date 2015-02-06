@@ -22,5 +22,4 @@
     },
     "goalPlayer2Pointing": ["outwards"],
     "orientationRelation": ["different"],
-    "decisionMakerPlayer1": [true,false]    
 }

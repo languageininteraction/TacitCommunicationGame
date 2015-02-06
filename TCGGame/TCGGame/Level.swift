@@ -11,8 +11,6 @@ class Level: NSObject
 {
     let name: String
     
-    var decisionMakerPlayer1 : Bool
-    
     let board: BoardDefinition
     var pawnPlayer1: PawnDefinition
     var pawnPlayer2: PawnDefinition
@@ -40,9 +38,6 @@ class Level: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
-
-        self.decisionMakerPlayer1 = jsonResult["decisionMakePlayer1"] as Bool
-        
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
         self.pawnPlayer1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as Dictionary)
         self.pawnPlayer2 = PawnDefinition(jsonDict: jsonResult["pawn2"] as Dictionary)
@@ -77,8 +72,6 @@ class Level: NSObject
     init(name : String)
     {
         self.name = name
-        
-        self.decisionMakerPlayer1 = true
 		
 		// These defaults are simple on purpose, so if we use them by accident, it shows:
 		
@@ -149,7 +142,7 @@ class Level: NSObject
         }
         
         //Some bools
-        let boolsToEncode : Array<(String,Bool)> = [("moveItemAvailable",self.moveItemAvailable),("seeItemAvailable",self.seeItemAvailable),("giveItemAvailable",self.giveItemAvailable),("decisionMakerPlayer1",self.decisionMakerPlayer1)]
+        let boolsToEncode : Array<(String,Bool)> = [("moveItemAvailable",self.moveItemAvailable),("seeItemAvailable",self.seeItemAvailable),("giveItemAvailable",self.giveItemAvailable)]
         
         // MARK: 2. Actual encoding
 
@@ -196,8 +189,6 @@ class Level: NSObject
 			self.startConfigurationPawn2 = self.goalConfigurationPawn2
 		}
 		
-        self.decisionMakerPlayer1 = decoder.decodeBoolForKey("decisionMakerPlayer1")
-        
         self.moveItemAvailable = decoder.decodeBoolForKey("moveItemAvailable")
         self.seeItemAvailable = decoder.decodeBoolForKey("seeItemAvailable")
         self.giveItemAvailable = decoder.decodeBoolForKey("giveItemAvailable")
