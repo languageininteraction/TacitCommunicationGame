@@ -22,4 +22,5 @@
     },
     "goalPlayer2Pointing": ["inwards"],
     "orientationRelation": ["different","same"],
+    "decisionMakerPlayer1": [true,false]
 }
