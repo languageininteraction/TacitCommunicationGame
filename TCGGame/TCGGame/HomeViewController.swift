@@ -33,15 +33,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     let tempPlayButtonExpert = UIButton()
     
     //Misc
-    var weArePlayer1 = false // for now set whenever weMakeAllDecisions is set; player1 controls pawn1
-    var weMakeAllDecisions: Bool? {
-        // one device is chosen for which this becomes true, for the other device this becomes false; if this is true for us, we decide on who becomes player1 and who becomes player2; this can e.g. happen randomly, but the thing is that one device should decide so the devices don't need to 'negotiate about it'; using GC this is set once a match has been made; if kDevLocalTestingIsOn is true this is set by the SimulateTwoPlayersViewControlle; todo rename
-        didSet {
-            if let actualValue = weMakeAllDecisions {
-                self.weArePlayer1 = actualValue
-            }
-        }
-    }
+    var weMakeAllDecisions: Bool?
 
     // MARK: - Actions to do when first loading view
 	
@@ -322,7 +314,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         //Give info to the levelViewController
         self.levelViewController!.sendActionToOther = sendActionToOther
-        self.levelViewController!.weArePlayer1 = self.weArePlayer1
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
         //Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
@@ -333,7 +324,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.sendLevelToOther(self.currentGame.currentLevel);
                         
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
-            
+                    
             // Add our levelViewController's view:
             self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
             self.view.addSubview(self.levelViewController!.view)

@@ -22,6 +22,23 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	
 	// MARK: - Model
     var currentLevel: Level?
+    {
+        //If the currentLevel is set, update who is Player 1
+        didSet
+        {
+            //Set weArePlayer1
+            if (self.weMakeAllDecisions == self.currentLevel!.decisionMakerPlayer1)
+            {
+                self.weArePlayer1 = true
+            }
+            else
+            {
+                self.weArePlayer1 = false
+            }
+        }
+    }
+    
+    
 	var currentRound: Round?
 	
     // todo explain:
