@@ -17,6 +17,9 @@ extension Array {
 class LevelTemplate: NSObject
 {
     let name: String
+
+    let decisionMakerPlayer1Possibilities: [Bool]
+
     let board: BoardDefinition
     
     var possiblePawnShapesPlayer1: [PawnShape]
@@ -43,6 +46,15 @@ class LevelTemplate: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
+
+        var decisionMakerPlayer1PossibilitiesNSArray = jsonResult["decisionMakerPlayer1"] as NSArray
+        self.decisionMakerPlayer1Possibilities = []
+
+        for possibility in decisionMakerPlayer1PossibilitiesNSArray
+        {
+            self.decisionMakerPlayer1Possibilities.append(possibility as Bool)
+        }
+
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
         self.possiblePawnShapesPlayer1 = []
         
@@ -94,6 +106,8 @@ class LevelTemplate: NSObject
         level.startItemsPlayer1 = self.startItemsPlayer1
         level.startItemsPlayer2 = self.startItemsPlayer2
     
+        level.decisionMakerPlayer1 = self.decisionMakerPlayer1Possibilities.randomItem()
+
         //Pick shapes
         level.pawnPlayer1 = PawnDefinition(shape: self.possiblePawnShapesPlayer1.randomItem())
         level.pawnPlayer2 = PawnDefinition(shape: self.possiblePawnShapesPlayer2.randomItem())

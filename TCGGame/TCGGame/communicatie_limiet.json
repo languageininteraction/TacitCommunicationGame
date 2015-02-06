@@ -42,5 +42,6 @@
         "move": 1,
         "see": 1,
         "give": 0
-    }
+    },
+    "decisionMakerPlayer1": true    
 }

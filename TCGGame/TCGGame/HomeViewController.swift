@@ -153,7 +153,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             }
             
             self.currentGame.currentLevel = unpackedObject as Level
-
+           
 			// This is a bit of a mess, to fix sizes on iOS older than 8:
 			let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
 			let height = kOlderThanIOS8 ? self.view.frame.size.width : self.view.frame.size.height
@@ -331,7 +331,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         {
             self.currentGame.goToNextLevel()
             self.sendLevelToOther(self.currentGame.currentLevel);
-            
+                        
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
             
             // Add our levelViewController's view:
