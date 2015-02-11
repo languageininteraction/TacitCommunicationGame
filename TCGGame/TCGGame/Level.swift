@@ -11,6 +11,8 @@ class Level: NSObject
 {
     let name: String
     
+    var decisionMakerPlayer1: Bool
+
     let board: BoardDefinition
     var pawnPlayer1: PawnDefinition
     var pawnPlayer2: PawnDefinition
@@ -38,6 +40,9 @@ class Level: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
+
+        self.decisionMakerPlayer1 = jsonResult["decisionMakerPlayer1"] as Bool
+        
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
         self.pawnPlayer1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as Dictionary)
         self.pawnPlayer2 = PawnDefinition(jsonDict: jsonResult["pawn2"] as Dictionary)
@@ -72,6 +77,7 @@ class Level: NSObject
     init(name : String)
     {
         self.name = name
+        self.decisionMakerPlayer1 = true
 		
 		// These defaults are simple on purpose, so if we use them by accident, it shows:
 		
@@ -142,7 +148,7 @@ class Level: NSObject
         }
         
         //Some bools
-        let boolsToEncode : Array<(String,Bool)> = [("moveItemAvailable",self.moveItemAvailable),("seeItemAvailable",self.seeItemAvailable),("giveItemAvailable",self.giveItemAvailable)]
+        let boolsToEncode : Array<(String,Bool)> = [("moveItemAvailable",self.moveItemAvailable),("seeItemAvailable",self.seeItemAvailable),("giveItemAvailable",self.giveItemAvailable),("decisionMakerPlayer1",self.decisionMakerPlayer1)]
         
         // MARK: 2. Actual encoding
 
@@ -171,6 +177,9 @@ class Level: NSObject
     required init (coder decoder: NSCoder)
     {
         self.name = decoder.decodeObjectForKey("name") as String
+
+        self.decisionMakerPlayer1 = decoder.decodeBoolForKey("decisionMakerPlayer1")
+
         self.board = BoardDefinition(width: decoder.decodeObjectForKey("boardWidth") as Int, height: decoder.decodeObjectForKey("boardHeight") as Int)
         self.pawnPlayer1 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer1Shape") as Int)!)
         self.pawnPlayer2 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer2Shape") as Int)!)

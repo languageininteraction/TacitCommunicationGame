@@ -22,6 +22,23 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	
 	// MARK: - Model
     var currentLevel: Level?
+    {
+        //If the currentLevel is set, update who is Player 1
+        didSet
+        {
+            //Set weArePlayer1
+            if (self.weMakeAllDecisions == self.currentLevel!.decisionMakerPlayer1)
+            {
+                self.weArePlayer1 = true
+            }
+            else
+            {
+                self.weArePlayer1 = false
+            }
+        }
+    }
+    
+    
 	var currentRound: Round?
 	
     // todo explain:
@@ -443,6 +460,12 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		self.updateUIAtStartOfLevel()
 	}
     
+    func quitPlaying()
+    {
+        self.userChoseToGoBackHome = true
+        self.superController!.subControllerFinished(self)
+    }
+    
     func receiveAction(action : RoundAction)
     {
 		// Update the model:
@@ -494,7 +517,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
 				self.restartLevel()
 			}
-
+        case .QuitPlaying:
+            quitPlaying();
+            
 		default:
 			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
 		}
@@ -641,8 +666,13 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	}
 	
 	func homeButtonPressed(sender:UIButton!) {
-		self.userChoseToGoBackHome = true
-		self.superController!.subControllerFinished(self)
+        var action = RoundAction(type: RoundActionType.QuitPlaying, performedByPlayer1: weArePlayer1)
+        
+        // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
+        self.sendActionToOther!(action)
+        
+        self.quitPlaying()
+        
 	}
 	
 	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {
@@ -1005,8 +1035,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		// Animate the board disappearing:
 		boardView.animateTransform(CATransform3DIdentity, toTransform: CATransform3DMakeScale(0.001, 0.001, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 	}
-	
-	
+    
     // MARK: - PassControlToSubControllerProtocol
     
     func subControllerFinished(subController: AnyObject) {
