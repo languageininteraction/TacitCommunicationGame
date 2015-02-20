@@ -76,6 +76,7 @@ class Level: NSObject
 		for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer2 {
 			startItemsPlayer2.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
 		}
+        
     }
 	
     // MARK: - Starting a simple basic level
@@ -89,7 +90,7 @@ class Level: NSObject
 		
 		// These defaults are simple on purpose, so if we use them by accident, it shows:
 		
-        self.board = BoardDefinition(width: 3, height: 3) // This should be 1, 1 and then the app should still work (this reveals a bug)
+        self.board = BoardDefinition(width: 3, height: 3)
         self.pawnPlayer1 = PawnDefinition(shape: PawnShape.Circle)
         self.pawnPlayer2 = PawnDefinition(shape: PawnShape.Circle)
         

@@ -248,7 +248,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
 			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
 				self.currentGame.goToNextLevel()
-				self.sendLevelToOther(self.currentGame.currentLevel);
+				self.sendLevelToOther(self.currentGame.currentLevel!);
 				
 				CATransaction.begin()
 				CATransaction.setAnimationDuration(0.75) // todo constant
@@ -293,7 +293,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.startPlayingMatch()
             }
             
-            self.currentGame.currentLevel = unpackedObject as Level
+            self.currentGame.currentLevel = (unpackedObject as Level)
            
 			// This is a bit of a mess, to fix sizes on iOS older than 8:
 			let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
@@ -302,7 +302,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             //Start the game
             if self.levelViewController!.currentLevel == nil
             {
-                self.currentGame.currentLevel = unpackedObject as Level
+                self.currentGame.currentLevel = (unpackedObject as Level)
                 self.levelViewController!.currentLevel = self.currentGame.currentLevel
                 
                 // Add our levelViewController's view:
@@ -316,7 +316,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             {
 				CATransaction.begin()
 				CATransaction.setCompletionBlock({ () -> Void in
-					self.currentGame.currentLevel = unpackedObject as Level
+					self.currentGame.currentLevel = (unpackedObject as Level)
 					self.levelViewController!.currentLevel = self.currentGame.currentLevel
 					self.levelViewController?.restartLevel()
 				})
@@ -450,7 +450,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         if self.weMakeAllDecisions!
         {
             self.currentGame.goToNextLevel()
-            self.sendLevelToOther(self.currentGame.currentLevel);
+            self.sendLevelToOther(self.currentGame.currentLevel!);
                         
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
                     
