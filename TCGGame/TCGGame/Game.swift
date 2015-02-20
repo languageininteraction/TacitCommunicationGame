@@ -8,6 +8,14 @@
 import Foundation
 import GameKit
 
+enum GameState: Int {
+    case NotPartOfMatch
+    case LookingForMatch
+    case PreparingLevel
+    case WaitingForOtherPlayerToSendLevel
+    case PlayingLevel
+}
+
 enum Difficulty: Int {
     case Beginner
     case Advanced
@@ -18,7 +26,6 @@ class Game: NSObject
 {
 	// Levels:
     
-    //Fow now, we assume beginner levels are static
     let beginnerLevelNames: Array<String> = ["beweeg","beweegver","draai","beweegknop","kijkknop","geefknop","geefknop_limiet","geefkijken","communicatie","communicatie_geven","communicatie_limiet","communicatie_gevenlimiet","communicatie_draai"]
     let AdvancedLevelTemplates = [LevelTemplate(filename: "advanced1")]
     let ExpertLevelTemplates = [LevelTemplate(filename: "expert1")]
@@ -34,10 +41,13 @@ class Game: NSObject
     var nCompletedLevels = Dictionary<Difficulty, Int>()
     
     //Current state:
-    var indexCurrentLevel: Int = -1 + kDevIndexLevelToStartWith // Normally kDevIndexLevelToStartWith is 0, so the first 'next' level will be 0
+    var gameState = GameState.NotPartOfMatch
+    
+    var indexUpcomingLevel: Int = 0
+    var indexCurrentLevel: Int = 0
+
     var currentLevel: Level?
     var currentDifficulty: Difficulty?
-
         
     override init()
     {
@@ -47,16 +57,11 @@ class Game: NSObject
         self.nCompletedLevels[Difficulty.Advanced] = 0
         self.nCompletedLevels[Difficulty.Expert] = 0
     }
-	
-    func goToHighestBeginnerLevel() //Not finished yet, this will be much more smart/complicated
-    {
-        self.indexCurrentLevel++
-        self.currentLevel = Level(filename: self.beginnerLevelNames[self.indexCurrentLevel])
-    }
     
-    func goToNextLevel()
+    func goToUpcomingLevel() //Assumes indexUpcomingLevel is set appropriately
     {
-        self.indexCurrentLevel++
+
+        self.indexCurrentLevel = self.indexUpcomingLevel
         
         switch self.currentDifficulty!
         {
@@ -64,6 +69,12 @@ class Game: NSObject
             case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
             case Difficulty.Expert: self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
         }
+    }
+    
+    func goToNextLevel()
+    {
+        self.indexUpcomingLevel += 1
+        self.goToUpcomingLevel()
     }
     
     func quitPlaying()
@@ -79,14 +90,14 @@ class Game: NSObject
 		return (difficulty == Difficulty.Beginner) ? nBeginnerLevels : (difficulty == Difficulty.Advanced) ? nAdvancedLevels : (difficulty == Difficulty.Expert) ? nExpertLevels : 0
 	}
     
-    func playerGroupForMatchMaking() -> Int
+    func playerGroupForMatchMaking() -> Int //Assumes indexUpcomingLevel is set appropriately
     {
         var baseNumber:Int = self.currentDifficulty!.rawValue * 100; //100 for easy, 200 for advanced, 300 for expert
         
-        //if self.currentDifficulty == Difficulty.Beginner
-        //{
-        //    baseNumber += self.indexCurrentLevel
-        //}
+        if self.currentDifficulty == Difficulty.Beginner
+        {
+            baseNumber += self.indexUpcomingLevel
+        }
         
         return baseNumber
     }

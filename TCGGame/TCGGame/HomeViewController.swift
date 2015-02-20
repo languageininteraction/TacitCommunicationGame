@@ -213,6 +213,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     func tempPlayButtonPressed(sender: UIButton!)
     {
+        self.currentGame.gameState = GameState.LookingForMatch
+        
         switch sender
         {
             case self.tempPlayButtonEasy: self.currentGame.currentDifficulty = Difficulty.Beginner
@@ -220,6 +222,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             case self.tempPlayButtonExpert: self.currentGame.currentDifficulty = Difficulty.Expert
             default: println("Non-existing button was pressed. Are you a magician?")
         }
+        
+        self.currentGame.indexUpcomingLevel = 0;
         
         if (!kDevLocalTestingIsOn) {
             self.requestMatch()
@@ -241,7 +245,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.GCMatch?.disconnect()
             self.GCMatchStarted = false
             
-            // Forget the level
+            // Tell the game and forget the level
+            self.currentGame.gameState = GameState.NotPartOfMatch
             self.currentGame.quitPlaying()
             
             // Come back to the home view
@@ -253,7 +258,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             
 		} else if weMakeAllDecisions! {
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
-			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
+	
+                self.currentGame.gameState = GameState.PreparingLevel
+
+                JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
 				self.currentGame.goToNextLevel()
 				self.sendLevelToOther(self.currentGame.currentLevel!);
 				
@@ -267,7 +275,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				self.levelViewController!.animateLeavingTheLevel()
 				
 				CATransaction.commit()
+                self.currentGame.gameState = GameState.PlayingLevel
 			})
+        }
+        else
+        {
+            self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
     }
 
@@ -294,6 +307,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         }
         else if unpackedObject is Level
         {
+            if self.currentGame.gameState != GameState.WaitingForOtherPlayerToSendLevel
+            {
+                println("Warning! Received a Level while not waiting for it")
+            }
+            
             // When local testing is on and the other player has not started the match yet, quickly start the match
             if kDevLocalTestingIsOn && self.levelViewController == nil
             {
@@ -332,6 +350,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				
 				CATransaction.commit()
             }
+            
+            self.currentGame.gameState = GameState.PlayingLevel
         }
     }
 
@@ -457,7 +477,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //This part will be done by the other player once he receives the level
         if self.weMakeAllDecisions!
         {
-            self.currentGame.goToNextLevel()
+            self.currentGame.gameState = GameState.PreparingLevel
+            
+            self.currentGame.goToUpcomingLevel()
             self.sendLevelToOther(self.currentGame.currentLevel!);
                         
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
@@ -466,6 +488,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
             self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
 			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation
+            
+            self.currentGame.gameState = GameState.PlayingLevel
+        }
+        else if self.currentGame.gameState == GameState.LookingForMatch
+        {
+            self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
     }
     
