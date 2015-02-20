@@ -317,20 +317,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished <todo update comments> if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
 		if levelViewController!.userChoseToGoBackHome {
 
-            // Stop the GC match
-            self.GCMatch?.disconnect()
-            self.GCMatchStarted = false
-            
-            // Tell the game and forget the level
-            self.currentGame.gameState = GameState.NotPartOfMatch
-            self.currentGame.quitPlaying()
-            
-            // Come back to the home view
-            self.levelViewController!.view.removeFromSuperview()
-			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = false
-
-            // Forget our levelViewController
-            self.levelViewController = nil
+            self.stopPlayingMatch()
             
 		} else if weMakeAllDecisions! {
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
@@ -496,8 +483,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     // MARK: - GKMatchDelegate and Local Testing
     
     func match(match: GKMatch!, player: GKPlayer!, didChangeConnectionState state: GKPlayerConnectionState) {
-        // We only wish to play a match with one other person, so the state isn't relevant, only the expected player count is:
-        if (!self.GCMatchStarted && match.expectedPlayerCount == 0)
+        
+        if (state == GKPlayerConnectionState.StateConnected && !self.GCMatchStarted && match.expectedPlayerCount == 0)
         {
             self.GCMatchStarted = true
             self.startPlayingMatch()
@@ -514,6 +501,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     // MARK: - Playing the match
     
     func startPlayingMatch() {
+        
         if (!kDevLocalTestingIsOn) { // normal case
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
@@ -571,6 +559,27 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
+    }
+    
+    func stopPlayingMatch()
+    {
+        
+        // Stop the GC match
+        self.GCMatchStarted = false
+        self.GCMatch!.disconnect()
+        self.GCMatch = nil
+        
+        // Tell the game and forget the level
+        self.currentGame.gameState = GameState.NotPartOfMatch
+        self.currentGame.quitPlaying()
+        
+        // Come back to the home view
+        self.levelViewController!.view.removeFromSuperview()
+        viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = false
+        
+        // Forget our levelViewController
+        self.levelViewController = nil
+
     }
     
     func sendLevelToOther(level :Level)
