@@ -201,7 +201,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			// Add the view:
 			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.addSubview(difficultyView)
-		}
+
+            //Authenticate the player
+            self.authenticateLocalPlayer()
+        }
 		
     }
     
@@ -217,9 +220,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             default: println("Non-existing button was pressed. Are you a magician?")
         }
         
-        if (!kDevLocalTestingIsOn) { // normal case
-            self.authenticateLocalPlayer()
+        if (!kDevLocalTestingIsOn) {
+            self.requestMatch()
+            
         } else {
+            
+            //Skip the whole matchmaking process and start playing immediately
             startPlayingMatch()
         }        
     }
@@ -336,7 +342,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.showAuthenticationDialogWhenReasonable(viewController)
             } else if (self.localPlayer.authenticated) {
                 println("Hatsee! Local player is authenticated.")
-                self.continueWithAuthenticatedLocalPlayer();
+                //self.continueWithAuthenticatedLocalPlayer();
             }
             else {
                 println("Oops, problem in authenticateLocalPlayer: \(error)")
@@ -349,10 +355,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     }
     
 	func continueWithAuthenticatedLocalPlayer() {
-        self.hostMatch()
+        self.requestMatch()
     }
     
-    func hostMatch() {
+    func requestMatch() {
         let request = GKMatchRequest()
         request.minPlayers = 2
         request.maxPlayers = 2
