@@ -75,3 +75,32 @@ func createColoredVersionOfUIImage(sourceImage: UIImage, color: UIColor) -> UIIm
 	let coloredCGImage = createColoredVersionOfImage(sourceImage.CGImage, color.CGColor)
 	return UIImage(CGImage: coloredCGImage, scale: UIScreen.mainScreen().scale, orientation: UIImageOrientation.Up)
 }
+
+
+func createImageFromLayer(layer: CALayer, switchXAndY: Bool) -> CGImageRef? {
+	//	NSLog(@"layer.frame.size.width = %lf", layer.frame.size.width);
+	
+	// Create context to draw in:
+	let widthInPoints: CGFloat = switchXAndY ? layer.frame.size.height : layer.frame.size.width
+	let heightInPoints: CGFloat = switchXAndY ? layer.frame.size.width : layer.frame.size.height
+	let scale: CGFloat = UIScreen.mainScreen().scale
+	let context = createBitmapContext(UInt(widthInPoints * scale), UInt(heightInPoints * scale))
+	
+	// If context is nil (e.g. because widthInPoints or heightInPoints is 0), return NULL:
+	if (context == nil) {
+		return nil
+	}
+	
+	// Draw 'upside down':
+	CGContextScaleCTM(context, scale, -1 * scale)
+	CGContextTranslateCTM(context, 0, -1 * heightInPoints)
+	
+	// Draw the layer's contents to the context:
+	layer.renderInContext(context)
+	
+	// Create image from context:
+	let result = CGBitmapContextCreateImage(context)
+	
+	// Return the resulting image:
+	return result
+}

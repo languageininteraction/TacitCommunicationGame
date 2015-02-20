@@ -154,7 +154,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		self.view.addSubview(viewWithWhatIsAlwaysVisibleWhenPlayingLevels)
 		
 		
-/*
+
 		var x = 50 as CGFloat
 		
 		// temp:
@@ -166,8 +166,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(button)
 			
 			x += 150
-		}*/
-		
+		}
+
 		
 		// Local player's name label:
 /*		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
@@ -270,7 +270,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				// temp:
 //				button.backgroundColor = UIColor.greenColor()
 				
-				setImagesForLevelButton(button, text: "\(indexButton)", lineColorWhenLocked: kColorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
+				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: kColorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
 				
 				// temp:
 				button.enabled = difficulty == Difficulty.Beginner && indexButton < 5
@@ -329,7 +329,14 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				coloredIconCGImage?.drawInRect(CGRectMake(0.5 * (scaledSizeOfButton.width - scaledSizeOfImage.width), 0.5 * (scaledSizeOfButton.height - scaledSizeOfImage.height), scaledSizeOfImage.width, scaledSizeOfImage.height))
 			} else {
 				// Draw the text:
-				// todo…
+				let label = UILabel(frame: CGRectMake(0, 0, 10, 10)) // will size to fit
+				label.text = text
+				label.textAlignment = NSTextAlignment.Center
+				label.font = kFontLevelNumber
+				label.sizeToFit()
+				let textAsCGImage = createImageFromLayer(label.layer, false)!
+				let textAsUIImage = UIImage(CGImage: textAsCGImage)!
+				textAsUIImage.drawInRect(CGRectMake(0.5 * (rect.size.width - textAsUIImage.size.width), 0.5 * (rect.size.height - textAsUIImage.size.height), textAsUIImage.size.width, textAsUIImage.size.height))
 			}
 			
 			

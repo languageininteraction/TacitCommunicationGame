@@ -16,7 +16,7 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) == .OrderedAscending
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
@@ -53,11 +53,13 @@ let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120 * kDefaultScaling
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
-let kFontPlayerNames = UIFont(name: "OpenSans-Semibold", size: kOnPhone ? 16 : 24)
-let kFontLevel = UIFont(name: "OpenSans-Semibold", size: 24 * kDefaultScaling)
-let kFontAttributeInfinity = UIFont(name: "OpenSans-Semibold", size: 20 * kDefaultScaling)
-let kFontAttributeNumber = UIFont(name: "OpenSans-Semibold", size: 15 * kDefaultScaling)
-let kFontDifficulty = UIFont(name: "OpenSans-Semibold", size: 30 * kDefaultScaling)
+let kMainFontNameSemiBold = "OpenSans-Semibold"
+let kFontPlayerNames = UIFont(name: , size: kOnPhone ? 16 : 24)
+let kFontLevel = UIFont(name: kMainFontNameSemiBold, size: 24 * kDefaultScaling)
+let kFontAttributeInfinity = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)
+let kFontAttributeNumber = UIFont(name: kMainFontNameSemiBold, size: 15 * kDefaultScaling)
+let kFontDifficulty = UIFont(name: kMainFontNameSemiBold, size: 30 * kDefaultScaling)
+let kFontLevelNumber = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)
 
 // Pawns:
 let kPawnLineWidth = kOnPhone ? 1.3 : 2.5
