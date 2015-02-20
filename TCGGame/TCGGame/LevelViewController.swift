@@ -221,12 +221,12 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		self.buttonToMoveNorth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// Rotate clockwise:
-		setImagesForButton(buttonToRotateClockwise, imageNameIcon: "Icon_RotateClockwise 70x70", baseColor: kColorLiILightGreen, forOtherPlayer: false)
+		setImagesForButton(buttonToRotateClockwise, imageNameIcon: "Icon_RotateClockwise 70x70", baseColor: kColorRotateButtons, forOtherPlayer: false)
 		self.buttonToRotateClockwise.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - distanceOfRotateButtonsFromSide - kEdgelengthMovementButtons, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateClockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
 		// Rotate counterclockwise:
-		setImagesForButton(buttonToRotateCounterclockwise, imageNameIcon: "Icon_RotateCounterClockwise 70x70", baseColor: kColorLiILightGreen, forOtherPlayer: false)
+		setImagesForButton(buttonToRotateCounterclockwise, imageNameIcon: "Icon_RotateCounterClockwise 70x70", baseColor: kColorRotateButtons, forOtherPlayer: false)
 		self.buttonToRotateCounterclockwise.frame = CGRectMake(distanceOfRotateButtonsFromSide, distanceOfRotateButtonsFromSide, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
         self.buttonToRotateCounterclockwise.addTarget(self, action: "rotateButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -249,7 +249,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Move item of local player:
 		self.buttonMoveItem.frame = CGRectMake(xItemButtonsLocalPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonMoveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorLiIBlue, forOtherPlayer: false)
+		setImagesForButton(buttonMoveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorMoveItem, forOtherPlayer: false)
         self.buttonMoveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
         // See item of local player:
@@ -258,7 +258,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		if kOnPhone {
 			self.buttonSeeItem.frame.origin.x -= 10
 		}
-		setImagesForButton(buttonSeeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: false)
+		setImagesForButton(buttonSeeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorSeeItem, forOtherPlayer: false)
         self.buttonSeeItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Give item of local player:
@@ -267,12 +267,12 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			self.buttonGiveItem.frame.origin.x -= 50
 			self.buttonGiveItem.frame.origin.y -= 90
 		}
-		setImagesForButton(buttonGiveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: false)
+		setImagesForButton(buttonGiveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorGiveItem, forOtherPlayer: false)
         self.buttonGiveItem.addTarget(self, action: "itemButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         
         // Move item of other player:
 		self.buttonOtherPlayer_moveItem.frame = CGRectMake(xItemButtonsOtherPlayer, yItemButtonsRow0, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_moveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorLiIBlue, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_moveItem, imageNameIcon: "Icon_Move 70x70", baseColor: kColorMoveItem, forOtherPlayer: true)
 		buttonOtherPlayer_moveItem.adjustsImageWhenHighlighted = false
 		
         // See item of other player:
@@ -280,7 +280,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		if kOnPhone {
 			self.buttonOtherPlayer_seeItem.frame.origin.x += 10
 		}
-		setImagesForButton(buttonOtherPlayer_seeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_seeItem, imageNameIcon: "Icon_See 70x70", baseColor: kColorSeeItem, forOtherPlayer: true)
 		buttonOtherPlayer_seeItem.adjustsImageWhenHighlighted = false
 		
         // Give item of other player:
@@ -289,7 +289,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			self.buttonOtherPlayer_giveItem.frame.origin.x += 50
 			self.buttonOtherPlayer_giveItem.frame.origin.y -= 90
 		}
-		setImagesForButton(buttonOtherPlayer_giveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorLiIDarkBlue, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_giveItem, imageNameIcon: "Icon_Give 70x70", baseColor: kColorGiveItem, forOtherPlayer: true)
 		buttonOtherPlayer_giveItem.adjustsImageWhenHighlighted = false
 		
 		self.itemButtons = [buttonMoveItem, buttonSeeItem, buttonGiveItem, buttonOtherPlayer_moveItem, buttonOtherPlayer_seeItem, buttonOtherPlayer_giveItem]
@@ -320,7 +320,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Own finish:
 		buttonFinish.frame = CGRectMake(xItemButtonsLocalPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonFinish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: false)
+		setImagesForButton(buttonFinish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorFinishButton, forOtherPlayer: false)
 		buttonFinish.addTarget(self, action: "finishButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonFinish)
 				
@@ -328,7 +328,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		let edgelengthRetryButton = 0.925 * kEdgelengthItemButtons // todo constant
 		let deltaRetry = 0.5 * (kEdgelengthItemButtons - edgelengthRetryButton)
 		buttonRetry.frame = !kOnPhone ? CGRectMake(xItemButtonsLocalPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton) : CGRectMake(xItemButtonsLocalPlayer - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons + 10, buttonFinish.frame.origin.y - 15, edgelengthRetryButton, edgelengthRetryButton) // todo cleanup mess
-		setImagesForButton(buttonRetry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: false)
+		setImagesForButton(buttonRetry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorRetryButton, forOtherPlayer: false)
 		buttonRetry.addTarget(self, action: "retryButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonRetry)
 		
@@ -336,25 +336,25 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		let edgelengthHomeButton = 0.85 * kEdgelengthItemButtons // todo constant
 		let deltaHome = 0.5 * (kEdgelengthItemButtons - edgelengthHomeButton)
 		buttonBackToHomeScreen.frame = !kOnPhone ? CGRectMake(xItemButtonsLocalPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton) : CGRectMake(xItemButtonsLocalPlayer - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons + 48, buttonFinish.frame.origin.y - 49, edgelengthHomeButton, edgelengthHomeButton) // todo cleanup mess
-		setImagesForButton(buttonBackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: false)
+		setImagesForButton(buttonBackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorHomeButton, forOtherPlayer: false)
 		buttonBackToHomeScreen.addTarget(self, action: "homeButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		self.view.addSubview(buttonBackToHomeScreen)
 		
 		// Other's finish:
 		buttonOtherPlayer_Finish.frame = CGRectMake(xItemButtonsOtherPlayer, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons, kEdgelengthItemButtons, kEdgelengthItemButtons)
-		setImagesForButton(buttonOtherPlayer_Finish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorLiIDarkGreen, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_Finish, imageNameIcon: "Icon_Finish 70x70", baseColor: kColorFinishButton, forOtherPlayer: true)
 		buttonOtherPlayer_Finish.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_Finish)
 		
 		// Other's retry:
 		buttonOtherPlayer_Retry.frame = !kOnPhone ? CGRectMake(xItemButtonsOtherPlayer + deltaRetry, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - kSpaceBetweenItemButtons - kEdgelengthItemButtons + deltaRetry, edgelengthRetryButton, edgelengthRetryButton) : CGRectMake(xItemButtonsOtherPlayer + kSpaceBetweenReadyButtonAndBottom + kEdgelengthItemButtons - 10, buttonRetry.frame.origin.y, edgelengthRetryButton, edgelengthRetryButton) // todo cleanup mess
-		setImagesForButton(buttonOtherPlayer_Retry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorLiIOrange, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_Retry, imageNameIcon: "Icon_Retry 70x70", baseColor: kColorRetryButton, forOtherPlayer: true)
 		buttonOtherPlayer_Retry.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_Retry)
 		
 		// Other's home:
 		buttonOtherPlayer_BackToHomeScreen.frame = !kOnPhone ? CGRectMake(xItemButtonsOtherPlayer + deltaHome, heightScreen - kSpaceBetweenReadyButtonAndBottom - kEdgelengthItemButtons - 2 * kSpaceBetweenItemButtons - 2 * kEdgelengthItemButtons + deltaHome, edgelengthHomeButton, edgelengthHomeButton) : CGRectMake(xItemButtonsOtherPlayer + kSpaceBetweenReadyButtonAndBottom + kEdgelengthItemButtons - 48, buttonBackToHomeScreen.frame.origin.y, edgelengthHomeButton, edgelengthHomeButton) // todo cleanup mess
-		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorLiIYellow, forOtherPlayer: true)
+		setImagesForButton(buttonOtherPlayer_BackToHomeScreen, imageNameIcon: "Icon_Home 70x70", baseColor: kColorHomeButton, forOtherPlayer: true)
 		buttonOtherPlayer_BackToHomeScreen.adjustsImageWhenHighlighted = false
 		self.view.addSubview(buttonOtherPlayer_BackToHomeScreen)
 
