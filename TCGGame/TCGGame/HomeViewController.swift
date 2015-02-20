@@ -360,6 +360,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         let request = GKMatchRequest()
         request.minPlayers = 2
         request.maxPlayers = 2
+        request.playerGroup = self.currentGame.currentDifficulty!.rawValue;
         
         let matchmakerViewController = GKMatchmakerViewController(matchRequest: request)
         matchmakerViewController.matchmakerDelegate = self
