@@ -111,7 +111,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		self.view.addSubview(viewWithWhatIsNeverVisibleWhenPlayingLevels)
 		self.view.addSubview(viewWithWhatSometimesBecomesVisibleWhenPlayingLevels)
-//		self.view.addSubview(viewWithWhatIsAlwaysVisibleWhenPlayingLevels)
+		self.view.addSubview(viewWithWhatIsAlwaysVisibleWhenPlayingLevels)
 		
 		
 		var x = 50 as CGFloat
@@ -133,7 +133,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingLocalPlayer)
 		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingOtherPlayer)
-		pawnViewRepresentingOtherPlayer.hidden = true // not shown untill a match is made (in which case a level is started)
+//		pawnViewRepresentingOtherPlayer.hidden = true // not shown untill a match is made (in which case a level is started)
 
 		
 		// Prepare each difficulty view:

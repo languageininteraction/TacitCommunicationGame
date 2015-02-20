@@ -52,11 +52,11 @@ let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
 let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120 * kDefaultScaling
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
-// Fonts:
-let kFontPlayerNames = UIFont(name: "Futura-CondensedMedium", size: kOnPhone ? 16 : 36)
-let kFontLevel = UIFont(name: "Futura-CondensedMedium", size: 36 * kDefaultScaling)
-let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 25 * kDefaultScaling)
-let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 20 * kDefaultScaling)
+// Fonts: UIFont fontWithName:@"OpenSans" size:18
+let kFontPlayerNames = UIFont(name: "OpenSans-Semibold", size: kOnPhone ? 16 : 24)
+let kFontLevel = UIFont(name: "OpenSans-Semibold", size: 24 * kDefaultScaling)
+let kFontAttributeInfinity = UIFont(name: "OpenSans-Semibold", size: 20 * kDefaultScaling)
+let kFontAttributeNumber = UIFont(name: "OpenSans-Semibold", size: 15 * kDefaultScaling)
 
 // Pawns:
 let kPawnLineWidth = kOnPhone ? 1.3 : 2.5
@@ -85,8 +85,15 @@ let kColorOtherPlayer = kColorLiIDarkBlue
 let kColorLinesOfBoardFields = kColorLiIBlueLighter
 let kColorFillOfBoardFields = UIColor.clearColor() // (red:142.0/255.0, green:207.0/255.0, blue:230.0/255.0, alpha:0.1)
 
-// Other colors:
-let kColorMoveButtons = kColorLiIYellow
+// Button colors:
+let kColorMoveItem = kColorLiIBlue
+let kColorSeeItem = kColorLiIDarkGreen
+let kColorGiveItem = kColorLiIDarkBlue
+let kColorHomeButton = kColorLiIYellow
+let kColorRetryButton = kColorLiIRed
+let kColorFinishButton = kColorLiIDarkGreen
+let kColorMoveButtons = kColorLiIRed
+let kColorRotateButtons = kColorLiILightGreen
 
 // Animations:
 let kAnimationDurationMovePawn: NSTimeInterval = 0.3
