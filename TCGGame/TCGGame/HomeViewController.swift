@@ -56,6 +56,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	let difficultiesInOrder = [Difficulty.Beginner, Difficulty.Advanced, Difficulty.Expert]
 	
 	// todo reorganize here
+	let nameLabelLocalPlayer = UILabel()
+	let nameLabelOtherPlayer = UILabel()
 	let pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorLocalPlayer)) // todo rename constant kEdgelengthFaces
 	let pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorOtherPlayer)) // todo rename constant kEdgelengthFaces
 	
@@ -126,6 +128,22 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		}
 		
 		
+		// Local player's name label:
+/*		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
+		let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
+		let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
+		let nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
+		nameLabelLocalPlayer.font = kFontPlayerNames
+		nameLabelLocalPlayer.textAlignment = NSTextAlignment.Right
+		self.view.addSubview(nameLabelLocalPlayer)
+		nameLabelLocalPlayer.text = "Ikzelf"
+		
+		// Other player's name label:
+		let nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
+		nameLabelOtherPlayer.font = kFontPlayerNames
+		self.view.addSubview(nameLabelOtherPlayer)*/
+		
+		
 		// todo explain; todo test whether screen width is ok on older iOS; todo rename constants
 		pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
@@ -163,7 +181,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			difficultyView.frame = CGRectMake(x, yDifficultyViews, edgeLengthDifficultyViews, edgeLengthDifficultyViews)
 			
 			// temp:
-			difficultyView.backgroundColor = UIColor.orangeColor()
+//			difficultyView.backgroundColor = UIColor.orangeColor()
 			
 			
 			// Create and add level buttons:
@@ -185,7 +203,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				let button = UIButton(frame: CGRectMake(xCenter - 0.5 * edgeLengthButtonsInDifficultyViews, yCenter - 0.5 * edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews))
 				
 				// temp:
-				button.backgroundColor = UIColor.greenColor()
+//				button.backgroundColor = UIColor.greenColor()
+				
+				setImagesForLevelButton(button, text: "\(indexButton)", lineColorWhenLocked: kColorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
+				
+				// temp:
+				button.enabled = difficulty == Difficulty.Beginner && indexButton < 5
 				
 				// Add it to the view:
 				difficultyView.addSubview(button)
@@ -206,8 +229,61 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.authenticateLocalPlayer()
             }
         }
+	}
+	
+	
+	func setImagesForLevelButton(button: UIButton, text: NSString?, lineColorWhenLocked: UIColor, lineColorWhenUnocked: UIColor) {
+		// Load the lock image:
+		let iconImage = UIImage(named: "LockIcon 30x30")!
+		let scaleFactor = UIScreen.mainScreen().scale
+		let scaledSizeOfButton = CGSizeMake(button.frame.size.width * scaleFactor, button.frame.size.height * scaleFactor)
+		let scaledSizeOfImage = CGSizeMake(iconImage.size.width * scaleFactor, iconImage.size.height * scaleFactor)
+		let rect = CGRectMake(0, 0, scaledSizeOfButton.width, scaledSizeOfButton.height)
 		
-    }
+		func setImageForDisabled(disabled: Bool) {
+			
+			UIGraphicsBeginImageContext(scaledSizeOfButton)
+			let context = UIGraphicsGetCurrentContext()
+			
+			// Fill a white, partly transparent circle:
+			CGContextSetFillColorWithColor(context, UIColor(white: 1, alpha: 0.8).CGColor)
+			let circlePathFull = CGPathCreateWithEllipseInRect(rect, nil) // todo
+			CGContextAddPath(context, circlePathFull)
+			CGContextFillPath(context)
+			
+			if disabled {
+				// Create a colored version of the icon:
+				let colorIcon = UIColor(white: 0.6, alpha: 1)
+				let coloredIconCGImage = createColoredVersionOfUIImage(iconImage, colorIcon)
+				
+				// Draw the lock icon:
+				coloredIconCGImage?.drawInRect(CGRectMake(0.5 * (scaledSizeOfButton.width - scaledSizeOfImage.width), 0.5 * (scaledSizeOfButton.height - scaledSizeOfImage.height), scaledSizeOfImage.width, scaledSizeOfImage.height))
+			} else {
+				// Draw the text:
+				// todo…
+			}
+			
+			
+			// Draw a circle around it:
+			CGContextSetStrokeColorWithColor(context, (disabled ? kColorLockedLevels : kColorUnlockedLevels).CGColor)
+			CGContextSetLineWidth(context, 1.5 * scaleFactor)
+			let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
+			CGContextAddPath(context, circlePath)
+			CGContextStrokePath(context)
+			
+			
+			let resultingImage = UIGraphicsGetImageFromCurrentImageContext()
+			
+			UIGraphicsEndImageContext()
+			
+			// Set the image on the button:
+			button.setImage(resultingImage, forState: disabled ? UIControlState.Disabled : UIControlState.Normal)
+		}
+		
+		setImageForDisabled(true)
+		setImageForDisabled(false)
+	}
+	
     
     // MARK: - Respond to button presses
     
