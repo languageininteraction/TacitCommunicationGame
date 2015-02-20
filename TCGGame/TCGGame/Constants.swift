@@ -95,6 +95,10 @@ let kColorFinishButton = kColorLiIDarkGreen
 let kColorMoveButtons = kColorLiIRed
 let kColorRotateButtons = kColorLiILightGreen
 
+// Level button colors in home screen:
+let kColorLockedLevels = kColorLiIYellow
+let kColorUnlockedLevels = kColorLiIDarkGreen
+
 // Animations:
 let kAnimationDurationMovePawn: NSTimeInterval = 0.3
 let kAnimationDurationRotatePawn: NSTimeInterval = 0.3

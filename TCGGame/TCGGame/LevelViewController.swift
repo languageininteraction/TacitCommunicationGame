@@ -146,19 +146,14 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
         boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
 
 		
-		// MARK: 2. Prepare the players' info:
-		
-		// Local player's picture:
+		// MARK: 2. Players' info has been moved to HomeViewController!
 		
 		// todo: We don't use imageViewPictureOfLocalPlayer anymore, but other frames are still based on it:
 		let oldFrameOfImageViewPictureOfLocalPlayer = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-//		imageViewPictureOfLocalPlayer.frame = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		
-		// Other player's picture:
-		
-		// todo: We don't use imageViewPictureOfOtherPlayer anymore, but other frames are still based on it:
 		let oldFrameOfImageViewPictureOfOtherPlayer = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-//		imageViewPictureOfOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+		
+		
+		
 		
 		
 		// Local player's name label:
@@ -179,9 +174,14 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		nameLabelOtherPlayer.font = kFontPlayerNames
 		self.view.addSubview(nameLabelOtherPlayer)
 		
+		println("x \(nameLabelOtherPlayer.frame.origin.x) and y \(nameLabelOtherPlayer.frame.origin.y)")
+		
 		// temp:
 //		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
 		nameLabelOtherPlayer.text = "Die ander"
+		
+		
+		
 		
 		
 		// Used for multiple frames:

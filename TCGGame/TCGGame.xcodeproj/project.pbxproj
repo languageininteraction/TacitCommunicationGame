@@ -32,6 +32,8 @@
 		481F63AE1A9759790007D135 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 481F63A31A9759790007D135 /* OpenSans-Regular.ttf */; };
 		481F63AF1A9759790007D135 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 481F63A41A9759790007D135 /* OpenSans-Semibold.ttf */; };
 		481F63B01A9759790007D135 /* OpenSans-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 481F63A51A9759790007D135 /* OpenSans-SemiboldItalic.ttf */; };
+		481F63B61A9770D80007D135 /* LockIcon 44x44.png in Resources */ = {isa = PBXBuildFile; fileRef = 481F63B41A9770D80007D135 /* LockIcon 44x44.png */; };
+		481F63B71A9770D80007D135 /* LockIcon 44x44@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 481F63B51A9770D80007D135 /* LockIcon 44x44@2x.png */; };
 		482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */; };
 		482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* LevelViewController.swift */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
@@ -77,6 +79,8 @@
 		485E1C8C1A4C3D8300AC88AC /* communicatie_draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C881A4C3D8300AC88AC /* communicatie_draai.json */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
+		48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */; };
+		48A8F1E81A977182008EE4BA /* LockIcon 30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
 		48B2C3201A248D38002FFEDF /* Button_checkmarkOrange 54x54.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */; };
 		48B2C3211A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */; };
@@ -345,6 +349,8 @@
 		481F63A31A9759790007D135 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		481F63A41A9759790007D135 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		481F63A51A9759790007D135 /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
+		481F63B41A9770D80007D135 /* LockIcon 44x44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 44x44.png"; sourceTree = "<group>"; };
+		481F63B51A9770D80007D135 /* LockIcon 44x44@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 44x44@2x.png"; sourceTree = "<group>"; };
 		482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulateTwoHomeViewControllers.swift; sourceTree = "<group>"; };
 		482EEC3E1A121C9300FB13FF /* LevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -389,6 +395,8 @@
 		485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_gevenlimiet.json; sourceTree = "<group>"; };
 		485E1C881A4C3D8300AC88AC /* communicatie_draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_draai.json; sourceTree = "<group>"; };
 		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
+		48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30.png"; sourceTree = "<group>"; };
+		48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30@2x.png"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
 		48B2C2D91A248D38002FFEDF /* Button_checkmarkOrange 54x54@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54@2x.png"; sourceTree = "<group>"; };
@@ -847,6 +855,10 @@
 		48B2C2D61A248CDF002FFEDF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */,
+				48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */,
+				481F63B41A9770D80007D135 /* LockIcon 44x44.png */,
+				481F63B51A9770D80007D135 /* LockIcon 44x44@2x.png */,
 				485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */,
 				485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */,
 				48D19EB51A48A91B0072524E /* SmallCheckMark.png */,
@@ -1354,6 +1366,7 @@
 				48F834BF1A3A3B960098A904 /* Button_presentSelected 256x256@2x.png in Resources */,
 				48B2C3231A248D38002FFEDF /* Button_checkmarkOrangeOther 54x54@2x.png in Resources */,
 				48F834A71A3A3B960098A904 /* Button_moveEast 256x256@2x other.png in Resources */,
+				481F63B71A9770D80007D135 /* LockIcon 44x44@2x.png in Resources */,
 				485E1C791A4AFE9000AC88AC /* ButtonToGiveSee.png in Resources */,
 				48F834A81A3A3B960098A904 /* Button_moveNorth 256x256 256x256@2x.png in Resources */,
 				48F834621A3A3B960098A904 /* Button_checkmarkOrange 256x256.png in Resources */,
@@ -1402,6 +1415,7 @@
 				48F8349C1A3A3B960098A904 /* Button_see 256x256@2x.png in Resources */,
 				48B2C3281A248D38002FFEDF /* Button_checkmarkYellow 54x54.png in Resources */,
 				48F834B51A3A3B960098A904 /* Button_nextOrangeOther 256x256@2x.png in Resources */,
+				48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */,
 				48F8345E1A3A3B960098A904 /* Button_see 256x256.png in Resources */,
 				48C3C2C61A695EA1007FBF04 /* Icon_Move 70x70.png in Resources */,
 				481F63AB1A9759790007D135 /* OpenSans-Italic.ttf in Resources */,
@@ -1423,6 +1437,7 @@
 				48B2C34D1A248D38002FFEDF /* Button_presentSelecetdOther 54x54@2x.png in Resources */,
 				48B2C3541A248D38002FFEDF /* Button_restartOrangeSelected 54x54.png in Resources */,
 				48F834C01A3A3B960098A904 /* Button_restartOrange 256x256@2x.png in Resources */,
+				48A8F1E81A977182008EE4BA /* LockIcon 30x30@2x.png in Resources */,
 				48C3C2CE1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png in Resources */,
 				48F834741A3A3B960098A904 /* Button_moveSouth 256x256 256x256.png in Resources */,
 				48F8345F1A3A3B960098A904 /* Button_seeOther 256x256.png in Resources */,
@@ -1473,6 +1488,7 @@
 				48C3C2CD1A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png in Resources */,
 				48B2C3641A248D38002FFEDF /* Button_seeSelected 54x54.png in Resources */,
 				4812E6161A0A655A006DED82 /* LaunchScreen.xib in Resources */,
+				481F63B61A9770D80007D135 /* LockIcon 44x44.png in Resources */,
 				48B2C33D1A248D38002FFEDF /* Button_nextOrangeSelected 54x54@2x.png in Resources */,
 				48B2C35D1A248D38002FFEDF /* Button_restartYellowSelected 54x54@2x.png in Resources */,
 				4812E6131A0A655A006DED82 /* Images.xcassets in Resources */,
