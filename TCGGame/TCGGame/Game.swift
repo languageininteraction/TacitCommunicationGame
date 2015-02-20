@@ -29,6 +29,7 @@ class Game: NSObject
 	let nAdvancedLevels = 13
 	let nExpertLevels = 11
 	
+	
     // Progress:
     var highestAvailableDifficulty: Difficulty
     var nCompletedLevels = Dictionary<Difficulty, Int>()
@@ -37,6 +38,7 @@ class Game: NSObject
     var indexCurrentLevel = -1 + kDevIndexLevelToStartWith // Normally kDevIndexLevelToStartWith is 0, so the first 'next' level will be 0
     var currentLevel: Level
     var currentDifficulty: Difficulty
+
         
     override init()
     {
@@ -86,6 +88,10 @@ class Game: NSObject
         //Reset which level in the tutorial
         self.indexCurrentLevel = -1 + kDevIndexLevelToStartWith // Normally kDevIndexLevelToStartWith is 0, so the first 'next' level will be 0
     }
+	
+	func nLevelsForDifficulty(difficulty: Difficulty) -> Int {
+		return (difficulty == Difficulty.Beginner) ? nBeginnerLevels : (difficulty == Difficulty.Advanced) ? nAdvancedLevels : (difficulty == Difficulty.Expert) ? nExpertLevels : 0
+	}
 }
 
 
