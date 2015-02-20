@@ -18,7 +18,7 @@ let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", opt
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
-let kDevIndexLevelToStartWith = kDevelopmentMode ? 0 : 0
+let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
 
@@ -85,9 +85,13 @@ let kColorOtherPlayer = kColorLiIDarkBlue
 let kColorLinesOfBoardFields = kColorLiIBlueLighter
 let kColorFillOfBoardFields = UIColor.clearColor() // (red:142.0/255.0, green:207.0/255.0, blue:230.0/255.0, alpha:0.1)
 
+// Other colors:
+let kColorMoveButtons = kColorLiIYellow
+
 // Animations:
 let kAnimationDurationMovePawn: NSTimeInterval = 0.3
 let kAnimationDurationRotatePawn: NSTimeInterval = 0.3
 let kAnimationDurationSlightlyRotatingFieldsOfBoard: NSTimeInterval = 0.5
+
 
 

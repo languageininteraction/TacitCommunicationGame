@@ -222,22 +222,22 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		let distanceOfRotateButtonsFromSide = 0.2 * edgelengthViewWithAllMoveAndRotateButtons // just a guess
 		
 		// East:
-		setImagesForButton(buttonToMoveEast, imageNameIcon: "Icon_Right 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveEast, imageNameIcon: "Icon_Right 70x70", baseColor: kColorMoveButtons, forOtherPlayer: false)
 		self.buttonToMoveEast.frame = CGRectMake(edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveEast.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// South:
-		setImagesForButton(buttonToMoveSouth, imageNameIcon: "Icon_Down 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveSouth, imageNameIcon: "Icon_Down 70x70", baseColor: kColorMoveButtons, forOtherPlayer: false)
 		self.buttonToMoveSouth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveSouth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// West:
-		setImagesForButton(buttonToMoveWest, imageNameIcon: "Icon_Left 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveWest, imageNameIcon: "Icon_Left 70x70", baseColor: kColorMoveButtons, forOtherPlayer: false)
 		self.buttonToMoveWest.frame = CGRectMake(0, 0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveWest.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
 		// North:
-		setImagesForButton(buttonToMoveNorth, imageNameIcon: "Icon_Up 70x70", baseColor: kColorLiIRed, forOtherPlayer: false)
+		setImagesForButton(buttonToMoveNorth, imageNameIcon: "Icon_Up 70x70", baseColor: kColorMoveButtons, forOtherPlayer: false)
 		self.buttonToMoveNorth.frame = CGRectMake(0.5 * (edgelengthViewWithAllMoveAndRotateButtons - kEdgelengthMovementButtons), 0, kEdgelengthMovementButtons, kEdgelengthMovementButtons)
 		self.buttonToMoveNorth.addTarget(self, action: "moveButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 		
