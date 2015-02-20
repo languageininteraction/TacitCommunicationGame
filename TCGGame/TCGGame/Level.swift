@@ -108,6 +108,7 @@ class Level: NSObject
         self.startItemsPlayer2 = [ItemDefinition(itemType: ItemType.Move,endlessUse: true, nrUses: nil), ItemDefinition(itemType: ItemType.See, endlessUse: true, nrUses: nil)]
         
     }
+	
     
     // MARK: - Encoding and decoding
     

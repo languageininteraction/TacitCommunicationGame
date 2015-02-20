@@ -52,9 +52,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	var advancedLevelButtons: [UIButton]!
 	var expertLevelButtons: [UIButton]!
 	var levelButtons = Dictionary<Difficulty, [UIButton]>()
-	
-	let difficultiesInOrder = [Difficulty.Beginner, Difficulty.Advanced, Difficulty.Expert]
-	
+		
 	// todo reorganize here
 	let nameLabelLocalPlayer = UILabel()
 	let nameLabelOtherPlayer = UILabel()
@@ -66,7 +64,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	var indexCurrentDifficultyLevel: Int = 0 {
 		didSet {
 			// Also update in our game:
-			self.currentGame.currentDifficulty = difficultiesInOrder[indexCurrentDifficultyLevel]
+			self.currentGame.currentDifficulty = difficultiesInOrder()[indexCurrentDifficultyLevel]
 			
 			// Update the page control:
 			pageControl.currentPage = indexCurrentDifficultyLevel
@@ -80,7 +78,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			let nItems = difficultyViews.count
 			for i in 0 ... nItems - 1 {
 				// Move cloudView:
-				let difficultyView = difficultyViews[difficultiesInOrder[i]]!
+				let difficultyView = difficultyViews[difficultiesInOrder()[i]]!
 				let animationMove = CABasicAnimation(keyPath: "transform")
 				animationMove.fromValue = NSValue(CATransform3D: difficultyView.layer.transform)
 				let toTransform = self.transformForDifficultyViewAt(index: i)
@@ -136,6 +134,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// NOTE: All views should be added to viewWithWhatIsNeverVisibleWhenPlayingLevels, viewWithWhatSometimesBecomesVisibleWhenPlayingLevels, or viewWithWhatIsAlwaysVisibleWhenPlayingLevels, except self.levelViewController and those three views themselves of course. todo explain why.
 		
         super.viewDidLoad()
+
+		self.view.backgroundColor = UIColor.whiteColor()
 		
 		
 		// todo explain; todo test whether screen width is ok on older iOS:
@@ -197,7 +197,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// Create and add a pageControl:
 		let heightPageControl: CGFloat = 37
 		pageControl.frame = CGRectMake(20, self.view.frame.size.height - 37 - 20, self.view.frame.size.width - 2 * 20, heightPageControl)
-		pageControl.numberOfPages = difficultiesInOrder.count
+		pageControl.numberOfPages = difficultiesInOrder().count
 		pageControl.currentPage = 0
 		pageControl.pageIndicatorTintColor = UIColor(white: 0.85, alpha: 1)
 		pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
@@ -228,9 +228,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		let radiusTillCenterOfButtonsInDifficultyViews = xAndYCenterInDifficultyViews - 0.5 * edgeLengthButtonsInDifficultyViews
 		
 		// Go through the three views, set their frame, background color, etc., and add them:
-		for indexDifficulty in 0 ... difficultiesInOrder.count - 1 {
-			// Get the difficulty:
-			let difficulty = difficultiesInOrder[indexDifficulty]
+		for indexDifficulty in 0 ... difficultiesInOrder().count - 1 {
+			// Get the difficulty and some associated information:
+			let difficulty = difficultiesInOrder()[indexDifficulty]
+			let difficultyIsUnlocked = difficulty.rawValue <= currentGame.highestAvailableDifficulty!.rawValue
+			let numberOfFinishedLevels = currentGame.nCompletedLevels[difficulty]
+			
+			println("difficulty \(difficulty.description()), unlocked \(difficultyIsUnlocked), numberOfFinishedLevels \(numberOfFinishedLevels)")
 			
 			// Get the difficulty's view:
 			let difficultyView = difficultyViews[difficulty]!
@@ -273,7 +277,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: kColorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
 				
 				// temp:
-				button.enabled = difficulty == Difficulty.Beginner && indexButton < 5
+				button.enabled = difficultyIsUnlocked && indexButton <= numberOfFinishedLevels
 				
 				// Add it to the view:
 				difficultyView.addSubview(button)
@@ -281,7 +285,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				// Add it to buttonsForThisDifficulty:
 				buttonsForThisDifficulty.append(button)
 				
-				
+				// todo cleanup
+				button.addTarget(self, action: "levelButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
 			}
 			
 			
@@ -388,13 +393,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     }
 	
 	func swipeLeftRecognized() {
-		if indexCurrentDifficultyLevel < difficultiesInOrder.count - 1 {
+		if indexCurrentDifficultyLevel < difficultiesInOrder().count - 1 {
 			self.indexCurrentDifficultyLevel++
 		} else {
 			bounce(directionLeft: true)
 		}
 	}
-	
 	
 	func swipeRightRecognized() {
 		if indexCurrentDifficultyLevel > 0 {
@@ -404,11 +408,21 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		}
 	}
 	
+	func levelButtonTapped() {
+		// temp!!
+		currentGame.highestAvailableDifficulty = Difficulty.Advanced
+		currentGame.nCompletedLevels[Difficulty.Beginner] = 9
+		currentGame.nCompletedLevels[Difficulty.Advanced] = 3
+		currentGame.storeProgress()
+	}
+	
+	
+	// MARK: - Other
 	
 	func bounce(#directionLeft: Bool) {
-		let nItems = difficultiesInOrder.count
+		let nItems = difficultiesInOrder().count
 		for i in 0 ... nItems - 1 {
-			let viewToAnimate = difficultyViews[difficultiesInOrder[i]]!
+			let viewToAnimate = difficultyViews[difficultiesInOrder()[i]]!
 			let animation = CABasicAnimation(keyPath: "transform")
 			animation.fromValue = NSValue(CATransform3D: viewToAnimate.layer.transform)
 			animation.toValue = NSValue(CATransform3D:CATransform3DTranslate(viewToAnimate.layer.transform, directionLeft ? -30 : 30, 0, 0))

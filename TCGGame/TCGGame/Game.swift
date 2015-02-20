@@ -24,7 +24,19 @@ enum Difficulty: Int {
 	func description() -> String {
 		return self == Difficulty.Beginner ? "Beginner" : self == Difficulty.Advanced ? "Gevorderd" : self == Difficulty.Expert ? "Expert" : "oeps, onbekend nivo…"
 	}
+	
+	
 }
+
+// Not nice to put this here, but putting it in Difficulty caused strange problems:
+func difficultiesInOrder() -> [Difficulty] {
+	return [Difficulty.Beginner, Difficulty.Advanced, Difficulty.Expert]
+}
+
+let kKeyOfPreference_maxAvailableDifficultyAsInt = "KeyOfPreference_maxAvailableDifficultyAsInt"
+let kKeyOfPreference_numberOfFinishedLevelsBeginner = "KeyOfPreference_numberOfFinishedLevelsBeginner"
+let kKeyOfPreference_numberOfFinishedLevelsAdvanced = "KeyOfPreference_numberOfFinishedLevelsAdvanced"
+let kKeyOfPreference_numberOfFinishedLevelsExpert = "KeyOfPreference_numberOfFinishedLevelsExpert"
 
 class Game: NSObject
 {
@@ -56,11 +68,29 @@ class Game: NSObject
     override init()
     {
 		self.nBeginnerLevels = beginnerLevelNames.count
-        
-        self.nCompletedLevels[Difficulty.Beginner] = 0
-        self.nCompletedLevels[Difficulty.Advanced] = 0
-        self.nCompletedLevels[Difficulty.Expert] = 0
+		
+		
+		// Restore the user's game progress (the app uses only one Game instance, so we can savely assume that the stored info is about this game):
+		
+		// The highest available difficulty:
+		let maxAvailableDifficultyAsInt = kDevFakeMaxAvailableDifficultyAsInt != nil ? kDevFakeMaxAvailableDifficultyAsInt! : getIntPreference(kKeyOfPreference_maxAvailableDifficultyAsInt, 0)
+		self.highestAvailableDifficulty = difficultiesInOrder()[maxAvailableDifficultyAsInt]
+		
+		println("self.highestAvailableDifficulty = \(self.highestAvailableDifficulty!.description())")
+
+		// The number of finished levels per difficulty:
+		self.nCompletedLevels[Difficulty.Beginner] = kDevFakeNumberOfFinishedLevelsBeginner != nil ? kDevFakeNumberOfFinishedLevelsBeginner! : getIntPreference(kKeyOfPreference_numberOfFinishedLevelsBeginner, 0)
+        self.nCompletedLevels[Difficulty.Advanced] = kDevFakeNumberOfFinishedLevelsAdvanced != nil ? kDevFakeNumberOfFinishedLevelsAdvanced! : getIntPreference(kKeyOfPreference_numberOfFinishedLevelsAdvanced, 0)
+        self.nCompletedLevels[Difficulty.Expert] = kDevFakeNumberOfFinishedLevelsExpert != nil ? kDevFakeNumberOfFinishedLevelsExpert! : getIntPreference(kKeyOfPreference_numberOfFinishedLevelsExpert, 0)
     }
+	
+	// todo other solution which makes calling this unnecessary? easy to forget…
+	func storeProgress() {
+		storeIntAsPreferenceUnderKey(self.highestAvailableDifficulty!.rawValue, kKeyOfPreference_maxAvailableDifficultyAsInt)
+		storeIntAsPreferenceUnderKey(self.nCompletedLevels[Difficulty.Beginner]!, kKeyOfPreference_numberOfFinishedLevelsBeginner)
+		storeIntAsPreferenceUnderKey(self.nCompletedLevels[Difficulty.Advanced]!, kKeyOfPreference_numberOfFinishedLevelsAdvanced)
+		storeIntAsPreferenceUnderKey(self.nCompletedLevels[Difficulty.Expert]!, kKeyOfPreference_numberOfFinishedLevelsExpert)
+	}
     
     func goToUpcomingLevel() //Assumes indexUpcomingLevel is set appropriately
     {

@@ -104,3 +104,24 @@ func createImageFromLayer(layer: CALayer, switchXAndY: Bool) -> CGImageRef? {
 	// Return the resulting image:
 	return result
 }
+
+
+// MARK: - Storing and accessing preferences
+
+func storeIntAsPreferenceUnderKey(intValue: Int, key: String) {
+	let defaults = NSUserDefaults.standardUserDefaults()
+	defaults.setInteger(intValue, forKey: key)
+}
+
+func getIntPreference(key: String, defaultValue: Int) -> Int {
+	let defaults = NSUserDefaults.standardUserDefaults()
+	
+	if defaults.dictionaryRepresentation()[key] == nil { // I use dictionaryRepresentation because otherwise I don't know how to check whether defaults defaults contains an Int for key
+		return defaultValue
+	} else {
+		return defaults.integerForKey(key)
+	}
+}
+
+
+

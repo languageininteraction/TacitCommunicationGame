@@ -21,6 +21,10 @@ let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
+let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? nil : nil
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
@@ -54,7 +58,7 @@ let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
 let kMainFontNameSemiBold = "OpenSans-Semibold"
-let kFontPlayerNames = UIFont(name: , size: kOnPhone ? 16 : 24)
+let kFontPlayerNames = UIFont(name: kMainFontNameSemiBold, size: kOnPhone ? 16 : 24)
 let kFontLevel = UIFont(name: kMainFontNameSemiBold, size: 24 * kDefaultScaling)
 let kFontAttributeInfinity = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)
 let kFontAttributeNumber = UIFont(name: kMainFontNameSemiBold, size: 15 * kDefaultScaling)
