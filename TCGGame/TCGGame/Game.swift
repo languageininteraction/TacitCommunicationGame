@@ -41,8 +41,6 @@ class Game: NSObject
         
     override init()
     {
-		println("Game init")
-		
 		self.nBeginnerLevels = beginnerLevelNames.count
 		
         self.currentDifficulty = Difficulty.Beginner
@@ -53,12 +51,6 @@ class Game: NSObject
         self.nCompletedLevels[Difficulty.Expert] = 0
     }
 	
-	// temp! to test why too many Games are initialized
-	convenience init(test: Int) {
-		self.init()
-		println("test = \(test)")
-	}
-
     func goToHighestBeginnerLevel() //Not finished yet, this will be much more smart/complicated
     {
         self.indexCurrentLevel++
