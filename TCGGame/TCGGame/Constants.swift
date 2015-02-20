@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-let kDevelopmentMode = false
+let kDevelopmentMode = true
 
 // Added later to support iPhone and pre iOS 8:
 let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone
