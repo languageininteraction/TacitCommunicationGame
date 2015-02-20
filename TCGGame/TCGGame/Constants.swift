@@ -59,7 +59,7 @@ let kFontAttributeInfinity = UIFont(name: "Futura-CondensedMedium", size: 25 * k
 let kFontAttributeNumber = UIFont(name: "Futura-CondensedMedium", size: 20 * kDefaultScaling)
 
 // Pawns:
-let kPawnLineWidth = kOnPhone ? 1.3 : 2
+let kPawnLineWidth = kOnPhone ? 1.3 : 2.5
 let kPawnNumberOfLines = 5
 let kPawnScaleOfSecondLargestWRTLargest: Float = 0.85
 
