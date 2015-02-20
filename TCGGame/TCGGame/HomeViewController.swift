@@ -31,13 +31,55 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     let tempPlayButtonEasy = UIButton()
     let tempPlayButtonAdvanced = UIButton()
     let tempPlayButtonExpert = UIButton()
-    
+	
+	
+	// UI for level buttons per difficuly level:
+	
+	// One view per difficulty level:
+	let easyDifficultyView = UIView()
+	let advancedDifficultyView = UIView()
+	let expertDifficultyView = UIView()
+	let difficultyViews: Dictionary<Difficulty, UIView>
+	
+	// Buttons for each difficulty level; variable because it makes setting them easier, but actually they don't change:
+	var easyLevelButtons: [UIButton]!
+	var advancedLevelButtons: [UIButton]!
+	var expertLevelButtons: [UIButton]!
+	var levelButtons = Dictionary<Difficulty, [UIButton]>()
+	
+	let difficultiesInOrder = [Difficulty.Beginner, Difficulty.Advanced, Difficulty.Expert]
+	
+	
     //Misc
     var weMakeAllDecisions: Bool?
-
-    // MARK: - Actions to do when first loading view
 	
-    override func viewDidLoad()
+	
+	// MARK: - Init
+	
+	override init() {
+		difficultyViews = [Difficulty.Beginner: easyDifficultyView, Difficulty.Advanced: advancedDifficultyView, Difficulty.Expert: expertDifficultyView] // for convenience
+		
+		super.init()
+	}
+	
+	// We don't need this, but Swift requires it:
+	required init(coder decoder: NSCoder) {
+		difficultyViews = [Difficulty.Beginner: easyDifficultyView, Difficulty.Advanced: advancedDifficultyView, Difficulty.Expert: expertDifficultyView] // for convenience
+		
+		super.init(coder: decoder)
+	}
+	
+	// We don't need this, but Swift requires it:
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+		difficultyViews = [Difficulty.Beginner: easyDifficultyView, Difficulty.Advanced: advancedDifficultyView, Difficulty.Expert: expertDifficultyView] // for convenience
+		
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+	}
+	
+	
+	// MARK: - Actions to do when first loading view
+	
+	override func viewDidLoad()
     {
         super.viewDidLoad()
 		
@@ -45,6 +87,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         var x = 50 as CGFloat
 
+		// temp:
         for button in [self.tempPlayButtonEasy,self.tempPlayButtonAdvanced,self.tempPlayButtonExpert]
         {
             button.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
@@ -55,6 +98,74 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             x += 150
         }
 
+		
+		// Prepare each difficulty view:
+		
+		// Calculate some metrics:
+		
+		// Metrics of difficulty views:
+		let spaceInBetweenDifficultyViews: CGFloat = 20 // todo constant
+		let marginOnSidesOfDifficultyViews: CGFloat = 30 // todo constant
+		let edgeLengthDifficultyViews = (self.view.frame.width - 2 * marginOnSidesOfDifficultyViews - 2 * spaceInBetweenDifficultyViews) / 3.0
+		let yDifficultyViews = 0.5 * (self.view.frame.height - edgeLengthDifficultyViews)
+		
+		// Metrics of buttons within difficulty views:
+		let xAndYCenterInDifficultyViews = 0.5 * edgeLengthDifficultyViews
+		let edgeLengthButtonsInDifficultyViews: CGFloat = 44 // todo
+		let radiusTillCenterOfButtonsInDifficultyViews = xAndYCenterInDifficultyViews - 0.5 * edgeLengthButtonsInDifficultyViews
+		
+		// Go through the three views, set their frame, background color, etc., and add it:
+		for indexDifficulty in 0 ... difficultiesInOrder.count - 1 {
+			// Get the difficulty:
+			let difficulty = difficultiesInOrder[indexDifficulty]
+			
+			// Get the difficulty's view:
+			let difficultyView = difficultyViews[difficulty]!
+			
+			// Set its frame:
+			let crazySwiftCastingMadness = CGFloat(Float(indexDifficulty))
+			let x = marginOnSidesOfDifficultyViews + crazySwiftCastingMadness * (spaceInBetweenDifficultyViews + edgeLengthDifficultyViews)
+			difficultyView.frame = CGRectMake(x, yDifficultyViews, edgeLengthDifficultyViews, edgeLengthDifficultyViews)
+			
+			// temp:
+			difficultyView.backgroundColor = UIColor.orangeColor()
+			
+			
+			// Create and add level buttons:
+			
+			// Get the number of buttons we need:
+			let nButtons: Int = currentGame.nLevelsForDifficulty(difficulty)
+			
+			// todo explain
+			var buttonsForThisDifficulty = [UIButton]()
+			levelButtons[difficulty] = buttonsForThisDifficulty
+			
+			// Create the buttons, prepare them and add them to difficultyView as well as to levelButtons:
+			let anglePerButton = M_PI * 2 / Double(nButtons)
+			for indexButton in 0 ... nButtons - 1 {
+				// Create it and set the frame:
+				let angle = CGFloat(Double(indexButton) * anglePerButton)
+				let xCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * cos(angle)
+				let yCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * sin(angle)
+				let button = UIButton(frame: CGRectMake(xCenter - 0.5 * edgeLengthButtonsInDifficultyViews, yCenter - 0.5 * edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews))
+				
+				// temp:
+				button.backgroundColor = UIColor.greenColor()
+				
+				// Add it to the view:
+				difficultyView.addSubview(button)
+				
+				// Add it to buttonsForThisDifficulty:
+				buttonsForThisDifficulty.append(button)
+				
+				
+			}
+			
+			
+			// Add the view:
+			self.view.addSubview(difficultyView)
+		}
+		
     }
     
     // MARK: - Respond to button presses
