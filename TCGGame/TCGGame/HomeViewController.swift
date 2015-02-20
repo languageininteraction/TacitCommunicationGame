@@ -31,13 +31,43 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     let tempPlayButtonEasy = UIButton()
     let tempPlayButtonAdvanced = UIButton()
     let tempPlayButtonExpert = UIButton()
+	
+	// UI for level buttons per difficuly level; since there are only three difficulty levels and the first one of these works different than the other two, we don't use a generic approach (using collection types); that's not worth the extra effort:
+	let easyDifficultyView = UIView()
+	let advancedDifficultyView = UIView()
+	let expertDifficultyView = UIView()
+	let difficultyViews: [UIView]
     
     //Misc
     var weMakeAllDecisions: Bool?
-
-    // MARK: - Actions to do when first loading view
 	
-    override func viewDidLoad()
+	
+	// MARK: - Init
+	
+	override init() {
+		difficultyViews = [easyDifficultyView, advancedDifficultyView, expertDifficultyView] // for convenience
+		
+		super.init()
+	}
+	
+	// We don't need this, but Swift requires it:
+	required init(coder decoder: NSCoder) {
+		difficultyViews = [easyDifficultyView, advancedDifficultyView, expertDifficultyView] // for convenience
+		
+		super.init(coder: decoder)
+	}
+	
+	// We don't need this, but Swift requires it:
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+		difficultyViews = [easyDifficultyView, advancedDifficultyView, expertDifficultyView] // for convenience
+		
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+	}
+	
+	
+	// MARK: - Actions to do when first loading view
+	
+	override func viewDidLoad()
     {
         super.viewDidLoad()
 		
@@ -45,6 +75,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         var x = 50 as CGFloat
 
+		// temp:
         for button in [self.tempPlayButtonEasy,self.tempPlayButtonAdvanced,self.tempPlayButtonExpert]
         {
             button.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
@@ -55,6 +86,32 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             x += 150
         }
 
+		
+		// Prepare each difficulty view:
+		
+		// Calculate some metrics:
+		let spaceInBetweenDifficultyViews: CGFloat = 20 // todo constant
+		let marginOnSidesOfDifficultyViews: CGFloat = 30 // todo constant
+		let edgeLengthDifficultyViews = (self.view.frame.width - 2 * marginOnSidesOfDifficultyViews - 2 * spaceInBetweenDifficultyViews) / 3.0
+		let yDifficultyViews = 0.5 * (self.view.frame.height - edgeLengthDifficultyViews)
+		
+		// Go through the three views, set their frame, background color, etc., and add it:
+		for i in 0 ... difficultyViews.count - 1 {
+			// Get the view at index i:
+			let difficultyView = difficultyViews[i]
+			
+			// Set its frame:
+			let crazySwiftCastingMadness = CGFloat(Float(i))
+			let x = marginOnSidesOfDifficultyViews + crazySwiftCastingMadness * (spaceInBetweenDifficultyViews + edgeLengthDifficultyViews)
+			difficultyView.frame = CGRectMake(x, yDifficultyViews, edgeLengthDifficultyViews, edgeLengthDifficultyViews)
+			
+			// temp:
+			difficultyView.backgroundColor = UIColor.orangeColor()
+			
+			// Add the view:
+			self.view.addSubview(difficultyView)
+		}
+		
     }
     
     // MARK: - Respond to button presses
