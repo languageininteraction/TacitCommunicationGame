@@ -76,6 +76,7 @@ class Level: NSObject
 		for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer2 {
 			startItemsPlayer2.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
 		}
+        
     }
 	
     // MARK: - Starting a simple basic level
