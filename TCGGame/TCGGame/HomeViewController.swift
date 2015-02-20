@@ -19,7 +19,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
     var managerOfMultipleHomeViewControllers: ManageMultipleHomeViewControllersProtocol?
     
-    var currentGame = Game(test: 3) // temp om zeker te weten dat dit dubbel wordt gedraaid
+    var currentGame = Game()
     var levelViewController : LevelViewController?
     
     //GameKit variables
@@ -95,8 +95,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
         super.viewDidLoad()
 		
-		println("viewDidLoad of HomeViewController")
-        
 		
 		// todo explain; todo test whether screen width is ok on older iOS:
 		
