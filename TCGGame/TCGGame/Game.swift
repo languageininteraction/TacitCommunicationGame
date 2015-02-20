@@ -86,6 +86,18 @@ class Game: NSObject
 	func nLevelsForDifficulty(difficulty: Difficulty) -> Int {
 		return (difficulty == Difficulty.Beginner) ? nBeginnerLevels : (difficulty == Difficulty.Advanced) ? nAdvancedLevels : (difficulty == Difficulty.Expert) ? nExpertLevels : 0
 	}
+    
+    func playerGroupForMatchMaking() -> Int
+    {
+        var baseNumber:Int = self.currentDifficulty!.rawValue * 100; //100 for easy, 200 for advanced, 300 for expert
+        
+        //if self.currentDifficulty == Difficulty.Beginner
+        //{
+        //    baseNumber += self.indexCurrentLevel
+        //}
+        
+        return baseNumber
+    }
 }
 
 

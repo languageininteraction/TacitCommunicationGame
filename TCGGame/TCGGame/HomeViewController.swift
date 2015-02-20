@@ -203,7 +203,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.addSubview(difficultyView)
 
             //Authenticate the player
-            self.authenticateLocalPlayer()
+            if (!kDevLocalTestingIsOn)
+            {
+                self.authenticateLocalPlayer()
+            }
         }
 		
     }
@@ -362,7 +365,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         let request = GKMatchRequest()
         request.minPlayers = 2
         request.maxPlayers = 2
-        request.playerGroup = self.currentGame.currentDifficulty!.rawValue;
+        request.playerGroup = self.currentGame.playerGroupForMatchMaking();
         
         let matchmakerViewController = GKMatchmakerViewController(matchRequest: request)
         matchmakerViewController.matchmakerDelegate = self
