@@ -178,6 +178,8 @@
 		48C3C2D11A695EA1007FBF04 /* Icon_See 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2B91A695EA1007FBF04 /* Icon_See 70x70@2x.png */; };
 		48C3C2D21A695EA1007FBF04 /* Icon_Up 70x70.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2BA1A695EA1007FBF04 /* Icon_Up 70x70.png */; };
 		48C3C2D31A695EA1007FBF04 /* Icon_Up 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */; };
+		48C4A0B51A97A41A0034D878 /* Info 24x24.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C4A0B31A97A41A0034D878 /* Info 24x24.png */; };
+		48C4A0B61A97A41A0034D878 /* Info 24x24@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */; };
 		48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB51A48A91B0072524E /* SmallCheckMark.png */; };
 		48D19EB81A48A91B0072524E /* SmallCross.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB61A48A91B0072524E /* SmallCross.png */; };
 		48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */; };
@@ -494,6 +496,8 @@
 		48C3C2B91A695EA1007FBF04 /* Icon_See 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_See 70x70@2x.png"; sourceTree = "<group>"; };
 		48C3C2BA1A695EA1007FBF04 /* Icon_Up 70x70.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Up 70x70.png"; sourceTree = "<group>"; };
 		48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Up 70x70@2x.png"; sourceTree = "<group>"; };
+		48C4A0B31A97A41A0034D878 /* Info 24x24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info 24x24.png"; sourceTree = "<group>"; };
+		48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info 24x24@2x.png"; sourceTree = "<group>"; };
 		48D19EB51A48A91B0072524E /* SmallCheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCheckMark.png; sourceTree = "<group>"; };
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
 		48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on RU.rtf"; sourceTree = "<group>"; };
@@ -855,6 +859,8 @@
 		48B2C2D61A248CDF002FFEDF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				48C4A0B31A97A41A0034D878 /* Info 24x24.png */,
+				48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */,
 				48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */,
 				48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */,
 				481F63B41A9770D80007D135 /* LockIcon 44x44.png */,
@@ -1233,9 +1239,11 @@
 				48F834AB1A3A3B960098A904 /* Button_moveOther 256x256@2x.png in Resources */,
 				48F834911A3A3B960098A904 /* Button_rotateClockwise 256x256 256x256@2x.png in Resources */,
 				48B2C3521A248D38002FFEDF /* Button_restartOrangeOther 54x54.png in Resources */,
+				48C4A0B51A97A41A0034D878 /* Info 24x24.png in Resources */,
 				48F834A21A3A3B960098A904 /* Button_checkmarkYellowSelected 256x256@2x.png in Resources */,
 				48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */,
 				48F834601A3A3B960098A904 /* Button_seeSelected 256x256.png in Resources */,
+				48C4A0B61A97A41A0034D878 /* Info 24x24@2x.png in Resources */,
 				48C3C2BF1A695EA1007FBF04 /* Icon_Finish 70x70@2x.png in Resources */,
 				48F834B41A3A3B960098A904 /* Button_nextOrange 256x256@2x.png in Resources */,
 				48F834721A3A3B960098A904 /* Button_moveSelected 256x256.png in Resources */,

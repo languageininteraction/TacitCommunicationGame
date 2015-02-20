@@ -137,6 +137,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
 		self.view.backgroundColor = UIColor.whiteColor()
 		
+		self.addInfoButton()
 		
 		// todo explain; todo test whether screen width is ok on older iOS:
 		
@@ -302,8 +303,55 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             {
                 self.authenticateLocalPlayer()
             }
-            
         }
+	}
+
+
+	func addInfoButton() {
+		let edgeLengthButton: CGFloat = 44
+		let infoButton = UIButton(frame: CGRectMake(25, self.view.frame.height - edgeLengthButton - 25, edgeLengthButton, edgeLengthButton))
+		viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(infoButton)
+		infoButton.addTarget(self, action: "infoButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+		
+		
+		// This isn't pretty, similar code is also use elsewhere…
+		let icon = UIImage(named: "Info 24x24")!
+		let scaleFactor = UIScreen.mainScreen().scale
+		let scaledSizeOfButton = CGSizeMake(infoButton.frame.size.width * scaleFactor, infoButton.frame.size.height * scaleFactor)
+		let scaledSizeOfImage = CGSizeMake(icon.size.width * scaleFactor, icon.size.height * scaleFactor)
+		let rect = CGRectMake(0, 0, scaledSizeOfButton.width, scaledSizeOfButton.height)
+		
+		UIGraphicsBeginImageContext(scaledSizeOfButton)
+		let context = UIGraphicsGetCurrentContext()
+		
+		// Fill a white, partly transparent circle:
+		CGContextSetFillColorWithColor(context, UIColor(white: 1, alpha: 0.8).CGColor)
+		let circlePathFull = CGPathCreateWithEllipseInRect(rect, nil) // todo
+		CGContextAddPath(context, circlePathFull)
+		CGContextFillPath(context)
+		
+		// Create a colored version of the icon:
+		let colorIcon = kColorLiIBlue
+		let coloredIconCGImage = createColoredVersionOfUIImage(icon, colorIcon)
+		
+		// Draw the icon:
+		coloredIconCGImage?.drawInRect(CGRectMake(0.5 * (scaledSizeOfButton.width - scaledSizeOfImage.width), 0.5 * (scaledSizeOfButton.height - scaledSizeOfImage.height), scaledSizeOfImage.width, scaledSizeOfImage.height))
+		
+		
+		// Draw a circle around it:
+		CGContextSetStrokeColorWithColor(context, kColorLiIBlue.CGColor)
+		CGContextSetLineWidth(context, 1.5 * scaleFactor)
+		let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
+		CGContextAddPath(context, circlePath)
+		CGContextStrokePath(context)
+		
+		
+		let resultingImage = UIGraphicsGetImageFromCurrentImageContext()
+		
+		UIGraphicsEndImageContext()
+		
+		// Set the image on the button:
+		infoButton.setImage(resultingImage, forState: UIControlState.Normal)
 	}
 	
 	
@@ -416,6 +464,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		currentGame.nCompletedLevels[Difficulty.Beginner] = 9
 		currentGame.nCompletedLevels[Difficulty.Advanced] = 3
 		currentGame.storeProgress()
+	}
+	
+	func infoButtonPressed() {
+		println("todo infoButtonPressed")
 	}
 	
 	
