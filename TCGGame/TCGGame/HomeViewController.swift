@@ -61,6 +61,46 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	let pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorLocalPlayer)) // todo rename constant kEdgelengthFaces
 	let pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorOtherPlayer)) // todo rename constant kEdgelengthFaces
 	
+	// todo reorganize; new approach with swiping between difficulty levels
+	let pageControl = UIPageControl()
+	var indexCurrentDifficultyLevel: Int = 0 {
+		didSet {
+			// Also update in our game:
+			self.currentGame.currentDifficulty = difficultiesInOrder[indexCurrentDifficultyLevel]
+			
+			// Update the page control:
+			pageControl.currentPage = indexCurrentDifficultyLevel
+			
+			
+			
+			// Animate all difficultyViews:
+			
+			CATransaction.begin()
+			
+			let nItems = difficultyViews.count
+			for i in 0 ... nItems - 1 {
+				// Move cloudView:
+				let difficultyView = difficultyViews[difficultiesInOrder[i]]!
+				let animationMove = CABasicAnimation(keyPath: "transform")
+				animationMove.fromValue = NSValue(CATransform3D: difficultyView.layer.transform)
+				let toTransform = self.transformForDifficultyViewAt(index: i)
+				animationMove.toValue = NSValue(CATransform3D: toTransform)
+				difficultyView.layer.addAnimation(animationMove, forKey: "move")
+				difficultyView.layer.transform = toTransform
+				
+				// Opacity cloudView:
+				let animationOpacity = CABasicAnimation(keyPath: "opacity")
+				animationOpacity.fromValue = difficultyView.layer.opacity
+				let toValueOpacity = opacityForDifficultyViewAt(index: i)
+				animationOpacity.toValue = toValueOpacity
+				difficultyView.layer.addAnimation(animationOpacity, forKey: "opacity")
+				difficultyView.layer.opacity = toValueOpacity
+			}
+			
+			CATransaction.commit()
+		}
+	}
+	
 	
     //Misc
     var weMakeAllDecisions: Bool?
@@ -89,7 +129,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
 	
-	// MARK: - Actions to do when first loading view
+	// MARK: - Stuff to do when first loading view
 	
 	override func viewDidLoad()
     {
@@ -114,6 +154,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		self.view.addSubview(viewWithWhatIsAlwaysVisibleWhenPlayingLevels)
 		
 		
+/*
 		var x = 50 as CGFloat
 		
 		// temp:
@@ -125,7 +166,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(button)
 			
 			x += 150
-		}
+		}*/
 		
 		
 		// Local player's name label:
@@ -150,6 +191,27 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingLocalPlayer)
 		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingOtherPlayer)
 //		pawnViewRepresentingOtherPlayer.hidden = true // not shown untill a match is made (in which case a level is started)
+		
+		
+		
+		// Create and add a pageControl:
+		let heightPageControl: CGFloat = 37
+		pageControl.frame = CGRectMake(20, self.view.frame.size.height - 37 - 20, self.view.frame.size.width - 2 * 20, heightPageControl)
+		pageControl.numberOfPages = difficultiesInOrder.count
+		pageControl.currentPage = 0
+		pageControl.pageIndicatorTintColor = UIColor(white: 0.85, alpha: 1)
+		pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
+		pageControl.userInteractionEnabled = false
+		viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(pageControl)
+		
+		
+		// Add gesture recognizers to swipe between difficulty levels:
+		let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeLeftRecognized")
+		swipeLeftRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+		self.view.addGestureRecognizer(swipeLeftRecognizer)
+		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeRightRecognized")
+		swipeRightRecognizer.direction = UISwipeGestureRecognizerDirection.Right
+		self.view.addGestureRecognizer(swipeRightRecognizer)
 
 		
 		// Prepare each difficulty view:
@@ -157,17 +219,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// Calculate some metrics:
 		
 		// Metrics of difficulty views:
-		let spaceInBetweenDifficultyViews: CGFloat = 20 // todo constant
-		let marginOnSidesOfDifficultyViews: CGFloat = 30 // todo constant
-		let edgeLengthDifficultyViews = (self.view.frame.width - 2 * marginOnSidesOfDifficultyViews - 2 * spaceInBetweenDifficultyViews) / 3.0
-		let yDifficultyViews = 0.5 * (self.view.frame.height - edgeLengthDifficultyViews)
+		let edgeLengthDifficultyViews: CGFloat = 540 // todo
+		let frameDifficultyViews = CGRectMake(0.5 * (self.view.frame.width - edgeLengthDifficultyViews), 0.5 * (self.view.frame.height - edgeLengthDifficultyViews), edgeLengthDifficultyViews, edgeLengthDifficultyViews)
 		
 		// Metrics of buttons within difficulty views:
 		let xAndYCenterInDifficultyViews = 0.5 * edgeLengthDifficultyViews
-		let edgeLengthButtonsInDifficultyViews: CGFloat = 44 // todo
+		let edgeLengthButtonsInDifficultyViews: CGFloat = 75 // todo
 		let radiusTillCenterOfButtonsInDifficultyViews = xAndYCenterInDifficultyViews - 0.5 * edgeLengthButtonsInDifficultyViews
 		
-		// Go through the three views, set their frame, background color, etc., and add it:
+		// Go through the three views, set their frame, background color, etc., and add them:
 		for indexDifficulty in 0 ... difficultiesInOrder.count - 1 {
 			// Get the difficulty:
 			let difficulty = difficultiesInOrder[indexDifficulty]
@@ -176,12 +236,17 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			let difficultyView = difficultyViews[difficulty]!
 			
 			// Set its frame:
-			let crazySwiftCastingMadness = CGFloat(Float(indexDifficulty))
-			let x = marginOnSidesOfDifficultyViews + crazySwiftCastingMadness * (spaceInBetweenDifficultyViews + edgeLengthDifficultyViews)
-			difficultyView.frame = CGRectMake(x, yDifficultyViews, edgeLengthDifficultyViews, edgeLengthDifficultyViews)
+			difficultyView.frame = frameDifficultyViews
+			difficultyView.backgroundColor = UIColor.clearColor()
 			
-			// temp:
-//			difficultyView.backgroundColor = UIColor.orangeColor()
+			// Add a label which describes the difficulty in the center:
+			let label = UILabel()
+			label.font = kFontDifficulty
+			label.text = difficulty.description()
+			label.textAlignment = NSTextAlignment.Center
+			let widthLabel: CGFloat = 200, heightLabel: CGFloat = 100 // todo
+			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabel), 0.5 * (frameDifficultyViews.height - heightLabel), widthLabel, heightLabel)
+			difficultyView.addSubview(label)
 			
 			
 			// Create and add level buttons:
@@ -222,6 +287,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			// Add the view:
 			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.addSubview(difficultyView)
+			
+			// Set transform and opacity, because we always look at one of them:
+			difficultyView.layer.transform = self.transformForDifficultyViewAt(index: indexDifficulty)
+			difficultyView.layer.opacity = self.opacityForDifficultyViewAt(index: indexDifficulty)
 
             //Authenticate the player
             if (!kDevLocalTestingIsOn)
@@ -285,7 +354,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
     
-    // MARK: - Respond to button presses
+    // MARK: - Actions
     
     func tempPlayButtonPressed(sender: UIButton!)
     {
@@ -306,7 +375,63 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             startPlayingMatch()
         }        
     }
-    
+	
+	func swipeLeftRecognized() {
+		if indexCurrentDifficultyLevel < difficultiesInOrder.count - 1 {
+			self.indexCurrentDifficultyLevel++
+		} else {
+			bounce(directionLeft: true)
+		}
+	}
+	
+	
+	func swipeRightRecognized() {
+		if indexCurrentDifficultyLevel > 0 {
+			self.indexCurrentDifficultyLevel--
+		} else {
+			bounce(directionLeft: false)
+		}
+	}
+	
+	
+	func bounce(#directionLeft: Bool) {
+		let nItems = difficultiesInOrder.count
+		for i in 0 ... nItems - 1 {
+			let viewToAnimate = difficultyViews[difficultiesInOrder[i]]!
+			let animation = CABasicAnimation(keyPath: "transform")
+			animation.fromValue = NSValue(CATransform3D: viewToAnimate.layer.transform)
+			animation.toValue = NSValue(CATransform3D:CATransform3DTranslate(viewToAnimate.layer.transform, directionLeft ? -30 : 30, 0, 0))
+			animation.autoreverses = true
+			animation.duration = 0.1;
+			viewToAnimate.layer.addAnimation(animation, forKey: "bounce")
+		}
+	}
+	
+	
+	func transformForDifficultyViewAt(#index: Int) -> CATransform3D {
+		let delta: CGFloat = CGFloat(index - self.indexCurrentDifficultyLevel)
+		if delta == 0 {
+			return CATransform3DIdentity
+		}
+	
+		// is this needed?
+//	BOOL belowIOS8 =  NSClassFromString(@"UITraitCollection") == nil; // below iOS 8 doesn't take orientation into account yet
+//	CGFloat widthScreen = belowIOS8 ? self.view.frame.size.height : self.view.frame.size.width;
+
+		let widthScreen = self.view.frame.size.width
+	
+		let transformTranslation = CATransform3DMakeTranslation(delta * (0.5 * widthScreen + 285), 0, 0)
+		let scale: CGFloat = 0.8
+		let transformScale = CATransform3DMakeScale(scale, scale, 1)
+		return CATransform3DConcat(transformTranslation, transformScale)
+	}
+	
+	
+	func opacityForDifficultyViewAt(#index: Int) -> Float  {
+		return Float(self.indexCurrentDifficultyLevel == index ? 1 : 0.5)
+	}
+	
+	
     // MARK: - Communication with subController
     
     func subControllerFinished(subController: AnyObject) {

@@ -12,6 +12,10 @@ enum Difficulty: Int {
     case Beginner
     case Advanced
     case Expert
+	
+	func description() -> String {
+		return self == Difficulty.Beginner ? "Beginner" : self == Difficulty.Advanced ? "Gevorderd" : self == Difficulty.Expert ? "Expert" : "oeps, onbekend nivo…"
+	}
 }
 
 class Game: NSObject
