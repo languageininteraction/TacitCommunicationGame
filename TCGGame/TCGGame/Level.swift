@@ -47,12 +47,20 @@ class Level: NSObject
         self.pawnPlayer1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as Dictionary)
         self.pawnPlayer2 = PawnDefinition(jsonDict: jsonResult["pawn2"] as Dictionary)
         
-        self.startConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["start1"] as Dictionary)
-        self.startConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["start2"] as Dictionary)
-
         self.goalConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["goal1"] as Dictionary)
         self.goalConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["goal2"] as Dictionary)
-		
+        
+        if !kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals
+        {
+            self.startConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["start1"] as Dictionary)
+            self.startConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["start2"] as Dictionary)
+        }
+        else
+        {
+            self.startConfigurationPawn1 = goalConfigurationPawn1;
+            self.startConfigurationPawn2 = goalConfigurationPawn2;
+        }
+        
 		self.moveItemAvailable = jsonResult["moveItemAvailable"] as Bool
 		self.seeItemAvailable = jsonResult["seeItemAvailable"] as Bool
 		self.giveItemAvailable = jsonResult["giveItemAvailable"] as Bool
@@ -190,13 +198,8 @@ class Level: NSObject
         self.goalConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig1x") as Int, y: decoder.decodeObjectForKey("goalConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig1Rotation") as Int)!)
 		self.goalConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig2x") as Int, y: decoder.decodeObjectForKey("goalConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig2Rotation") as Int)!)
 		
-		if !kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals {
-			self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as Int, y: decoder.decodeObjectForKey("startConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as Int)!)
-			self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
-		} else {
-			self.startConfigurationPawn1 = self.goalConfigurationPawn1
-			self.startConfigurationPawn2 = self.goalConfigurationPawn2
-		}
+        self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as Int, y: decoder.decodeObjectForKey("startConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as Int)!)
+        self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
 		
         self.moveItemAvailable = decoder.decodeBoolForKey("moveItemAvailable")
         self.seeItemAvailable = decoder.decodeBoolForKey("seeItemAvailable")
