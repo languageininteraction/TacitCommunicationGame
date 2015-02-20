@@ -291,12 +291,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			// Set transform and opacity, because we always look at one of them:
 			difficultyView.layer.transform = self.transformForDifficultyViewAt(index: indexDifficulty)
 			difficultyView.layer.opacity = self.opacityForDifficultyViewAt(index: indexDifficulty)
-
+            
             //Authenticate the player
             if (!kDevLocalTestingIsOn)
             {
                 self.authenticateLocalPlayer()
             }
+            
         }
 	}
 	
@@ -365,6 +366,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     func tempPlayButtonPressed(sender: UIButton!)
     {
+
         self.currentGame.gameState = GameState.LookingForMatch
         
         switch sender
@@ -697,9 +699,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     {
         
         // Stop the GC match
-        self.GCMatchStarted = false
-        self.GCMatch!.disconnect()
-        self.GCMatch = nil
+        if (!kDevLocalTestingIsOn)
+        {
+            self.GCMatchStarted = false
+            self.GCMatch!.disconnect()
+            self.GCMatch = nil
+        }
         
         // Tell the game and forget the level
         self.currentGame.gameState = GameState.NotPartOfMatch
@@ -735,6 +740,4 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
         }
     }
-    
-    
 }
