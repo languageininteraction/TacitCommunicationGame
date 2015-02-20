@@ -439,7 +439,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		self.updateUIAtStartOfLevel()
 	}
     
-    func quitPlaying()
+    func quitPlaying(alertview: UIAlertAction? = nil)
     {
         self.userChoseToGoBackHome = true
         self.superController!.subControllerFinished(self)
@@ -485,6 +485,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
             
 			// todo explain
 			updateUIOfItems()
+
 		case .Retry:
 			updateUIForButtonsHomeRetryAndFinish()
 			
@@ -497,7 +498,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 				self.restartLevel()
 			}
         case .QuitPlaying:
-            quitPlaying();
+            self.showAlertAndGoToHomeScreen(title:"Zo alleen...",message:"Je teamgenoot heeft het spel verlaten. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
             
 		default:
 			println("In receiveData we don't know what to do with the action type \(action.type.rawValue)")
@@ -1029,5 +1030,13 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
         subController.dismissViewControllerAnimated(false, completion: nil)*/
     }
 	
+    // MARK: - Alert
     
+    func showAlertAndGoToHomeScreen(#title: String,message: String)
+    {
+        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: quitPlaying))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+
 }
