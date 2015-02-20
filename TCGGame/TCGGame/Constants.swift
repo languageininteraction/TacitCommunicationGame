@@ -16,8 +16,8 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) == .OrderedAscending
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
+let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
@@ -54,7 +54,7 @@ let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
 let kMainFontNameSemiBold = "OpenSans-Semibold"
-let kFontPlayerNames = UIFont(name: , size: kOnPhone ? 16 : 24)
+let kFontPlayerNames = UIFont(name: kMainFontNameSemiBold, size: kOnPhone ? 16 : 24)
 let kFontLevel = UIFont(name: kMainFontNameSemiBold, size: 24 * kDefaultScaling)
 let kFontAttributeInfinity = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)
 let kFontAttributeNumber = UIFont(name: kMainFontNameSemiBold, size: 15 * kDefaultScaling)
