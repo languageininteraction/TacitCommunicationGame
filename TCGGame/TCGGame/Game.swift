@@ -30,13 +30,13 @@ class Game: NSObject
 	
 	
     // Progress:
-    var highestAvailableDifficulty: Difficulty
+    var highestAvailableDifficulty: Difficulty?
     var nCompletedLevels = Dictionary<Difficulty, Int>()
     
     //Current state:
     var indexCurrentLevel: Int = -1 + kDevIndexLevelToStartWith // Normally kDevIndexLevelToStartWith is 0, so the first 'next' level will be 0
     var currentLevel: Level?
-    var currentDifficulty: Difficulty
+    var currentDifficulty: Difficulty?
 
         
     override init()
@@ -44,9 +44,6 @@ class Game: NSObject
 		println("Game init")
 		
 		self.nBeginnerLevels = beginnerLevelNames.count
-		
-        self.currentDifficulty = Difficulty.Beginner
-        self.highestAvailableDifficulty = Difficulty.Beginner
         
         self.nCompletedLevels[Difficulty.Beginner] = 0
         self.nCompletedLevels[Difficulty.Advanced] = 0
@@ -69,7 +66,7 @@ class Game: NSObject
     {
         self.indexCurrentLevel++
         
-        switch self.currentDifficulty
+        switch self.currentDifficulty!
         {
             case Difficulty.Beginner: self.currentLevel = Level(filename: self.beginnerLevelNames[self.indexCurrentLevel % self.nBeginnerLevels])
             case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
