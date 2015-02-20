@@ -20,6 +20,7 @@
 		4812E6391A0A6F7C006DED82 /* RoundActionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E6381A0A6F7C006DED82 /* RoundActionTypes.swift */; };
 		4812E63B1A0A715C006DED82 /* RoundPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E63A1A0A715C006DED82 /* RoundPhase.swift */; };
 		4812E6401A0B7972006DED82 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4812E63F1A0B7972006DED82 /* GameKit.framework */; };
+		4812F61A1A974B450078E38B /* ViewThatPassesTouchesThrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812F6191A974B450078E38B /* ViewThatPassesTouchesThrough.swift */; };
 		482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */; };
 		482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC3E1A121C9300FB13FF /* LevelViewController.swift */; };
 		482EEC441A123E0B00FB13FF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EEC431A123E0B00FB13FF /* Constants.swift */; };
@@ -63,7 +64,6 @@
 		485E1C861A4C3D2A00AC88AC /* communicatie_limiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C851A4C3D2A00AC88AC /* communicatie_limiet.json */; };
 		485E1C8B1A4C3D8300AC88AC /* communicatie_gevenlimiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */; };
 		485E1C8C1A4C3D8300AC88AC /* communicatie_draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C881A4C3D8300AC88AC /* communicatie_draai.json */; };
-		486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */ = {isa = PBXBuildFile; fileRef = 486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
@@ -322,6 +322,7 @@
 		4812E6381A0A6F7C006DED82 /* RoundActionTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundActionTypes.swift; sourceTree = "<group>"; };
 		4812E63A1A0A715C006DED82 /* RoundPhase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundPhase.swift; sourceTree = "<group>"; };
 		4812E63F1A0B7972006DED82 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		4812F6191A974B450078E38B /* ViewThatPassesTouchesThrough.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewThatPassesTouchesThrough.swift; sourceTree = "<group>"; };
 		482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulateTwoHomeViewControllers.swift; sourceTree = "<group>"; };
 		482EEC3E1A121C9300FB13FF /* LevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
 		482EEC431A123E0B00FB13FF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -365,7 +366,6 @@
 		485E1C851A4C3D2A00AC88AC /* communicatie_limiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_limiet.json; sourceTree = "<group>"; };
 		485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_gevenlimiet.json; sourceTree = "<group>"; };
 		485E1C881A4C3D8300AC88AC /* communicatie_draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_draai.json; sourceTree = "<group>"; };
-		486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PersonPlaceholder 320x320.png"; sourceTree = "<group>"; };
 		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
 		48B2C2D81A248D38002FFEDF /* Button_checkmarkOrange 54x54.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Button_checkmarkOrange 54x54.png"; sourceTree = "<group>"; };
@@ -802,7 +802,6 @@
 				485E1C781A4AFE9000AC88AC /* ButtonToGiveMove.png */,
 				48D19EB51A48A91B0072524E /* SmallCheckMark.png */,
 				48D19EB61A48A91B0072524E /* SmallCross.png */,
-				486C14781A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png */,
 				48C3C2A31A695E49007FBF04 /* Button Icons */,
 				48B2C2D71A248CE6002FFEDF /* Buttons */,
 			);
@@ -927,6 +926,7 @@
 				48DF63A21A39FE6500941BDA /* HandyFunctions.swift */,
 				4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */,
 				48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */,
+				4812F6191A974B450078E38B /* ViewThatPassesTouchesThrough.swift */,
 			);
 			name = "Handy stuff";
 			sourceTree = "<group>";
@@ -1186,7 +1186,6 @@
 				48C3C2D01A695EA1007FBF04 /* Icon_See 70x70.png in Resources */,
 				48C3C2C71A695EA1007FBF04 /* Icon_Move 70x70@2x.png in Resources */,
 				48B2C3601A248D38002FFEDF /* Button_see 54x54.png in Resources */,
-				486C14791A3ADDD60067D3A8 /* PersonPlaceholder 320x320.png in Resources */,
 				48C3C2C81A695EA1007FBF04 /* Icon_Retry 70x70.png in Resources */,
 				48F834BE1A3A3B960098A904 /* Button_presentSelecetdOther 256x256@2x.png in Resources */,
 				48F834641A3A3B960098A904 /* Button_checkmarkOrangeSelected 256x256.png in Resources */,
@@ -1459,6 +1458,7 @@
 				482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
 				491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */,
+				4812F61A1A974B450078E38B /* ViewThatPassesTouchesThrough.swift in Sources */,
 				4856E58A1A24908100309751 /* BoardView.swift in Sources */,
 				4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */,
 				482EEC441A123E0B00FB13FF /* Constants.swift in Sources */,

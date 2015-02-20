@@ -33,6 +33,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     let tempPlayButtonExpert = UIButton()
 	
 	
+	// todo explain
+	let viewWithWhatIsNeverVisibleWhenPlayingLevels = ViewThatPassesTouchesThrough()
+	let viewWithWhatSometimesBecomesVisibleWhenPlayingLevels = ViewThatPassesTouchesThrough()
+	let viewWithWhatIsAlwaysVisibleWhenPlayingLevels = ViewThatPassesTouchesThrough()
+	
+	
 	// UI for level buttons per difficuly level:
 	
 	// One view per difficulty level:
@@ -48,6 +54,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	var levelButtons = Dictionary<Difficulty, [UIButton]>()
 	
 	let difficultiesInOrder = [Difficulty.Beginner, Difficulty.Advanced, Difficulty.Expert]
+	
+	// todo reorganize here
+	let pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorLocalPlayer)) // todo rename constant kEdgelengthFaces
+	let pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorOtherPlayer)) // todo rename constant kEdgelengthFaces
 	
 	
     //Misc
@@ -81,22 +91,49 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	override func viewDidLoad()
     {
+		// NOTE: All views should be added to viewWithWhatIsNeverVisibleWhenPlayingLevels, viewWithWhatSometimesBecomesVisibleWhenPlayingLevels, or viewWithWhatIsAlwaysVisibleWhenPlayingLevels, except self.levelViewController and those three views themselves of course. todo explain why.
+		
         super.viewDidLoad()
 		
 		println("viewDidLoad of HomeViewController")
         
-        var x = 50 as CGFloat
-
+		
+		// todo explain; todo test whether screen width is ok on older iOS:
+		
+		let frameToFillWidth = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+		viewWithWhatIsNeverVisibleWhenPlayingLevels.frame = frameToFillWidth
+		viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.frame = frameToFillWidth
+		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.frame = frameToFillWidth
+		
+		viewWithWhatIsNeverVisibleWhenPlayingLevels.backgroundColor = UIColor.clearColor()
+		viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.backgroundColor = nil
+		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.backgroundColor = UIColor.clearColor()
+		
+		self.view.addSubview(viewWithWhatIsNeverVisibleWhenPlayingLevels)
+		self.view.addSubview(viewWithWhatSometimesBecomesVisibleWhenPlayingLevels)
+//		self.view.addSubview(viewWithWhatIsAlwaysVisibleWhenPlayingLevels)
+		
+		
+		var x = 50 as CGFloat
+		
 		// temp:
-        for button in [self.tempPlayButtonEasy,self.tempPlayButtonAdvanced,self.tempPlayButtonExpert]
-        {
-            button.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
-            button.frame = CGRectMake(x, 50, 100, 100)
-            button.addTarget(self, action: "tempPlayButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-            self.view.addSubview(button)
-            
-            x += 150
-        }
+		for button in [self.tempPlayButtonEasy,self.tempPlayButtonAdvanced,self.tempPlayButtonExpert]
+		{
+			button.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
+			button.frame = CGRectMake(x, 50, 100, 100)
+			button.addTarget(self, action: "tempPlayButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
+			viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(button)
+			
+			x += 150
+		}
+		
+		
+		// todo explain; todo test whether screen width is ok on older iOS; todo rename constants
+		pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+		pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingLocalPlayer)
+		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingOtherPlayer)
+		pawnViewRepresentingOtherPlayer.hidden = true // not shown untill a match is made (in which case a level is started)
 
 		
 		// Prepare each difficulty view:
@@ -163,7 +200,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			
 			// Add the view:
-			self.view.addSubview(difficultyView)
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.addSubview(difficultyView)
 		}
 		
     }
@@ -193,17 +230,18 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished <todo update comments> if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
 		if levelViewController!.userChoseToGoBackHome {
 
-            //Stop the GC match
+            // Stop the GC match
             self.GCMatch?.disconnect()
             self.GCMatchStarted = false
             
-            //Forget the level
+            // Forget the level
             self.currentGame.quitPlaying()
             
-            //Come back to the home view
+            // Come back to the home view
             self.levelViewController!.view.removeFromSuperview()
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = false
 
-            //Forget our levelViewController
+            // Forget our levelViewController
             self.levelViewController = nil
             
 		} else if weMakeAllDecisions! {
@@ -269,7 +307,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 
                 // Add our levelViewController's view:
                 self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-                self.view.addSubview(self.levelViewController!.view)
+                self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+				viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation
             }
             
             //Go to the next level
@@ -309,17 +348,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.showViewController(viewController, sender: nil)
     }
     
-    func continueWithAuthenticatedLocalPlayer() {
-        // todo: should we do this here?
-        /*		if !kDevLocalTestingIsOn {
-        self.localPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
-        
-        println("error loading picture: \(error)")
-        
-        self.imageViewPictureOfLocalPlayer.image = image // todo check error first!
-        }) // todo check the size we need
-        }*/
-        
+	func continueWithAuthenticatedLocalPlayer() {
         self.hostMatch()
     }
     
@@ -387,17 +416,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             
             // todo: UI should be ready before it is shown; we can solve this once we do the match making in another vc:
             //restartLevel()
-            
-            /*			// todo: do this here?
-            otherPlayer.loadPhotoForSize(GKPhotoSizeNormal, withCompletionHandler: { (image: UIImage!, error: NSError!) -> Void in
-            
-            println("error loading picture of other: \(error)")
-            
-            if (image != nil) { // I don't understand why according to the documentation image can be nil, but it's not an optional
-            self.imageViewPictureOfOtherPlayer.image = image // todo check error first!
-            }
-            }) // todo check the size we need
-            */
         }
 
         //Create the LevelViewController
@@ -438,7 +456,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                     
             // Add our levelViewController's view:
             self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-            self.view.addSubview(self.levelViewController!.view)
+            self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation
         }
     }
     

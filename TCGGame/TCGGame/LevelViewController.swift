@@ -92,10 +92,6 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	// Buttons to give items to other player:
 	let buttonToGiveMoveItemToOtherPlayer = UIButton()
 	let buttonToGiveSeeItemToOtherPlayer = UIButton()
-
-	// Image views for pictures of players:
-	let imageViewPictureOfLocalPlayer = UIImageView()
-	let imageViewPictureOfOtherPlayer = UIImageView()
 	
 	// Label showing which level is being played:
 	let labelLevel = UILabel()
@@ -153,38 +149,21 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		// MARK: 2. Prepare the players' info:
 		
 		// Local player's picture:
-		imageViewPictureOfLocalPlayer.frame = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		imageViewPictureOfLocalPlayer.backgroundColor = UIColor.redColor()
-		imageViewPictureOfLocalPlayer.layer.cornerRadius = 0.5 * kEdgelengthFaces
-		imageViewPictureOfLocalPlayer.image = UIImage(named: "PersonPlaceholder 320x320")
-		self.view.addSubview(imageViewPictureOfLocalPlayer)
+		
+		// todo: We don't use imageViewPictureOfLocalPlayer anymore, but other frames are still based on it:
+		let oldFrameOfImageViewPictureOfLocalPlayer = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+//		imageViewPictureOfLocalPlayer.frame = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		
 		// Other player's picture:
-		imageViewPictureOfOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		imageViewPictureOfOtherPlayer.backgroundColor = UIColor.blueColor()
-		imageViewPictureOfOtherPlayer.layer.cornerRadius = 0.5 * kEdgelengthFaces
-		imageViewPictureOfOtherPlayer.image = UIImage(named: "PersonPlaceholder 320x320")
-		self.view.addSubview(imageViewPictureOfOtherPlayer)
 		
-		// Add colored circles 'around' the players' pictures; todo fix colors so on both devices one player has yellow and the other orange:
-		let layerColoredCircleLocalPlayer = CALayer()
-		layerColoredCircleLocalPlayer.frame = CGRectMake(imageViewPictureOfLocalPlayer.frame.origin.x - kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.origin.y - kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.size.width + 2 * kOffsetLineAroundFaces, imageViewPictureOfLocalPlayer.frame.size.height + 2 * kOffsetLineAroundFaces)
-		layerColoredCircleLocalPlayer.borderColor = kColorLocalPlayer.CGColor
-		layerColoredCircleLocalPlayer.borderWidth = kLinewidthOfLineAroundFaces
-		layerColoredCircleLocalPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
-		self.view.layer.insertSublayer(layerColoredCircleLocalPlayer, below: imageViewPictureOfLocalPlayer.layer)
+		// todo: We don't use imageViewPictureOfOtherPlayer anymore, but other frames are still based on it:
+		let oldFrameOfImageViewPictureOfOtherPlayer = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+//		imageViewPictureOfOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		
-		// Other circle:
-		let layerColoredCircleOtherPlayer = CALayer()
-		layerColoredCircleOtherPlayer.frame = CGRectMake(imageViewPictureOfOtherPlayer.frame.origin.x - kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.origin.y - kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.size.width + 2 * kOffsetLineAroundFaces, imageViewPictureOfOtherPlayer.frame.size.height + 2 * kOffsetLineAroundFaces)
-		layerColoredCircleOtherPlayer.borderColor = kColorOtherPlayer.CGColor
-		layerColoredCircleOtherPlayer.borderWidth = kLinewidthOfLineAroundFaces
-		layerColoredCircleOtherPlayer.cornerRadius = 0.5 * layerColoredCircleLocalPlayer.frame.size.width
-		self.view.layer.insertSublayer(layerColoredCircleOtherPlayer, below: imageViewPictureOfOtherPlayer.layer)
 		
 		// Local player's name label:
 		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
-		let xOfSmallPawnViewOfOtherPlayer = imageViewPictureOfOtherPlayer.frame.origin.x + imageViewPictureOfOtherPlayer.frame.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
+		let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
 		let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
 		let nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
 		nameLabelLocalPlayer.font = kFontPlayerNames
@@ -206,8 +185,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		
 		// Used for multiple frames:
-		let xItemButtonsLocalPlayer = imageViewPictureOfLocalPlayer.frame.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
-		let xItemButtonsOtherPlayer = imageViewPictureOfOtherPlayer.frame.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
+		let xItemButtonsLocalPlayer = oldFrameOfImageViewPictureOfLocalPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
+		let xItemButtonsOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
 		
 		
 		// MARK: 3. Prepare the move and rotate buttons:
@@ -264,7 +243,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		// (to enable/disable move, see, and give)
 		
 		// Calculate vertical positioning:
-		let yItemButtonsRow0 = imageViewPictureOfOtherPlayer.frame.origin.y + imageViewPictureOfOtherPlayer.frame.size.height + kSpaceBetweenFaceAndTopItemButton
+		let yItemButtonsRow0 = oldFrameOfImageViewPictureOfOtherPlayer.origin.y + oldFrameOfImageViewPictureOfOtherPlayer.size.height + kSpaceBetweenFaceAndTopItemButton
 		let yItemButtonsRow1 = yItemButtonsRow0 + kSpaceBetweenItemButtons + kEdgelengthItemButtons
 		let yItemButtonsRow2 = yItemButtonsRow1 + kSpaceBetweenItemButtons + kEdgelengthItemButtons
 		
