@@ -21,10 +21,10 @@ let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
-let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? nil : nil
-let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? nil : nil
-let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? nil : nil
-let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 2 : nil
+let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 5 : nil
+let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 4 : nil
+let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? 3 : nil
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
@@ -99,8 +99,8 @@ let kColorGiveItem = kColorLiIDarkBlue
 let kColorHomeButton = kColorLiIYellow
 let kColorRetryButton = kColorLiIRed
 let kColorFinishButton = kColorLiIDarkGreen
-let kColorMoveButtons = kColorLiIRed
-let kColorRotateButtons = kColorLiILightGreen
+let kColorMoveButtons = kColorLiIOrange
+let kColorRotateButtons = kColorLiIYellow
 
 // Level button colors in home screen:
 let kColorLockedLevels = kColorLiIYellow

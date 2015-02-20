@@ -155,21 +155,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		self.view.addSubview(viewWithWhatIsAlwaysVisibleWhenPlayingLevels)
 		
 		
-
-		var x = 50 as CGFloat
-		
-		// temp:
-		for button in [self.tempPlayButtonEasy,self.tempPlayButtonAdvanced,self.tempPlayButtonExpert]
-		{
-			button.setImage(UIImage(named: "Button_moveNorth 256x256"), forState: UIControlState.Normal)
-			button.frame = CGRectMake(x, 50, 100, 100)
-			button.addTarget(self, action: "tempPlayButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-			viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(button)
-			
-			x += 150
-		}
-
-		
 		// Local player's name label:
 /*		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
 		let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
@@ -234,9 +219,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			let difficulty = difficultiesInOrder()[indexDifficulty]
 			let difficultyIsUnlocked = difficulty.rawValue <= currentGame.highestAvailableDifficulty!.rawValue
 			let numberOfFinishedLevels = currentGame.nCompletedLevels[difficulty]
-			
-			println("difficulty \(difficulty.description()), unlocked \(difficultyIsUnlocked), numberOfFinishedLevels \(numberOfFinishedLevels)")
-			
+						
 			// Get the difficulty's view:
 			let difficultyView = difficultyViews[difficulty]!
 			
@@ -261,7 +244,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			// todo explain
 			var buttonsForThisDifficulty = [UIButton]()
-			levelButtons[difficulty] = buttonsForThisDifficulty
 			
 			// Create the buttons, prepare them and add them to difficultyView as well as to levelButtons:
 			let anglePerButton = M_PI * 2 / Double(nButtons)
@@ -287,8 +269,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				buttonsForThisDifficulty.append(button)
 				
 				// todo cleanup
-				button.addTarget(self, action: "levelButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+				button.addTarget(self, action: "levelButtonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
 			}
+			
+			levelButtons[difficulty] = buttonsForThisDifficulty
 			
 			
 			// Add the view:
@@ -416,32 +400,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
     
     // MARK: - Actions
-    
-    func tempPlayButtonPressed(sender: UIButton!)
-    {
-
-        self.currentGame.gameState = GameState.LookingForMatch
-        
-        switch sender
-        {
-            case self.tempPlayButtonEasy: self.currentGame.currentDifficulty = Difficulty.Beginner
-            case self.tempPlayButtonAdvanced: self.currentGame.currentDifficulty = Difficulty.Advanced
-            case self.tempPlayButtonExpert: self.currentGame.currentDifficulty = Difficulty.Expert
-            default: println("Non-existing button was pressed. Are you a magician?")
-        }
-        
-        self.currentGame.indexUpcomingLevel = 0;
-        
-        if (!kDevLocalTestingIsOn) {
-            self.requestMatch()
-            
-        } else {
-            
-            //Skip the whole matchmaking process and start playing immediately
-            startPlayingMatch()
-        }        
-    }
-	
+		
 	func swipeLeftRecognized() {
 		if indexCurrentDifficultyLevel < difficultiesInOrder().count - 1 {
 			self.indexCurrentDifficultyLevel++
@@ -458,12 +417,62 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		}
 	}
 	
-	func levelButtonTapped() {
+	func levelButtonPressed(sender: UIButton) {
+		// Find out which level button was pressed, to which difficulty level it belongs and which index it has within that difficulty:
+		var difficultyPressedButton: Difficulty?
+		var indexButtonPressed: Int?
+		for (difficulty, buttons) in levelButtons {
+			for i in 0 ... buttons.count - 1 {
+				let button = buttons[i]
+				if button === sender {
+					difficultyPressedButton = difficulty
+					indexButtonPressed = i
+				}
+			}
+		}
+		
+		// If we don't know the level and index, log a warning and return:
+		if difficultyPressedButton == nil || indexButtonPressed == nil {
+			println("WARNING in levelButtonPressed: We don't know which button is the sender!")
+			return
+		}
+		
+		// Note that we don't check whether the difficulty and specific level are already available, we assume that the corresponding buttons are disabled.
+		
+		
+		self.currentGame.gameState = GameState.LookingForMatch
+		
+		switch difficultyPressedButton!
+		{
+		case Difficulty.Beginner:
+			self.currentGame.currentDifficulty = Difficulty.Beginner
+			self.currentGame.indexUpcomingLevel = indexButtonPressed!
+		case Difficulty.Advanced:
+			self.currentGame.currentDifficulty = Difficulty.Advanced
+			self.currentGame.indexUpcomingLevel = 0 // irrelevant
+		case Difficulty.Expert:
+			self.currentGame.currentDifficulty = Difficulty.Expert
+			self.currentGame.indexUpcomingLevel = 0 // irrelevant
+		default:
+			println("WARNING in levelButtonPressed: we don't know what to do with this difficulty.")
+		}
+		
+		if (!kDevLocalTestingIsOn) {
+			self.requestMatch()
+			
+		} else {
+			
+			//Skip the whole matchmaking process and start playing immediately
+			startPlayingMatch()
+		}
+		
+		
+		
 		// temp!!
-		currentGame.highestAvailableDifficulty = Difficulty.Advanced
-		currentGame.nCompletedLevels[Difficulty.Beginner] = 9
-		currentGame.nCompletedLevels[Difficulty.Advanced] = 3
-		currentGame.storeProgress()
+//		currentGame.highestAvailableDifficulty = Difficulty.Advanced
+//		currentGame.nCompletedLevels[Difficulty.Beginner] = 9
+//		currentGame.nCompletedLevels[Difficulty.Advanced] = 3
+//		currentGame.storeProgress()
 	}
 	
 	func infoButtonPressed() {

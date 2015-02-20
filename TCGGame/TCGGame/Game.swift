@@ -76,8 +76,6 @@ class Game: NSObject
 		let maxAvailableDifficultyAsInt = kDevFakeMaxAvailableDifficultyAsInt != nil ? kDevFakeMaxAvailableDifficultyAsInt! : getIntPreference(kKeyOfPreference_maxAvailableDifficultyAsInt, 0)
 		self.highestAvailableDifficulty = difficultiesInOrder()[maxAvailableDifficultyAsInt]
 		
-		println("self.highestAvailableDifficulty = \(self.highestAvailableDifficulty!.description())")
-
 		// The number of finished levels per difficulty:
 		self.nCompletedLevels[Difficulty.Beginner] = kDevFakeNumberOfFinishedLevelsBeginner != nil ? kDevFakeNumberOfFinishedLevelsBeginner! : getIntPreference(kKeyOfPreference_numberOfFinishedLevelsBeginner, 0)
         self.nCompletedLevels[Difficulty.Advanced] = kDevFakeNumberOfFinishedLevelsAdvanced != nil ? kDevFakeNumberOfFinishedLevelsAdvanced! : getIntPreference(kKeyOfPreference_numberOfFinishedLevelsAdvanced, 0)
