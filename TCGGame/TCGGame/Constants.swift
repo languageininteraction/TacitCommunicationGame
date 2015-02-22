@@ -103,7 +103,9 @@ let kColorMoveButtons = kColorLiIOrange
 let kColorRotateButtons = kColorLiIYellow
 
 // Level button colors in home screen:
-let kColorLockedLevels = kColorLiIYellow
+let kColorLockedLevelsBeginner = kColorLiIYellow
+let kColorLockedLevelsAdvanced = kColorLiILila
+let kColorLockedLevelsExpert = kColorLiIBordeaux
 let kColorUnlockedLevels = kColorLiIDarkGreen
 
 // Animations:

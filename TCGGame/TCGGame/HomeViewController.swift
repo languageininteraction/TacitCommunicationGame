@@ -245,6 +245,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			// todo explain
 			var buttonsForThisDifficulty = [UIButton]()
 			
+			let colorLockedLevels = difficulty == Difficulty.Beginner ? kColorLockedLevelsBeginner : difficulty == Difficulty.Advanced ? kColorLockedLevelsAdvanced : difficulty == Difficulty.Expert ? kColorLockedLevelsExpert : UIColor.blackColor()
+			
 			// Create the buttons, prepare them and add them to difficultyView as well as to levelButtons:
 			let anglePerButton = M_PI * 2 / Double(nButtons)
 			for indexButton in 0 ... nButtons - 1 {
@@ -257,7 +259,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				// temp:
 //				button.backgroundColor = UIColor.greenColor()
 				
-				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: kColorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
+				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: colorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
 				
 				// temp:
 				button.enabled = difficultyIsUnlocked && indexButton <= numberOfFinishedLevels
@@ -379,7 +381,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			
 			// Draw a circle around it:
-			CGContextSetStrokeColorWithColor(context, (disabled ? kColorLockedLevels : kColorUnlockedLevels).CGColor)
+			CGContextSetStrokeColorWithColor(context, (disabled ? lineColorWhenLocked : kColorUnlockedLevels).CGColor)
 			CGContextSetLineWidth(context, 1.5 * scaleFactor)
 			let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
 			CGContextAddPath(context, circlePath)
