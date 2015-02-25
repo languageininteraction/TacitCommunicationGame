@@ -775,8 +775,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Prepare progressView:
 		progressView.performChangesWithoutAnimating { () -> () in
-			self.progressView.fractionFullLeftPart = 0
-			self.progressView.fractionFullRightPart = 0
+			self.progressView.fractionFullLeftPart = 0 // temp, should be 0!
+			self.progressView.fractionFullRightPart = 0 // temp, should be 0!
 			self.progressView.strokeColorLeftPart = kColorProgressAtStart
 			self.progressView.strokeColorRightPart = kColorProgressAtStart
 		}

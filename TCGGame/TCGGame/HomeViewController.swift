@@ -468,7 +468,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		// Note that we don't check whether the difficulty and specific level are already available, we assume that the corresponding buttons are disabled.
 		
-		
 		self.currentGame.gameState = GameState.LookingForMatch
 		
 		switch difficultyPressedButton!
@@ -488,20 +487,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		if (!kDevLocalTestingIsOn) {
 			self.requestMatch()
-			
 		} else {
-			
-			//Skip the whole matchmaking process and start playing immediately
+			// Skip the whole matchmaking process and start playing immediately:
 			startPlayingMatch()
 		}
-		
-		
-		
-		// temp!!
-//		currentGame.highestAvailableDifficulty = Difficulty.Advanced
-//		currentGame.nCompletedLevels[Difficulty.Beginner] = 9
-//		currentGame.nCompletedLevels[Difficulty.Advanced] = 3
-//		currentGame.storeProgress()
 	}
 	
 	func infoButtonPressed() {
@@ -625,21 +614,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
 			let height = kOlderThanIOS8 ? self.view.frame.size.width : self.view.frame.size.height
 			
-            //Start the game
-            if self.levelViewController!.currentLevel == nil
-            {
+            // Start the game:
+            if self.levelViewController!.currentLevel == nil {
                 self.currentGame.currentLevel = (unpackedObject as Level)
                 self.levelViewController!.currentLevel = self.currentGame.currentLevel
                 
                 // Add our levelViewController's view:
-                self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-                self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
-				viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation
-            }
-            
-            //Go to the next level
-            else
-            {
+				gotoLevelScreen(animateFromLevelButton: true)
+			} else {
+				// Go to the next level:
 				CATransaction.begin()
 				CATransaction.setCompletionBlock({ () -> Void in
 					self.currentGame.currentLevel = (unpackedObject as Level)
@@ -743,16 +726,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         if (!kDevLocalTestingIsOn) { // normal case
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
-            
-            // todo: UI should be ready before it is shown; we can solve this once we do the match making in another vc:
-            //restartLevel()
         }
 
-        //Create the LevelViewController
+        // Create the LevelViewController:
         self.levelViewController = LevelViewController()
         self.levelViewController!.setSuperController(self)
 
-        //The custom send functions for the levelviewcontroller
+        // The custom send functions for the levelviewcontroller:
         func sendActionToOther(action :RoundAction)
         {
             let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
@@ -771,14 +751,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             }
         }
         
-        //Give info to the levelViewController
+        // Give info to the levelViewController:
         self.levelViewController!.sendActionToOther = sendActionToOther
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
-        //Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
-        //This part will be done by the other player once he receives the level
-        if self.weMakeAllDecisions!
-        {
+        // Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
+        // This part will be done by the other player once he or she receives the level:
+        if self.weMakeAllDecisions! {
             self.currentGame.gameState = GameState.PreparingLevel
             
             self.currentGame.goToUpcomingLevel()
@@ -786,15 +765,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                         
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
                     
-            // Add our levelViewController's view:
-            self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-            self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
-			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation
-            
+			// Add our levelViewController's view:
+			gotoLevelScreen(animateFromLevelButton: true)
+			
             self.currentGame.gameState = GameState.PlayingLevel
-        }
-        else if self.currentGame.gameState == GameState.LookingForMatch
-        {
+        } else if self.currentGame.gameState == GameState.LookingForMatch {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
     }
@@ -823,13 +798,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
     }
     
-    func sendLevelToOther(level :Level)
-    {
+    func sendLevelToOther(level :Level) {
         let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
-        
-        // test sending a small package:
-        //		var hashValue = 2
-        //		let packet = NSData(bytes:&hashValue, length:4) // todo check length!
         
         if (!kDevLocalTestingIsOn) { // normal case
             var error: NSError?
@@ -844,4 +814,91 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
         }
     }
+	
+	func gotoLevelScreen(#animateFromLevelButton: Bool) {
+		// todo explain
+	/*	if animateFromLevelButton {
+
+			// Insert self.levelViewController!.view, but keep it invisible at first, because we'll animate its opacity to make it appear:
+			self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+			self.levelViewController!.view.layer.opacity = 0
+			self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+			
+			//
+//			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0.5
+			
+			// Get the button from which to… todo explain
+			println("currentGame.currentDifficulty = \(currentGame.currentDifficulty)")
+			println("currentGame.indexUpcomingLevel = \(currentGame.indexUpcomingLevel)")
+			
+			let levelButtonsOfCurrentDifficulty = levelButtons[difficultiesInOrder()[indexCurrentDifficultyLevel]]!
+			let levelButton = levelButtonsOfCurrentDifficulty[currentGame.indexUpcomingLevel]
+			
+			
+			// Calculate transform to… todo explain
+			
+			//
+			let frameButtonWRTUs = self.view.convertRect(levelButton.frame, fromView: levelButton.superview)
+			let frameProgressShapeWRTUs = self.view.convertRect(levelViewController!.progressView.shapeLayerLeftPart.frame, fromView: levelViewController?.progressView)   // left or right doesn't matter
+			let centerButtonWRTUs = CGPointMake(frameButtonWRTUs.origin.x + 0.5 * frameButtonWRTUs.width, frameButtonWRTUs.origin.y + 0.5 * frameButtonWRTUs.height)
+			let centerProgressShapeWRTUse = CGPointMake(frameProgressShapeWRTUs.origin.x + 0.5 * frameProgressShapeWRTUs.width, frameProgressShapeWRTUs.origin.y + 0.5 * frameProgressShapeWRTUs.height)
+			
+			// Translation:
+			let transformTranslation = CATransform3DMakeTranslation(centerButtonWRTUs.x - centerProgressShapeWRTUse.x, centerButtonWRTUs.y - centerProgressShapeWRTUse.y, 0)
+			
+			// Scale:
+			let scale = frameButtonWRTUs.width / frameProgressShapeWRTUs.width
+			let transformScale = CATransform3DMakeScale(scale, scale, 1)
+			
+//			let animationCenterY = centerProgressShapeWRTUse.y + kAmountYOfBoardViewLowerThanCenter
+			
+//			levelViewController!.view.layer.anchorPoint = CGPointMake(0.5, animationCenterY / frameProgressShapeWRTUs.height)
+			
+			let fromTransformLevelScreen = CATransform3DConcat(transformScale, transformTranslation)
+			let toTransformHomeScreen = CATransform3DInvert(fromTransformLevelScreen)
+			
+			
+			CATransaction.begin()
+			CATransaction.setAnimationDuration(1)
+			
+			// Opacity level vc:
+			let animationOpacityLevel = CABasicAnimation(keyPath: "opacity")
+			animationOpacityLevel.fromValue = 0
+			animationOpacityLevel.toValue = 1
+			levelViewController!.view.layer.addAnimation(animationOpacityLevel, forKey: "opacity")
+			levelViewController!.view.layer.opacity = 1
+			
+			// Opacity viewWithWhatSometimesBecomesVisibleWhenPlayingLevels:
+			let animationOpacityOverview = CABasicAnimation(keyPath: "opacity")
+			animationOpacityOverview.fromValue = 1
+			animationOpacityOverview.toValue = 0
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.addAnimation(animationOpacityOverview, forKey: "opacity")
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
+			
+			// Transform level vc:
+			let animationTransformLevel = CABasicAnimation(keyPath: "transform")
+			animationTransformLevel.fromValue = NSValue(CATransform3D: fromTransformLevelScreen)
+			animationTransformLevel.toValue = NSValue(CATransform3D: CATransform3DIdentity)
+			levelViewController!.view.layer.addAnimation(animationTransformLevel, forKey: "transform")
+			
+			// Transform viewWithWhatSometimesBecomesVisibleWhenPlayingLevels:
+			let animationTransformOverview = CABasicAnimation(keyPath: "transform")
+			animationTransformOverview.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+			animationTransformOverview.toValue = NSValue(CATransform3D: toTransformHomeScreen)
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.addAnimation(animationTransformOverview, forKey: "transform")
+			
+			CATransaction.commit()
+			
+		} else {*/
+			self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+			self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation?
+//		}
+	}
 }
+
+
+
+
+
+
