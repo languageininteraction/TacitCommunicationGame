@@ -70,7 +70,7 @@ class RoundState: NSObject, NSCopying {
 	var player2messedUp = false
 	var roundResult: RoundResult = RoundResult.MaySucceed {
 		didSet {
-			// If the round has failed, the players can no longer do anything except retyr or go back to the home screen:
+			// If the round has failed, the players can no longer do anything except retry or go back to the home screen:
 			if roundResult == RoundResult.Failed {
 				selectedItemTypePlayer1 = nil
 				selectedItemTypePlayer2 = nil
@@ -228,6 +228,10 @@ class RoundState: NSObject, NSCopying {
 	
 	func playerMessedUp(aboutPawn1: Bool) -> Bool {
 		return aboutPawn1 ? player1messedUp : player2messedUp
+	}
+	
+	func playerIsReadyToFinish(aboutPawn1: Bool) -> Bool {
+		return aboutPawn1 ? player1isReadyToFinish : player2isReadyToFinish
 	}
 	
 	func selectedItemForPlayer(aboutPawn1: Bool) -> ItemDefinition? {

@@ -51,6 +51,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	// The board:
 	var boardView = BoardView(edgelength: 0)
 	
+	// The progress view:
+	var progressView: ProgressView!
+	
 	// The movement buttons:
 	let buttonToMoveEast = UIButton()
 	let buttonToMoveSouth = UIButton()
@@ -144,6 +147,15 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		boardView.frame = CGRectMake(CGFloat(0.5) * (widthScreen - CGFloat(kBoardEdgeLength)), CGFloat(0.5) * (heightScreen - CGFloat(kBoardEdgeLength)) + kAmountYOfBoardViewLowerThanCenter, CGFloat(kBoardEdgeLength), CGFloat(kBoardEdgeLength)) // really?
 		self.view.addSubview(boardView)
         boardView.backgroundColor = UIColor.whiteColor()// UIColor(red:0, green:0, blue:1, alpha:0.05) // just for testing
+		
+		// Prepare progressView:
+		progressView = ProgressView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
+		progressView.performChangesWithoutAnimating { () -> () in
+			self.progressView.strokeColorLeftPart = kColorProgressAtStart
+			self.progressView.strokeColorRightPart = kColorProgressAtStart
+		}
+		self.view.addSubview(progressView)
+		
 
 		
 		// MARK: 2. Players' info has been moved to HomeViewController!
@@ -475,6 +487,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			let otherMessedUp = currentState.playerMessedUp(!weArePlayer1)
 			boardView.showResultForPosition(currentState.positionOfPawn(!weArePlayer1), resultIsGood: !otherMessedUp)
 			
+			// Update the progresView correspondingly:
+			updateProgressViewAsAResultOfPlayerFinishingOrRetrying(aboutLocalPlayer: false)
+			
 			updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 			
             if currentState.roundResult == RoundResult.Succeeded
@@ -496,6 +511,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			// If both players chose to retry, retry the level (todo Wessel: new randomness):
 			if currentState.playerChoseToRetry(weArePlayer1) && currentState.playerChoseToRetry(!weArePlayer1) {
 				self.restartLevel()
+			} else {
+				updateProgressViewAsAResultOfPlayerFinishingOrRetrying(aboutLocalPlayer: false)
 			}
         case .QuitPlaying:
             self.showAlertAndGoToHomeScreen(title:"Zo alleen...",message:"Je teamgenoot heeft het spel verlaten. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
@@ -597,6 +614,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		let weMessedUp = currentRound!.currentState().playerMessedUp(weArePlayer1)
 		boardView.showResultForPosition(currentState.positionOfPawn(weArePlayer1), resultIsGood: !weMessedUp)
 		
+		// Update the progresView correspondingly:
+		updateProgressViewAsAResultOfPlayerFinishingOrRetrying(aboutLocalPlayer: true)
+		
+		
 		// The move and rotate buttons should no longer be shown and no field view should be inflated:
 		updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
 		boardView.coordsOfInflatedField = (-1, -1)
@@ -642,11 +663,12 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			// todo explain
 			updateUIOfItems()
 			updateAvailabilityAndPositionOfViewWithMoveAndRotateButtons()
+			updateProgressViewAsAResultOfPlayerFinishingOrRetrying(aboutLocalPlayer: true)
 		}
 	}
 	
 	func homeButtonPressed(sender:UIButton!) {
-        var action = RoundAction(type: RoundActionType.QuitPlaying, performedByPlayer1: weArePlayer1)
+		var action = RoundAction(type: RoundActionType.QuitPlaying, performedByPlayer1: weArePlayer1)
         
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
         self.sendActionToOther!(action)
@@ -750,6 +772,14 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		labelLevel.text = "\(self.currentLevel!.name)"
 
 		self.boardView.boardSize = (self.currentLevel!.board.width, self.currentLevel!.board.height) // todo use tuple in board as weel
+		
+		// Prepare progressView:
+		progressView.performChangesWithoutAnimating { () -> () in
+			self.progressView.fractionFullLeftPart = 0
+			self.progressView.fractionFullRightPart = 0
+			self.progressView.strokeColorLeftPart = kColorProgressAtStart
+			self.progressView.strokeColorRightPart = kColorProgressAtStart
+		}
 		
 		
 		// Add pawns to the board view:
@@ -1009,6 +1039,32 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Whenever our see item is selected, make the board look different:
 		boardView.fieldsAreSlightlyRotated = buttonSeeItem.selected
+	}
+	
+	func updateProgressViewAsAResultOfPlayerFinishingOrRetrying(#aboutLocalPlayer: Bool) {
+		if aboutLocalPlayer {
+			let makeRed = currentRound!.currentState().playerMessedUp(weArePlayer1) || currentRound!.currentState().playerChoseToRetry(weArePlayer1)
+			progressView.performChangesWithCompletionClosure({ () -> () in
+				self.progressView.strokeColorRightPart = makeRed ? kColorProgressFailure : kColorProgressSuccess
+				self.progressView.fractionFullRightPart = 1
+				}, completion: { () -> () in
+					// If the other player already finished correctly but the local player messed up, color the other player's half red as well:
+					if makeRed && self.currentRound!.currentState().playerIsReadyToFinish(!self.weArePlayer1) {
+						self.progressView.strokeColorLeftPart = kColorProgressFailure
+					}
+			})
+		} else {
+			let makeRed = currentRound!.currentState().playerMessedUp(!weArePlayer1) || currentRound!.currentState().playerChoseToRetry(!weArePlayer1)
+			progressView.performChangesWithCompletionClosure({ () -> () in
+				self.progressView.strokeColorLeftPart = makeRed ? kColorProgressFailure : kColorProgressSuccess
+				self.progressView.fractionFullLeftPart = 1
+				}, completion: { () -> () in
+					// If the local player already finished correctly but the other messed up, color the local player's half red as well:
+					if makeRed && self.currentRound!.currentState().playerIsReadyToFinish(self.weArePlayer1) {
+						self.progressView.strokeColorRightPart = kColorProgressFailure
+					}
+			})
+		}
 	}
 	
 	func animateLeavingTheLevel() {

@@ -180,6 +180,7 @@
 		48C3C2D31A695EA1007FBF04 /* Icon_Up 70x70@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */; };
 		48C4A0B51A97A41A0034D878 /* Info 24x24.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C4A0B31A97A41A0034D878 /* Info 24x24.png */; };
 		48C4A0B61A97A41A0034D878 /* Info 24x24@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */; };
+		48CC18791A9DCF6700892CAD /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CC18781A9DCF6700892CAD /* ProgressView.swift */; };
 		48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB51A48A91B0072524E /* SmallCheckMark.png */; };
 		48D19EB81A48A91B0072524E /* SmallCross.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB61A48A91B0072524E /* SmallCross.png */; };
 		48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */; };
@@ -498,6 +499,7 @@
 		48C3C2BB1A695EA1007FBF04 /* Icon_Up 70x70@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Up 70x70@2x.png"; sourceTree = "<group>"; };
 		48C4A0B31A97A41A0034D878 /* Info 24x24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info 24x24.png"; sourceTree = "<group>"; };
 		48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info 24x24@2x.png"; sourceTree = "<group>"; };
+		48CC18781A9DCF6700892CAD /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		48D19EB51A48A91B0072524E /* SmallCheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCheckMark.png; sourceTree = "<group>"; };
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
 		48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on RU.rtf"; sourceTree = "<group>"; };
@@ -731,6 +733,7 @@
 				4856E5891A24908100309751 /* BoardView.swift */,
 				4856E58B1A24953800309751 /* FieldView.swift */,
 				4847D8141A24D99400540223 /* PawnView.swift */,
+				48CC18781A9DCF6700892CAD /* ProgressView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1524,6 +1527,7 @@
 				482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */,
 				4856E58C1A24953800309751 /* FieldView.swift in Sources */,
 				4847D8151A24D99400540223 /* PawnView.swift in Sources */,
+				48CC18791A9DCF6700892CAD /* ProgressView.swift in Sources */,
 				4812E6311A0A6B77006DED82 /* RoundState.swift in Sources */,
 				49E83DAE1A272293006952EE /* ItemDefinition.swift in Sources */,
 				4812E60E1A0A655A006DED82 /* ViewController.swift in Sources */,

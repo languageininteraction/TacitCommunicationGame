@@ -17,7 +17,7 @@ let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", opt
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
@@ -53,7 +53,7 @@ let kSpaceBetweenFaceAndTopItemButton: CGFloat = 28 * kDefaultScaling
 let kEdgelengthItemButtons: CGFloat = kOnPhone ? 40 : 60 * kDefaultScaling
 let kSpaceBetweenItemButtons: CGFloat = 20 * kDefaultScaling
 let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
-let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 120 * kDefaultScaling
+let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 160 * kDefaultScaling // use to be 120
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
@@ -108,10 +108,18 @@ let kColorLockedLevelsAdvanced = kColorLiILila
 let kColorLockedLevelsExpert = kColorLiIBordeaux
 let kColorUnlockedLevels = kColorLiIDarkGreen
 
-// Animations:
+// Colors progress view:
+let kColorProgressAtStart = UIColor(white: 0.85, alpha: 1)
+let kColorProgressSuccess = UIColor(red:0.0/255.0, green:132.0/255.0, blue:120.0/255.0, alpha:0.5)
+let kColorProgressFailure = UIColor(red:232.0/255.0, green:68.0/255.0, blue:39.0/255.0, alpha:1)
+
+// Animations board and pawns:
 let kAnimationDurationMovePawn: NSTimeInterval = 0.3
 let kAnimationDurationRotatePawn: NSTimeInterval = 0.3
 let kAnimationDurationSlightlyRotatingFieldsOfBoard: NSTimeInterval = 0.5
+
+// Animations progress view:
+let kAnimationDurationProgressChange: NSTimeInterval = 1.5
 
 
 

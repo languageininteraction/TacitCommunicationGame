@@ -13,6 +13,8 @@ protocol ManageMultipleHomeViewControllersProtocol {
     func sendMessageForHomeViewController(homeVC: HomeViewController, packet: NSData)
 }
 
+let kTagViewToRegisterTapsInDifficultyView = 186 // just something unlikely
+
 class HomeViewController: UIViewController, PassControlToSubControllerProtocol, GKMatchmakerViewControllerDelegate, GKMatchDelegate
 {
     // MARK: - Declaration of properties
@@ -93,6 +95,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				animationOpacity.toValue = toValueOpacity
 				difficultyView.layer.addAnimation(animationOpacity, forKey: "opacity")
 				difficultyView.layer.opacity = toValueOpacity
+				
+				// Update .. todo explain
+				if let viewToRegisterTaps = difficultyView.viewWithTag(kTagViewToRegisterTapsInDifficultyView)? {
+					viewToRegisterTaps.hidden = i == indexCurrentDifficultyLevel
+				}
 			}
 			
 			CATransaction.commit()
@@ -191,13 +198,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(pageControl)
 		
 		
-		// Add gesture recognizers to swipe between difficulty levels:
-		let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeLeftRecognized")
-		swipeLeftRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-		self.view.addGestureRecognizer(swipeLeftRecognizer)
-		let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeRightRecognized")
-		swipeRightRecognizer.direction = UISwipeGestureRecognizerDirection.Right
-		self.view.addGestureRecognizer(swipeRightRecognizer)
+		// Add gesture recognizers to swipe between difficulty levels, unless kDevLocalTestingIsOn is true, because in that case these gestures intervere with gestures we use to change SimulateTwoHomeViewControllers's perspective:
+		if !kDevLocalTestingIsOn {
+			let swipeLeftRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeLeftRecognized")
+			swipeLeftRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+			self.view.addGestureRecognizer(swipeLeftRecognizer)
+			let swipeRightRecognizer = UISwipeGestureRecognizer(target: self, action: "swipeRightRecognized")
+			swipeRightRecognizer.direction = UISwipeGestureRecognizerDirection.Right
+			self.view.addGestureRecognizer(swipeRightRecognizer)
+		}
 
 		
 		// Prepare each difficulty view:
@@ -276,6 +285,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			levelButtons[difficulty] = buttonsForThisDifficulty
 			
+			// Add a view on top to register taps, so the user can also switch between difficulties by tapping; this view is hidden when the difficultyView is of the selected difficulty; it also blocks button presses within the difficultyView when it's not the current difficulty:
+			let viewToRegisterTaps = UIView(frame: CGRectMake(0, 0, difficultyView.frame.size.width, difficultyView.frame.size.height))
+			viewToRegisterTaps.backgroundColor = nil
+			let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapOnDifficultyViewRecognized:")
+			viewToRegisterTaps.addGestureRecognizer(tapRecognizer)
+			difficultyView.addSubview(viewToRegisterTaps)
+			viewToRegisterTaps.tag = kTagViewToRegisterTapsInDifficultyView
+			viewToRegisterTaps.hidden = indexDifficulty == 0
+			
 			
 			// Add the view:
 			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.addSubview(difficultyView)
@@ -285,8 +303,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			difficultyView.layer.opacity = self.opacityForDifficultyViewAt(index: indexDifficulty)
             
             //Authenticate the player
-            if (!kDevLocalTestingIsOn)
-            {
+            if (!kDevLocalTestingIsOn) {
                 self.authenticateLocalPlayer()
             }
         }
@@ -416,6 +433,16 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			self.indexCurrentDifficultyLevel--
 		} else {
 			bounce(directionLeft: false)
+		}
+	}
+	
+	func tapOnDifficultyViewRecognized(recognizer: UITapGestureRecognizer) {
+		let pressedDifficultyView = recognizer.view!.superview!
+		for i in 0 ... difficultyViews.count {
+			if pressedDifficultyView === difficultyViews[difficultiesInOrder()[i]] {
+				self.indexCurrentDifficultyLevel = i
+				break
+			}
 		}
 	}
 	
