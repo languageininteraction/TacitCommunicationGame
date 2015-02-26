@@ -159,7 +159,6 @@ class RoundState: NSObject, NSCopying {
 		case .SwitchWhetherGiveItemIsEnabled: // MARK: Action .SwitchWhetherGiveItemIsEnabled
 			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.Give ? nil : ItemType.Give
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
-			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
 			
 		case .GiveMoveItem, .GiveSeeItem: // MARK: Actions .GiveMoveItem and .GiveSeeItem
 			// For the given item, the giver doesn't have uses left and the receiver's number of uses is increased:
@@ -168,6 +167,8 @@ class RoundState: NSObject, NSCopying {
 			let itemOfReceiver = nextState.itemOfTypeForPlayer(!action.performedByPlayer1, itemType: itemType)!
 			itemOfReceiver.updateNrUsesAsAResultOfReceivingAnItem(itemOfGiver)
 			itemOfGiver.updateNrUsesAsAResultOfGivingTheItemToTheOtherPlayer()
+			
+			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
 			
 			// The giver no longer has his or her give item selected:
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nil)

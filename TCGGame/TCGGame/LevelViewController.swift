@@ -472,9 +472,15 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			
 			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
 			self.updateWhichMoveAndRotateButtonsAreVisible()
+
+			// Update number of uses left:
+			updateUIOfItems()
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1), animated: true)
+			
+			// Update number of uses left:
+			updateUIOfItems()
 		case .SwitchWhetherMoveItemIsEnabled, .SwitchWhetherSeeItemIsEnabled, .SwitchWhetherGiveItemIsEnabled:
 			updateUIOfItems()
 		case .GiveMoveItem, .GiveSeeItem:
