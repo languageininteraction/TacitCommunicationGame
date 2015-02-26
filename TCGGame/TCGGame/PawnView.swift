@@ -18,7 +18,7 @@ enum PawnViewStyle: Int {
 class PawnView: UIView {
 	
 	// Model:
-	let pawnDefinition: PawnDefinition
+	var pawnDefinition: PawnDefinition
 	var style: PawnViewStyle = PawnViewStyle.Normal {
 		didSet {
 			// Update which shapeLayers are shown:

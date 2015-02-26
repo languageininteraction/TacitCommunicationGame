@@ -60,8 +60,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	// todo reorganize here
 	let nameLabelLocalPlayer = UILabel()
 	let nameLabelOtherPlayer = UILabel()
-	let pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorLocalPlayer)) // todo rename constant kEdgelengthFaces
-	let pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorOtherPlayer)) // todo rename constant kEdgelengthFaces
+	var pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorLocalPlayer)) // todo rename constant kEdgelengthFaces
+	var pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorOtherPlayer)) // todo rename constant kEdgelengthFaces
 	
 	// todo reorganize; new approach with swiping between difficulty levels
 	let pageControl = UIPageControl()
@@ -603,8 +603,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
 				self.currentGame.goToNextLevel()
 				self.sendLevelToOther(self.currentGame.currentLevel!);
-				
-				self.makeLevelVCGoToTheNewCurrentLevel()
+                self.updatePawnIcons();
+                
+                self.makeLevelVCGoToTheNewCurrentLevel()
 				
 				self.currentGame.gameState = GameState.PlayingLevel
 			})
@@ -664,8 +665,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 // Add our levelViewController's view:
 				gotoLevelScreen(animateFromLevelButton: true)
 			} else {
+                
 				// Go to the next level:
 				self.currentGame.currentLevel = (unpackedObject as Level)
+                self.updatePawnIcons()
 				self.makeLevelVCGoToTheNewCurrentLevel()
             }
             
@@ -819,6 +822,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
                     
 			// Add our levelViewController's view:
+            self.updatePawnIcons()
 			gotoLevelScreen(animateFromLevelButton: true)
 			
             self.currentGame.gameState = GameState.PlayingLevel
@@ -941,6 +945,21 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		CATransaction.commit()
 	}
 	
+    func updatePawnIcons()
+    {
+        self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
+        self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
+        
+        println("Updating pawn icons")
+        self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer1.shape, color: kColorLocalPlayer))
+        self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer2.shape, color: kColorOtherPlayer))
+        
+        pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+        pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+        
+        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
+        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
+    }
 	
 	func gotoLevelScreen(#animateFromLevelButton: Bool) {
 		// todo explain
