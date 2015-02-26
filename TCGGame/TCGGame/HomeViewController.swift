@@ -23,6 +23,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     var currentGame = Game()
     var levelViewController : LevelViewController?
+	let infoViewController = InfoViewController()
     
     //GameKit variables
     var GCMatch: GKMatch?
@@ -494,7 +495,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
 	func infoButtonPressed() {
-		println("todo infoButtonPressed")
+//		self.infoViewController.scrollToTop // todo
+		self.infoViewController.modalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+		self.presentViewController(infoViewController, animated: true, completion: nil)
 	}
 	
 	
