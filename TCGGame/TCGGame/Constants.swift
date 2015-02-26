@@ -60,6 +60,7 @@ let kMaxNameLength: Int = 25
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
 let kMainFontNameSemiBold = "OpenSans-Semibold"
+let kMainFontNameRegular = "OpenSans-Regular"
 let kFontPlayerNames = UIFont(name: kMainFontNameSemiBold, size: kOnPhone ? 16 : 24)
 let kFontLevel = UIFont(name: kMainFontNameSemiBold, size: 24 * kDefaultScaling)
 let kFontAttributeInfinity = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)

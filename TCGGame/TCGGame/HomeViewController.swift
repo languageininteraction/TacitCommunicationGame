@@ -238,14 +238,30 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			difficultyView.frame = frameDifficultyViews
 			difficultyView.backgroundColor = UIColor.clearColor()
 			
+			// added later, todo cleanup:
+			let amountHigherBecauseOfExplanation: CGFloat = difficulty == Difficulty.Expert ? 0 : 50 // messy, todo make dependent on text of labelExplanation
+			
 			// Add a label which describes the difficulty in the center:
 			let label = UILabel()
 			label.font = kFontDifficulty
 			label.text = difficulty.description()
 			label.textAlignment = NSTextAlignment.Center
 			let widthLabel: CGFloat = 200, heightLabel: CGFloat = 100 // todo
-			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabel), 0.5 * (frameDifficultyViews.height - heightLabel), widthLabel, heightLabel)
+			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabel), 0.5 * (frameDifficultyViews.height - heightLabel) - amountHigherBecauseOfExplanation, widthLabel, heightLabel)
 			difficultyView.addSubview(label)
+			
+			// added later, todo cleanup and explain:
+			let labelExplanation = UILabel()
+			labelExplanation.numberOfLines = 0
+			labelExplanation.font = UIFont(name: kMainFontNameRegular, size: 15 * kDefaultScaling) // todo
+			labelExplanation.textColor = UIColor(white: 0.5, alpha: 1)
+			labelExplanation.text = difficulty == Difficulty.Beginner ? "Om Tic Tac Team te spelen heb je een teamgenoot nodig. Druk op dezelfde knop als een andere speler en jullie komen bij elkaar in het team!" :
+				difficulty == Difficulty.Advanced ? "De Gevorderde levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." :
+				difficulty == Difficulty.Expert ? nil : nil
+			labelExplanation.textAlignment = NSTextAlignment.Center
+			let widthLabelExplanation: CGFloat = 300, heightLabelExplanation: CGFloat = 200 // todo
+			labelExplanation.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabelExplanation), label.frame.origin.y + 80 - amountHigherBecauseOfExplanation, widthLabelExplanation, heightLabelExplanation)
+			difficultyView.addSubview(labelExplanation)
 			
 			
 			// Create and add level buttons:
