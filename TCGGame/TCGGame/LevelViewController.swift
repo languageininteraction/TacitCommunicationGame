@@ -48,7 +48,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
     
     var ownAlias: String = "Developer Wessel"
     var aliasOtherPlayer: String = "Developer Jop"
-    
+	
+	
 	// MARK: - Other UI
 	
 	// The board:
@@ -835,9 +836,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		// Update the UI of the items, such as which item buttons are visible, which items are available and how often, etc. We make buttons that were hidden before and that become visible now pulse, in order to draw the user's attention to it. This pulsation is stopped as soon as the button is pressed (or when the user goes to the next level):
 		let moveButtonWasHidden = buttonMoveItem.hidden, seeItemWasHIdden = buttonSeeItem.hidden, giveItemWasHidden = buttonGiveItem.hidden
 		self.updateUIOfItems()
-		buttonMoveItem.setLayerPulsates(moveButtonWasHidden && !buttonMoveItem.hidden)
-		buttonSeeItem.setLayerPulsates(seeItemWasHIdden && !buttonSeeItem.hidden)
-		buttonGiveItem.setLayerPulsates(giveItemWasHidden && !buttonGiveItem.hidden)
+		buttonMoveItem.setLayerPulsates(moveButtonWasHidden && !buttonMoveItem.hidden, scale: 1.25, duration: 0.25)
+		buttonSeeItem.setLayerPulsates(seeItemWasHIdden && !buttonSeeItem.hidden, scale: 1.25, duration: 0.25)
+		buttonGiveItem.setLayerPulsates(giveItemWasHidden && !buttonGiveItem.hidden, scale: 1.25, duration: 0.25)
 		
 		
 		// Animate the board appearing:
