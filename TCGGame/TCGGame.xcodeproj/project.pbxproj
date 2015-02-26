@@ -98,6 +98,7 @@
 		4940291D1A399ED400449754 /* beweegver.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291C1A399ED400449754 /* beweegver.json */; };
 		4940291F1A399EF200449754 /* draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291E1A399EF200449754 /* draai.json */; };
 		494029211A399F0900449754 /* beweegknop.json in Resources */ = {isa = PBXBuildFile; fileRef = 494029201A399F0900449754 /* beweegknop.json */; };
+		496805A71A9F5E8D004C5821 /* LiI header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 496805A61A9F5E8D004C5821 /* LiI header@2x.png */; };
 		496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49821A761A695C5A008CC491 /* HomeViewController.swift */; };
 		49821A7D1A696CD7008CC491 /* expert1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A7C1A696CD7008CC491 /* expert1.json */; };
@@ -214,6 +215,7 @@
 		4940291C1A399ED400449754 /* beweegver.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweegver.json; sourceTree = "<group>"; };
 		4940291E1A399EF200449754 /* draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = draai.json; sourceTree = "<group>"; };
 		494029201A399F0900449754 /* beweegknop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweegknop.json; sourceTree = "<group>"; };
+		496805A61A9F5E8D004C5821 /* LiI header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiI header@2x.png"; sourceTree = "<group>"; };
 		496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassControlBackAndForth.swift; sourceTree = "<group>"; };
 		49821A761A695C5A008CC491 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		49821A781A696C31008CC491 /* advanced1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = advanced1.json; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 		48B2C2D61A248CDF002FFEDF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				496805A61A9F5E8D004C5821 /* LiI header@2x.png */,
 				48C4A0B31A97A41A0034D878 /* Info 24x24.png */,
 				48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */,
 				48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */,
@@ -652,6 +655,7 @@
 				481F63A91A9759790007D135 /* OpenSans-ExtraBold.ttf in Resources */,
 				48C3C2D21A695EA1007FBF04 /* Icon_Up 70x70.png in Resources */,
 				48C3C2BE1A695EA1007FBF04 /* Icon_Finish 70x70.png in Resources */,
+				496805A71A9F5E8D004C5821 /* LiI header@2x.png in Resources */,
 				48C3C2BD1A695EA1007FBF04 /* Icon_Down 70x70@2x.png in Resources */,
 				48C3C2CA1A695EA1007FBF04 /* Icon_Right 70x70.png in Resources */,
 				481F63AF1A9759790007D135 /* OpenSans-Semibold.ttf in Resources */,
