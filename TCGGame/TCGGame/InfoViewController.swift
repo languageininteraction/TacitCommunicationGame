@@ -54,8 +54,8 @@ class InfoViewController: UIViewController {
 		self.view.insertSubview(gradientView, atIndex: 0)
 		gradientView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
 
-        self.backButton.setImage(UIImage(named: "SmallCross"), forState: UIControlState.Normal)
-        self.backButton.frame = CGRectMake(50, 50, 100, 100)
+        self.backButton.setImage(createColoredVersionOfUIImage(UIImage(named: "Cross 22x22")!, UIColor.whiteColor()), forState: UIControlState.Normal)
+        self.backButton.frame = CGRectMake(15, 50, 54, 54) // todo make constants; copied from WoordWolk
         self.backButton.addTarget(self, action: "closeInfoScreen", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(self.backButton)
     

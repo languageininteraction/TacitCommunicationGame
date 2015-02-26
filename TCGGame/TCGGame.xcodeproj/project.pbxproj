@@ -59,6 +59,8 @@
 		48A02DEC1A9F29B400C49E09 /* UIColor+Variations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */; };
 		48A02DEF1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DED1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png */; };
 		48A02DF01A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DEE1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png */; };
+		48A02DF31A9F7DD200C49E09 /* Cross 22x22.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */; };
+		48A02DF41A9F7DD200C49E09 /* Cross 22x22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */; };
 		48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */; };
 		48A8F1E81A977182008EE4BA /* LockIcon 30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
@@ -178,6 +180,8 @@
 		48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Variations.swift"; sourceTree = "<group>"; };
 		48A02DED1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeaderWithLogo 1000x227.png"; sourceTree = "<group>"; };
 		48A02DEE1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeaderWithLogo 1000x227@2x.png"; sourceTree = "<group>"; };
+		48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross 22x22.png"; sourceTree = "<group>"; };
+		48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross 22x22@2x.png"; sourceTree = "<group>"; };
 		48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30.png"; sourceTree = "<group>"; };
 		48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30@2x.png"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
@@ -443,6 +447,8 @@
 		48C3C2A31A695E49007FBF04 /* Button Icons */ = {
 			isa = PBXGroup;
 			children = (
+				48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */,
+				48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */,
 				48C3C2A41A695EA1007FBF04 /* Icon_Down 70x70.png */,
 				48C3C2A51A695EA1007FBF04 /* Icon_Down 70x70@2x.png */,
 				48C3C2A61A695EA1007FBF04 /* Icon_Finish 70x70.png */,
@@ -616,6 +622,7 @@
 				48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */,
 				494029211A399F0900449754 /* beweegknop.json in Resources */,
 				481F63A81A9759790007D135 /* OpenSans-BoldItalic.ttf in Resources */,
+				48A02DF31A9F7DD200C49E09 /* Cross 22x22.png in Resources */,
 				48C3C2C51A695EA1007FBF04 /* Icon_Left 70x70@2x.png in Resources */,
 				48A02DEF1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png in Resources */,
 				485E1C861A4C3D2A00AC88AC /* communicatie_limiet.json in Resources */,
@@ -666,6 +673,7 @@
 				48C3C2C41A695EA1007FBF04 /* Icon_Left 70x70.png in Resources */,
 				485E1C761A49AA1F00AC88AC /* kijkknop.json in Resources */,
 				485E1C8B1A4C3D8300AC88AC /* communicatie_gevenlimiet.json in Resources */,
+				48A02DF41A9F7DD200C49E09 /* Cross 22x22@2x.png in Resources */,
 				48C3C2CD1A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png in Resources */,
 				4812E6161A0A655A006DED82 /* LaunchScreen.xib in Resources */,
 				4812E6131A0A655A006DED82 /* Images.xcassets in Resources */,
