@@ -471,9 +471,15 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			
 			// We cannot move our pawn to the same field as where the other player's pawn is, so update which move buttons are visible:
 			self.updateWhichMoveAndRotateButtonsAreVisible()
+
+			// Update number of uses left:
+			updateUIOfItems()
 		case .RotatePawn:
 			// Update the rotation of the other player's pawn:
 			self.boardView.rotatePawnToRotation(!weArePlayer1, rotation: currentState.rotationOfPawn(!weArePlayer1), animated: true)
+			
+			// Update number of uses left:
+			updateUIOfItems()
 		case .SwitchWhetherMoveItemIsEnabled, .SwitchWhetherSeeItemIsEnabled, .SwitchWhetherGiveItemIsEnabled:
 			updateUIOfItems()
 		case .GiveMoveItem, .GiveSeeItem:
@@ -541,6 +547,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Update which fieldView is inflated:
 		boardView.coordsOfInflatedField = newPosition
+		
+		// Update number of uses left:
+		updateUIOfItems()
 	}
 	
 	func rotateButtonPressed(sender:UIButton!) {
@@ -556,6 +565,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Update our UI:
 		self.boardView.rotatePawnToRotation(weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(weArePlayer1), animated: true)
+		
+		// Update number of uses left:
+		updateUIOfItems()
 	}
 	
 	func itemButtonPressed(sender: UIButton!) {
@@ -981,7 +993,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// maybe not so pretty…
 		let retryButtonShouldPulsate = currentState.playerShouldBeMotivatedToChooseRetry(weArePlayer1)
-		buttonRetry.setLayerPulsates(retryButtonShouldPulsate)
+		buttonRetry.setLayerPulsates(retryButtonShouldPulsate, scale: 1.25, duration: 0.25)
 	}
 	
 	
