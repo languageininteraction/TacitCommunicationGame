@@ -255,8 +255,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			// todo explain
 			var buttonsForThisDifficulty = [UIButton]()
 			
-			let colorLockedLevels = difficulty == Difficulty.Beginner ? kColorLockedLevelsBeginner : difficulty == Difficulty.Advanced ? kColorLockedLevelsAdvanced : difficulty == Difficulty.Expert ? kColorLockedLevelsExpert : UIColor.blackColor()
-			
 			// Create the buttons, prepare them and add them to difficultyView as well as to levelButtons:
 			let anglePerButton = M_PI * 2 / Double(nButtons)
 			for indexButton in 0 ... nButtons - 1 {
@@ -266,13 +264,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				let yCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * sin(angle)
 				let button = UIButton(frame: CGRectMake(xCenter - 0.5 * edgeLengthButtonsInDifficultyViews, yCenter - 0.5 * edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews))
 				
-				// temp:
-//				button.backgroundColor = UIColor.greenColor()
-				
-				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: colorLockedLevels, lineColorWhenUnlocked: kColorUnlockedLevels, fillColorWhenUnlocked: kColorUnlockedLevels.rgbVariantWith(customAlpha: 0.6))
-				
-				// temp:
-				button.enabled = difficultyIsUnlocked && indexButton <= numberOfFinishedLevels
+				updateLevelButtonBasedOnProgress(difficulty: difficulty, indexLevel: indexButton, button: button)
 				
 				// Add it to the view:
 				difficultyView.addSubview(button)
@@ -548,6 +540,36 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	func opacityForDifficultyViewAt(#index: Int) -> Float  {
 		return Float(self.indexCurrentDifficultyLevel == index ? 1 : 0.5)
+	}
+	
+	
+	func updateLevelButtonBasedOnProgress(#difficulty: Difficulty, indexLevel: Int, button: UIButton?) {
+		/* Do the following:
+		1. Update images for normal and disabled state;
+		2. Update whether button is enabled;
+		3. Update whether the button pulsates.
+		*/
+		
+		let actualButton = button != nil ? button! : levelButtons[difficulty]![indexLevel] // not very pretty, but this way caller can choose whether to pass the button, so this function can also be used before levelButtons has been prepared
+		let colorLockedLevels = difficulty == Difficulty.Beginner ? kColorLockedLevelsBeginner : difficulty == Difficulty.Advanced ? kColorLockedLevelsAdvanced : difficulty == Difficulty.Expert ? kColorLockedLevelsExpert : UIColor.blackColor()
+		
+		let whetherToAddAFill = currentGame.levelIsFinished(difficulty: difficulty, indexLevel: indexLevel)
+		let fillColor: UIColor? = whetherToAddAFill ? kColorUnlockedLevels.rgbVariantWith(customAlpha: 0.6) : nil
+		
+		// 1. Update images for normal and disabled state:
+		setImagesForLevelButton(actualButton, text: "\(indexLevel + 1)", lineColorWhenLocked: colorLockedLevels, lineColorWhenUnlocked: kColorUnlockedLevels, fillColorWhenUnlocked: fillColor)
+		
+		// 2. Update whether button is enabled:
+		actualButton.enabled = currentGame.levelIsUnlocked(difficulty: difficulty, indexLevel: indexLevel)
+		
+		// 3. Update whether the button pulsates:
+		let buttonCorrespondsToFirstUnfinishedLevel = currentGame.levelIsFirstUnfinishedLevel(difficulty: difficulty, indexLevel: indexLevel)
+//		if buttonCorrespondsToFirstUnfinishedLevel {
+			// Add pulse animation:
+//			actualButton.setLayerPulsates(buttonCorrespondsToFirstUnfinishedLevel)
+//		}
+		
+		actualButton.animateTransform(nil, toTransform: buttonCorrespondsToFirstUnfinishedLevel ? CATransform3DMakeScale(1.2, 1.2, 1) : CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 	}
 	
 	
