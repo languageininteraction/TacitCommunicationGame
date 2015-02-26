@@ -11,7 +11,8 @@ import UIKit
 class InfoViewController: UIViewController {
 
 	let webView = UIWebView()
-	
+	let backButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -52,6 +53,12 @@ class InfoViewController: UIViewController {
 		gradientView.colors = [color1, color2]
 		self.view.insertSubview(gradientView, atIndex: 0)
 		gradientView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+
+        self.backButton.setImage(UIImage(named: "SmallCross"), forState: UIControlState.Normal)
+        self.backButton.frame = CGRectMake(50, 50, 100, 100)
+        self.backButton.addTarget(self, action: "closeInfoScreen", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(self.backButton)
+    
     }
 
 	override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -61,5 +68,10 @@ class InfoViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func closeInfoScreen ()
+    {
+        self.dismissViewControllerAnimated(true, completion: nil);
     }
 }
