@@ -488,9 +488,22 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			println("WARNING in levelButtonPressed: we don't know what to do with this difficulty.")
 		}
 		
-		if (!kDevLocalTestingIsOn) {
-			self.requestMatch()
-		} else {
+		if (!kDevLocalTestingIsOn)
+        {
+            
+            if(self.localPlayer.authenticated)
+            {
+                self.requestMatch()
+            }
+            
+            //This rarely happens, but if it happens we communicate that the player should login
+            else
+            {
+                self.showAlert(title:"Vergeten in te loggen?",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Het inlogscherm verschijnt automatisch als je dit spel opnieuw opstart, maar je kunt het ook instellen bij het menu Instellingen op dit apparaat.")
+            }
+		}
+        else
+        {
 			// Skip the whole matchmaking process and start playing immediately:
 			startPlayingMatch()
 		}
@@ -998,6 +1011,16 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0 // todo; make property so this always goes correctly and maybe using animation?
 //		}
 	}
+
+    // MARK: - Alert
+    
+    func showAlert(#title: String,message: String)
+    {
+        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
 }
 
 
