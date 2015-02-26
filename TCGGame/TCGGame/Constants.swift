@@ -16,13 +16,13 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) == .OrderedAscending
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
-let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 1 : nil
-let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 10 : nil
+let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 2 : nil
+let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 5 : nil
 let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 4 : nil
 let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? 3 : nil
 
@@ -96,7 +96,7 @@ let kColorFillOfBoardFields = UIColor.clearColor() // (red:142.0/255.0, green:20
 let kColorMoveItem = kColorLiIBlue
 let kColorSeeItem = kColorLiIDarkGreen
 let kColorGiveItem = kColorLiIDarkBlue
-let kColorHomeButton = kColorLiIYellow
+let kColorHomeButton = kColorLiIBlue.rgbVariantWith(customAlpha: 0.75)
 let kColorRetryButton = kColorLiIRed
 let kColorFinishButton = kColorLiIDarkGreen
 let kColorMoveButtons = kColorLiIOrange
