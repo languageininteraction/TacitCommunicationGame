@@ -269,7 +269,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				// temp:
 //				button.backgroundColor = UIColor.greenColor()
 				
-				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: colorLockedLevels, lineColorWhenUnocked: kColorUnlockedLevels)
+				setImagesForLevelButton(button, text: "\(indexButton + 1)", lineColorWhenLocked: colorLockedLevels, lineColorWhenUnlocked: kColorUnlockedLevels, fillColorWhenUnlocked: kColorUnlockedLevels.rgbVariantWith(customAlpha: 0.6))
 				
 				// temp:
 				button.enabled = difficultyIsUnlocked && indexButton <= numberOfFinishedLevels
@@ -359,7 +359,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
 	
-	func setImagesForLevelButton(button: UIButton, text: NSString?, lineColorWhenLocked: UIColor, lineColorWhenUnocked: UIColor) {
+	func setImagesForLevelButton(button: UIButton, text: NSString?, lineColorWhenLocked: UIColor, lineColorWhenUnlocked: UIColor, fillColorWhenUnlocked: UIColor?) {
 		// Load the lock image:
 		let iconImage = UIImage(named: "LockIcon 30x30")!
 		let scaleFactor = UIScreen.mainScreen().scale
@@ -386,11 +386,21 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				// Draw the lock icon:
 				coloredIconCGImage?.drawInRect(CGRectMake(0.5 * (scaledSizeOfButton.width - scaledSizeOfImage.width), 0.5 * (scaledSizeOfButton.height - scaledSizeOfImage.height), scaledSizeOfImage.width, scaledSizeOfImage.height))
 			} else {
+				// If a fill color has been defined, draw a filled circle:
+				if let actualFillColorWhenUnlocked = fillColorWhenUnlocked? {
+					CGContextSetFillColorWithColor(context, actualFillColorWhenUnlocked.CGColor)
+					let inset: CGFloat = 5 // todo constant
+					let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, inset * scaleFactor, inset * scaleFactor), nil)
+					CGContextAddPath(context, circlePath)
+					CGContextFillPath(context)
+				}
+				
 				// Draw the text:
 				let label = UILabel(frame: CGRectMake(0, 0, 10, 10)) // will size to fit
 				label.text = text
 				label.textAlignment = NSTextAlignment.Center
 				label.font = kFontLevelNumber
+				label.textColor = fillColorWhenUnlocked == nil ? UIColor.blackColor() : UIColor.whiteColor()
 				label.sizeToFit()
 				let textAsCGImage = createImageFromLayer(label.layer, false)!
 				let textAsUIImage = UIImage(CGImage: textAsCGImage)!
@@ -851,7 +861,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 					// 4. Make the level button of the next level show that it's going to be played:
 					self.levelViewController!.currentLevel = self.currentGame.currentLevel
 					let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
-					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
+					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel]
 					levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.8, 0.8, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
 					
 					CATransaction.commit()

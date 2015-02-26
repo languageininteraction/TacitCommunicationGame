@@ -56,6 +56,7 @@
 		48A02DE61A9F21AB00C49E09 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DE51A9F21AB00C49E09 /* InfoViewController.swift */; };
 		48A02DE81A9F226400C49E09 /* htmlInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DE71A9F226400C49E09 /* htmlInfo.html */; };
 		48A02DEA1A9F247500C49E09 /* JvHGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DE91A9F247500C49E09 /* JvHGradientView.swift */; };
+		48A02DEC1A9F29B400C49E09 /* UIColor+Variations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */; };
 		48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */; };
 		48A8F1E81A977182008EE4BA /* LockIcon 30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
@@ -172,6 +173,7 @@
 		48A02DE51A9F21AB00C49E09 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		48A02DE71A9F226400C49E09 /* htmlInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = htmlInfo.html; sourceTree = "<group>"; };
 		48A02DE91A9F247500C49E09 /* JvHGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JvHGradientView.swift; sourceTree = "<group>"; };
+		48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Variations.swift"; sourceTree = "<group>"; };
 		48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30.png"; sourceTree = "<group>"; };
 		48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30@2x.png"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */,
 				4812F6191A974B450078E38B /* ViewThatPassesTouchesThrough.swift */,
 				48A02DE91A9F247500C49E09 /* JvHGradientView.swift */,
+				48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */,
 			);
 			name = "Handy stuff";
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				482EEC401A121C9300FB13FF /* LevelViewController.swift in Sources */,
 				4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */,
 				491293061A30B4DA00E0A554 /* ChooseLevelViewController.swift in Sources */,
+				48A02DEC1A9F29B400C49E09 /* UIColor+Variations.swift in Sources */,
 				4812F61A1A974B450078E38B /* ViewThatPassesTouchesThrough.swift in Sources */,
 				4856E58A1A24908100309751 /* BoardView.swift in Sources */,
 				4847D8181A24DA3000540223 /* PawnDefinition.swift in Sources */,
