@@ -121,7 +121,27 @@ class Game: NSObject
 	func nLevelsForDifficulty(difficulty: Difficulty) -> Int {
 		return (difficulty == Difficulty.Beginner) ? nBeginnerLevels : (difficulty == Difficulty.Advanced) ? nAdvancedLevels : (difficulty == Difficulty.Expert) ? nExpertLevels : 0
 	}
-    
+	
+	func levelIsFinished(#difficulty: Difficulty, indexLevel: Int) -> Bool {
+		if difficulty.rawValue > highestAvailableDifficulty!.rawValue {
+			return false
+		}
+		
+		return nCompletedLevels[difficulty]! > indexLevel
+	}
+	
+	func levelIsUnlocked(#difficulty: Difficulty, indexLevel: Int) -> Bool {
+		if difficulty.rawValue > highestAvailableDifficulty!.rawValue {
+			return false
+		}
+		
+		return nCompletedLevels[difficulty]! > indexLevel - 1
+	}
+	
+	func levelIsFirstUnfinishedLevel(#difficulty: Difficulty, indexLevel: Int) -> Bool {
+		return levelIsUnlocked(difficulty: difficulty, indexLevel: indexLevel) && !levelIsFinished(difficulty: difficulty, indexLevel: indexLevel)
+	}
+	
     func playerGroupForMatchMaking() -> Int //Assumes indexUpcomingLevel is set appropriately
     {
         var baseNumber:Int = self.currentDifficulty!.rawValue * 100; //100 for easy, 200 for advanced, 300 for expert
