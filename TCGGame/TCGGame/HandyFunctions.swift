@@ -124,4 +124,16 @@ func getIntPreference(key: String, defaultValue: Int) -> Int {
 }
 
 
+// MARK: - Player names
 
+func shortenNameIfNeeded(name: String) -> String
+{
+    var result:String = name
+    
+    if countElements(name) > kMaxNameLength
+    {
+        result = result.substringToIndex(advance(result.startIndex,kMaxNameLength)) + "..."
+    }
+
+    return result
+}
