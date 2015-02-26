@@ -544,35 +544,28 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished <todo update comments> if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
 		if levelViewController!.userChoseToGoBackHome {
 
-            self.stopPlayingMatch()
-            
+			self.stopPlayingMatch()
+			
 		} else if weMakeAllDecisions! {
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
-	
-                self.currentGame.gameState = GameState.PreparingLevel
-
-                JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
+			
+			self.currentGame.gameState = GameState.PreparingLevel
+			
+			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
 				self.currentGame.goToNextLevel()
 				self.sendLevelToOther(self.currentGame.currentLevel!);
 				
-				CATransaction.begin()
-				CATransaction.setAnimationDuration(0.75) // todo constant
-				CATransaction.setCompletionBlock({ () -> Void in
-					self.levelViewController!.currentLevel = self.currentGame.currentLevel
-					self.levelViewController?.restartLevel()
-				})
+				self.makeLevelVCGoToTheNewCurrentLevel()
 				
-				self.levelViewController!.animateLeavingTheLevel()
-				
-				CATransaction.commit()
-                self.currentGame.gameState = GameState.PlayingLevel
+				self.currentGame.gameState = GameState.PlayingLevel
 			})
-        }
-        else
+		}
+		else
         {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
     }
+	
 
     // MARK: - Communication with other players
     
@@ -623,16 +616,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				gotoLevelScreen(animateFromLevelButton: true)
 			} else {
 				// Go to the next level:
-				CATransaction.begin()
-				CATransaction.setCompletionBlock({ () -> Void in
-					self.currentGame.currentLevel = (unpackedObject as Level)
-					self.levelViewController!.currentLevel = self.currentGame.currentLevel
-					self.levelViewController?.restartLevel()
-				})
-				
-				self.levelViewController!.animateLeavingTheLevel()
-				
-				CATransaction.commit()
+				self.currentGame.currentLevel = (unpackedObject as Level)
+				self.makeLevelVCGoToTheNewCurrentLevel()
             }
             
             self.currentGame.gameState = GameState.PlayingLevel
@@ -791,7 +776,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         // Come back to the home view
         self.levelViewController!.view.removeFromSuperview()
-        viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = false
+        viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 1
         
         // Forget our levelViewController
         self.levelViewController = nil
@@ -814,6 +799,81 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
         }
     }
+	
+	
+	func makeLevelVCGoToTheNewCurrentLevel() {
+		
+		// todo: don't assume that finished level wasn't already finished before.
+		
+		/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
+		1. Animate leaving the level (currently that's zooming out on the board);
+		2. Make the level buttons of the current difficulty appear again;
+		3. Make the level button of the finished level show that it's finished;
+		4. Make the level button of the next level show that it's going to be played;
+		5. Animate entering the new level.
+		*/
+		
+		CATransaction.begin()
+		CATransaction.setAnimationDuration(0.75) // todo constant
+		CATransaction.setCompletionBlock({ () -> Void in
+			
+			// 2. Make the level buttons of the current difficulty appear again:
+			CATransaction.begin()
+			CATransaction.setAnimationDuration(0.75) // todo constant
+			CATransaction.setCompletionBlock({ () -> Void in
+				
+				// 3. Make the level button of the finished level show that it's finished:
+				CATransaction.begin()
+				CATransaction.setAnimationDuration(0.75) // todo constant
+				CATransaction.setCompletionBlock({ () -> Void in
+					
+					// 4. Make the level button of the next level show that it's going to be played:
+					CATransaction.begin()
+					CATransaction.setAnimationDuration(0.75) // todo constant
+					CATransaction.setCompletionBlock({ () -> Void in
+						
+						// 5. Animate entering the new level:
+						CATransaction.begin()
+						CATransaction.setAnimationDuration(0.75) // todo constant
+
+						// 5. Animate entering the new level:
+						self.levelViewController?.restartLevel()
+						
+						// temp
+						
+						
+						CATransaction.commit()
+					})
+					
+					// 4. Make the level button of the next level show that it's going to be played:
+					self.levelViewController!.currentLevel = self.currentGame.currentLevel
+					let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
+					levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.8, 0.8, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+					
+					CATransaction.commit()
+				})
+				
+				// 3. Make the level button of the finished level show that it's finished:
+				let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+				let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
+				levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(1.3, 1.3, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+				
+				CATransaction.commit()
+			})
+			
+			// 2. Make the level buttons of the current difficulty appear again:
+			self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 0.8, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+			
+			CATransaction.commit()
+		})
+		
+		// 1. Animate leaving the level (currently that's zooming out on the board):
+		self.levelViewController!.animateLeavingTheLevel()
+		
+		CATransaction.commit()
+	}
+	
 	
 	func gotoLevelScreen(#animateFromLevelButton: Bool) {
 		// todo explain
@@ -892,7 +952,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		} else {*/
 			self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
 			self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
-			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.hidden = true // todo; make property so this always goes correctly and maybe using animation?
+			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0 // todo; make property so this always goes correctly and maybe using animation?
 //		}
 	}
 }
