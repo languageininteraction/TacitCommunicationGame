@@ -895,8 +895,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
 						// 5. Animate entering the new level:
 						self.levelViewController?.restartLevel()
-						
-						// temp
+						self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
 						
 						
 						CATransaction.commit()
