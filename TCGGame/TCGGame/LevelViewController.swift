@@ -542,6 +542,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Update which fieldView is inflated:
 		boardView.coordsOfInflatedField = newPosition
+		
+		// Update number of uses left:
+		updateUIOfItems()
 	}
 	
 	func rotateButtonPressed(sender:UIButton!) {
@@ -557,6 +560,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Update our UI:
 		self.boardView.rotatePawnToRotation(weArePlayer1, rotation: currentRound!.currentState().rotationOfPawn(weArePlayer1), animated: true)
+		
+		// Update number of uses left:
+		updateUIOfItems()
 	}
 	
 	func itemButtonPressed(sender: UIButton!) {

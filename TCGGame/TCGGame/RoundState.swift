@@ -26,8 +26,22 @@ class RoundState: NSObject, NSCopying {
     var rotationPawn1 = Direction.North
 	var posPawn2 = (x: 1, y: 1)
     var rotationPawn2 = Direction.North
-	var selectedItemTypePlayer1: ItemType?
-	var selectedItemTypePlayer2: ItemType?
+	var selectedItemTypePlayer1: ItemType? {
+		didSet {
+			if selectedItemTypePlayer1 != oldValue {
+				selectedItemPlayer1HasNotYetBeenUsedSinceItWasSelected = true
+			}
+		}
+	}
+	var selectedItemTypePlayer2: ItemType? {
+		didSet {
+			if selectedItemTypePlayer2 != oldValue {
+				selectedItemPlayer2HasNotYetBeenUsedSinceItWasSelected = true
+			}
+		}
+	}
+	var selectedItemPlayer1HasNotYetBeenUsedSinceItWasSelected = true // e.g. used to only subtract one use of the move item as soon as the move item is actually used (that is: after it has been selected, the user moves)
+	var selectedItemPlayer2HasNotYetBeenUsedSinceItWasSelected = true
 	var itemsPlayer1: [ItemDefinition] = []
 	var itemsPlayer2: [ItemDefinition] = []
 	
@@ -93,6 +107,8 @@ class RoundState: NSObject, NSCopying {
 		result.rotationPawn2 = rotationPawn2
 		result.selectedItemTypePlayer1 = selectedItemTypePlayer1
 		result.selectedItemTypePlayer2 = selectedItemTypePlayer2
+		result.selectedItemPlayer1HasNotYetBeenUsedSinceItWasSelected = selectedItemPlayer1HasNotYetBeenUsedSinceItWasSelected
+		result.selectedItemPlayer2HasNotYetBeenUsedSinceItWasSelected = selectedItemPlayer2HasNotYetBeenUsedSinceItWasSelected
 		result.itemsPlayer1 = itemsPlayer1
 		result.itemsPlayer2 = itemsPlayer2
 		result.roundResult = roundResult
@@ -120,15 +136,20 @@ class RoundState: NSObject, NSCopying {
 			nextPosition.y += action.moveDirection == Direction.South ? 1 : action.moveDirection == Direction.North ? -1 : 0
 			nextState.setPositionOfPawn(action.performedByPlayer1, position: nextPosition)
 			
+			// Within having the move item selected, the first time a user moves or rotates a pawn one use is subtracted from the available uses:
+			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
+			
 		case .RotatePawn: // MARK: Action .RotatePawn
 			let nextRotation = nextState.rotationOfPawn(action.performedByPlayer1).directionAfterRotating(action.rotateDirection)
 			nextState.setRotationOfPawn(action.performedByPlayer1, rotation: nextRotation)
+			
+			// Within having the move item selected, the first time a user moves or rotates a pawn one use is subtracted from the available uses:
+			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
 			
 			// todo: Combine SwitchWhetherMoveItemIsEnabled, SwitchWhetherSeeItemIsEnabled, and SwitchWhetherGiveItemIsEnabled
 		case .SwitchWhetherMoveItemIsEnabled: // MARK: Action .SwitchWhetherMoveItemIsEnabled
 			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.Move ? nil : ItemType.Move
 			nextState.setSelectedItemTypeForPlayer(action.performedByPlayer1, selectedItemType: nextSelectedItemType)
-			nextState.updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(action.performedByPlayer1)
 			
 		case .SwitchWhetherSeeItemIsEnabled: // MARK: Action .SwitchWhetherSeeItemIsEnabled
 			let nextSelectedItemType: ItemType? = nextState.selectedItemTypeForPlayer(action.performedByPlayer1) == ItemType.See ? nil : ItemType.See
@@ -246,7 +267,20 @@ class RoundState: NSObject, NSCopying {
 		return aboutPawn1 ? selectedItemTypePlayer1 : selectedItemTypePlayer2
 	}
 	
+	func selectedItemHasNotYetBeenUsedSinceItWasSelectedForPlayer(aboutPawn1: Bool) -> Bool {
+		return aboutPawn1 ? selectedItemPlayer1HasNotYetBeenUsedSinceItWasSelected : selectedItemPlayer2HasNotYetBeenUsedSinceItWasSelected
+	}
+	
+	func setSelectedItemHasNotYetBeenUsedSinceItWasSelectedForPlayer(aboutPawn1: Bool, hasNotYetBeenUsed: Bool) {
+		if aboutPawn1 {
+			selectedItemPlayer1HasNotYetBeenUsedSinceItWasSelected = hasNotYetBeenUsed
+		} else {
+			selectedItemPlayer2HasNotYetBeenUsedSinceItWasSelected = hasNotYetBeenUsed
+		}
+	}
+	
 	func setSelectedItemTypeForPlayer(aboutPawn1: Bool, selectedItemType: ItemType?) {
+		
 		if aboutPawn1 {
 			selectedItemTypePlayer1 = selectedItemType
 		} else {
@@ -326,7 +360,12 @@ class RoundState: NSObject, NSCopying {
 	
 	func updateStateAsAResultOfTheSelectedItemBeingUsedForPlayer(aboutPawn1: Bool) {
 		if let actualSelectedItem = selectedItemForPlayer(aboutPawn1) {
-			actualSelectedItem.updateNrUsesAsAResultOfItemBeingUsed()
+			// For the move item we only subtract one use the first time that the user moves or rotates (within the current selection of the item; if the user deselects the move item and then selects it again, another use may be subtracted):
+			if actualSelectedItem.itemType != ItemType.Move || selectedItemHasNotYetBeenUsedSinceItWasSelectedForPlayer(aboutPawn1) {
+				actualSelectedItem.updateNrUsesAsAResultOfItemBeingUsed()
+			}
+
+			setSelectedItemHasNotYetBeenUsedSinceItWasSelectedForPlayer(aboutPawn1, hasNotYetBeenUsed: false)
 		}
 	}
 	
