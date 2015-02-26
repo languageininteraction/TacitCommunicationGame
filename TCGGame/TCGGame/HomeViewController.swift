@@ -724,11 +724,20 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     // MARK: - GKMatchDelegate and Local Testing
     
     func match(match: GKMatch!, player: GKPlayer!, didChangeConnectionState state: GKPlayerConnectionState) {
+        //This function responds to changes in the Gamecenter match
         
+        //Start the match if get a connection, but you're not connected yet
         if (state == GKPlayerConnectionState.StateConnected && !self.GCMatchStarted && match.expectedPlayerCount == 0)
         {
             self.GCMatchStarted = true
             self.startPlayingMatch()
+        }
+            
+        //Stop the match if you you are no longer connected (and inform the user)
+        else if (self.GCMatchStarted && (state == GKPlayerConnectionState.StateUnknown || state == GKPlayerConnectionState.StateDisconnected))
+        {
+            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Probleempje?",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
+
         }
     }
     
