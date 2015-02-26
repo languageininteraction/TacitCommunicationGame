@@ -982,7 +982,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// maybe not so pretty…
 		let retryButtonShouldPulsate = currentState.playerShouldBeMotivatedToChooseRetry(weArePlayer1)
-		buttonRetry.setLayerPulsates(retryButtonShouldPulsate)
+		buttonRetry.setLayerPulsates(retryButtonShouldPulsate, scale: 1.25, duration: 0.25)
 	}
 	
 	
