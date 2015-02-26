@@ -56,6 +56,8 @@ let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
 let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 160 * kDefaultScaling // use to be 120
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 
+let kMaxNameLength: Int = 25
+
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
 let kMainFontNameSemiBold = "OpenSans-Semibold"
 let kFontPlayerNames = UIFont(name: kMainFontNameSemiBold, size: kOnPhone ? 16 : 24)

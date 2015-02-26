@@ -29,7 +29,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     var GCMatch: GKMatch?
     var GCMatchStarted = false
     var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
-    
+    var otherPlayer: GKPlayer?
+
     //Buttons
     let tempPlayButtonEasy = UIButton()
     let tempPlayButtonAdvanced = UIButton()
@@ -725,6 +726,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         self.dismissViewControllerAnimated(true, completion: nil)
         self.GCMatch = match
+        self.otherPlayer = (GCMatch!.players[0] as GKPlayer)
+        
+        //var players = self.loadPlayersForIdentifiers(self.GCMatch!.playerIDs,withCompletionHandler: nil)
+        //println(players)
+        
         match.delegate = self
         
         if (!self.GCMatchStarted && match.expectedPlayerCount == 0) {
@@ -759,7 +765,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         
         self.receiveData(data)
     }
-    
     
     // MARK: - Playing the match
     
@@ -797,6 +802,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.levelViewController!.sendActionToOther = sendActionToOther
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
+        if (!kDevLocalTestingIsOn)
+        {
+            self.levelViewController!.ownAlias = self.localPlayer.alias
+            self.levelViewController!.aliasOtherPlayer = self.otherPlayer!.alias
+        }
+            
         // Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
         // This part will be done by the other player once he or she receives the level:
         if self.weMakeAllDecisions! {

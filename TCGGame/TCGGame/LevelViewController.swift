@@ -46,6 +46,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
     var weMakeAllDecisions: Bool = true
 	var userChoseToGoBackHome: Bool = false
     
+    var ownAlias: String = "Developer Wessel"
+    var aliasOtherPlayer: String = "Developer Jop"
+    
 	// MARK: - Other UI
 	
 	// The board:
@@ -179,8 +182,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 
 		// temp:
 //		nameLabelLocalPlayer.backgroundColor = UIColor.yellowColor()
-		nameLabelLocalPlayer.text = "Ikzelf"
-		
+        nameLabelLocalPlayer.text = shortenNameIfNeeded(self.ownAlias)
+        
 		// Other player's name label:
 		let nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
 		nameLabelOtherPlayer.font = kFontPlayerNames
@@ -190,11 +193,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// temp:
 //		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
-		nameLabelOtherPlayer.text = "Die ander"
-		
-		
-		
-		
+        nameLabelOtherPlayer.text = shortenNameIfNeeded(self.aliasOtherPlayer)
 		
 		// Used for multiple frames:
 		let xItemButtonsLocalPlayer = oldFrameOfImageViewPictureOfLocalPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
