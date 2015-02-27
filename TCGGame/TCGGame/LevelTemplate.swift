@@ -131,39 +131,32 @@ class LevelTemplate: NSObject
         var allDirections = [Direction.North,Direction.East,Direction.South,Direction.West]
         
         //If there are triangles, give them an orientation
-        if level.pawnPlayer1.shape == PawnShape.Triangle
-        {
-            pawn1StartDirection = allDirections.randomItem()
-            pawn1GoalDirection = allDirections.randomItem()
-        }
-
+        pawn1StartDirection = allDirections.randomItem()
+        pawn1GoalDirection = allDirections.randomItem()
        
-        if level.pawnPlayer2.shape == PawnShape.Triangle
-        {
-            pawn2StartDirection = allDirections.randomItem()
+        pawn2StartDirection = allDirections.randomItem()
 
-            //Decide whether to have the same orientation (if you can choose)
-            let sameOrientation = Array(self.orientationRelation).randomItem() as NSString == "same"
+        //Decide whether to have the same orientation (if you can choose)
+        let sameOrientation = Array(self.orientationRelation).randomItem() as NSString == "same"
+        
+        if sameOrientation
+        {
+            pawn2GoalDirection = pawn1GoalDirection
+        }
+        else
+        {
+            //Make sure you only pick from the orientations that are still 'free'
+            var availableDirections : [Direction] = []
             
-            if sameOrientation
+            for direction in allDirections
             {
-                pawn2GoalDirection = pawn1GoalDirection
-            }
-            else
-            {
-                //Make sure you only pick from the orientations that are still 'free'
-                var availableDirections : [Direction] = []
-                
-                for direction in allDirections
+                if direction != pawn1GoalDirection
                 {
-                    if direction != pawn1GoalDirection
-                    {
-                        availableDirections.append(direction)
-                    }
+                    availableDirections.append(direction)
                 }
-                
-                pawn2GoalDirection = availableDirections.randomItem()
             }
+            
+            pawn2GoalDirection = availableDirections.randomItem()
         }
         
         //Select the actual positions on the board (should be more dynamic, right now only works on 3x3 boards

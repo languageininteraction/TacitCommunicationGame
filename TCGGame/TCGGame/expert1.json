@@ -7,7 +7,7 @@
         "height": 3
     },
     "possiblePawnShapesPlayer1": ["circle","rectangle"],
-    "possiblePawnShapesPlayer2": ["triangle","line","cornerTriangle","star"],
+    "possiblePawnShapesPlayer2": ["triangle","line","cornerTriangle","star","bar"],
     "moveItemAvailable": true,
     "seeItemAvailable": true,
     "giveItemAvailable": true,
