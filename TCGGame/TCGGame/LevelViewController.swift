@@ -739,18 +739,20 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	func helpButtonPressed() {
 		// test popover:
 		
-		let testText = "Kom je er niet uit? Druk op blabladiabla om het opnieuw te proberen."
-		
-		let label = UILabel(frame: CGRectMake(0, 0, 300, 150))
-		label.numberOfLines = 0
-		label.text = testText
-		label.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
-		label.textAlignment = NSTextAlignment.Center
+//		let testText = "Kom je er niet uit? Druk op blabladiabla om het opnieuw te proberen."
 		
 		let helpVC = UIViewController()
-		helpVC.view.frame = label.frame
+		helpVC.view.frame = CGRectMake(0, 0, 320, 160)
 		
-		helpVC.view.addSubview(label)
+		let helpLabel = UILabel(frame: CGRectInset(helpVC.view.frame, 20, 20)) // todo
+		helpLabel.numberOfLines = 0
+		helpLabel.text = currentLevel!.hint
+		helpLabel.textColor = UIColor(white: 0.5, alpha: 1)
+		helpLabel.adjustsFontSizeToFitWidth = true
+		helpLabel.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
+		helpLabel.textAlignment = NSTextAlignment.Center
+		
+		helpVC.view.addSubview(helpLabel)
 		
 		let popover = UIPopoverController(contentViewController: helpVC)
 		
@@ -759,15 +761,6 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		let frameButton = helpButton.frame
 		popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
-		
-		
-		//	viewWithMenu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-		//		menuTableViewController = [[JvHWNNMenuTableViewController alloc] initWithNibName:@"JvHWNNMenuTableViewController" bundle:nil];
-		//		menuTableViewController.delegate = self;
-		//		//	vcMenu.view = viewWithMenu;
-		//		menuPopoverController = [[UIPopoverController alloc] initWithContentViewController:menuTableViewController];
-		//		menuPopoverController.popoverContentSize = menuTableViewController.view.frame.size;
-		//		menuPopoverController.backgroundColor = [UIColor clearColor];
 	}
 	
 	
@@ -841,6 +834,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	func updateUIAtStartOfLevel() {
 		
 		labelLevel.text = "\(self.currentLevel!.name)"
+		helpButton.hidden = self.currentLevel?.hint == nil
 
 		self.boardView.boardSize = (self.currentLevel!.board.width, self.currentLevel!.board.height) // todo use tuple in board as weel
 		
