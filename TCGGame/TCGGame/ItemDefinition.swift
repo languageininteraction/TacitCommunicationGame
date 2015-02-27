@@ -28,7 +28,7 @@ class ItemDefinition: NSObject, NSCopying
 	
 	convenience init(itemTypeAsJsonString: String, nUsesFromJson: Int) {
 		let itemType = itemTypeAsJsonString == "move" ? ItemType.Move : itemTypeAsJsonString == "see" ? ItemType.See : ItemType.Give
-		let endlessUse = nUsesFromJson > 99
+		let endlessUse = nUsesFromJson > 999
 		let optionalNrUses: Int? = endlessUse ? nil : nUsesFromJson
 		
 		self.init(itemType: itemType, endlessUse: endlessUse, nrUses: optionalNrUses)
