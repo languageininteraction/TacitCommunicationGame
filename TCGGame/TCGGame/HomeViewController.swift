@@ -843,7 +843,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Stop the match if you you are no longer connected (and inform the user)
         else if (self.GCMatchStarted && (state == GKPlayerConnectionState.StateUnknown || state == GKPlayerConnectionState.StateDisconnected))
         {
-            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Probleempje?",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")			
+            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
 			showExplanationsAboutHowToMakeAConnection = true
 
         }
@@ -902,19 +902,24 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
         // This part will be done by the other player once he or she receives the level:
         if self.weMakeAllDecisions! {
-            self.currentGame.gameState = GameState.PreparingLevel
-            
-            self.currentGame.goToUpcomingLevel()
-            self.sendLevelToOther(self.currentGame.currentLevel!);
-                        
-            self.levelViewController!.currentLevel = self.currentGame.currentLevel
-                    
-			// Add our levelViewController's view:
-			gotoLevelScreen(animateFromLevelButton: true)
 			
-            self.currentGame.gameState = GameState.PlayingLevel
-            self.updatePlayerRepresentations()
-            
+			// We wait just a second, because apparantly it's possible that we send the level to the other player while that iPad isn't aware yet that there is a connection (at least that's our best guess at why certain crashes happened). Obviously this solution is far from ideal, but we need a quick fix and we think this makes the chance of these crashes occuring much smaller:
+			JvHClosureBasedTimer(interval: 1, repeats: false, closure: { () -> Void in
+				self.currentGame.gameState = GameState.PreparingLevel
+				
+				self.currentGame.goToUpcomingLevel()
+				self.sendLevelToOther(self.currentGame.currentLevel!);
+				
+				self.levelViewController!.currentLevel = self.currentGame.currentLevel
+				
+				// Add our levelViewController's view:
+				self.gotoLevelScreen(animateFromLevelButton: true)
+				
+				self.currentGame.gameState = GameState.PlayingLevel
+				self.updatePlayerRepresentations()
+				
+			})
+			
         } else if self.currentGame.gameState == GameState.LookingForMatch {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
@@ -945,9 +950,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Forget the other player, and show that
         self.aliasOtherPlayer = ""
         self.updatePlayerRepresentations()
-        
     }
-    
+	
+	
     func sendLevelToOther(level :Level) {
         let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
         
