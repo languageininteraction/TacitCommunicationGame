@@ -173,6 +173,11 @@ class Game: NSObject
 		let nCompletedAfterUpdate = nCompletedLevels[currentDifficulty]
 		lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = nCompletedBeforeUpdate != nCompletedAfterUpdate
 		
+		// Update highestAvailableDifficulty:
+		if nCompletedAfterUpdate == nLevelsForDifficulty(currentDifficulty) {
+			highestAvailableDifficulty = highestAvailableDifficulty == Difficulty.Beginner ? Difficulty.Advanced : highestAvailableDifficulty == Difficulty.Advanced ? Difficulty.Expert : Difficulty.Expert
+		}
+		
 		storeProgress()
 	}
 }

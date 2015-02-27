@@ -553,7 +553,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             //This rarely happens, but if it happens we communicate that the player should login
             else
             {
-                self.showAlert(title:"Vergeten in te loggen?",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Het inlogscherm verschijnt automatisch als je dit spel opnieuw opstart, maar je kunt het ook instellen bij het menu Instellingen op dit apparaat.")
+                self.showAlert(title:"Nog niet ingelogd",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Inloggen gebeurt normaal automatisch, maar kan wel enkele seconden duren. Bent u nog steeds niet ingelogd? Start Tic Tac Team dan opnieuw op.")
             }
 		}
         else
@@ -908,8 +908,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // This part will be done by the other player once he or she receives the level:
         if self.weMakeAllDecisions! {
 			
-			// We wait just a second, because apparantly it's possible that we send the level to the other player while that iPad isn't aware yet that there is a connection (at least that's our best guess at why certain crashes happened). Obviously this solution is far from ideal, but we need a quick fix and we think this makes the chance of these crashes occuring much smaller:
-			JvHClosureBasedTimer(interval: 1, repeats: false, closure: { () -> Void in
+			// We wait just a bit, because apparantly it's possible that we send the level to the other player while that iPad isn't aware yet that there is a connection (at least that's our best guess at why certain crashes happened). Obviously this solution is far from ideal, but we need a quick fix and we think this makes the chance of these crashes occuring much smaller:
+			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in
 				self.currentGame.gameState = GameState.PreparingLevel
 				
 				self.currentGame.goToUpcomingLevel()
@@ -1006,7 +1006,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 					CATransaction.begin()
 					CATransaction.setAnimationDuration(0.75) // todo constant
 					CATransaction.setCompletionBlock({ () -> Void in
-						
+
+						0 // Don't know why, but without this compiler complains
+						JvHClosureBasedTimer(interval: 1, repeats: false, closure: { () -> Void in
+							
 						// 4. Make the level button of the next level show that it's going to be played:
 						CATransaction.begin()
 						CATransaction.setAnimationDuration(0.75) // todo constant
@@ -1020,7 +1023,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 							self.levelViewController?.restartLevel()
 							self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
 							
-							
 							CATransaction.commit()
 						})
 						
@@ -1028,15 +1030,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 						self.levelViewController!.currentLevel = self.currentGame.currentLevel
 						let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
 						let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel]
-						println("at 4 self.currentGame.indexCurrentLevel = \(self.currentGame.indexCurrentLevel)")
 						
 						self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
 						
 						CATransaction.commit()
+							
+						})
 					})
 					
 					// 3. Make the level button of the finished level show that it's finished:
-					println("at 3 indexCurrentLevel - 1 = \(self.currentGame.indexCurrentLevel - 1)")
 					let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
 					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel - 1] // dangerous…
 					self.updateLevelButtonAsAResultOfHavingBeenFinished(levelButton)
@@ -1116,7 +1118,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	func updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton: UIButton) {
 		
-		// for now exactly the same as updateLevelButtonAsAResultOfHavingBeenFinished
+		// for now almost the same as updateLevelButtonAsAResultOfHavingBeenFinished
 		
 		for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
 			if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
@@ -1126,7 +1128,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		}
 		
 		let animation = CABasicAnimation(keyPath: "transform")
-		animation.duration = 0.15
+		animation.duration = 0.35
 		animation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
 		animation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.2, 1.2, 1))
 		animation.autoreverses = true

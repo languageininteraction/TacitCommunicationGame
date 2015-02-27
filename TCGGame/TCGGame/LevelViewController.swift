@@ -99,6 +99,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	// Label showing which level is being played:
 	let labelLevel = UILabel()
 	
+	// cleanup
+	let helpButton = UIButton()
+	
     var sendActionToOther: ((RoundAction) -> ())?
     
 	// MARK: - Sub ViewControllers
@@ -343,9 +346,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		labelLevel.font = kFontLevel
 		labelLevel.textAlignment = NSTextAlignment.Center
 
-		if kOnPhone {
+//		if kOnPhone {
+		// todo what to do with labelLevel, delet it? 
 			labelLevel.hidden = true // todo
-		}
+//		}
 		
 		if kDevUseLevelLabelForLevelSelection {
 			let tapGesture = UITapGestureRecognizer(target: self, action: "tapLevelLabel:")
@@ -375,6 +379,60 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
         
 		// Update the UI:
 		self.updateUIAtStartOfLevel()
+		
+		
+		// Added later, todo cleanup
+		addHelpButton()
+	}
+	
+	
+	// ugly but quick (copied)
+	func addHelpButton() {
+		let edgeLengthButton: CGFloat = 44
+		helpButton.frame = CGRectMake(0.5 * (self.view.frame.width - edgeLengthButton), self.view.frame.height - edgeLengthButton - 25, edgeLengthButton, edgeLengthButton)
+		self.view.addSubview(helpButton)
+		helpButton.addTarget(self, action: "helpButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
+		
+		
+		// This isn't pretty, similar code is also use elsewhere…
+		let icon = UIImage(named: "HelpIcon 16x16")!
+		let scaleFactor = UIScreen.mainScreen().scale
+		let scaledSizeOfButton = CGSizeMake(helpButton.frame.size.width * scaleFactor, helpButton.frame.size.height * scaleFactor)
+		let scaledSizeOfImage = CGSizeMake(icon.size.width * scaleFactor, icon.size.height * scaleFactor)
+		let rect = CGRectMake(0, 0, scaledSizeOfButton.width, scaledSizeOfButton.height)
+		
+		UIGraphicsBeginImageContext(scaledSizeOfButton)
+		let context = UIGraphicsGetCurrentContext()
+		
+		// Fill a white, partly transparent circle:
+		CGContextSetFillColorWithColor(context, UIColor(white: 1, alpha: 0.8).CGColor)
+		let circlePathFull = CGPathCreateWithEllipseInRect(rect, nil) // todo
+		CGContextAddPath(context, circlePathFull)
+		CGContextFillPath(context)
+		
+		// Create a colored version of the icon:
+		let colorIcon = kColorLiIYellow
+		let coloredIconCGImage = createColoredVersionOfUIImage(icon, colorIcon)
+		
+		// Draw the icon:
+		coloredIconCGImage?.drawInRect(CGRectMake(0.5 * (scaledSizeOfButton.width - scaledSizeOfImage.width), 0.5 * (scaledSizeOfButton.height - scaledSizeOfImage.height), scaledSizeOfImage.width, scaledSizeOfImage.height))
+		
+		
+		// Draw a circle around it:
+		CGContextSetStrokeColorWithColor(context, kColorLiIPurple.CGColor)
+		CGContextSetLineWidth(context, 1 * scaleFactor)
+		let inset: CGFloat = 6
+		let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, inset * scaleFactor, inset * scaleFactor), nil) // todo
+		CGContextAddPath(context, circlePath)
+		CGContextStrokePath(context)
+		
+		
+		let resultingImage = UIGraphicsGetImageFromCurrentImageContext()
+		
+		UIGraphicsEndImageContext()
+		
+		// Set the image on the button:
+		helpButton.setImage(resultingImage, forState: UIControlState.Normal)
 	}
 	
 	
@@ -676,6 +734,41 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		self.chooseLevelViewController.superController = self
         self.presentViewController(self.chooseLevelViewController, animated: false, completion: nil)
     }
+	
+	
+	func helpButtonPressed() {
+		// test popover:
+		
+		let testText = "Kom je er niet uit? Druk op blabladiabla om het opnieuw te proberen."
+		
+		let label = UILabel(frame: CGRectMake(0, 0, 300, 150))
+		label.numberOfLines = 0
+		label.text = testText
+		label.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
+		label.textAlignment = NSTextAlignment.Center
+		
+		let helpVC = UIViewController()
+		helpVC.view.frame = label.frame
+		
+		helpVC.view.addSubview(label)
+		
+		let popover = UIPopoverController(contentViewController: helpVC)
+		
+		popover.popoverContentSize = helpVC.view.frame.size
+		
+		
+		let frameButton = helpButton.frame
+		popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
+		
+		
+		//	viewWithMenu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+		//		menuTableViewController = [[JvHWNNMenuTableViewController alloc] initWithNibName:@"JvHWNNMenuTableViewController" bundle:nil];
+		//		menuTableViewController.delegate = self;
+		//		//	vcMenu.view = viewWithMenu;
+		//		menuPopoverController = [[UIPopoverController alloc] initWithContentViewController:menuTableViewController];
+		//		menuPopoverController.popoverContentSize = menuTableViewController.view.frame.size;
+		//		menuPopoverController.backgroundColor = [UIColor clearColor];
+	}
 	
 	
 	// MARK: - Update UI
