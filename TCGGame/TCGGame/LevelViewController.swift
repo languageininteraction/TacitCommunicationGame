@@ -1010,9 +1010,22 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		buttonOtherPlayer_giveItem.hidden = !currentLevel.giveItemAvailable
 		
 		// Update ..
-		buttonToGiveMoveItemToOtherPlayer.hidden = !givingIsSelected
-		buttonToGiveSeeItemToOtherPlayer.hidden = !givingIsSelected
-		
+        if givingIsSelected
+        {
+            if currentState.itemOfTypeForPlayer(weArePlayer1, itemType: ItemType.Move)!.nrUses > 0
+            {
+                buttonToGiveMoveItemToOtherPlayer.hidden = false
+            }
+            if currentState.itemOfTypeForPlayer(weArePlayer1, itemType: ItemType.Give)!.nrUses > 0
+            {
+                buttonToGiveSeeItemToOtherPlayer.hidden = false
+            }
+        }
+        else
+        {
+            buttonToGiveMoveItemToOtherPlayer.hidden = true
+            buttonToGiveSeeItemToOtherPlayer.hidden = true
+        }
 		
 		
 		// Whenever our see item is selected, make the board look different:
