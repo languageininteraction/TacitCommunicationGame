@@ -824,7 +824,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.aliasOtherPlayer = self.otherPlayer!.alias
         }
         
-        self.updatePlayerRepresentations()
+        //self.updatePlayerRepresentations() //Don't show the name too early!
         match.delegate = self
         
         if (!self.GCMatchStarted && match.expectedPlayerCount == 0) {
