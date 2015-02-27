@@ -17,7 +17,7 @@ extension Array {
 class LevelTemplate: NSObject
 {
     let name: String
-    let hint: String
+    var hint: String?
 
     let decisionMakerPlayer1Possibilities: [Bool]
 
@@ -47,7 +47,12 @@ class LevelTemplate: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
-        self.hint = jsonResult["hint"] as String
+        self.hint = (jsonResult["hint"] as String)
+        
+        if self.hint! == ""
+        {
+            self.hint = nil
+        }
 
         var decisionMakerPlayer1PossibilitiesNSArray = jsonResult["decisionMakerPlayer1"] as NSArray
         self.decisionMakerPlayer1Possibilities = []

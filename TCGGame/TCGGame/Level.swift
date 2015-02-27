@@ -10,7 +10,7 @@ import Foundation
 class Level: NSObject
 {
     let name: String
-    var hint: String
+    var hint: String?
     
     var decisionMakerPlayer1: Bool
 
@@ -41,7 +41,12 @@ class Level: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
-        self.hint = jsonResult["hint"] as String
+        self.hint = (jsonResult["hint"] as String)
+        
+        if self.hint! == ""
+        {
+            self.hint = nil
+        }
         
         self.decisionMakerPlayer1 = jsonResult["decisionMakerPlayer1"] as Bool
         
@@ -88,7 +93,7 @@ class Level: NSObject
     init(name : String)
     {
         self.name = name
-        self.hint = "Hier komt de hint."
+        self.hint = nil
         
         self.decisionMakerPlayer1 = true
 		
@@ -120,10 +125,22 @@ class Level: NSObject
     {
         // MARK: 1. Collect the things we want to encode
         
+        var hintText: String
+        
+        if self.hint == nil
+        {
+            hintText = ""
+        }
+        else
+        {
+            hintText = self.hint!
+        }
+        
+        
         //Basic info
         var objectsToEncode : Array<(String, AnyObject)> = [
 			("name", self.name),
-            ("hint", self.hint),
+            ("hint", hintText),
 			("boardWidth", self.board.width),
 			("boardHeight", self.board.height),
             ("pawnPlayer1Shape", self.pawnPlayer1.shape.rawValue),
@@ -192,7 +209,12 @@ class Level: NSObject
     required init (coder decoder: NSCoder)
     {
         self.name = decoder.decodeObjectForKey("name") as String
-        self.hint = decoder.decodeObjectForKey("hint") as String
+        self.hint = (decoder.decodeObjectForKey("hint") as String)
+        
+        if self.hint! == ""
+        {
+            self.hint = nil
+        }
         
         self.decisionMakerPlayer1 = decoder.decodeBoolForKey("decisionMakerPlayer1")
 
