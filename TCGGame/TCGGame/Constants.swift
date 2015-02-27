@@ -17,7 +17,7 @@ let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", opt
 
 // Constants that can be handy during development:
 let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
-let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Both
+let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player

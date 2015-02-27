@@ -56,13 +56,17 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	var advancedLevelButtons: [UIButton]!
 	var expertLevelButtons: [UIButton]!
 	var levelButtons = Dictionary<Difficulty, [UIButton]>()
-		
-	// todo reorganize here
-	let nameLabelLocalPlayer = UILabel()
-	let nameLabelOtherPlayer = UILabel()
+    
+    //The sideviews representing the players
+    var ownAlias: String = ""
+    var aliasOtherPlayer: String = ""
+    
+    var nameLabelLocalPlayer = UILabel()
+    var nameLabelOtherPlayer = UILabel()
+    
 	var pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorLocalPlayer)) // todo rename constant kEdgelengthFaces
 	var pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: PawnShape.Circle, color: kColorOtherPlayer)) // todo rename constant kEdgelengthFaces
-	
+    
 	// todo reorganize; new approach with swiping between difficulty levels
 	let pageControl = UIPageControl()
 	var indexCurrentDifficultyLevel: Int = 0 {
@@ -184,11 +188,29 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
 		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingLocalPlayer)
-		viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(pawnViewRepresentingOtherPlayer)
-//		pawnViewRepresentingOtherPlayer.hidden = true // not shown untill a match is made (in which case a level is started)
 		
-		
-		
+        let widthScreen = self.view.frame.size.width
+        
+        // todo: We don't use imageViewPictureOfLocalPlayer anymore, but other frames are still based on it:
+        let oldFrameOfImageViewPictureOfLocalPlayer = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+        let oldFrameOfImageViewPictureOfOtherPlayer = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+        
+        // The name labels:
+        let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
+        let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
+        let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
+
+        self.nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
+        self.nameLabelLocalPlayer.font = kFontPlayerNames
+        self.nameLabelLocalPlayer.textAlignment = NSTextAlignment.Right
+        nameLabelLocalPlayer.text = self.ownAlias
+        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(nameLabelLocalPlayer)
+
+        self.nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
+        self.nameLabelOtherPlayer.font = kFontPlayerNames
+        nameLabelOtherPlayer.text = self.aliasOtherPlayer
+        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(nameLabelOtherPlayer)
+        
 		// Create and add a pageControl:
 		let heightPageControl: CGFloat = 37
 		pageControl.frame = CGRectMake(20, self.view.frame.size.height - 37 - 20, self.view.frame.size.width - 2 * 20, heightPageControl)
@@ -313,8 +335,14 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			difficultyView.layer.opacity = self.opacityForDifficultyViewAt(index: indexDifficulty)
             
             //Authenticate the player
-            if (!kDevLocalTestingIsOn) {
+            if (!kDevLocalTestingIsOn)
+            {
                 self.authenticateLocalPlayer()
+            }
+            else
+            {
+                self.ownAlias = "Developer Wessel"
+                self.updatePlayerRepresentations()
             }
         }
 	}
@@ -522,7 +550,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         else
         {
 			// Skip the whole matchmaking process and start playing immediately:
-			startPlayingMatch()
+            startPlayingMatch()
 		}
 	}
 	
@@ -619,11 +647,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
 				self.currentGame.goToNextLevel()
 				self.sendLevelToOther(self.currentGame.currentLevel!);
-                self.updatePawnIcons();
-                
                 self.makeLevelVCGoToTheNewCurrentLevel()
 				
 				self.currentGame.gameState = GameState.PlayingLevel
+                self.updatePlayerRepresentations();
 			})
 		}
 		else
@@ -684,11 +711,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 
 				// Go to the next level:
 				self.currentGame.currentLevel = (unpackedObject as Level)
-                self.updatePawnIcons()
 				self.makeLevelVCGoToTheNewCurrentLevel()
+                self.updatePlayerRepresentations()
             }
             
             self.currentGame.gameState = GameState.PlayingLevel
+            self.updatePlayerRepresentations()
         }
     }
 
@@ -700,6 +728,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.showAuthenticationDialogWhenReasonable(viewController)
             } else if (self.localPlayer.authenticated) {
                 println("Hatsee! Local player is authenticated.")
+
+                self.ownAlias = self.localPlayer.alias
+                self.updatePlayerRepresentations()
+                
                 //self.continueWithAuthenticatedLocalPlayer();
             }
             else {
@@ -747,9 +779,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.GCMatch = match
         self.otherPlayer = (GCMatch!.players[0] as GKPlayer)
         
-        //var players = self.loadPlayersForIdentifiers(self.GCMatch!.playerIDs,withCompletionHandler: nil)
-        //println(players)
+        if (!kDevLocalTestingIsOn)
+        {
+            self.aliasOtherPlayer = self.otherPlayer!.alias
+        }
         
+        self.updatePlayerRepresentations()
         match.delegate = self
         
         if (!self.GCMatchStarted && match.expectedPlayerCount == 0) {
@@ -793,6 +828,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
         }
+        else
+        {
+            //In dev mode, come up with our own opponent name
+            self.aliasOtherPlayer = "Developer Jop"
+            self.updatePlayerRepresentations()
+        }
 
         // Create the LevelViewController:
         self.levelViewController = LevelViewController()
@@ -821,12 +862,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.levelViewController!.sendActionToOther = sendActionToOther
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
         
-        if (!kDevLocalTestingIsOn)
-        {
-            self.levelViewController!.ownAlias = self.localPlayer.alias
-            self.levelViewController!.aliasOtherPlayer = self.otherPlayer!.alias
-        }
-            
         // Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
         // This part will be done by the other player once he or she receives the level:
         if self.weMakeAllDecisions! {
@@ -838,10 +873,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             self.levelViewController!.currentLevel = self.currentGame.currentLevel
                     
 			// Add our levelViewController's view:
-            self.updatePawnIcons()
 			gotoLevelScreen(animateFromLevelButton: true)
 			
             self.currentGame.gameState = GameState.PlayingLevel
+            self.updatePlayerRepresentations()
+            
         } else if self.currentGame.gameState == GameState.LookingForMatch {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
@@ -869,6 +905,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // Forget our levelViewController
         self.levelViewController = nil
 
+        //Forget the other player, and show that
+        self.aliasOtherPlayer = ""
+        self.updatePlayerRepresentations()
+        
     }
     
     func sendLevelToOther(level :Level) {
@@ -961,22 +1001,47 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		CATransaction.commit()
 	}
 	
-    func updatePawnIcons()
+    func updatePlayerRepresentations()
     {
-        self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
+        //The names
+        self.nameLabelLocalPlayer.text = shortenNameIfNeeded(self.ownAlias)
+        self.nameLabelOtherPlayer.text = shortenNameIfNeeded(self.aliasOtherPlayer)
+
         self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
         
-        println("Updating pawn icons")
-        self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer1.shape, color: kColorLocalPlayer))
-        self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer2.shape, color: kColorOtherPlayer))
-        
-        pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-        pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-        
-        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
-        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
+        //Updates for the icon and the name of the teammate are only possible inside a level
+        if self.currentGame.gameState == GameState.PlayingLevel
+        {
+            //The only way I could change the pawn icons was by removing and adding them again
+            self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
+            
+            var ourShape:PawnShape
+            var shapeOtherPlayer:PawnShape
+            
+            //See whether you have the pawnshape of player 1 or player 2
+            if (self.weMakeAllDecisions == self.currentGame.currentLevel!.decisionMakerPlayer1)
+            {
+                ourShape = self.currentGame.currentLevel!.pawnPlayer1.shape
+                shapeOtherPlayer = self.currentGame.currentLevel!.pawnPlayer2.shape
+            }
+            else
+            {
+                ourShape = self.currentGame.currentLevel!.pawnPlayer2.shape
+                shapeOtherPlayer = self.currentGame.currentLevel!.pawnPlayer1.shape
+            }
+            
+            //The local icon
+            self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: ourShape, color: kColorLocalPlayer))
+            pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+            self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
+            
+            //The other icon
+            self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: shapeOtherPlayer, color: kColorOtherPlayer))
+            pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+            self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
+        }
     }
-	
+    
 	func gotoLevelScreen(#animateFromLevelButton: Bool) {
 		// todo explain
 	/*	if animateFromLevelButton {
