@@ -619,7 +619,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		let actualButton = button != nil ? button! : levelButtons[difficulty]![indexLevel] // not very pretty, but this way caller can choose whether to pass the button, so this function can also be used before levelButtons has been prepared
 		let colorLockedLevels = difficulty == Difficulty.Beginner ? kColorLockedLevelsBeginner : difficulty == Difficulty.Advanced ? kColorLockedLevelsAdvanced : difficulty == Difficulty.Expert ? kColorLockedLevelsExpert : UIColor.blackColor()
-        let textUnlockedLevel = difficulty == Difficulty.Beginner ? "\(indexLevel + 1)" : " "
+		let textUnlockedLevel = difficulty == Difficulty.Beginner ? "\(indexLevel + 1)" : difficulty == Difficulty.Advanced ? "✦" : "★"
 		
 		let whetherToAddAFill = currentGame.levelIsFinished(difficulty: difficulty, indexLevel: indexLevel)
 		let fillColor: UIColor? = whetherToAddAFill ? kColorUnlockedLevels.rgbVariantWith(customAlpha: 0.6) : nil
