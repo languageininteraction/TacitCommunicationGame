@@ -672,18 +672,63 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
 			}
 			
-			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
-			
-			self.currentGame.gameState = GameState.PreparingLevel
-			
-			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
-				self.currentGame.goToNextLevel()
-				self.sendLevelToOther(self.currentGame.currentLevel!);
-                self.makeLevelVCGoToTheNewCurrentLevel()
+			// Go to the next level, if there is one. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
+			if self.currentGame.thereIsANextLevelInCurrentDifficulty() {
+				self.currentGame.gameState = GameState.PreparingLevel
 				
-				self.currentGame.gameState = GameState.PlayingLevel
-                self.updatePlayerRepresentations();
-			})
+				JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
+					self.currentGame.goToNextLevel()
+					self.sendLevelToOther(self.currentGame.currentLevel!);
+					self.makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty()
+					
+					self.currentGame.gameState = GameState.PlayingLevel
+					self.updatePlayerRepresentations();
+				})
+			} else {
+				// Ugly, because lot of overlap with makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty.
+				
+				
+				/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
+				1. Animate leaving the level (currently that's zooming out on the board);
+				2. Make the level buttons of the current difficulty appear again;
+				3. Make the level button of the finished level show that it's finished;
+				4. STOP THE MATCH!
+				*/
+				
+				CATransaction.begin()
+				CATransaction.setAnimationDuration(0.75) // todo constant
+				CATransaction.setCompletionBlock({ () -> Void in
+					
+					// 2. Make the level buttons of the current difficulty appear again:
+					CATransaction.begin()
+					CATransaction.setAnimationDuration(0.75) // todo constant
+					CATransaction.setCompletionBlock({ () -> Void in
+						
+						// 3. Make the level button of the finished level show that it's finished:
+						CATransaction.begin()
+						CATransaction.setAnimationDuration(0.75) // todo constant
+						
+						// 3. Make the level button of the finished level show that it's finished:
+						let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+						let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel - 1] // dangerous…
+						self.updateLevelButtonAsAResultOfHavingBeenFinished(levelButton)
+						
+						CATransaction.commit()
+						
+						self.stopPlayingMatch()
+					})
+					
+					// 2. Make the level buttons of the current difficulty appear again:
+					self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 1, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+					
+					CATransaction.commit()
+				})
+				
+				// 1. Animate leaving the level (currently that's zooming out on the board):
+				self.levelViewController!.animateLeavingTheLevel()
+				
+				CATransaction.commit()
+			}
 		}
 		else
         {
@@ -750,7 +795,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				self.currentGame.currentLevel = (unpackedObject as Level)
 				self.currentGame.indexCurrentLevel++ // todo Game should take care of stuff like this itself; indexCurrentLevel and currentLevel should always be in sync, this makes it too easy to make mistakes
                 self.updatePawnIcons()
-				self.makeLevelVCGoToTheNewCurrentLevel()
+				self.makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty()
                 self.updatePlayerRepresentations()
             }
             
@@ -976,7 +1021,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     }
 	
 	
-	func makeLevelVCGoToTheNewCurrentLevel() {
+	func makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty() {
 		
 		//
 		if !currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted {
@@ -1064,7 +1109,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
 		self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
 		
-		println("Updating pawn icons")
+//		println("Updating pawn icons")
 		self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer1.shape, color: kColorLocalPlayer))
 		self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer2.shape, color: kColorOtherPlayer))
 		

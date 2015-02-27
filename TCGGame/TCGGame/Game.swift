@@ -101,6 +101,10 @@ class Game: NSObject
             case Difficulty.Expert: self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
         }
     }
+	
+	func thereIsANextLevelInCurrentDifficulty() -> Bool {
+		return nLevelsForDifficulty(currentDifficulty) > self.indexCurrentLevel
+	}
     
     func goToNextLevel()
     {
