@@ -10,6 +10,7 @@ import Foundation
 class Level: NSObject
 {
     let name: String
+    var hint: String
     
     var decisionMakerPlayer1: Bool
 
@@ -40,7 +41,8 @@ class Level: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
-
+        self.hint = jsonResult["hint"] as String
+        
         self.decisionMakerPlayer1 = jsonResult["decisionMakerPlayer1"] as Bool
         
         self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
@@ -86,6 +88,8 @@ class Level: NSObject
     init(name : String)
     {
         self.name = name
+        self.hint = "Hier komt de hint."
+        
         self.decisionMakerPlayer1 = true
 		
 		// These defaults are simple on purpose, so if we use them by accident, it shows:
@@ -119,6 +123,7 @@ class Level: NSObject
         //Basic info
         var objectsToEncode : Array<(String, AnyObject)> = [
 			("name", self.name),
+            ("hint", self.hint),
 			("boardWidth", self.board.width),
 			("boardHeight", self.board.height),
             ("pawnPlayer1Shape", self.pawnPlayer1.shape.rawValue),
@@ -187,7 +192,8 @@ class Level: NSObject
     required init (coder decoder: NSCoder)
     {
         self.name = decoder.decodeObjectForKey("name") as String
-
+        self.hint = decoder.decodeObjectForKey("hint") as String
+        
         self.decisionMakerPlayer1 = decoder.decodeBoolForKey("decisionMakerPlayer1")
 
         self.board = BoardDefinition(width: decoder.decodeObjectForKey("boardWidth") as Int, height: decoder.decodeObjectForKey("boardHeight") as Int)

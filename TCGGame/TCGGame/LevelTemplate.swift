@@ -17,6 +17,7 @@ extension Array {
 class LevelTemplate: NSObject
 {
     let name: String
+    let hint: String
 
     let decisionMakerPlayer1Possibilities: [Bool]
 
@@ -46,6 +47,7 @@ class LevelTemplate: NSObject
         
         // Fill the vars:
         self.name = jsonResult["name"] as String
+        self.hint = jsonResult["hint"] as String
 
         var decisionMakerPlayer1PossibilitiesNSArray = jsonResult["decisionMakerPlayer1"] as NSArray
         self.decisionMakerPlayer1Possibilities = []
@@ -100,6 +102,7 @@ class LevelTemplate: NSObject
         var level = Level(name: self.name)
         
         //Copy static item info
+        level.hint = self.hint
         level.moveItemAvailable = self.moveItemAvailable
         level.seeItemAvailable = self.seeItemAvailable
         level.giveItemAvailable = self.giveItemAvailable
