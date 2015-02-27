@@ -68,7 +68,8 @@ class LevelTemplate: NSObject
         var shapesAsStrings = jsonResult["possiblePawnShapesPlayer1"] as NSArray
         for shape in shapesAsStrings
         {
-            self.possiblePawnShapesPlayer1.append(shape as NSString == "circle" ? PawnShape.Circle : shape as NSString == "triangle" ? PawnShape.Triangle : PawnShape.Square)
+            var shapeAsString = shape as NSString
+            self.possiblePawnShapesPlayer1.append(shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : shapeAsString == "square" ? PawnShape.Square : shapeAsString == "line" ? PawnShape.Line : shapeAsString == "bar" ? PawnShape.Bar : shapeAsString == "cornerTriangle" ? PawnShape.CornerTriangle : PawnShape.Star)
         }
 
         self.possiblePawnShapesPlayer2 = []
@@ -76,7 +77,8 @@ class LevelTemplate: NSObject
         shapesAsStrings = jsonResult["possiblePawnShapesPlayer2"] as NSArray
         for shape in shapesAsStrings
         {
-            self.possiblePawnShapesPlayer2.append(shape as NSString == "circle" ? PawnShape.Circle : shape as NSString == "triangle" ? PawnShape.Triangle : PawnShape.Square)
+            var shapeAsString = shape as NSString
+            self.possiblePawnShapesPlayer2.append(shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : shapeAsString == "square" ? PawnShape.Square : shapeAsString == "line" ? PawnShape.Line : shapeAsString == "bar" ? PawnShape.Bar : shapeAsString == "cornerTriangle" ? PawnShape.CornerTriangle : PawnShape.Star)
         }
 
         self.orientationRelation = jsonResult["orientationRelation"] as NSArray
