@@ -45,10 +45,6 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
     var weArePlayer1: Bool = true
     var weMakeAllDecisions: Bool = true
 	var userChoseToGoBackHome: Bool = false
-    
-    var ownAlias: String = "Developer Wessel"
-    var aliasOtherPlayer: String = "Developer Jop"
-	
 	
 	// MARK: - Other UI
 	
@@ -163,43 +159,13 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 
 		
 		// MARK: 2. Players' info has been moved to HomeViewController!
-		
-		// todo: We don't use imageViewPictureOfLocalPlayer anymore, but other frames are still based on it:
-		let oldFrameOfImageViewPictureOfLocalPlayer = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		let oldFrameOfImageViewPictureOfOtherPlayer = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		
-		
-		
-		
-		
-		// Local player's name label:
-		let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
-		let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
-		let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
-		let nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
-		nameLabelLocalPlayer.font = kFontPlayerNames
-		nameLabelLocalPlayer.textAlignment = NSTextAlignment.Right
-		self.view.addSubview(nameLabelLocalPlayer)
 
-		// temp:
-//		nameLabelLocalPlayer.backgroundColor = UIColor.yellowColor()
-        nameLabelLocalPlayer.text = shortenNameIfNeeded(self.ownAlias)
+        let oldFrameOfImageViewPictureOfLocalPlayer = CGRectMake(widthScreen - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+        let oldFrameOfImageViewPictureOfOtherPlayer = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
         
-		// Other player's name label:
-		let nameLabelOtherPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - widthOfNameLabels, nameLabelLocalPlayer.frame.origin.y, widthOfNameLabels, kHeightOfPlayerNameLabels))
-		nameLabelOtherPlayer.font = kFontPlayerNames
-		self.view.addSubview(nameLabelOtherPlayer)
-		
-		println("x \(nameLabelOtherPlayer.frame.origin.x) and y \(nameLabelOtherPlayer.frame.origin.y)")
-		
-		// temp:
-//		nameLabelOtherPlayer.backgroundColor = UIColor.orangeColor()
-        nameLabelOtherPlayer.text = shortenNameIfNeeded(self.aliasOtherPlayer)
-		
-		// Used for multiple frames:
-		let xItemButtonsLocalPlayer = oldFrameOfImageViewPictureOfLocalPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
-		let xItemButtonsOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
-		
+        // Used for multiple frames:
+        let xItemButtonsLocalPlayer = oldFrameOfImageViewPictureOfLocalPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
+        let xItemButtonsOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + 0.5 * (kEdgelengthFaces - kEdgelengthItemButtons)
 		
 		// MARK: 3. Prepare the move and rotate buttons:
 		
