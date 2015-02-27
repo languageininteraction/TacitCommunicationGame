@@ -7,7 +7,7 @@
         "height": 3
     },
     "possiblePawnShapesPlayer1": ["circle","rectangle"],
-    "possiblePawnShapesPlayer2": ["triangle"],
+    "possiblePawnShapesPlayer2": ["triangle","line","cornerTriangle","star","bar"],
     "moveItemAvailable": true,
     "seeItemAvailable": true,
     "giveItemAvailable": true,
@@ -21,7 +21,7 @@
         "see": 0,
         "give": 0
     },
-    "goalPlayer2Pointing": ["outwards"],
+    "goalPlayer2Pointing": ["outwards","inwards"],
     "orientationRelation": ["different"],
     "decisionMakerPlayer1": [true,false]
 }
