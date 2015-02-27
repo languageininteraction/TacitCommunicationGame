@@ -46,7 +46,7 @@ class Game: NSObject
 	
 	// There's a fixed number of beginner levels and infinite advanced and expert levels. However, in the home screen we show a number of advanced and expert levels to represent the number of levels of each difficulty level that you need to finish to proceed. These are the numbers of levels per difficulty level that we show in the home screen:
 	let nBeginnerLevels: Int // set in init based on self.beginnerLevels
-	let nAdvancedLevels = 13
+	let nAdvancedLevels = 7 // todo make constants
 	let nExpertLevels = 11
 	
 	
