@@ -16,7 +16,7 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) == .OrderedAscending
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
@@ -123,7 +123,7 @@ let kAnimationDurationRotatePawn: NSTimeInterval = 0.3
 let kAnimationDurationSlightlyRotatingFieldsOfBoard: NSTimeInterval = 0.5
 
 // Animations progress view:
-let kAnimationDurationProgressChange: NSTimeInterval = 1.5
+let kAnimationDurationProgressChange: NSTimeInterval = 1
 
 
 

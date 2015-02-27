@@ -740,7 +740,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 // Add our levelViewController's view:
 				gotoLevelScreen(animateFromLevelButton: true)
 			} else {
-                
+				
+				// Update the game progress because we may have just finished the previous level:
+				if levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded {
+					self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
+				}
+				
 				// Go to the next level:
 				self.currentGame.currentLevel = (unpackedObject as Level)
 				self.currentGame.indexCurrentLevel++ // todo Game should take care of stuff like this itself; indexCurrentLevel and currentLevel should always be in sync, this makes it too easy to make mistakes
@@ -974,7 +979,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	func makeLevelVCGoToTheNewCurrentLevel() {
 		
 		//
-		println("In makeLevelVCGoToTheNewCurrentLevel, weMakeAllDecisions = \(weMakeAllDecisions!); currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = \(currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted)")
 		if !currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted {
 			// Animate entering the new level:
 			self.levelViewController!.currentLevel = self.currentGame.currentLevel

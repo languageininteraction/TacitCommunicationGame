@@ -24,8 +24,6 @@ enum Difficulty: Int {
 	func description() -> String {
 		return self == Difficulty.Beginner ? "Beginner" : self == Difficulty.Advanced ? "Gevorderd" : self == Difficulty.Expert ? "Expert" : "oeps, onbekend nivo…"
 	}
-	
-	
 }
 
 // Not nice to put this here, but putting it in Difficulty caused strange problems:

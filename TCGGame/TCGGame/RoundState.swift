@@ -11,6 +11,10 @@ enum RoundResult: Int {
 	case MaySucceed
 	case Succeeded
 	case Failed
+	
+	func description() -> String {
+		return self == RoundResult.MaySucceed ? "MaySucceed" : self == RoundResult.Succeeded ? "Succeeded" : self == RoundResult.Failed ? "Failed" : "oops, unknown RoundResult…"
+	}
 }
 
 enum UseOfLevelButton: Int {
