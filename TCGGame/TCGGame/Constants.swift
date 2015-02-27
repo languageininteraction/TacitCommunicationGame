@@ -123,7 +123,7 @@ let kAnimationDurationRotatePawn: NSTimeInterval = 0.3
 let kAnimationDurationSlightlyRotatingFieldsOfBoard: NSTimeInterval = 0.5
 
 // Animations progress view:
-let kAnimationDurationProgressChange: NSTimeInterval = 1.5
+let kAnimationDurationProgressChange: NSTimeInterval = 1
 
 
 

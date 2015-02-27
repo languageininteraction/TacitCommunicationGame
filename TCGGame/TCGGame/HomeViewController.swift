@@ -636,7 +636,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 //			actualButton.setLayerPulsates(buttonCorrespondsToFirstUnfinishedLevel)
 //		}
 		
-		actualButton.animateTransform(nil, toTransform: buttonCorrespondsToFirstUnfinishedLevel ? CATransform3DMakeScale(1.2, 1.2, 1) : CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+//		actualButton.animateTransform(nil, toTransform: buttonCorrespondsToFirstUnfinishedLevel ? CATransform3DMakeScale(1.2, 1.2, 1) : CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 	}
 	
 	
@@ -740,7 +740,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 // Add our levelViewController's view:
 				gotoLevelScreen(animateFromLevelButton: true)
 			} else {
-                
+				
+				// Update the game progress because we may have just finished the previous level:
+				if levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded {
+					self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
+				}
+				
 				// Go to the next level:
 				self.currentGame.currentLevel = (unpackedObject as Level)
 				self.currentGame.indexCurrentLevel++ // todo Game should take care of stuff like this itself; indexCurrentLevel and currentLevel should always be in sync, this makes it too easy to make mistakes
@@ -843,7 +848,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Stop the match if you you are no longer connected (and inform the user)
         else if (self.GCMatchStarted && (state == GKPlayerConnectionState.StateUnknown || state == GKPlayerConnectionState.StateDisconnected))
         {
-            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Probleempje?",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")			
+            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
 			showExplanationsAboutHowToMakeAConnection = true
 
         }
@@ -902,19 +907,24 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
         // This part will be done by the other player once he or she receives the level:
         if self.weMakeAllDecisions! {
-            self.currentGame.gameState = GameState.PreparingLevel
-            
-            self.currentGame.goToUpcomingLevel()
-            self.sendLevelToOther(self.currentGame.currentLevel!);
-                        
-            self.levelViewController!.currentLevel = self.currentGame.currentLevel
-                    
-			// Add our levelViewController's view:
-			gotoLevelScreen(animateFromLevelButton: true)
 			
-            self.currentGame.gameState = GameState.PlayingLevel
-            self.updatePlayerRepresentations()
-            
+			// We wait just a second, because apparantly it's possible that we send the level to the other player while that iPad isn't aware yet that there is a connection (at least that's our best guess at why certain crashes happened). Obviously this solution is far from ideal, but we need a quick fix and we think this makes the chance of these crashes occuring much smaller:
+			JvHClosureBasedTimer(interval: 1, repeats: false, closure: { () -> Void in
+				self.currentGame.gameState = GameState.PreparingLevel
+				
+				self.currentGame.goToUpcomingLevel()
+				self.sendLevelToOther(self.currentGame.currentLevel!);
+				
+				self.levelViewController!.currentLevel = self.currentGame.currentLevel
+				
+				// Add our levelViewController's view:
+				self.gotoLevelScreen(animateFromLevelButton: true)
+				
+				self.currentGame.gameState = GameState.PlayingLevel
+				self.updatePlayerRepresentations()
+				
+			})
+			
         } else if self.currentGame.gameState == GameState.LookingForMatch {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
@@ -945,9 +955,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Forget the other player, and show that
         self.aliasOtherPlayer = ""
         self.updatePlayerRepresentations()
-        
     }
-    
+	
+	
     func sendLevelToOther(level :Level) {
         let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
         
@@ -969,7 +979,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	func makeLevelVCGoToTheNewCurrentLevel() {
 		
 		//
-		println("In makeLevelVCGoToTheNewCurrentLevel, weMakeAllDecisions = \(weMakeAllDecisions!); currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = \(currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted)")
 		if !currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted {
 			// Animate entering the new level:
 			self.levelViewController!.currentLevel = self.currentGame.currentLevel
@@ -1020,16 +1029,17 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 						let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
 						let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel]
 						println("at 4 self.currentGame.indexCurrentLevel = \(self.currentGame.indexCurrentLevel)")
-						levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.8, 0.8, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+						
+						self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
 						
 						CATransaction.commit()
 					})
 					
 					// 3. Make the level button of the finished level show that it's finished:
-					println("at 3 indexUpcomingLevel = \(self.currentGame.indexUpcomingLevel)")
+					println("at 3 indexCurrentLevel - 1 = \(self.currentGame.indexCurrentLevel - 1)")
 					let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
-					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
-					levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(1.3, 1.3, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel - 1] // dangerous…
+					self.updateLevelButtonAsAResultOfHavingBeenFinished(levelButton)
 					
 					CATransaction.commit()
 				})
@@ -1064,30 +1074,63 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
 	func updateLevelButtonAsAResultOfHavingBeenFinished(levelButton: UIButton) {
-		// Make the button dissappear really quickly and reappear with its new appearance:
+/*		// Make the button dissappear really quickly and reappear with its new appearance:
 		CATransaction.begin()
-		CATransaction.setAnimationDuration(0.1)
+		CATransaction.setAnimationDuration(0.2)
 		CATransaction.setCompletionBlock { () -> Void in
 			
-			CATransaction.begin()
-			CATransaction.setDisableActions(true)
+//			CATransaction.begin()
+//			CATransaction.setDisableActions(true)
 			
 			// very ugly
-			for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty!]!.count - 1 {
-				if self.levelButtons[self.currentGame.currentDifficulty!]![i] == levelButton {
-					self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty!, indexLevel: i, button: levelButton)
+			for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
+				if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
+					self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty, indexLevel: i, button: levelButton)
 					break
 				}
 			}
 			
-			CATransaction.commit()
+//			CATransaction.commit()
 			
 			levelButton.animateTransform(nil, toTransform: CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 		}
 		
 		levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.01, 0.01, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 		
-		CATransaction.commit()
+		CATransaction.commit()*/
+		
+		for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
+			if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
+				self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty, indexLevel: i, button: levelButton)
+				break
+			}
+		}
+
+		let animation = CABasicAnimation(keyPath: "transform")
+		animation.duration = 0.15
+		animation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		animation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.2, 1.2, 1))
+		animation.autoreverses = true
+		levelButton.layer.addAnimation(animation, forKey: "plop")
+	}
+	
+	func updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton: UIButton) {
+		
+		// for now exactly the same as updateLevelButtonAsAResultOfHavingBeenFinished
+		
+		for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
+			if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
+				self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty, indexLevel: i, button: levelButton)
+				break
+			}
+		}
+		
+		let animation = CABasicAnimation(keyPath: "transform")
+		animation.duration = 0.15
+		animation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		animation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.2, 1.2, 1))
+		animation.autoreverses = true
+		levelButton.layer.addAnimation(animation, forKey: "plop")
 	}
 	
     func updatePlayerRepresentations()
