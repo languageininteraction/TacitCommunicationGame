@@ -862,7 +862,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         if (!kDevLocalTestingIsOn) { // normal case
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
-        }
+		}
+		else
+		{
+			//In dev mode, come up with our own opponent name
+			self.aliasOtherPlayer = "Developer Jop"
+			self.updatePlayerRepresentations()
+		}
 		
 		showExplanationsAboutHowToMakeAConnection = false
 
@@ -1084,6 +1090,47 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		CATransaction.commit()
 	}
 	
+    func updatePlayerRepresentations()
+    {
+        //The names
+        self.nameLabelLocalPlayer.text = shortenNameIfNeeded(self.ownAlias)
+        self.nameLabelOtherPlayer.text = shortenNameIfNeeded(self.aliasOtherPlayer)
+
+        self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
+        
+        //Updates for the icon and the name of the teammate are only possible inside a level
+        if self.currentGame.gameState == GameState.PlayingLevel
+        {
+            //The only way I could change the pawn icons was by removing and adding them again
+            self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
+            
+            var ourShape:PawnShape
+            var shapeOtherPlayer:PawnShape
+            
+            //See whether you have the pawnshape of player 1 or player 2
+            if (self.weMakeAllDecisions == self.currentGame.currentLevel!.decisionMakerPlayer1)
+            {
+                ourShape = self.currentGame.currentLevel!.pawnPlayer1.shape
+                shapeOtherPlayer = self.currentGame.currentLevel!.pawnPlayer2.shape
+            }
+            else
+            {
+                ourShape = self.currentGame.currentLevel!.pawnPlayer2.shape
+                shapeOtherPlayer = self.currentGame.currentLevel!.pawnPlayer1.shape
+            }
+            
+            //The local icon
+            self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: ourShape, color: kColorLocalPlayer))
+            pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+            self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
+            
+            //The other icon
+            self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: shapeOtherPlayer, color: kColorOtherPlayer))
+            pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+            self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
+        }
+    }
+    
 	func gotoLevelScreen(#animateFromLevelButton: Bool) {
 		// todo explain
 	/*	if animateFromLevelButton {
