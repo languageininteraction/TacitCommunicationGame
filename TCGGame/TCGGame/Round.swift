@@ -60,7 +60,7 @@ class Round : NSObject {
 	
 	
 	func processAction(action: RoundAction) {
-		// Let our current state create the next phase:;l.
+		// Let our current state create the next phase:
 		let nextPhase = self.currentState().nextPhase(action)		
         
 		// todo: add the nextPhase to an array of phases; for now just update the current phase:
