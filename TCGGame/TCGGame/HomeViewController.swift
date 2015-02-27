@@ -14,6 +14,8 @@ protocol ManageMultipleHomeViewControllersProtocol {
 }
 
 let kTagViewToRegisterTapsInDifficultyView = 186 // just something unlikely
+let kTagLabelTitleInDifficultyView = 187 // just something unlikely
+let kTagLabelExplanationInDifficultyView = 188 // just something unlikely
 
 class HomeViewController: UIViewController, PassControlToSubControllerProtocol, GKMatchmakerViewControllerDelegate, GKMatchDelegate
 {
@@ -111,6 +113,13 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
     //Misc
     var weMakeAllDecisions: Bool?
+	
+	// Whenever there's already a connection with another player, this can be set to false so the irrelevant explanation isn't shown:
+	var showExplanationsAboutHowToMakeAConnection: Bool = true { // todo rename
+		didSet {
+			updateUIThatDependsOnWhetherExplanationsAreShown()
+		}
+	}
 	
 	
 	// MARK: - Init
@@ -217,7 +226,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		// Metrics of difficulty views:
 		let edgeLengthDifficultyViews: CGFloat = 540 // todo
-		let frameDifficultyViews = CGRectMake(0.5 * (self.view.frame.width - edgeLengthDifficultyViews), 0.5 * (self.view.frame.height - edgeLengthDifficultyViews), edgeLengthDifficultyViews, edgeLengthDifficultyViews)
+		let frameDifficultyViews = CGRectMake(0.5 * (self.view.frame.width - edgeLengthDifficultyViews), 0.5 * (self.view.frame.height - edgeLengthDifficultyViews) + kAmountYOfBoardViewLowerThanCenter, edgeLengthDifficultyViews, edgeLengthDifficultyViews)
 		
 		// Metrics of buttons within difficulty views:
 		let xAndYCenterInDifficultyViews = 0.5 * edgeLengthDifficultyViews
@@ -238,17 +247,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			difficultyView.frame = frameDifficultyViews
 			difficultyView.backgroundColor = UIColor.clearColor()
 			
-			// added later, todo cleanup:
-			let amountHigherBecauseOfExplanation: CGFloat = difficulty == Difficulty.Expert ? 0 : 50 // messy, todo make dependent on text of labelExplanation
-			
 			// Add a label which describes the difficulty in the center:
 			let label = UILabel()
 			label.font = kFontDifficulty
 			label.text = difficulty.description()
 			label.textAlignment = NSTextAlignment.Center
 			let widthLabel: CGFloat = 200, heightLabel: CGFloat = 100 // todo
-			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabel), 0.5 * (frameDifficultyViews.height - heightLabel) - amountHigherBecauseOfExplanation, widthLabel, heightLabel)
+			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabel), 0.5 * (frameDifficultyViews.height - heightLabel), widthLabel, heightLabel)
 			difficultyView.addSubview(label)
+			label.tag = kTagLabelTitleInDifficultyView
 			
 			// added later, todo cleanup and explain:
 			let labelExplanation = UILabel()
@@ -257,11 +264,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			labelExplanation.textColor = UIColor(white: 0.5, alpha: 1)
 			labelExplanation.text = difficulty == Difficulty.Beginner ? "Om Tic Tac Team te spelen heb je een teamgenoot nodig. Druk op dezelfde knop als een andere speler en jullie komen bij elkaar in het team!" :
 				difficulty == Difficulty.Advanced ? "De Gevorderde levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." :
-				difficulty == Difficulty.Expert ? nil : nil
+				difficulty == Difficulty.Expert ? "De Expert levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." : nil
 			labelExplanation.textAlignment = NSTextAlignment.Center
 			let widthLabelExplanation: CGFloat = 300, heightLabelExplanation: CGFloat = 200 // todo
-			labelExplanation.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabelExplanation), label.frame.origin.y + 80 - amountHigherBecauseOfExplanation, widthLabelExplanation, heightLabelExplanation)
+			labelExplanation.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabelExplanation), label.frame.origin.y - 15, widthLabelExplanation, heightLabelExplanation) // todo constants
 			difficultyView.addSubview(labelExplanation)
+			labelExplanation.tag = kTagLabelExplanationInDifficultyView
 			
 			
 			// Create and add level buttons:
@@ -317,6 +325,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.authenticateLocalPlayer()
             }
         }
+		updateUIThatDependsOnWhetherExplanationsAreShown()
 	}
 
 
@@ -603,6 +612,24 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
 	
+	func updateUIThatDependsOnWhetherExplanationsAreShown() {
+		println("in updateUIThatDependsOnWhetherExplanationsAreShown")
+		for i in 0 ... difficultyViews.count - 1 {
+			let difficulty = difficultiesInOrder()[i]
+			let difficultyView = difficultyViews[difficulty]!
+			
+//			let amountHigherBecauseOfExplanation: CGFloat = difficulty == Difficulty.Expert ? 0 : 50 // messy, todo make dependent on text of labelExplanation
+			let amountHigherBecauseOfExplanation: CGFloat = 50 // messy, todo make dependent on text of labelExplanation
+			
+			let labelTitle = difficultyView.viewWithTag(kTagLabelTitleInDifficultyView)! as UILabel
+			let labelExplanation = difficultyView.viewWithTag(kTagLabelExplanationInDifficultyView)! as UILabel
+			
+			labelExplanation.hidden = !showExplanationsAboutHowToMakeAConnection
+			labelTitle.layer.transform = showExplanationsAboutHowToMakeAConnection ? CATransform3DMakeTranslation(0, -1 * amountHigherBecauseOfExplanation, 0) : CATransform3DIdentity
+		}
+	}
+	
+	
     // MARK: - Communication with subController
     
     func subControllerFinished(subController: AnyObject) {
@@ -774,7 +801,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Stop the match if you you are no longer connected (and inform the user)
         else if (self.GCMatchStarted && (state == GKPlayerConnectionState.StateUnknown || state == GKPlayerConnectionState.StateDisconnected))
         {
-            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Probleempje?",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
+            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Probleempje?",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")			
+			showExplanationsAboutHowToMakeAConnection = true
 
         }
     }
@@ -793,6 +821,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
         }
+		
+		showExplanationsAboutHowToMakeAConnection = false
 
         // Create the LevelViewController:
         self.levelViewController = LevelViewController()
@@ -950,7 +980,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			})
 			
 			// 2. Make the level buttons of the current difficulty appear again:
-			self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 0.8, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+			self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 1, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 			
 			CATransaction.commit()
 		})

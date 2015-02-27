@@ -78,20 +78,19 @@ class ProgressView: UIView {
 		circleLayer.frame = CGRectMake(0, kAmountYOfBoardViewLowerThanCenter, self.layer.frame.width, self.layer.frame.height)
 		self.layer.addSublayer(circleLayer)
 		
-		let edgelengtShape: CGFloat = 665
-		let arcCenter = CGPointMake(0.5 * edgelengtShape, 0.5 * edgelengtShape)
-		shapeLayerRightPart.path = UIBezierPath(arcCenter: arcCenter, radius: 0.5 * edgelengtShape, startAngle: 0.5 * piAsCGFloat, endAngle: 1.5 * piAsCGFloat, clockwise: false).CGPath
+		let arcCenter = CGPointMake(0.5 * kEdgelengtProgressCircle, 0.5 * kEdgelengtProgressCircle)
+		shapeLayerRightPart.path = UIBezierPath(arcCenter: arcCenter, radius: 0.5 * kEdgelengtProgressCircle, startAngle: 0.5 * piAsCGFloat, endAngle: 1.5 * piAsCGFloat, clockwise: false).CGPath
 		shapeLayerRightPart.strokeColor = strokeColorRightPart.CGColor
 		shapeLayerRightPart.lineWidth = 20
 		shapeLayerRightPart.fillColor = nil
-		shapeLayerRightPart.frame = CGRectMake(0.5 * (circleLayer.frame.width - edgelengtShape), 0.5 * (circleLayer.frame.height - edgelengtShape), edgelengtShape, edgelengtShape)
+		shapeLayerRightPart.frame = CGRectMake(0.5 * (circleLayer.frame.width - kEdgelengtProgressCircle), 0.5 * (circleLayer.frame.height - kEdgelengtProgressCircle), kEdgelengtProgressCircle, kEdgelengtProgressCircle)
 		circleLayer.addSublayer(shapeLayerRightPart)
 		
-		shapeLayerLeftPart.path = UIBezierPath(arcCenter: arcCenter, radius: 0.5 * edgelengtShape, startAngle: 0.5 * piAsCGFloat, endAngle: 1.5 * piAsCGFloat, clockwise: true).CGPath
+		shapeLayerLeftPart.path = UIBezierPath(arcCenter: arcCenter, radius: 0.5 * kEdgelengtProgressCircle, startAngle: 0.5 * piAsCGFloat, endAngle: 1.5 * piAsCGFloat, clockwise: true).CGPath
 		shapeLayerLeftPart.strokeColor = strokeColorLeftPart.CGColor
 		shapeLayerLeftPart.lineWidth = 20
 		shapeLayerLeftPart.fillColor = nil
-		shapeLayerLeftPart.frame = CGRectMake(0.5 * (circleLayer.frame.width - edgelengtShape), 0.5 * (circleLayer.frame.height - edgelengtShape), edgelengtShape, edgelengtShape)
+		shapeLayerLeftPart.frame = CGRectMake(0.5 * (circleLayer.frame.width - kEdgelengtProgressCircle), 0.5 * (circleLayer.frame.height - kEdgelengtProgressCircle), kEdgelengtProgressCircle, kEdgelengtProgressCircle)
 		circleLayer.addSublayer(shapeLayerLeftPart)
 		
 		let scale: CGFloat = UIScreen.mainScreen().scale
@@ -103,7 +102,7 @@ class ProgressView: UIView {
 		let n = 200
 		let anglePerLine = M_PI * 2 / Double(n)
 		let xCenter = 0.5 * widthMask, yCenter = 0.5 * heightMask
-		let radius = pow(pow(edgelengtShape, 2) * 2, 0.5)
+		let radius = pow(pow(kEdgelengtProgressCircle, 2) * 2, 0.5)
 		for i in 0 ... n - 1 {
 			let angle = CGFloat((Double(i) + 0.5) * anglePerLine) // + 0.5 so there are no lines where the left and right part touch (because then those lines could be partly colored in one color and partly in another color
 			let x = xCenter + radius * cos(angle)

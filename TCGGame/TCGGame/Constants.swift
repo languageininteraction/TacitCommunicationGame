@@ -48,13 +48,14 @@ let kSpaceBetweenSmallPawnAndPlayerName: CGFloat = kOnPhone ? -10 : 8 * kDefault
 let kAmountYOfPlayerNamesLowerThanYOfSmallPawn: CGFloat = kOnPhone ? -10 : -10 * kDefaultScaling
 let kHeightOfPlayerNameLabels: CGFloat = 40 * kDefaultScaling
 let kMinimalSpaceBetweenPlayerNames: CGFloat = 40 * kDefaultScaling
-let kAmountYOfBoardViewLowerThanCenter: CGFloat = kOnPhone ? 10 : 20
+let kAmountYOfBoardViewLowerThanCenter: CGFloat = kOnPhone ? 10 : 18
 let kSpaceBetweenFaceAndTopItemButton: CGFloat = 28 * kDefaultScaling
 let kEdgelengthItemButtons: CGFloat = kOnPhone ? 40 : 60 * kDefaultScaling
 let kSpaceBetweenItemButtons: CGFloat = 20 * kDefaultScaling
 let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
 let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 160 * kDefaultScaling // use to be 120
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
+let kEdgelengtProgressCircle: CGFloat = 640 * kDefaultScaling
 
 let kMaxNameLength: Int = 25
 
