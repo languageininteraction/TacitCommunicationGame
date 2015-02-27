@@ -613,7 +613,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	
 	func updateUIThatDependsOnWhetherExplanationsAreShown() {
-		println("in updateUIThatDependsOnWhetherExplanationsAreShown")
 		for i in 0 ... difficultyViews.count - 1 {
 			let difficulty = difficultiesInOrder()[i]
 			let difficultyView = difficultyViews[difficulty]!
@@ -639,6 +638,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			self.stopPlayingMatch()
 			
 		} else if weMakeAllDecisions! {
+			
+			// Update the game progress:
+			if levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded {
+				self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
+			}
+			
 			// Go to the next level. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
 			
 			self.currentGame.gameState = GameState.PreparingLevel
@@ -711,6 +716,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 
 				// Go to the next level:
 				self.currentGame.currentLevel = (unpackedObject as Level)
+				self.currentGame.indexCurrentLevel++ // todo Game should take care of stuff like this itself; indexCurrentLevel and currentLevel should always be in sync, this makes it too easy to make mistakes
                 self.updatePawnIcons()
 				self.makeLevelVCGoToTheNewCurrentLevel()
             }
@@ -921,91 +927,127 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	func makeLevelVCGoToTheNewCurrentLevel() {
 		
-		// todo: don't assume that finished level wasn't already finished before.
-		
-		/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
-		1. Animate leaving the level (currently that's zooming out on the board);
-		2. Make the level buttons of the current difficulty appear again;
-		3. Make the level button of the finished level show that it's finished;
-		4. Make the level button of the next level show that it's going to be played;
-		5. Animate entering the new level.
-		*/
-		
-		CATransaction.begin()
-		CATransaction.setAnimationDuration(0.75) // todo constant
-		CATransaction.setCompletionBlock({ () -> Void in
+		//
+		println("In makeLevelVCGoToTheNewCurrentLevel, weMakeAllDecisions = \(weMakeAllDecisions!); currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = \(currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted)")
+		if !currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted {
+			// Animate entering the new level:
+			self.levelViewController!.currentLevel = self.currentGame.currentLevel
+			self.levelViewController!.restartLevel()
+		} else {
+	
+			/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
+			1. Animate leaving the level (currently that's zooming out on the board);
+			2. Make the level buttons of the current difficulty appear again;
+			3. Make the level button of the finished level show that it's finished;
+			4. Make the level button of the next level show that it's going to be played;
+			5. Animate entering the new level.
+			*/
 			
-			// 2. Make the level buttons of the current difficulty appear again:
 			CATransaction.begin()
 			CATransaction.setAnimationDuration(0.75) // todo constant
 			CATransaction.setCompletionBlock({ () -> Void in
 				
-				// 3. Make the level button of the finished level show that it's finished:
+				// 2. Make the level buttons of the current difficulty appear again:
 				CATransaction.begin()
 				CATransaction.setAnimationDuration(0.75) // todo constant
 				CATransaction.setCompletionBlock({ () -> Void in
 					
-					// 4. Make the level button of the next level show that it's going to be played:
+					// 3. Make the level button of the finished level show that it's finished:
 					CATransaction.begin()
 					CATransaction.setAnimationDuration(0.75) // todo constant
 					CATransaction.setCompletionBlock({ () -> Void in
 						
-						// 5. Animate entering the new level:
+						// 4. Make the level button of the next level show that it's going to be played:
 						CATransaction.begin()
 						CATransaction.setAnimationDuration(0.75) // todo constant
-
-						// 5. Animate entering the new level:
-						self.levelViewController?.restartLevel()
-						self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
+						CATransaction.setCompletionBlock({ () -> Void in
+							
+							// 5. Animate entering the new level:
+							CATransaction.begin()
+							CATransaction.setAnimationDuration(0.75) // todo constant
+							
+							// 5. Animate entering the new level:
+							self.levelViewController?.restartLevel()
+							self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
+							
+							
+							CATransaction.commit()
+						})
 						
+						// 4. Make the level button of the next level show that it's going to be played:
+						self.levelViewController!.currentLevel = self.currentGame.currentLevel
+						let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+						let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel]
+						println("at 4 self.currentGame.indexCurrentLevel = \(self.currentGame.indexCurrentLevel)")
+						levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.8, 0.8, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
 						
 						CATransaction.commit()
 					})
 					
-					// 4. Make the level button of the next level show that it's going to be played:
-					self.levelViewController!.currentLevel = self.currentGame.currentLevel
+					// 3. Make the level button of the finished level show that it's finished:
+					println("at 3 indexUpcomingLevel = \(self.currentGame.indexUpcomingLevel)")
 					let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
-					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel]
-					levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.8, 0.8, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
+					levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(1.3, 1.3, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
 					
 					CATransaction.commit()
 				})
 				
-				// 3. Make the level button of the finished level show that it's finished:
-				let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
-				let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
-				levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(1.3, 1.3, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+				// 2. Make the level buttons of the current difficulty appear again:
+				self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 1, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 				
 				CATransaction.commit()
 			})
 			
-			// 2. Make the level buttons of the current difficulty appear again:
-			self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 1, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+			// 1. Animate leaving the level (currently that's zooming out on the board):
+			self.levelViewController!.animateLeavingTheLevel()
 			
 			CATransaction.commit()
-		})
+		}
+	}
+	
+	func updatePawnIcons()
+	{
+		self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
+		self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
 		
-		// 1. Animate leaving the level (currently that's zooming out on the board):
-		self.levelViewController!.animateLeavingTheLevel()
+		println("Updating pawn icons")
+		self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer1.shape, color: kColorLocalPlayer))
+		self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer2.shape, color: kColorOtherPlayer))
+		
+		pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+		pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
+		
+		self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
+		self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
+	}
+	
+	func updateLevelButtonAsAResultOfHavingBeenFinished(levelButton: UIButton) {
+		// Make the button dissappear really quickly and reappear with its new appearance:
+		CATransaction.begin()
+		CATransaction.setAnimationDuration(0.1)
+		CATransaction.setCompletionBlock { () -> Void in
+			
+			CATransaction.begin()
+			CATransaction.setDisableActions(true)
+			
+			// very ugly
+			for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty!]!.count - 1 {
+				if self.levelButtons[self.currentGame.currentDifficulty!]![i] == levelButton {
+					self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty!, indexLevel: i, button: levelButton)
+					break
+				}
+			}
+			
+			CATransaction.commit()
+			
+			levelButton.animateTransform(nil, toTransform: CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+		}
+		
+		levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.01, 0.01, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 		
 		CATransaction.commit()
 	}
-	
-    func updatePawnIcons()
-    {
-        self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
-        self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
-        
-        println("Updating pawn icons")
-        self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer1.shape, color: kColorLocalPlayer))
-        self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer2.shape, color: kColorOtherPlayer))
-        
-        pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-        pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-        
-        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
-        self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
-    }
 	
 	func gotoLevelScreen(#animateFromLevelButton: Bool) {
 		// todo explain

@@ -55,6 +55,7 @@ class Game: NSObject
     // Progress:
     var highestAvailableDifficulty: Difficulty?
     var nCompletedLevels = Dictionary<Difficulty, Int>()
+	var lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = false // used by home vc when going from level to level to know whether it should show the progress view as part of the transition between the two levels
     
     //Current state:
     var gameState = GameState.NotPartOfMatch
@@ -153,6 +154,29 @@ class Game: NSObject
         
         return baseNumber
     }
+	
+	func updateProgressAsAResultOfCurrentLevelBeingCompleted() {
+//		println("A. At difficulty \(currentDifficulty) nCompletedLevels = \(nCompletedLevels[currentDifficulty!])")
+		
+		let nCompletedBeforeUpdate = nCompletedLevels[currentDifficulty!]
+		
+		if currentDifficulty == Difficulty.Beginner {
+			if indexCurrentLevel >= nCompletedLevels[currentDifficulty!] {
+				nCompletedLevels[currentDifficulty!] = nCompletedLevels[currentDifficulty!]! + 1
+			}
+		} else if currentDifficulty == Difficulty.Advanced || currentDifficulty == Difficulty.Expert {
+			nCompletedLevels[currentDifficulty!] = nCompletedLevels[currentDifficulty!]! + 1
+		} else {
+			println("WARNING in updateProgressAsAResultOfCurrentLevelBeingCompleted: Unknown difficulty.")
+		}
+		
+//		println("B. -> At difficulty \(currentDifficulty) nCompletedLevels = \(nCompletedLevels[currentDifficulty!])")
+		
+		let nCompletedAfterUpdate = nCompletedLevels[currentDifficulty!]
+		lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = nCompletedBeforeUpdate != nCompletedAfterUpdate
+		
+		storeProgress()
+	}
 }
 
 
