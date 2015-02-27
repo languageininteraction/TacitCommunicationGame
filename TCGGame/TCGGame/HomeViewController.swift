@@ -674,6 +674,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			}
 			
 			// Go to the next level, if there is one. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
+			println("self.currentGame.thereIsANextLevelInCurrentDifficulty() = \(self.currentGame.thereIsANextLevelInCurrentDifficulty()); weMakeDecision = \(weMakeAllDecisions)")
 			if self.currentGame.thereIsANextLevelInCurrentDifficulty() {
 				self.currentGame.gameState = GameState.PreparingLevel
 				

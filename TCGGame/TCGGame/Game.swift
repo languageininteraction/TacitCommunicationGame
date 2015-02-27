@@ -103,7 +103,7 @@ class Game: NSObject
     }
 	
 	func thereIsANextLevelInCurrentDifficulty() -> Bool {
-		return nLevelsForDifficulty(currentDifficulty) > self.indexCurrentLevel
+		return nLevelsForDifficulty(currentDifficulty) > self.indexCurrentLevel + 1
 	}
     
     func goToNextLevel()
