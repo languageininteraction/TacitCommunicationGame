@@ -207,7 +207,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // The name labels:
         let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
         let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
-        let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
+        let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - 140 // todo cleanup again xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
 
         self.nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
         self.nameLabelLocalPlayer.font = kFontPlayerNames
