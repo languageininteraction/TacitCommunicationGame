@@ -16,7 +16,7 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) == .OrderedAscending
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false

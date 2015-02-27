@@ -636,7 +636,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 //			actualButton.setLayerPulsates(buttonCorrespondsToFirstUnfinishedLevel)
 //		}
 		
-		actualButton.animateTransform(nil, toTransform: buttonCorrespondsToFirstUnfinishedLevel ? CATransform3DMakeScale(1.2, 1.2, 1) : CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+//		actualButton.animateTransform(nil, toTransform: buttonCorrespondsToFirstUnfinishedLevel ? CATransform3DMakeScale(1.2, 1.2, 1) : CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 	}
 	
 	
@@ -1029,16 +1029,17 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 						let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
 						let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel]
 						println("at 4 self.currentGame.indexCurrentLevel = \(self.currentGame.indexCurrentLevel)")
-						levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.8, 0.8, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+						
+						self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
 						
 						CATransaction.commit()
 					})
 					
 					// 3. Make the level button of the finished level show that it's finished:
-					println("at 3 indexUpcomingLevel = \(self.currentGame.indexUpcomingLevel)")
+					println("at 3 indexCurrentLevel - 1 = \(self.currentGame.indexCurrentLevel - 1)")
 					let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
-					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexUpcomingLevel]
-					levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(1.3, 1.3, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true) // temp
+					let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel - 1] // dangerous…
+					self.updateLevelButtonAsAResultOfHavingBeenFinished(levelButton)
 					
 					CATransaction.commit()
 				})
@@ -1073,30 +1074,63 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	}
 	
 	func updateLevelButtonAsAResultOfHavingBeenFinished(levelButton: UIButton) {
-		// Make the button dissappear really quickly and reappear with its new appearance:
+/*		// Make the button dissappear really quickly and reappear with its new appearance:
 		CATransaction.begin()
-		CATransaction.setAnimationDuration(0.1)
+		CATransaction.setAnimationDuration(0.2)
 		CATransaction.setCompletionBlock { () -> Void in
 			
-			CATransaction.begin()
-			CATransaction.setDisableActions(true)
+//			CATransaction.begin()
+//			CATransaction.setDisableActions(true)
 			
 			// very ugly
-			for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty!]!.count - 1 {
-				if self.levelButtons[self.currentGame.currentDifficulty!]![i] == levelButton {
-					self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty!, indexLevel: i, button: levelButton)
+			for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
+				if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
+					self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty, indexLevel: i, button: levelButton)
 					break
 				}
 			}
 			
-			CATransaction.commit()
+//			CATransaction.commit()
 			
 			levelButton.animateTransform(nil, toTransform: CATransform3DIdentity, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 		}
 		
 		levelButton.animateTransform(nil, toTransform: CATransform3DMakeScale(0.01, 0.01, 1), relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
 		
-		CATransaction.commit()
+		CATransaction.commit()*/
+		
+		for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
+			if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
+				self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty, indexLevel: i, button: levelButton)
+				break
+			}
+		}
+
+		let animation = CABasicAnimation(keyPath: "transform")
+		animation.duration = 0.15
+		animation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		animation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.2, 1.2, 1))
+		animation.autoreverses = true
+		levelButton.layer.addAnimation(animation, forKey: "plop")
+	}
+	
+	func updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton: UIButton) {
+		
+		// for now exactly the same as updateLevelButtonAsAResultOfHavingBeenFinished
+		
+		for i in 0 ... self.levelButtons[self.currentGame.currentDifficulty]!.count - 1 {
+			if self.levelButtons[self.currentGame.currentDifficulty]![i] == levelButton {
+				self.updateLevelButtonBasedOnProgress(difficulty: self.currentGame.currentDifficulty, indexLevel: i, button: levelButton)
+				break
+			}
+		}
+		
+		let animation = CABasicAnimation(keyPath: "transform")
+		animation.duration = 0.15
+		animation.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		animation.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.2, 1.2, 1))
+		animation.autoreverses = true
+		levelButton.layer.addAnimation(animation, forKey: "plop")
 	}
 	
     func updatePlayerRepresentations()

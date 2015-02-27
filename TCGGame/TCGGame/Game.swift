@@ -62,7 +62,7 @@ class Game: NSObject
     var indexCurrentLevel: Int = 0
 
     var currentLevel: Level?
-    var currentDifficulty: Difficulty?
+    var currentDifficulty = Difficulty.Beginner
         
     override init()
     {
@@ -94,7 +94,7 @@ class Game: NSObject
 
         self.indexCurrentLevel = self.indexUpcomingLevel
         
-        switch self.currentDifficulty!
+        switch self.currentDifficulty
         {
             case Difficulty.Beginner: self.currentLevel = Level(filename: self.beginnerLevelNames[self.indexCurrentLevel % self.nBeginnerLevels])
             case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
@@ -143,7 +143,7 @@ class Game: NSObject
 	
     func playerGroupForMatchMaking() -> Int //Assumes indexUpcomingLevel is set appropriately
     {
-        var baseNumber:Int = self.currentDifficulty!.rawValue * 100; //100 for easy, 200 for advanced, 300 for expert
+        var baseNumber:Int = self.currentDifficulty.rawValue * 100; //100 for easy, 200 for advanced, 300 for expert
         
         if self.currentDifficulty == Difficulty.Beginner
         {
@@ -156,21 +156,21 @@ class Game: NSObject
 	func updateProgressAsAResultOfCurrentLevelBeingCompleted() {
 //		println("A. At difficulty \(currentDifficulty) nCompletedLevels = \(nCompletedLevels[currentDifficulty!])")
 		
-		let nCompletedBeforeUpdate = nCompletedLevels[currentDifficulty!]
+		let nCompletedBeforeUpdate = nCompletedLevels[currentDifficulty]
 		
 		if currentDifficulty == Difficulty.Beginner {
-			if indexCurrentLevel >= nCompletedLevels[currentDifficulty!] {
-				nCompletedLevels[currentDifficulty!] = nCompletedLevels[currentDifficulty!]! + 1
+			if indexCurrentLevel >= nCompletedLevels[currentDifficulty] {
+				nCompletedLevels[currentDifficulty] = nCompletedLevels[currentDifficulty]! + 1
 			}
 		} else if currentDifficulty == Difficulty.Advanced || currentDifficulty == Difficulty.Expert {
-			nCompletedLevels[currentDifficulty!] = nCompletedLevels[currentDifficulty!]! + 1
+			nCompletedLevels[currentDifficulty] = nCompletedLevels[currentDifficulty]! + 1
 		} else {
 			println("WARNING in updateProgressAsAResultOfCurrentLevelBeingCompleted: Unknown difficulty.")
 		}
 		
 //		println("B. -> At difficulty \(currentDifficulty) nCompletedLevels = \(nCompletedLevels[currentDifficulty!])")
 		
-		let nCompletedAfterUpdate = nCompletedLevels[currentDifficulty!]
+		let nCompletedAfterUpdate = nCompletedLevels[currentDifficulty]
 		lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted = nCompletedBeforeUpdate != nCompletedAfterUpdate
 		
 		storeProgress()
