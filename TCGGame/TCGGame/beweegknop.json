@@ -1,5 +1,6 @@
 {
     "name": "De beweegknop",
+    "hint": "Vanaf nu kun je pas bewegen als je op de beweegknop hebt gedrukt. Je kunt ook zien wanneer je teamgenoot op die knop heeft gedrukt.",    
     "board": {
         "width": 3,
         "height": 3

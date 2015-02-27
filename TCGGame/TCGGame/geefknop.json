@@ -1,5 +1,6 @@
 {
     "name": "De geefknop",
+    "hint": "Jullie hebben vanaf nu niet meer allebei alle items die je nodig hebt om het level te halen. Gebruik de knop met het cadeautje om items met elkaar te delen. Het level is pas gehaald als je allebei op de juiste plek staat.",
     "board": {
         "width": 3,
         "height": 3

@@ -1,5 +1,6 @@
 {
     "name": "Niet te vaak!",
+    "hint": "Pas op dat je je items niet te vaak gebruikt! Je kunt het spel herstarten met de rode knop!",
     "board": {
         "width": 3,
         "height": 3

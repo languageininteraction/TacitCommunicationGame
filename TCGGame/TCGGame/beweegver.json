@@ -1,5 +1,6 @@
 {
     "name": "Nu wat verder",
+    "hint": "Het level is pas gehaald als jullie beiden op de goede plek staan. Zit elkaar dus niet in de weg!",    
     "board": {
         "width": 3,
         "height": 3

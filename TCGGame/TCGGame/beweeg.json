@@ -1,5 +1,6 @@
 {
     "name": "Beweeg!",
+    "hint": "Ga allebei op de goede plek staan, en druk op het vinkje als je klaar bent. Druk op de rode knop als je het opnieuw wilt proberen.",
     "board": {
         "width": 3,
         "height": 3

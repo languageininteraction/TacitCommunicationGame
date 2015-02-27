@@ -1,5 +1,6 @@
 {
     "name": "Expert level",
+    "hint": "",    
     "board":
     {
         "width": 3,
