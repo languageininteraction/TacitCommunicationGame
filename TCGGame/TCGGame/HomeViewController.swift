@@ -28,10 +28,38 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	let infoViewController = InfoViewController()
     
     //GameKit variables
-    var GCMatch: GKMatch?
+	var GCMatch: GKMatch? {
+		didSet {
+			// We use messagingHelper to handle and keep track of messages WITHIN a match, so whenever the match changes, a new MessagingHelper needs to be set:
+			if GCMatch != nil && GCMatch != oldValue {
+				if !kDevLocalTestingIsOn { // normal case
+					messagingHelper = MessagingHelper(closureToSendMessage: { (message: Message) -> Void in
+						// Try to send the message:
+						let packet = NSKeyedArchiver.archivedDataWithRootObject(message)
+						var error: NSError?
+						self.GCMatch!.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
+						
+						// If sending the message failed…
+						if (error != nil) {
+							println("Error in sendOutgoing_content: \(error)")
+						}
+					})
+				} else {
+					messagingHelper = MessagingHelper(closureToSendMessage: { (message: Message) -> Void in
+						// We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
+						let packet = NSKeyedArchiver.archivedDataWithRootObject(message)
+						self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
+					})
+				}
+			}
+		}
+	}
     var GCMatchStarted = false
     var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
     var otherPlayer: GKPlayer?
+	
+	// Used for sending and receiving data between two devices:
+	var messagingHelper: MessagingHelper! // set to a new MessagingHelper whenever a new GC Match is made
 
     //Buttons
     let tempPlayButtonEasy = UIButton()
@@ -743,25 +771,18 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     // This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
     func receiveData(data: NSData) {
-        
-        // test sending a small package:
-        /*		var hashValue = 1
-        data.getBytes(&hashValue, length: 4)
-        println("hashValue = \(hashValue)")
-        
-        self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 0.1, 0, 0, 1)
-        
-        return*/
-        
-        // Decode the data, which is always a RoundAction
-        var unpackedObject: AnyObject! = NSKeyedUnarchiver.unarchiveObjectWithData(data) as AnyObject!
-        
-        if unpackedObject is RoundAction
+		
+		// Register the incoming data with our MessagingHelper, which unarchives the Message, checks the message's index, and returns the message content:
+		let content: AnyObject = messagingHelper.registerIncomingData(data)
+		
+        // Take action that fits the content's type:
+        if content is RoundAction
         {
-            self.levelViewController!.receiveAction(unpackedObject as RoundAction)
+            self.levelViewController!.receiveAction(content as RoundAction)
         }
-        else if unpackedObject is Level
+        else if content is Level
         {
+			let level = content as Level
             if self.currentGame.gameState != GameState.WaitingForOtherPlayerToSendLevel
             {
                 println("Warning! Received a Level while not waiting for it")
@@ -773,7 +794,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 self.startPlayingMatch()
             }
             
-            self.currentGame.currentLevel = (unpackedObject as Level)
+            self.currentGame.currentLevel = level
            
 			// This is a bit of a mess, to fix sizes on iOS older than 8:
 			let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
@@ -781,7 +802,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
             // Start the game:
             if self.levelViewController!.currentLevel == nil {
-                self.currentGame.currentLevel = (unpackedObject as Level)
+                self.currentGame.currentLevel = level
                 self.levelViewController!.currentLevel = self.currentGame.currentLevel
                 
                 // Add our levelViewController's view:
@@ -794,7 +815,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				}
 				
 				// Go to the next level:
-				self.currentGame.currentLevel = (unpackedObject as Level)
+				self.currentGame.currentLevel = level
 				self.currentGame.indexCurrentLevel++ // todo Game should take care of stuff like this itself; indexCurrentLevel and currentLevel should always be in sync, this makes it too easy to make mistakes
                 self.updatePawnIcons()
 				self.makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty()
@@ -929,22 +950,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.levelViewController!.setSuperController(self)
 
         // The custom send functions for the levelviewcontroller:
-        func sendActionToOther(action :RoundAction)
-        {
-            let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
-            
-            if (!kDevLocalTestingIsOn) { // normal case
-                var error: NSError?
-                let match = self.GCMatch!
-                match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-                
-                if (error != nil) {
-                    println("Error in sendActionToOther: \(error)")
-                }
-            } else {
-                // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-                self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-            }
+        func sendActionToOther(action :RoundAction) {
+            messagingHelper.sendOutgoing(content: action)
         }
         
         // Give info to the levelViewController:
@@ -1006,20 +1013,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	
     func sendLevelToOther(level :Level) {
-        let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
-        
-        if (!kDevLocalTestingIsOn) { // normal case
-            var error: NSError?
-            let match = self.GCMatch!
-            match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-            
-            if (error != nil) {
-                println("Error in sendActionToOther: \(error)")
-            }
-        } else {
-            // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-            self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-        }
+		messagingHelper.sendOutgoing(content: level)
     }
 	
 	

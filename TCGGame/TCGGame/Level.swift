@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Level: NSObject
+class Level: NSObject, NSCoding
 {
     let name: String
     var hint: String?

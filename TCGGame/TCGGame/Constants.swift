@@ -16,15 +16,15 @@ let kOnPhone = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdi
 let kOlderThanIOS8 = UIDevice.currentDevice().systemVersion.compare("8.0.0", options: NSStringCompareOptions.NumericSearch) == .OrderedAscending
 
 // Constants that can be handy during development:
-let kDevLocalTestingIsOn = kDevelopmentMode ? true : false
+let kDevLocalTestingIsOn = kDevelopmentMode ? false : false
 let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
 let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 2 : nil
-let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 10 : nil
-let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 10 : nil
-let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? 8 : nil
+let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 13 : nil
+let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 7 : nil
+let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? 5 : nil
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
