@@ -419,7 +419,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		
 		// Draw a circle around it:
-		CGContextSetStrokeColorWithColor(context, kColorLiIPurple.CGColor)
+		CGContextSetStrokeColorWithColor(context, kColorButtonBorders.CGColor)
 		CGContextSetLineWidth(context, 1 * scaleFactor)
 		let inset: CGFloat = 6
 		let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, inset * scaleFactor, inset * scaleFactor), nil) // todo
@@ -840,7 +840,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			//				CGContextDrawImage(context, rect, coloredIconCGImage)
 			
 			// Draw a circle around it:
-			CGContextSetStrokeColorWithColor(context, kColorLiILila.CGColor)
+			CGContextSetStrokeColorWithColor(context, kColorButtonBorders.CGColor)
 			if forOtherPlayer {
 				CGContextSetLineWidth(context, 1 * scaleFactor)
 				let dashArray: [CGFloat] = [4 * scaleFactor, 6 * scaleFactor] // todo constants
