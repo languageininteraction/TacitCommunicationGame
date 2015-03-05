@@ -1,6 +1,6 @@
 {
     "name": "Niet te vaak!",
-    "hint": "Pas op dat je je items niet te vaak gebruikt! Je kunt het spel herstarten met de rode knop!",
+    "hint": "Denk goed na over hoe je je items gebruikt. Lukt het niet in één keer? Je kunt het level opnieuw proberen door op de rode knop te drukken.",
     "board": {
         "width": 3,
         "height": 3

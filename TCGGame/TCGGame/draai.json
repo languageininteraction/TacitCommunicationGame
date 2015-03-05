@@ -1,6 +1,6 @@
 {
     "name": "Draai!",
-    "hint": "Druk op de draaiknoppen om je figuurtje te draaien.",    
+    "hint": "Druk op de draaiknoppen om je figuurtje te draaien.",  
     "board": {
         "width": 3,
         "height": 3

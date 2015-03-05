@@ -1,6 +1,6 @@
 {
     "name": "De kijkknop",
-    "hint": "Vanaf nu kun je alleen zien waar je heen moet als je op de kijkknop hebt gedrukt. Je kunt ook zien wanneer je teamgenoot op die knop heeft gedrukt.",    
+    "hint": "Vanaf nu kun je alleen zien waar je heen moet als je op de kijkknop hebt gedrukt. Aan de linker kant kun je weer zien wanneer je teamgenoot op die knop heeft gedrukt.",    
     "board": {
         "width": 3,
         "height": 3

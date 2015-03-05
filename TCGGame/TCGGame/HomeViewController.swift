@@ -1411,7 +1411,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
 		}
 		
-        if self.currentGame.currentDifficulty == Difficulty.Beginner && self.currentGame.indexCurrentLevel! == 0
+        if self.currentGame.currentDifficulty == Difficulty.Beginner && (self.currentGame.indexCurrentLevel! == 0 || self.currentGame.currentLevel!.name == "Na elkaar kijken") // this is a quick fix; todo: add to level definition whether hint should be shown automatically
         {
             self.levelViewController!.showHint();
         }

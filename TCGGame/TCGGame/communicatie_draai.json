@@ -1,6 +1,6 @@
 {
     "name": "Draai me na",
-    "hint": "Een van jullie kan niet zien waar hij/zij heen moet. Gebruik bewegingen om te laten zien wat er moet gebeuren, en vergeet ook niet de goede richting aan te geven. Niet praten!",
+    "hint": "Denk goed na over hoe je je items gebruikt. Lukt het niet in één keer? Je kunt het level opnieuw proberen door op de rode knop te drukken.",
     "board": {
         "width": 3,
         "height": 3

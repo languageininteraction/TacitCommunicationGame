@@ -1,6 +1,7 @@
 {
     "name": "Voor wat hoort wat",
-    "hint": "Jullie hebben vanaf nu niet meer allebei alle items die je nodig hebt om het level te halen. Gebruik de knop met het cadeautje om items met elkaar te delen. Het level is pas gehaald als je allebei op de juiste plek staat.",
+    "hint": "De getallen bij de items geven aan hoe vaak je ze kunt gebruiken. In dit level kun je het cadeautje bijvoorbeeld maar één keer gebruiken. Om het level uit te spelen moeten jij en je teamgenoot beiden op de goede plek staan, bedenk dus goed hoe je het cadeautje inzet!",
+	
     "board": {
         "width": 3,
         "height": 3

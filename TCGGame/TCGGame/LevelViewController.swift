@@ -788,7 +788,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
     func showHint()
     {
         let helpVC = UIViewController()
-        helpVC.view.frame = CGRectMake(0, 0, 320, 160)
+        helpVC.view.frame = CGRectMake(0, 0, 320, 200)
         
         let helpLabel = UILabel(frame: CGRectInset(helpVC.view.frame, 20, 20)) // todo
         helpLabel.numberOfLines = 0
