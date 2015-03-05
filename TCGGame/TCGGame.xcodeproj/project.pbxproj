@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4812E60C1A0A655A006DED82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E60B1A0A655A006DED82 /* AppDelegate.swift */; };
 		4812E60E1A0A655A006DED82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E60D1A0A655A006DED82 /* ViewController.swift */; };
-		4812E6111A0A655A006DED82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4812E60F1A0A655A006DED82 /* Main.storyboard */; };
 		4812E6131A0A655A006DED82 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4812E6121A0A655A006DED82 /* Images.xcassets */; };
 		4812E6161A0A655A006DED82 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4812E6141A0A655A006DED82 /* LaunchScreen.xib */; };
 		4812E6221A0A655A006DED82 /* TCGGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4812E6211A0A655A006DED82 /* TCGGameTests.swift */; };
@@ -111,7 +110,6 @@
 		496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49821A761A695C5A008CC491 /* HomeViewController.swift */; };
 		49821A7D1A696CD7008CC491 /* expert1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A7C1A696CD7008CC491 /* expert1.json */; };
-		4983F0A71AA858DB000CCA1C /* LiI_logo_PMS_alpha.png in Resources */ = {isa = PBXBuildFile; fileRef = 4983F0A61AA858DB000CCA1C /* LiI_logo_PMS_alpha.png */; };
 		49BB4E561A5691B400C93C26 /* LevelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB4E551A5691B400C93C26 /* LevelTemplate.swift */; };
 		49D87FF51A56D2DB00455DA8 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 49D87FF41A56D2DB00455DA8 /* test.json */; };
 		49E83DA61A2714EC006952EE /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E83DA51A2714EC006952EE /* Game.swift */; };
@@ -239,7 +237,6 @@
 		49821A761A695C5A008CC491 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		49821A781A696C31008CC491 /* advanced1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = advanced1.json; sourceTree = "<group>"; };
 		49821A7C1A696CD7008CC491 /* expert1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = expert1.json; sourceTree = "<group>"; };
-		4983F0A61AA858DB000CCA1C /* LiI_logo_PMS_alpha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LiI_logo_PMS_alpha.png; sourceTree = "<group>"; };
 		49BB4E551A5691B400C93C26 /* LevelTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTemplate.swift; sourceTree = "<group>"; };
 		49D87FF41A56D2DB00455DA8 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		49E83DA51A2714EC006952EE /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -656,7 +653,6 @@
 				48C3C2D11A695EA1007FBF04 /* Icon_See 70x70@2x.png in Resources */,
 				48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */,
 				48EDD3471AA0AE9E00953628 /* HelpIcon 16x16@2x.png in Resources */,
-				4983F0A71AA858DB000CCA1C /* LiI_logo_PMS_alpha.png in Resources */,
 				494029211A399F0900449754 /* beweegknop.json in Resources */,
 				481F63A81A9759790007D135 /* OpenSans-BoldItalic.ttf in Resources */,
 				48A02DF31A9F7DD200C49E09 /* Cross 22x22.png in Resources */,
@@ -684,7 +680,6 @@
 				48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */,
 				481F63B01A9759790007D135 /* OpenSans-SemiboldItalic.ttf in Resources */,
 				48C3C2CF1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png in Resources */,
-				4812E6111A0A655A006DED82 /* Main.storyboard in Resources */,
 				481F63AE1A9759790007D135 /* OpenSans-Regular.ttf in Resources */,
 				48C3C2C31A695EA1007FBF04 /* Icon_Home 70x70@2x.png in Resources */,
 				49D87FF51A56D2DB00455DA8 /* test.json in Resources */,
