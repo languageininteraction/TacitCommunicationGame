@@ -54,19 +54,24 @@ class ItemDefinition: NSObject, NSCopying
 		return nrUses! > 0
 	}
 	
-	func updateNrUsesAsAResultOfReceivingAnItem(receivedItem: ItemDefinition) {
-		// Assert that the passed item is of the same type as ourselves:
-		assert(receivedItem.itemType == itemType, "In updateNrUsesAsAResultOfReceivingAnItem, the passed item should be of the same itemType as we have.")
+    func updateNrUsesAsAResultOfReceivingAnItem(receivedItem: ItemDefinition) {
+        // Assert that the passed item is of the same type as ourselves:
+        assert(receivedItem.itemType == itemType, "In updateNrUsesAsAResultOfReceivingAnItem, the passed item should be of the same itemType as we have.")
         
+        endlessUse = endlessUse || receivedItem.endlessUse
+        if !endlessUse {
+            if let actualNrUses = nrUses {
+                nrUses = actualNrUses + receivedItem.nrUses!
+            } else {
+                nrUses = receivedItem.nrUses
+            }
+        }
+    }
+    
+    func updateNrUsesAsAResultOfGivingTheItemToTheOtherPlayer() {
         endlessUse = false
-        nrUses!++
-		
-	}
-	
-	func updateNrUsesAsAResultOfGivingTheItemToTheOtherPlayer() {
-		endlessUse = false
-		nrUses!--
-	}
+        nrUses = 0
+    }
     
     func asDict() -> [String: AnyObject]
     {
