@@ -890,7 +890,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     func match(match: GKMatch!, player: GKPlayer!, didChangeConnectionState state: GKPlayerConnectionState) {
         //This function responds to changes in the Gamecenter match
         
-        //Start the match if get a connection, but you're not connected yet
+        //Start the match if you get a connection, but you're not connected yet
         if (state == GKPlayerConnectionState.StateConnected && !self.GCMatchStarted && match.expectedPlayerCount == 0)
         {
             self.GCMatchStarted = true
@@ -904,6 +904,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			if !(self.currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted == true && self.currentGame.nCompletedLevels[self.currentGame.currentDifficulty] == self.currentGame.nLevelsForDifficulty(self.currentGame.currentDifficulty)) {
 				self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
 			}
+			
+			self.showExplanationsAboutHowToMakeAConnection = true
         }
     }
     
@@ -967,6 +969,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     
     func stopPlayingMatch()
     {
+		// Do nothing if the match was already stopped:
+		if self.GCMatch == nil {
+			return
+		}
+		
         // Stop the GC match
         if (!kDevLocalTestingIsOn)
         {
@@ -982,6 +989,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // Come back to the home view
         self.levelViewController!.view.removeFromSuperview()
         viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 1
+		self.showExplanationsAboutHowToMakeAConnection = true
         
         // Forget our levelViewController
         self.levelViewController = nil
@@ -1057,6 +1065,9 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 									let levelButton = levelButtonsOfCurrentDifficulty[0]
 									self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
 								})
+								
+								// Stop the game, hiding the level UI:
+								self.stopPlayingMatch()
 								
 								// Show the next difficulty:
 								self.indexCurrentDifficultyLevel++
