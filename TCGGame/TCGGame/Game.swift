@@ -133,14 +133,14 @@ class Game: NSObject
     }
 	
 	func thereIsANextLevelInCurrentDifficulty() -> Bool {
-		// Assert that indexCurrentLevel isn't nil, because if that's the case, this function shouldn't be used:
-		assert(self.indexCurrentLevel != nil, "thereIsANextLevelInCurrentDifficulty should only be called if  has been set.")
+		// Assert that indexLastFinishedLevel isn't nil, because if it is nil, this function shouldn't be used:
+		assert(self.indexLastFinishedLevel != nil, "thereIsANextLevelInCurrentDifficulty should only be called if indexLastFinishedLevel has been set.")
 		
-		// We can now savely assume that indexCurrentLevel isn't nil:
-		let actualIndexCurrentLevel = self.indexCurrentLevel!
+		// We can now savely assume that indexLastFinishedLevel isn't nil:
+		let actualIndexLastFinishedLevel = self.indexLastFinishedLevel!
 		
 		// Return whether there is a next level:
-		return nLevelsForDifficulty(currentDifficulty) > actualIndexCurrentLevel + 1
+		return nLevelsForDifficulty(currentDifficulty) > actualIndexLastFinishedLevel + 1
 	}
     
     func quitPlaying()
