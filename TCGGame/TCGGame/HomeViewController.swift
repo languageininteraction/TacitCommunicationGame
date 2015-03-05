@@ -911,7 +911,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
 			}
             
-            println("Warning: GameCenter thinks the connection is lost.")
+            //println("Warning: GameCenter thinks the connection is lost.")
 			
 			self.showExplanationsAboutHowToMakeAConnection = true
         }
