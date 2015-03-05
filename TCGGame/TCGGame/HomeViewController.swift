@@ -834,7 +834,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     }
     
     func showAuthenticationDialogWhenReasonable(viewController : UIViewController) {
-        self.showViewController(viewController, sender: nil)
+		if !kOlderThanIOS8 {
+			self.showViewController(viewController, sender: nil)
+		} else {
+			self.presentViewController(viewController, animated: false, completion: nil)
+		}
     }
     
 	func continueWithAuthenticatedLocalPlayer() {

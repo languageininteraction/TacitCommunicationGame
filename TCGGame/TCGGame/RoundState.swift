@@ -209,7 +209,6 @@ class RoundState: NSObject, NSCopying {
 		case .Retry: // MARK: Action .Retry
 			// The roundResult becomes Failed as soon as someone presses retry:
 			roundResult = RoundResult.Failed
-			println("roundResult became RoundResult.Failed")
 			
 			// Update which players are ready to retry:
 			if action.performedByPlayer1 {

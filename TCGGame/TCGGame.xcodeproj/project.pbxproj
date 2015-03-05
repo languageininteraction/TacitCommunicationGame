@@ -94,6 +94,7 @@
 		48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB51A48A91B0072524E /* SmallCheckMark.png */; };
 		48D19EB81A48A91B0072524E /* SmallCross.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB61A48A91B0072524E /* SmallCross.png */; };
 		48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */; };
+		48D8903D1AA87F6D00A98C4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D8903C1AA87F6D00A98C4E /* Main.storyboard */; };
 		48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF63A21A39FE6500941BDA /* HandyFunctions.swift */; };
 		48DF9E1F1A73F76A00624C80 /* JvHClosureBasedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */; };
@@ -133,7 +134,6 @@
 		4812E60A1A0A655A006DED82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4812E60B1A0A655A006DED82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4812E60D1A0A655A006DED82 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4812E6101A0A655A006DED82 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4812E6121A0A655A006DED82 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4812E61B1A0A655A006DED82 /* TCGGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCGGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4812E6201A0A655A006DED82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -220,6 +220,7 @@
 		48D19EB51A48A91B0072524E /* SmallCheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCheckMark.png; sourceTree = "<group>"; };
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
 		48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on RU.rtf"; sourceTree = "<group>"; };
+		48D8903C1AA87F6D00A98C4E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		48DF63A21A39FE6500941BDA /* HandyFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandyFunctions.swift; sourceTree = "<group>"; };
 		48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JvHClosureBasedTimer.swift; sourceTree = "<group>"; };
 		48EDD3401AA0ADBC00953628 /* HelpIcon 21x21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HelpIcon 21x21.png"; sourceTree = "<group>"; };
@@ -288,6 +289,7 @@
 		4812E6081A0A655A006DED82 /* TCGGame */ = {
 			isa = PBXGroup;
 			children = (
+				48D8903C1AA87F6D00A98C4E /* Main.storyboard */,
 				482EEC431A123E0B00FB13FF /* Constants.swift */,
 				48B2C2D51A248CD6002FFEDF /* Resources */,
 				4812E60B1A0A655A006DED82 /* AppDelegate.swift */,
@@ -353,7 +355,6 @@
 			isa = PBXGroup;
 			children = (
 				4812E60D1A0A655A006DED82 /* ViewController.swift */,
-				4812E60F1A0A655A006DED82 /* Main.storyboard */,
 				482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */,
 				482EEC421A121D6A00FB13FF /* For One Player */,
 				496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */,
@@ -679,6 +680,7 @@
 				48C3C2CF1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70@2x.png in Resources */,
 				481F63AE1A9759790007D135 /* OpenSans-Regular.ttf in Resources */,
 				48C3C2C31A695EA1007FBF04 /* Icon_Home 70x70@2x.png in Resources */,
+				48D8903D1AA87F6D00A98C4E /* Main.storyboard in Resources */,
 				49D87FF51A56D2DB00455DA8 /* test.json in Resources */,
 				4940291F1A399EF200449754 /* draai.json in Resources */,
 				496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */,
@@ -781,17 +783,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		4812E60F1A0A655A006DED82 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4812E6101A0A655A006DED82 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		4812E6231A0A655A006DED82 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -884,7 +875,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -900,7 +891,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ca379f6f-b4be-4f11-a10b-c09ba5e23a3f";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

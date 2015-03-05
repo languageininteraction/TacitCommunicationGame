@@ -145,11 +145,8 @@ class Game: NSObject
     
     func quitPlaying()
     {
-        //Create a temporary dummy level to make sure the current one is gone
         self.currentLevel = nil // todo set something strange, to prevent difficult-to-find bugs
-        
-        //Reset which level in the tutorial
-        self.indexCurrentLevel = -1 + kDevIndexLevelToStartWith // Normally kDevIndexLevelToStartWith is 0, so the first 'next' level will be 0
+        self.indexCurrentLevel = nil
     }
 	
 	func nLevelsForDifficulty(difficulty: Difficulty) -> Int {

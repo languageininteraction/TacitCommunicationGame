@@ -18,6 +18,7 @@ class ViewController: UIViewController {
 				
 		if (!kDevLocalTestingIsOn) { // normal case
 			let homeViewController = HomeViewController()
+						
 			self.presentViewController(homeViewController, animated: false, completion: nil)
 		} else {
 			// This is useful for testing, circumventing the need for two devices and using Game Center:
