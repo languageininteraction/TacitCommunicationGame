@@ -419,7 +419,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		
 		// Draw a circle around it:
-		CGContextSetStrokeColorWithColor(context, kColorLiIPurple.CGColor)
+		CGContextSetStrokeColorWithColor(context, kColorButtonBorders.CGColor)
 		CGContextSetLineWidth(context, 1 * scaleFactor)
 		let inset: CGFloat = 6
 		let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, inset * scaleFactor, inset * scaleFactor), nil) // todo
@@ -509,6 +509,23 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			updateUIOfItems()
 		case .GiveMoveItem, .GiveSeeItem:
 			updateUIOfItems()
+			
+			let animationButtonOfOther = CABasicAnimation(keyPath: "transform")
+			animationButtonOfOther.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+			animationButtonOfOther.toValue = NSValue(CATransform3D: CATransform3DMakeScale(0.5, 0.5, 1))
+			animationButtonOfOther.duration = 0.75
+			animationButtonOfOther.autoreverses = true
+			let buttonOfOther = action.type == RoundActionType.GiveMoveItem ? self.buttonOtherPlayer_moveItem : self.buttonOtherPlayer_seeItem
+			buttonOfOther.layer.addAnimation(animationButtonOfOther, forKey: "plop")
+			
+			let animationOwnButton = CABasicAnimation(keyPath: "transform")
+			animationOwnButton.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+			animationOwnButton.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.5, 1.5, 1))
+			animationOwnButton.duration = 0.5
+			animationOwnButton.autoreverses = true
+			let ownButton = action.type == RoundActionType.GiveMoveItem ? self.buttonMoveItem : self.buttonSeeItem
+			ownButton.layer.addAnimation(animationOwnButton, forKey: "plop")
+			
 		case .Finish:
 			// Update what the level buttons are used for, and whether they are selected:
 			updateUIForButtonsHomeRetryAndFinish()
@@ -530,7 +547,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
             
 			// todo explain
 			updateUIOfItems()
-
+			
 		case .Retry:
 			updateUIForButtonsHomeRetryAndFinish()
 			
@@ -726,6 +743,25 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Update our UI:
 		updateUIOfItems()
+		
+		
+		//
+		
+		let animationButtonOfOther = CABasicAnimation(keyPath: "transform")
+		animationButtonOfOther.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		animationButtonOfOther.toValue = NSValue(CATransform3D: CATransform3DMakeScale(1.3, 1.3, 1))
+		animationButtonOfOther.duration = 0.75
+		animationButtonOfOther.autoreverses = true
+		let buttonOfOther = actionType == RoundActionType.GiveMoveItem ? self.buttonOtherPlayer_moveItem : self.buttonOtherPlayer_seeItem
+		buttonOfOther.layer.addAnimation(animationButtonOfOther, forKey: "plop")
+		
+		let animationOwnButton = CABasicAnimation(keyPath: "transform")
+		animationOwnButton.fromValue = NSValue(CATransform3D: CATransform3DIdentity)
+		animationOwnButton.toValue = NSValue(CATransform3D: CATransform3DMakeScale(0.5, 0.5, 1))
+		animationOwnButton.duration = 0.5
+		animationOwnButton.autoreverses = true
+		let ownButton = actionType == RoundActionType.GiveMoveItem ? self.buttonMoveItem : self.buttonSeeItem
+		ownButton.layer.addAnimation(animationOwnButton, forKey: "plop")
 	}
 	
     
@@ -804,7 +840,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			//				CGContextDrawImage(context, rect, coloredIconCGImage)
 			
 			// Draw a circle around it:
-			CGContextSetStrokeColorWithColor(context, kColorLiILila.CGColor)
+			CGContextSetStrokeColorWithColor(context, kColorButtonBorders.CGColor)
 			if forOtherPlayer {
 				CGContextSetLineWidth(context, 1 * scaleFactor)
 				let dashArray: [CGFloat] = [4 * scaleFactor, 6 * scaleFactor] // todo constants

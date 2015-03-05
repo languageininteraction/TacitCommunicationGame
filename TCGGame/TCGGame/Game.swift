@@ -11,8 +11,8 @@ import GameKit
 enum GameState: Int {
     case NotPartOfMatch
     case LookingForMatch
-    case PreparingLevel
     case WaitingForOtherPlayerToSendLevel
+	case ReadyToPlayNextLevel
     case PlayingLevel
 }
 
@@ -46,7 +46,7 @@ class Game: NSObject
 	
 	// There's a fixed number of beginner levels and infinite advanced and expert levels. However, in the home screen we show a number of advanced and expert levels to represent the number of levels of each difficulty level that you need to finish to proceed. These are the numbers of levels per difficulty level that we show in the home screen:
 	let nBeginnerLevels: Int // set in init based on self.beginnerLevels
-	let nAdvancedLevels = 13
+	let nAdvancedLevels = 7 // todo make constants
 	let nExpertLevels = 11
 	
 	
@@ -57,11 +57,28 @@ class Game: NSObject
     
     //Current state:
     var gameState = GameState.NotPartOfMatch
-    
-    var indexUpcomingLevel: Int = 0
-    var indexCurrentLevel: Int = 0
-
-    var currentLevel: Level?
+	
+	/* There are two ways of starting a level: 
+	1. Two players press matching level buttons;
+	2. Two players already have a match, just finished a level, and automatically go to the next level. 
+	In both cases one device makes the level and sends it to the other device, so there's also a difference in where levels come from:
+	A. The device makes all decisions: it makes the level itself. 
+	B. The other device makes all decisions: it may or may not receive a level from the other device. 
+	In order to circumvent programming errors related to these 2x2 possible scenarios, the way in which the current level should be set is very strict:
+	- You cannot set indexCurrentLevel or currentLevel directly;
+	- Instead you always need to:
+		- first set currentDifficulty and indexUpcomingLevel;
+		- then call goToUpcomingLevel, optionally passing the level itself (created on the other device).
+	*/
+	var indexUpcomingLevel: Int? {
+		didSet {
+			// this is a bit hacky, because indexCurrentLevel isn't set to nil, but it helps us .. todo explain
+			currentLevel = nil
+		}
+	}
+    private(set) var indexCurrentLevel: Int?
+    private(set) var currentLevel: Level?
+	var indexLastFinishedLevel: Int? // used but the home VC to know which level buttons to animate
     var currentDifficulty = Difficulty.Beginner
         
     override init()
@@ -89,28 +106,42 @@ class Game: NSObject
 		storeIntAsPreferenceUnderKey(self.nCompletedLevels[Difficulty.Expert]!, kKeyOfPreference_numberOfFinishedLevelsExpert)
 	}
     
-    func goToUpcomingLevel() //Assumes indexUpcomingLevel is set appropriately
+	func goToUpcomingLevel(predefinedLevel: Level? = nil) // This should be called once indexUpcomingLevel has been set; see notes above properties indexUpcomingLevel etc.
     {
-
-        self.indexCurrentLevel = self.indexUpcomingLevel
-        
-        switch self.currentDifficulty
-        {
-            case Difficulty.Beginner: self.currentLevel = Level(filename: self.beginnerLevelNames[self.indexCurrentLevel % self.nBeginnerLevels])
-            case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
-            case Difficulty.Expert: self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
-        }
+		// Assert that indexUpcomingLevel has been set:
+		assert(indexUpcomingLevel != nil, "indexUpcomingLevel should be set before calling goToUpcomingLevel")
+		
+		// We can now assume that indexUpcomingLevel isn't nil:
+		let actualIndexUpcomingLevel = indexUpcomingLevel!
+		
+		// Update indexCurrentLevel:
+        self.indexCurrentLevel = actualIndexUpcomingLevel
+		
+		// We can also assume that indexCurrentLevel isn't nil:
+		let actualIndexCurrentLevel = self.indexCurrentLevel!
+		
+		// Update currentLevel. The level is already defined (because it has been created on the other device), or we need to create it, based on the current difficulty and indexCurrentLevel:
+		if let actualPredefinedLevel = predefinedLevel? {
+			self.currentLevel = actualPredefinedLevel
+		} else {
+			switch self.currentDifficulty {
+			case Difficulty.Beginner: self.currentLevel = Level(filename: self.beginnerLevelNames[actualIndexCurrentLevel % self.nBeginnerLevels])
+			case Difficulty.Advanced: self.currentLevel = self.AdvancedLevelTemplates.randomItem().generateLevel()
+			case Difficulty.Expert: self.currentLevel = self.ExpertLevelTemplates.randomItem().generateLevel()
+			}
+		}
     }
 	
 	func thereIsANextLevelInCurrentDifficulty() -> Bool {
-		return nLevelsForDifficulty(currentDifficulty) > self.indexCurrentLevel + 1
+		// Assert that indexCurrentLevel isn't nil, because if that's the case, this function shouldn't be used:
+		assert(self.indexCurrentLevel != nil, "thereIsANextLevelInCurrentDifficulty should only be called if  has been set.")
+		
+		// We can now savely assume that indexCurrentLevel isn't nil:
+		let actualIndexCurrentLevel = self.indexCurrentLevel!
+		
+		// Return whether there is a next level:
+		return nLevelsForDifficulty(currentDifficulty) > actualIndexCurrentLevel + 1
 	}
-    
-    func goToNextLevel()
-    {
-        self.indexUpcomingLevel += 1
-        self.goToUpcomingLevel()
-    }
     
     func quitPlaying()
     {
@@ -145,13 +176,18 @@ class Game: NSObject
 		return levelIsUnlocked(difficulty: difficulty, indexLevel: indexLevel) && !levelIsFinished(difficulty: difficulty, indexLevel: indexLevel)
 	}
 	
-    func playerGroupForMatchMaking() -> Int //Assumes indexUpcomingLevel is set appropriately
+    func playerGroupForMatchMaking() -> Int // Assumes indexUpcomingLevel is set appropriately
     {
-        var baseNumber:Int = self.currentDifficulty.rawValue * 100; //100 for easy, 200 for advanced, 300 for expert
+		// Assert that indexUpcomingLevel has been set:
+		assert(indexUpcomingLevel != nil, "indexUpcomingLevel should be set before calling playerGroupForMatchMaking")
+		
+		// We can now assume that indexUpcomingLevel isn't nil:
+		let actualIndexUpcomingLevel = indexUpcomingLevel!
+		
+        var baseNumber:Int = self.currentDifficulty.rawValue * 100; // 100 for easy, 200 for advanced, 300 for expert
         
-        if self.currentDifficulty == Difficulty.Beginner
-        {
-            baseNumber += self.indexUpcomingLevel
+        if self.currentDifficulty == Difficulty.Beginner {
+            baseNumber += actualIndexUpcomingLevel
         }
         
         return baseNumber

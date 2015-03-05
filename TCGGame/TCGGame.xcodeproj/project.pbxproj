@@ -53,6 +53,8 @@
 		485E1C8C1A4C3D8300AC88AC /* communicatie_draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C881A4C3D8300AC88AC /* communicatie_draai.json */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
+		489B03451AA608B40068253F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489B03441AA608B40068253F /* Message.swift */; };
+		489B03471AA60A260068253F /* MessagingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489B03461AA60A260068253F /* MessagingHelper.swift */; };
 		48A02DE61A9F21AB00C49E09 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DE51A9F21AB00C49E09 /* InfoViewController.swift */; };
 		48A02DE81A9F226400C49E09 /* htmlInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DE71A9F226400C49E09 /* htmlInfo.html */; };
 		48A02DEA1A9F247500C49E09 /* JvHGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DE91A9F247500C49E09 /* JvHGradientView.swift */; };
@@ -178,6 +180,8 @@
 		485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_gevenlimiet.json; sourceTree = "<group>"; };
 		485E1C881A4C3D8300AC88AC /* communicatie_draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_draai.json; sourceTree = "<group>"; };
 		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
+		489B03441AA608B40068253F /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		489B03461AA60A260068253F /* MessagingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagingHelper.swift; sourceTree = "<group>"; };
 		48A02DE51A9F21AB00C49E09 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		48A02DE71A9F226400C49E09 /* htmlInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = htmlInfo.html; sourceTree = "<group>"; };
 		48A02DE91A9F247500C49E09 /* JvHGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JvHGradientView.swift; sourceTree = "<group>"; };
@@ -329,12 +333,11 @@
 		4812E62B1A0A6AEA006DED82 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				49E83DA51A2714EC006952EE /* Game.swift */,
+				489B03481AA60A2B0068253F /* Messaging */,
 				4847D8161A24D9DD00540223 /* Physicals */,
 				4812E63C1A0A7671006DED82 /* Rounds */,
-				49E83DA51A2714EC006952EE /* Game.swift */,
-				49E83DA71A271A48006952EE /* Level.swift */,
-				49BB4E551A5691B400C93C26 /* LevelTemplate.swift */,
-				49E83DAB1A271F23006952EE /* PawnConfiguration.swift */,
+				489B03431AA608850068253F /* Levels */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -419,8 +422,27 @@
 				4847D8171A24DA3000540223 /* PawnDefinition.swift */,
 				49E83DA91A271A8D006952EE /* BoardDefinition.swift */,
 				49E83DAD1A272293006952EE /* ItemDefinition.swift */,
+				49E83DAB1A271F23006952EE /* PawnConfiguration.swift */,
 			);
 			name = Physicals;
+			sourceTree = "<group>";
+		};
+		489B03431AA608850068253F /* Levels */ = {
+			isa = PBXGroup;
+			children = (
+				49E83DA71A271A48006952EE /* Level.swift */,
+				49BB4E551A5691B400C93C26 /* LevelTemplate.swift */,
+			);
+			name = Levels;
+			sourceTree = "<group>";
+		};
+		489B03481AA60A2B0068253F /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				489B03441AA608B40068253F /* Message.swift */,
+				489B03461AA60A260068253F /* MessagingHelper.swift */,
+			);
+			name = Messaging;
 			sourceTree = "<group>";
 		};
 		48B2C2D51A248CD6002FFEDF /* Resources */ = {
@@ -710,12 +732,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				489B03471AA60A260068253F /* MessagingHelper.swift in Sources */,
 				49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */,
 				48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */,
 				48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */,
 				482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */,
 				48A02DE61A9F21AB00C49E09 /* InfoViewController.swift in Sources */,
 				4856E58C1A24953800309751 /* FieldView.swift in Sources */,
+				489B03451AA608B40068253F /* Message.swift in Sources */,
 				4847D8151A24D99400540223 /* PawnView.swift in Sources */,
 				48CC18791A9DCF6700892CAD /* ProgressView.swift in Sources */,
 				4812E6311A0A6B77006DED82 /* RoundState.swift in Sources */,

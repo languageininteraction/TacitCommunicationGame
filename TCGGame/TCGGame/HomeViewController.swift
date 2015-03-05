@@ -28,10 +28,44 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	let infoViewController = InfoViewController()
     
     //GameKit variables
-    var GCMatch: GKMatch?
+	var GCMatch: GKMatch? {
+		didSet {
+			// We use messagingHelper to handle and keep track of messages WITHIN a match, so whenever the match changes, a new MessagingHelper needs to be set:
+			if GCMatch != nil && GCMatch != oldValue {
+				if !kDevLocalTestingIsOn { // normal case
+					messagingHelper = MessagingHelper(closureToSendMessage: { (message: Message) -> Void in
+						// Try to send the message:
+						let packet = NSKeyedArchiver.archivedDataWithRootObject(message)
+						var error: NSError?
+						self.GCMatch!.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
+						
+						// If sending the message failed…
+						if (error != nil) {
+							// If the levelViewController is active, let it show an alert about this and go back to the home screen. Otherwise just make sure there is no level VC and set GCMatch to nil (quick fix!):
+							
+							// HIER GEBLEVEN. SOWIESO BETER OM 1 levelViewController TE GEBRUIKEN. OP DIE MANIER IS IE TENMINSTE NIET ZOMAAR nil. ??
+							
+							self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding", message:"De verbinding tussen jou en je teamgenoot vertoont problemen. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
+							
+							self.showExplanationsAboutHowToMakeAConnection = true
+						}
+					})
+				} else {
+					messagingHelper = MessagingHelper(closureToSendMessage: { (message: Message) -> Void in
+						// We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
+						let packet = NSKeyedArchiver.archivedDataWithRootObject(message)
+						self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
+					})
+				}
+			}
+		}
+	}
     var GCMatchStarted = false
     var localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
     var otherPlayer: GKPlayer?
+	
+	// Used for sending and receiving data between two devices:
+	var messagingHelper: MessagingHelper! // set to a new MessagingHelper whenever a new GC Match is made
 
     //Buttons
     let tempPlayButtonEasy = UIButton()
@@ -207,7 +241,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // The name labels:
         let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
         let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
-        let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
+        let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - 140 // todo cleanup again xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
 
         self.nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
         self.nameLabelLocalPlayer.font = kFontPlayerNames
@@ -306,7 +340,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			let anglePerButton = M_PI * 2 / Double(nButtons)
 			for indexButton in 0 ... nButtons - 1 {
 				// Create it and set the frame:
-				let angle = CGFloat(Double(indexButton) * anglePerButton)
+				let angle = CGFloat(Double(indexButton) * anglePerButton - 0.5 * M_PI)
 				let xCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * cos(angle)
 				let yCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * sin(angle)
 				let button = UIButton(frame: CGRectMake(xCenter - 0.5 * edgeLengthButtonsInDifficultyViews, yCenter - 0.5 * edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews))
@@ -661,148 +695,105 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     // MARK: - Communication with subController
     
     func subControllerFinished(subController: AnyObject) {
-		// We only have one subController, which is our levelViewController. Currently the levelViewController only finished <todo update comments> if the players finish the round succesfully, so we should go to the next level. Levels can be (pratly) random, so one player (the player for which weMakeAllDecisions is true) should create a level and send it to the other player. This means that here we only proceed to the next level if we create the level ourselves. If not, we wait till we receive a new level from the other player and start the new level from receiveData:
+		// We only have one subController, which is our levelViewController. The levelViewController only finished if the user presses the home button, in which case the match should simply be stopped, or if the team has finished the level:
 		if levelViewController!.userChoseToGoBackHome {
-
 			self.stopPlayingMatch()
+		} else {
 			
-		} else if weMakeAllDecisions! {
+			// Assert that the players indeed finished the level:
+			assert(levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded, "Expecting levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded in subControllerFinished.")
+			
+			
+			/* As a result of the level having been finished, two things need to be done:
+			1. Update the game's progress (how many levels are completed, which levels are unlocked, etc.)
+			2. Go to the next level automatically, if there is one in the current difficulty level. 
+			The first is easy, the second is harder, because the course of action depends on whether we make all decisions or not:
+			- If we do, we first make the game go to the next level (only model-wise!) and send the level to the other device. After that we animate leaving the finished level, update the home screen, and possibly animate entering the next level.
+			- If we do not make all decisions, we only set indexUpcomingLevel to the next index (if there is a next level), but we don't set the next level yet. We wait for the level to be send by the other device, but in the meantime we animate leaving the finished level etc. At the point where we would like to animate entering the next level, we only proceed if the new level has been received. Normally that's the case and we can immediately enter the level, making the animations' timing exactly the same as on the device that makes all decisions. If at that point we didn't receive the level yet, we stop the match. */
 			
 			// Update the game progress:
-			if levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded {
-				self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
-			}
+			self.currentGame.indexLastFinishedLevel = self.currentGame.indexCurrentLevel!
+			self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
 			
-			// Go to the next level, if there is one. We make all decisions, which a.o. means that we create a level (possibly random) and send it to the other player. Before doing all this, wait a little, so the players have a moment to see the result of their efforts in the current level:
-			println("self.currentGame.thereIsANextLevelInCurrentDifficulty() = \(self.currentGame.thereIsANextLevelInCurrentDifficulty()); weMakeDecision = \(weMakeAllDecisions)")
-			if self.currentGame.thereIsANextLevelInCurrentDifficulty() {
-				self.currentGame.gameState = GameState.PreparingLevel
+			// Independent of whether we make all decisions, we set the game's indexUpcomingLevel to the next index, or to nil if there is no next level in the current difficulty:
+			assert(self.currentGame.indexCurrentLevel != nil, "Assuming self.currentGame.indexCurrentLevel != nil in subControllerFinished.")
+			self.currentGame.indexUpcomingLevel = self.currentGame.thereIsANextLevelInCurrentDifficulty() ? self.currentGame.indexCurrentLevel! + 1 : nil
+			
+			if weMakeAllDecisions! {
+				// If there is an upcoming level, make the game go to it and send it to the other device:
+				if let actualIndexUpcomingLevel = self.currentGame.indexUpcomingLevel? {
+					self.currentGame.goToUpcomingLevel(predefinedLevel: nil) // passing no predefinedLevel means that we'll make a level ourselves
+					messagingHelper.sendOutgoing(content: self.currentGame.currentLevel!)
+				}
 				
-				JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in // todo constant
-					self.currentGame.goToNextLevel()
-					self.sendLevelToOther(self.currentGame.currentLevel!);
-					self.makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty()
-					
-					self.currentGame.gameState = GameState.PlayingLevel
-					self.updatePlayerRepresentations();
+				// Show the user that we leave the finished level, update the progress in the home screen, and if there's a next level that we enter it:
+				leaveLevelAfterItHasBeenFinishedAndUpdateProgress(completionBlock: { () -> (Void) in
+					// If there's a next level, enter it:
+					if self.currentGame.indexUpcomingLevel != nil {
+						self.enterLevelAfterPreviousLevelHasBeenFinishedAndProgressHasBeenUpdated()
+					}
 				})
+				
 			} else {
-				// Ugly, because lot of overlap with makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty.
-				
-				
-				/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
-				1. Animate leaving the level (currently that's zooming out on the board);
-				2. Make the level buttons of the current difficulty appear again;
-				3. Make the level button of the finished level show that it's finished;
-				4. STOP THE MATCH!
-				*/
-				
-				CATransaction.begin()
-				CATransaction.setAnimationDuration(0.75) // todo constant
-				CATransaction.setCompletionBlock({ () -> Void in
-					
-					// 2. Make the level buttons of the current difficulty appear again:
-					CATransaction.begin()
-					CATransaction.setAnimationDuration(0.75) // todo constant
-					CATransaction.setCompletionBlock({ () -> Void in
-						
-						// 3. Make the level button of the finished level show that it's finished:
-						CATransaction.begin()
-						CATransaction.setAnimationDuration(0.75) // todo constant
-						
-						// 3. Make the level button of the finished level show that it's finished:
-						let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
-						let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexCurrentLevel - 1] // dangerous…
-						self.updateLevelButtonAsAResultOfHavingBeenFinished(levelButton)
-						
-						CATransaction.commit()
-						
-						self.stopPlayingMatch()
-					})
-					
-					// 2. Make the level buttons of the current difficulty appear again:
-					self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 1, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
-					
-					CATransaction.commit()
+				// We don't make all decisions ourselves, so we can only show the user that the current level is being leaved and that the progress is being updated in the home screen. Once this is finished we may have received a level, in which case we immediately enter it:
+
+				self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel // relevant?
+
+				// Show the user that we leave the finished level, update the progress in the home screen, and if there's a next level once we're done, enter it:
+				leaveLevelAfterItHasBeenFinishedAndUpdateProgress(completionBlock: { () -> (Void) in
+					// If there's a next level, enter it:
+					if self.currentGame.currentLevel != nil {
+						self.enterLevelAfterPreviousLevelHasBeenFinishedAndProgressHasBeenUpdated()
+					}
 				})
-				
-				// 1. Animate leaving the level (currently that's zooming out on the board):
-				self.levelViewController!.animateLeavingTheLevel()
-				
-				CATransaction.commit()
 			}
 		}
-		else
-        {
-            self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
-        }
-    }
+	}
 	
 
     // MARK: - Communication with other players
-    
+	
     // This method is used by match:didReceiveData:fromRemotePlayer, but it can also be called directly for local testing.
     func receiveData(data: NSData) {
-        
-        // test sending a small package:
-        /*		var hashValue = 1
-        data.getBytes(&hashValue, length: 4)
-        println("hashValue = \(hashValue)")
-        
-        self.view.layer.transform = CATransform3DRotate(self.view.layer.transform, 0.1, 0, 0, 1)
-        
-        return*/
-        
-        // Decode the data, which is always a RoundAction
-        var unpackedObject: AnyObject! = NSKeyedUnarchiver.unarchiveObjectWithData(data) as AnyObject!
-        
-        if unpackedObject is RoundAction
+		
+		// Register the incoming data with our MessagingHelper, which unarchives the Message, checks the message's index, and returns the message content:
+		let content: AnyObject = messagingHelper.registerIncomingData(data)
+		
+        // Take action that fits the content's type:
+        if content is RoundAction
         {
-            self.levelViewController!.receiveAction(unpackedObject as RoundAction)
+            self.levelViewController!.receiveAction(content as RoundAction)
         }
-        else if unpackedObject is Level
+        else if content is Level
         {
+			let level = content as Level
             if self.currentGame.gameState != GameState.WaitingForOtherPlayerToSendLevel
             {
                 println("Warning! Received a Level while not waiting for it")
-            }
-            
-            // When local testing is on and the other player has not started the match yet, quickly start the match
-            if kDevLocalTestingIsOn && self.levelViewController == nil
-            {
-                self.startPlayingMatch()
-            }
-            
-            self.currentGame.currentLevel = (unpackedObject as Level)
-           
-			// This is a bit of a mess, to fix sizes on iOS older than 8:
-			let width = kOlderThanIOS8 ? self.view.frame.size.height : self.view.frame.size.width
-			let height = kOlderThanIOS8 ? self.view.frame.size.width : self.view.frame.size.height
+			}
 			
-            // Start the game:
+			// When local testing is on and the other player has not started the match yet, quickly start the match
+			if kDevLocalTestingIsOn && self.levelViewController == nil
+			{
+				self.startPlayingMatch()
+			}
+			
+			/* We may receive a level from the other device in two different scenarios:
+			1. The two players pressed matching level buttons, a match has begun and this is the first level that we receive.
+			2. The two players already had a match, just finished a level, and try to go to the next level automatically. 
+			We assume that levelViewController!.currentLevel is nil in the former case: */
             if self.levelViewController!.currentLevel == nil {
-                self.currentGame.currentLevel = (unpackedObject as Level)
+				// 1. We were waiting for this level, so make it the current level:
+				self.currentGame.goToUpcomingLevel(predefinedLevel: level)
+				
+				// And go to the level screen:
                 self.levelViewController!.currentLevel = self.currentGame.currentLevel
-                
-                // Add our levelViewController's view:
 				gotoLevelScreen(animateFromLevelButton: true)
+				
 			} else {
-				
-				// Update the game progress because we may have just finished the previous level:
-				if levelViewController!.currentRound!.currentState().roundResult == RoundResult.Succeeded {
-					self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
-				}
-				
-				// Go to the next level:
-				self.currentGame.currentLevel = (unpackedObject as Level)
-				self.currentGame.indexCurrentLevel++ // todo Game should take care of stuff like this itself; indexCurrentLevel and currentLevel should always be in sync, this makes it too easy to make mistakes
-                self.updatePawnIcons()
-				self.makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty()
-                self.updatePlayerRepresentations()
+				// 2. In this case we may not wish to go to the level screen immediately, because the other device tries to send the next level as soon as possible after a level has been finished, and we probably are still performing animations to show that the level was finished, maybe that another level becomes unlocked, etc. Instead we only make the game go to this upcoming level, and actually calling gotoLevelScreen happens after all animations are finished (that is: if at that point the level has been received):
+				self.currentGame.goToUpcomingLevel(predefinedLevel: level)
             }
-            
-            self.currentGame.gameState = GameState.PlayingLevel
-            self.updatePlayerRepresentations()
         }
     }
 
@@ -859,8 +850,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     }
     
     func matchmakerViewController(viewController: GKMatchmakerViewController!, didFindMatch match: GKMatch!) {
-        println("Hatsekidee! Match found.")
-        
         self.dismissViewControllerAnimated(true, completion: nil)
         self.GCMatch = match
         self.otherPlayer = (GCMatch!.players[0] as GKPlayer)
@@ -897,7 +886,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         {
             self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
 			showExplanationsAboutHowToMakeAConnection = true
-
         }
     }
     
@@ -929,57 +917,38 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.levelViewController!.setSuperController(self)
 
         // The custom send functions for the levelviewcontroller:
-        func sendActionToOther(action :RoundAction)
-        {
-            let packet = NSKeyedArchiver.archivedDataWithRootObject(action)
-            
-            if (!kDevLocalTestingIsOn) { // normal case
-                var error: NSError?
-                let match = self.GCMatch!
-                match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-                
-                if (error != nil) {
-                    println("Error in sendActionToOther: \(error)")
-                }
-            } else {
-                // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-                self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-            }
+        func sendActionToOther(action :RoundAction) {
+            messagingHelper.sendOutgoing(content: action)
         }
         
         // Give info to the levelViewController:
         self.levelViewController!.sendActionToOther = sendActionToOther
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
-        
-        // Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
-        // This part will be done by the other player once he or she receives the level:
-        if self.weMakeAllDecisions! {
+		
+		// Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
+		// This part will be done by the other player once he or she receives the level:
+		if self.weMakeAllDecisions! {
 			
-			// We wait just a bit, because apparantly it's possible that we send the level to the other player while that iPad isn't aware yet that there is a connection (at least that's our best guess at why certain crashes happened). Obviously this solution is far from ideal, but we need a quick fix and we think this makes the chance of these crashes occuring much smaller:
-			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in
-				self.currentGame.gameState = GameState.PreparingLevel
-				
-				self.currentGame.goToUpcomingLevel()
-				self.sendLevelToOther(self.currentGame.currentLevel!);
-				
-				self.levelViewController!.currentLevel = self.currentGame.currentLevel
-				
-				// Add our levelViewController's view:
-				self.gotoLevelScreen(animateFromLevelButton: true)
-				
-				self.currentGame.gameState = GameState.PlayingLevel
-				self.updatePlayerRepresentations()
-				
-			})
+			// We wait just a bit, because apparantly it's possible that we send the level to the other player while that iPad isn't aware yet that there is a connection (at least that's our best guess at why certain crashes happened). Obviously this solution is far from ideal, but we need a quick fix and we think this makes the chance of these crashes occuring much smaller: => I'M NOG LONGER SURE THIS IS THE CASE, SO I'LL FIRST TRY not TO WAIT…
+			//			JvHClosureBasedTimer(interval: 0.5, repeats: false, closure: { () -> Void in
 			
-        } else if self.currentGame.gameState == GameState.LookingForMatch {
+			self.currentGame.goToUpcomingLevel()
+			self.sendLevelToOther(self.currentGame.currentLevel!);
+			
+			self.levelViewController!.currentLevel = self.currentGame.currentLevel
+			
+			// Add our levelViewController's view:
+			self.gotoLevelScreen(animateFromLevelButton: true)
+			
+			//			})
+			
+		} else if self.currentGame.gameState == GameState.LookingForMatch {
             self.currentGame.gameState = GameState.WaitingForOtherPlayerToSendLevel
         }
     }
     
     func stopPlayingMatch()
     {
-        
         // Stop the GC match
         if (!kDevLocalTestingIsOn)
         {
@@ -1006,24 +975,96 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	
     func sendLevelToOther(level :Level) {
-        let packet = NSKeyedArchiver.archivedDataWithRootObject(level)
-        
-        if (!kDevLocalTestingIsOn) { // normal case
-            var error: NSError?
-            let match = self.GCMatch!
-            match.sendDataToAllPlayers(packet, withDataMode: GKMatchSendDataMode.Reliable, error: &error)
-            
-            if (error != nil) {
-                println("Error in sendActionToOther: \(error)")
-            }
-        } else {
-            // We assume that our managerOfMultiplePlayerViewControllers has been set and ask it to send the message to the other:
-            self.managerOfMultipleHomeViewControllers!.sendMessageForHomeViewController(self, packet: packet)
-        }
+		messagingHelper.sendOutgoing(content: level)
     }
 	
 	
-	func makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty() {
+//	func enterFirstLevelPlayedInMatch() {
+//		self.levelViewController!.currentLevel = self.currentGame.currentLevel
+//		self.levelViewController!.restartLevel()
+//	}
+	
+	
+	func leaveLevelAfterItHasBeenFinishedAndUpdateProgress(#completionBlock: () -> (Void)) {
+		/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
+		1. Animate leaving the level (currently that's zooming out on the board);
+		2. Make the level buttons of the current difficulty appear again;
+		3. Make the level button of the finished level show that it's finished;
+		4. Make the level button of the next level show that it's unlocked.
+		*/
+		
+		CATransaction.begin()
+		CATransaction.setAnimationDuration(0.75) // todo constant
+		CATransaction.setCompletionBlock({ () -> Void in
+			
+			// 2. Make the level buttons of the current difficulty appear again:
+			CATransaction.begin()
+			CATransaction.setAnimationDuration(0.75) // todo constant
+			CATransaction.setCompletionBlock({ () -> Void in
+				
+				// 3. Make the level button of the finished level show that it's finished:
+				CATransaction.begin()
+				CATransaction.setAnimationDuration(0.75) // todo constant
+				CATransaction.setCompletionBlock({ () -> Void in
+					
+					0 // Don't know why, but without this compiler complains
+					JvHClosureBasedTimer(interval: 1, repeats: false, closure: { () -> Void in
+						
+						// 4. Make the level button of the next level show that it's going to be played:
+						CATransaction.begin()
+						CATransaction.setAnimationDuration(0.75) // todo constant
+						CATransaction.setCompletionBlock({ () -> Void in
+							
+							// Perform the passed completion block:
+							completionBlock()
+						})
+						
+						// 4. Make the level button of the next level show that it's unlocked, if there is one:
+						if self.currentGame.thereIsANextLevelInCurrentDifficulty() { // is this ok??
+							let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+							let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexLastFinishedLevel! + 1]
+							self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
+						}
+						
+						CATransaction.commit()
+						
+					})
+				})
+				
+				// 3. Make the level button of the finished level show that it's finished:
+				let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+				let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexLastFinishedLevel!]
+				self.updateLevelButtonAsAResultOfHavingBeenFinished(levelButton)
+				
+				CATransaction.commit()
+			})
+			
+			// 2. Make the level buttons of the current difficulty appear again:
+			self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.animateOpacity(fromOpacity: nil, toOpacity: 1, relativeStart: 0, relativeEnd: 1, actuallyChangeValue: true)
+			
+			CATransaction.commit()
+		})
+		
+		// 1. Animate leaving the level (currently that's zooming out on the board):
+		self.levelViewController!.animateLeavingTheLevel()
+		
+		CATransaction.commit()
+	}
+	
+	
+	func enterLevelAfterPreviousLevelHasBeenFinishedAndProgressHasBeenUpdated() {
+		CATransaction.begin()
+		CATransaction.setAnimationDuration(0.75) // todo constant
+		
+		// 5. Animate entering the new level:
+		self.levelViewController?.restartLevel()
+		self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
+		
+		CATransaction.commit()
+	}
+	
+	
+/*	func makeLevelVCGoToTheNewCurrentLevelOrStopAtEndOfDifficulty() {
 		
 		//
 		if !currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted {
@@ -1104,7 +1145,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			CATransaction.commit()
 		}
-	}
+	}*/
 	
 	func updatePawnIcons()
 	{
@@ -1298,14 +1339,20 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			CATransaction.commit()
 			
 		} else {*/
-			self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-			self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
-			viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0 // todo; make property so this always goes correctly and maybe using animation?
-//		}
+		
+		self.currentGame.gameState = GameState.PlayingLevel
+		
+		self.updatePlayerRepresentations()
+		self.updatePawnIcons()
+		
+		self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+		self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+		viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0 // todo; make property so this always goes correctly and maybe using animation?
+		//		}
 	}
-
-    // MARK: - Alert
-    
+	
+	// MARK: - Alert
+	
     func showAlert(#title: String,message: String)
     {
         var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
