@@ -386,6 +386,7 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 		
 		// Added later, todo cleanup
 		addHelpButton()
+
 	}
 	
 	
@@ -781,32 +782,33 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	
 	
 	func helpButtonPressed() {
-		// test popover:
-		
-//		let testText = "Kom je er niet uit? Druk op blabladiabla om het opnieuw te proberen."
-		
-		let helpVC = UIViewController()
-		helpVC.view.frame = CGRectMake(0, 0, 320, 160)
-		
-		let helpLabel = UILabel(frame: CGRectInset(helpVC.view.frame, 20, 20)) // todo
-		helpLabel.numberOfLines = 0
-		helpLabel.text = currentLevel!.hint
-		helpLabel.textColor = UIColor(white: 0.5, alpha: 1)
-		helpLabel.adjustsFontSizeToFitWidth = true
-		helpLabel.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
-		helpLabel.textAlignment = NSTextAlignment.Center
-		
-		helpVC.view.addSubview(helpLabel)
-		
-		let popover = UIPopoverController(contentViewController: helpVC)
-		
-		popover.popoverContentSize = helpVC.view.frame.size
-		
-		
-		let frameButton = helpButton.frame
-		popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
+		showHint()
 	}
 	
+    func showHint()
+    {
+        let helpVC = UIViewController()
+        helpVC.view.frame = CGRectMake(0, 0, 320, 160)
+        
+        let helpLabel = UILabel(frame: CGRectInset(helpVC.view.frame, 20, 20)) // todo
+        helpLabel.numberOfLines = 0
+        helpLabel.text = currentLevel!.hint
+        helpLabel.textColor = UIColor(white: 0.5, alpha: 1)
+        helpLabel.adjustsFontSizeToFitWidth = true
+        helpLabel.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
+        helpLabel.textAlignment = NSTextAlignment.Center
+        
+        println("Adding hint to subview");
+        helpVC.view.addSubview(helpLabel)
+        
+        let popover = UIPopoverController(contentViewController: helpVC)
+        
+        popover.popoverContentSize = helpVC.view.frame.size
+        
+        let frameButton = helpButton.frame
+        popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
+        
+    }
 	
 	// MARK: - Update UI
 	
