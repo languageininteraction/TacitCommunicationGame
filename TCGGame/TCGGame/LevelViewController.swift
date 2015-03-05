@@ -798,7 +798,6 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
         helpLabel.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
         helpLabel.textAlignment = NSTextAlignment.Center
         
-        println("Adding hint to subview");
         helpVC.view.addSubview(helpLabel)
         
         let popover = UIPopoverController(contentViewController: helpVC)

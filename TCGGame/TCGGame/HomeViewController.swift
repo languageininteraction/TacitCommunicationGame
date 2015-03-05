@@ -1107,8 +1107,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		CATransaction.setAnimationDuration(0.75) // todo constant
 		
 		// 5. Animate entering the new level:
+		self.levelViewController!.currentLevel = self.currentGame.currentLevel
 		self.levelViewController?.restartLevel()
-		self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
+//		self.viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0
+		
+		gotoLevelScreen(animateFromLevelButton: false)
 		
 		CATransaction.commit()
 	}
@@ -1392,12 +1395,18 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		self.currentGame.gameState = GameState.PlayingLevel
 		
+		self.levelViewController!.currentLevel = self.currentGame.currentLevel
+		
+		
 		self.updatePlayerRepresentations()
 		self.updatePawnIcons()
-        
-		self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
-		self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
-        
+		
+		// quick fix:
+		if self.levelViewController!.view.superview != self.view {
+			self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
+			self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+		}
+		
         if self.currentGame.currentDifficulty == Difficulty.Beginner && self.currentGame.indexCurrentLevel! == 0
         {
             self.levelViewController!.showHint();
