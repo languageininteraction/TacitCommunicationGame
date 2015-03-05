@@ -587,7 +587,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             //This rarely happens, but if it happens we communicate that the player should login
             else
             {
-                self.showAlert(title:"Nog niet ingelogd",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Inloggen gebeurt normaal automatisch, maar kan wel enkele seconden duren. Bent u nog steeds niet ingelogd? Start Tic Tac Team dan opnieuw op.")
+                self.showAlert(title:"Nog niet ingelogd",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Inloggen gebeurt normaal automatisch, maar kan wel enkele seconden duren. Ben je nog steeds niet ingelogd? Start Tic Tac Team dan opnieuw op.")
             }
 		}
         else
@@ -924,7 +924,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // Give info to the levelViewController:
         self.levelViewController!.sendActionToOther = sendActionToOther
         self.levelViewController!.weMakeAllDecisions = self.weMakeAllDecisions!
-		
+        
 		// Generate a level, send it away and start playing; todo update comments like these, not yet clear enough
 		// This part will be done by the other player once he or she receives the level:
 		if self.weMakeAllDecisions! {
@@ -936,7 +936,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			self.sendLevelToOther(self.currentGame.currentLevel!);
 			
 			self.levelViewController!.currentLevel = self.currentGame.currentLevel
-			
+            
 			// Add our levelViewController's view:
 			self.gotoLevelScreen(animateFromLevelButton: true)
 			
@@ -1344,9 +1344,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		self.updatePlayerRepresentations()
 		self.updatePawnIcons()
-		
+        
 		self.levelViewController!.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)
 		self.view.insertSubview(self.levelViewController!.view, aboveSubview: viewWithWhatIsNeverVisibleWhenPlayingLevels)
+        
+        if self.currentGame.currentDifficulty == Difficulty.Beginner && self.currentGame.indexCurrentLevel! == 0
+        {
+            self.levelViewController!.showHint();
+        }
+        
 		viewWithWhatSometimesBecomesVisibleWhenPlayingLevels.layer.opacity = 0 // todo; make property so this always goes correctly and maybe using animation?
 		//		}
 	}
