@@ -902,7 +902,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         }
             
         //Stop the match if you you are no longer connected (and inform the user)
-        else if (self.GCMatchStarted && (state == GKPlayerConnectionState.StateUnknown || state == GKPlayerConnectionState.StateDisconnected))
+        else if (self.GCMatchStarted && state == GKPlayerConnectionState.StateDisconnected)
         {
 			// Maybe we want the match to be stopped, because the last level of the difficulty was finished. In this case it's not necessary to display an alert:
 			if !(self.currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted == true && self.currentGame.nCompletedLevels[self.currentGame.currentDifficulty] == self.currentGame.nLevelsForDifficulty(self.currentGame.currentDifficulty)) {
