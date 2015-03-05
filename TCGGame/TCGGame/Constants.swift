@@ -24,7 +24,7 @@ let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopme
 let kDevPretendThatPawnsAreAlwaysPlacedCorrectly = kDevelopmentMode ? true : false // e.g. handy to test level transitions
 let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 0 : nil
 let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 12 : nil
-let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 5 : nil
 let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? nil : nil
 let kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer = kDevelopmentMode ? false : false // handy to test situations in which the players have not finished the same number of levels
 

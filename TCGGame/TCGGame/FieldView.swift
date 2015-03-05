@@ -64,7 +64,11 @@ class FieldView: UIView {
 				
 				// This isn't very pretty, but we wait half the time of kAnimationDurationSlightlyRotatingFieldsOfBoard before we actually show the pawnView, because the boardView rotates the fieldView such that it appears that it is 'flipped' and the pawnView is on its back:
 				JvHClosureBasedTimer(interval: kAnimationDurationSlightlyRotatingFieldsOfBoard * 0.5, repeats: false, closure: { () -> Void in
-					self.pawnViewForShowingAGoalConfiguration!.hidden = false
+                    
+                    if self.pawnViewForShowingAGoalConfiguration != nil //Checks if the view hasn't been removed in the meantime (by fast tapping)
+                    {
+                        self.pawnViewForShowingAGoalConfiguration!.hidden = false
+                    }
 				})				
 			}
 		}
