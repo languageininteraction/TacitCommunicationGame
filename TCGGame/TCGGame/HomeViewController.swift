@@ -45,6 +45,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 							
 							// HIER GEBLEVEN. SOWIESO BETER OM 1 levelViewController TE GEBRUIKEN. OP DIE MANIER IS IE TENMINSTE NIET ZOMAAR nil. ??
 							
+							println("error in messaging: \(error!.description)")
+							
 							self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding", message:"De verbinding tussen jou en je teamgenoot vertoont problemen. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
 							
 							self.showExplanationsAboutHowToMakeAConnection = true
