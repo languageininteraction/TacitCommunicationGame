@@ -22,9 +22,9 @@ let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goes wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
 let kDevPretendThatPawnsAreAlwaysPlacedCorrectly = kDevelopmentMode ? true : false // e.g. handy to test level transitions
-let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 1 : nil
-let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 13 : nil
-let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 0 : nil
+let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? nil : nil
 let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? nil : nil
 let kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer = kDevelopmentMode ? false : false // handy to test situations in which the players have not finished the same number of levels
 
