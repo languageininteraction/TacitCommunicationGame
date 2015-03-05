@@ -103,6 +103,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	let helpButton = UIButton()
 	
     var sendActionToOther: ((RoundAction) -> ())?
+	
+	// Quick hack to make kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer work:
+	var playerPressedHomeButton = false
     
 	// MARK: - Sub ViewControllers
 	
@@ -443,6 +446,9 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	}
 	
 	func restartLevel() {
+		// Quick hack to make kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer work:
+		playerPressedHomeButton = false
+		
 		// Create a new round:
 		self.currentRound = Round(level: self.currentLevel!)
         
@@ -722,13 +728,15 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	}
 	
 	func homeButtonPressed(sender:UIButton!) {
+		// Quick hack to make kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer work:
+		playerPressedHomeButton = true
+		
 		var action = RoundAction(type: RoundActionType.QuitPlaying, performedByPlayer1: weArePlayer1)
         
         // Before updating the model and our own UI we already inform the other player. We can do this under the assumption of a deterministic model of the match:
         self.sendActionToOther!(action)
         
         self.quitPlaying()
-        
 	}
 	
 	func buttonToGiveItemToOtherPlayerPressed(sender: UIButton!) {

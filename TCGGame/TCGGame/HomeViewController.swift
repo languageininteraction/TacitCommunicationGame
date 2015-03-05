@@ -697,6 +697,18 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     func subControllerFinished(subController: AnyObject) {
 		// We only have one subController, which is our levelViewController. The levelViewController only finished if the user presses the home button, in which case the match should simply be stopped, or if the team has finished the level:
 		if levelViewController!.userChoseToGoBackHome {
+			
+			// Just for development:
+			if kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer && levelViewController!.playerPressedHomeButton {
+
+				// Update the game progress:
+				self.currentGame.indexLastFinishedLevel = self.currentGame.indexCurrentLevel!
+				self.currentGame.updateProgressAsAResultOfCurrentLevelBeingCompleted()
+				
+				// Update the UI:
+				leaveLevelAfterItHasBeenFinishedAndUpdateProgress(completionBlock: nil)
+			}
+			
 			self.stopPlayingMatch()
 		} else {
 			
@@ -731,6 +743,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 					// If there's a next level, enter it:
 					if self.currentGame.indexUpcomingLevel != nil {
 						self.enterLevelAfterPreviousLevelHasBeenFinishedAndProgressHasBeenUpdated()
+					} else {
+						self.stopPlayingMatch()
 					}
 				})
 				
@@ -744,6 +758,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 					// If there's a next level, enter it:
 					if self.currentGame.currentLevel != nil {
 						self.enterLevelAfterPreviousLevelHasBeenFinishedAndProgressHasBeenUpdated()
+					} else {
+						self.stopPlayingMatch()
 					}
 				})
 			}
@@ -884,8 +900,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //Stop the match if you you are no longer connected (and inform the user)
         else if (self.GCMatchStarted && (state == GKPlayerConnectionState.StateUnknown || state == GKPlayerConnectionState.StateDisconnected))
         {
-            self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
-			showExplanationsAboutHowToMakeAConnection = true
+			// Maybe we want the match to be stopped, because the last level of the difficulty was finished. In this case it's not necessary to display an alert:
+			if !(self.currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted == true && self.currentGame.nCompletedLevels[self.currentGame.currentDifficulty] == self.currentGame.nLevelsForDifficulty(self.currentGame.currentDifficulty)) {
+				self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
+			}
         }
     }
     
@@ -985,12 +1003,12 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 //	}
 	
 	
-	func leaveLevelAfterItHasBeenFinishedAndUpdateProgress(#completionBlock: () -> (Void)) {
+	func leaveLevelAfterItHasBeenFinishedAndUpdateProgress(#completionBlock: (() -> (Void))?) {
 		/* This happens in a number of sequential steps. Unfortunately setting a transaction's completion block needs to happen at the start of the transaction, so the various blocks of code beneath are executed in reversed order:
 		1. Animate leaving the level (currently that's zooming out on the board);
 		2. Make the level buttons of the current difficulty appear again;
 		3. Make the level button of the finished level show that it's finished;
-		4. Make the level button of the next level show that it's unlocked.
+		4. Make the level button of the next level show that it's unlocked. If this is of the next difficulty, show that difficulty.
 		*/
 		
 		CATransaction.begin()
@@ -1016,14 +1034,35 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 						CATransaction.setCompletionBlock({ () -> Void in
 							
 							// Perform the passed completion block:
-							completionBlock()
+							if completionBlock != nil {
+								completionBlock!()
+							}
 						})
 						
 						// 4. Make the level button of the next level show that it's unlocked, if there is one:
-						if self.currentGame.thereIsANextLevelInCurrentDifficulty() { // is this ok??
+						if self.currentGame.thereIsANextLevelInCurrentDifficulty() {
 							let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
 							let levelButton = levelButtonsOfCurrentDifficulty[self.currentGame.indexLastFinishedLevel! + 1]
 							self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
+						} else {
+							// Check whether a new difficulty has been unlocked:
+							if self.currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted && self.currentGame.currentDifficulty != Difficulty.Expert {
+								
+								CATransaction.begin()
+								CATransaction.setAnimationDuration(0.75) // todo constant
+								CATransaction.setCompletionBlock({ () -> Void in
+									
+									// Update the first level button of that difficulty:
+									let levelButtonsOfCurrentDifficulty = self.levelButtons[difficultiesInOrder()[self.indexCurrentDifficultyLevel]]!
+									let levelButton = levelButtonsOfCurrentDifficulty[0]
+									self.updateLevelButtonAsAResultOfHavingBeenUnlocked(levelButton)
+								})
+								
+								// Show the next difficulty:
+								self.indexCurrentDifficultyLevel++
+								
+								CATransaction.commit()
+							}
 						}
 						
 						CATransaction.commit()

@@ -53,14 +53,14 @@
 		485E1C8C1A4C3D8300AC88AC /* communicatie_draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C881A4C3D8300AC88AC /* communicatie_draai.json */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
+		487D5ED21AA85DC100D4D455 /* LiL logo diapositief 1000x194.png in Resources */ = {isa = PBXBuildFile; fileRef = 487D5ED01AA85DC100D4D455 /* LiL logo diapositief 1000x194.png */; };
+		487D5ED31AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 487D5ED11AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png */; };
 		489B03451AA608B40068253F /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489B03441AA608B40068253F /* Message.swift */; };
 		489B03471AA60A260068253F /* MessagingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489B03461AA60A260068253F /* MessagingHelper.swift */; };
 		48A02DE61A9F21AB00C49E09 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DE51A9F21AB00C49E09 /* InfoViewController.swift */; };
 		48A02DE81A9F226400C49E09 /* htmlInfo.html in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DE71A9F226400C49E09 /* htmlInfo.html */; };
 		48A02DEA1A9F247500C49E09 /* JvHGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DE91A9F247500C49E09 /* JvHGradientView.swift */; };
 		48A02DEC1A9F29B400C49E09 /* UIColor+Variations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */; };
-		48A02DEF1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DED1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png */; };
-		48A02DF01A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DEE1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png */; };
 		48A02DF31A9F7DD200C49E09 /* Cross 22x22.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */; };
 		48A02DF41A9F7DD200C49E09 /* Cross 22x22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */; };
 		48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */; };
@@ -181,14 +181,14 @@
 		485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_gevenlimiet.json; sourceTree = "<group>"; };
 		485E1C881A4C3D8300AC88AC /* communicatie_draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_draai.json; sourceTree = "<group>"; };
 		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
+		487D5ED01AA85DC100D4D455 /* LiL logo diapositief 1000x194.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiL logo diapositief 1000x194.png"; sourceTree = "<group>"; };
+		487D5ED11AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiL logo diapositief 1000x194@2x.png"; sourceTree = "<group>"; };
 		489B03441AA608B40068253F /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		489B03461AA60A260068253F /* MessagingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagingHelper.swift; sourceTree = "<group>"; };
 		48A02DE51A9F21AB00C49E09 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		48A02DE71A9F226400C49E09 /* htmlInfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = htmlInfo.html; sourceTree = "<group>"; };
 		48A02DE91A9F247500C49E09 /* JvHGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JvHGradientView.swift; sourceTree = "<group>"; };
 		48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Variations.swift"; sourceTree = "<group>"; };
-		48A02DED1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeaderWithLogo 1000x227.png"; sourceTree = "<group>"; };
-		48A02DEE1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HeaderWithLogo 1000x227@2x.png"; sourceTree = "<group>"; };
 		48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross 22x22.png"; sourceTree = "<group>"; };
 		48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross 22x22@2x.png"; sourceTree = "<group>"; };
 		48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30.png"; sourceTree = "<group>"; };
@@ -461,9 +461,8 @@
 		48B2C2D61A248CDF002FFEDF /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				4983F0A61AA858DB000CCA1C /* LiI_logo_PMS_alpha.png */,
-				48A02DED1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png */,
-				48A02DEE1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png */,
+				487D5ED01AA85DC100D4D455 /* LiL logo diapositief 1000x194.png */,
+				487D5ED11AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png */,
 				48C4A0B31A97A41A0034D878 /* Info 24x24.png */,
 				48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */,
 				48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */,
@@ -643,7 +642,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48A02DF01A9F6CCD00C49E09 /* HeaderWithLogo 1000x227@2x.png in Resources */,
 				4874D87D1A7143B100EE812D /* advanced1.json in Resources */,
 				485E1C831A4C351D00AC88AC /* communicatie.json in Resources */,
 				48C4A0B51A97A41A0034D878 /* Info 24x24.png in Resources */,
@@ -663,13 +661,13 @@
 				481F63A81A9759790007D135 /* OpenSans-BoldItalic.ttf in Resources */,
 				48A02DF31A9F7DD200C49E09 /* Cross 22x22.png in Resources */,
 				48C3C2C51A695EA1007FBF04 /* Icon_Left 70x70@2x.png in Resources */,
-				48A02DEF1A9F6CCD00C49E09 /* HeaderWithLogo 1000x227.png in Resources */,
 				485E1C861A4C3D2A00AC88AC /* communicatie_limiet.json in Resources */,
 				48591D171A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf in Resources */,
 				48C3C2C91A695EA1007FBF04 /* Icon_Retry 70x70@2x.png in Resources */,
 				48D19EB81A48A91B0072524E /* SmallCross.png in Resources */,
 				485E1C8C1A4C3D8300AC88AC /* communicatie_draai.json in Resources */,
 				4940291B1A399EA400449754 /* beweeg.json in Resources */,
+				487D5ED21AA85DC100D4D455 /* LiL logo diapositief 1000x194.png in Resources */,
 				481F63A71A9759790007D135 /* OpenSans-Bold.ttf in Resources */,
 				485E1C811A4C351D00AC88AC /* geefknop_limiet.json in Resources */,
 				481F63AA1A9759790007D135 /* OpenSans-ExtraBoldItalic.ttf in Resources */,
@@ -706,6 +704,7 @@
 				49821A7D1A696CD7008CC491 /* expert1.json in Resources */,
 				481F63A91A9759790007D135 /* OpenSans-ExtraBold.ttf in Resources */,
 				48C3C2D21A695EA1007FBF04 /* Icon_Up 70x70.png in Resources */,
+				487D5ED31AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png in Resources */,
 				48EDD3431AA0ADBC00953628 /* HelpIcon 21x21@2x.png in Resources */,
 				48C3C2BE1A695EA1007FBF04 /* Icon_Finish 70x70.png in Resources */,
 				48C3C2BD1A695EA1007FBF04 /* Icon_Down 70x70@2x.png in Resources */,
