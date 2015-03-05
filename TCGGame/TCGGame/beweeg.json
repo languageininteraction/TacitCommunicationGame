@@ -1,6 +1,6 @@
 {
     "name": "Beweeg!",
-    "hint": "Ga allebei op de goede plek staan en druk op het rechter vinkje. De knoppen rechts zijn van jou, de knoppen links van je teamgenoot. Druk op je eigen rode knop als je het level opnieuw wilt proberen.",
+    "hint": "Ga allebei op de goede plek staan en druk op het rechter vinkje. De knoppen rechts en rondom je figuurtje zijn van jou, de knoppen links van je teamgenoot. Druk op je eigen rode knop als je het level opnieuw wilt proberen.",
     "board": {
         "width": 3,
         "height": 3
