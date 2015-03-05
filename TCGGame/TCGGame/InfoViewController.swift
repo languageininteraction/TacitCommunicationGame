@@ -8,10 +8,11 @@
 
 import UIKit
 
-class InfoViewController: UIViewController {
+class InfoViewController: UIViewController, UIWebViewDelegate {
 
 	let webView = UIWebView()
 	let backButton = UIButton()
+	var busyLoadingAboutPage = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,9 @@ class InfoViewController: UIViewController {
 			// Make sure the webView is scrolled to the top:
 			let rect = CGRectMake(0, 0, webView.frame.size.width, webView.frame.size.height)
 			webView.scrollView.scrollRectToVisible(rect, animated: false)
+			
+			// Become the webView's delegate, so we can load requests in an external browser:
+			webView.delegate = self
 		}
 		
 		self.view.insertSubview(webView, atIndex: 0)
@@ -74,4 +78,22 @@ class InfoViewController: UIViewController {
     {
         self.dismissViewControllerAnimated(true, completion: nil);
     }
+	
+	
+	// MARK: - UIWebViewDelegate
+	
+	func webViewDidFinishLoad(webView: UIWebView) {
+		busyLoadingAboutPage = false
+	}
+	
+	func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+		if busyLoadingAboutPage {
+			return true
+		}
+		
+		// Open the url with the default internet browser:
+		UIApplication.sharedApplication().openURL(request.URL)
+		return false
+	}
+
 }
