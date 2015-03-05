@@ -21,10 +21,10 @@ let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevIndexLevelToStartWith = kDevelopmentMode ? 7 : 0
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goed wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
-let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 0 : nil
+let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 2 : nil
 let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? 12 : nil
-let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? nil : nil
-let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? 5 : nil
+let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? 5 : nil
 let kDevPretendThatPawnsAreAlwaysPlacedCorrectly = kDevelopmentMode ? true : false // e.g. handy to test level transitions
 
 // Layout of the board and stuff on top of / inside the board:
