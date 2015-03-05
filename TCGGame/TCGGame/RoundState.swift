@@ -379,6 +379,11 @@ class RoundState: NSObject, NSCopying {
 			return false
 		}
 		
+		// If the player already pressed finish, the move and see items are no longer available; giving is still possible (if that item count isn't zero)
+		if self.playerIsReadyToFinish(aboutPawn1) && (itemType == ItemType.Move || itemType == ItemType.See) {
+			return false
+		}
+		
 		if let actualItem = itemOfTypeForPlayer(aboutPawn1, itemType: itemType) {
 			return actualItem.itemIsStillAvailable()
 		}
