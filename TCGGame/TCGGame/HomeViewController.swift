@@ -907,11 +907,15 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         else if (self.GCMatchStarted && state == GKPlayerConnectionState.StateDisconnected)
         {
 			// Maybe we want the match to be stopped, because the last level of the difficulty was finished. In this case it's not necessary to display an alert:
-			if !(self.currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted == true && self.currentGame.nCompletedLevels[self.currentGame.currentDifficulty] == self.currentGame.nLevelsForDifficulty(self.currentGame.currentDifficulty)) {
+
+            //Removed, because this message is shown so often it's annoying
+
+            /*if !(self.currentGame.lastFinishingOfALevelResultedInAChangeInTheNumberOfLevelsBeingCompleted == true && self.currentGame.nCompletedLevels[self.currentGame.currentDifficulty] == self.currentGame.nLevelsForDifficulty(self.currentGame.currentDifficulty)) {
 				self.levelViewController!.showAlertAndGoToHomeScreen(title:"Foutmelding",message:"De verbinding tussen jou en je teamgenoot is verloren gegaan. Ga terug naar het beginscherm om opnieuw een spel te starten, of contact te maken met een andere teamgenoot.")
-			}
             
-            //println("Warning: GameCenter thinks the connection is lost.")
+			}*/
+            
+            println("Warning: GameCenter thinks the connection is lost.")
 			
 			self.showExplanationsAboutHowToMakeAConnection = true
         }
