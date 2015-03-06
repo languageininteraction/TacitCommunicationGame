@@ -1208,22 +1208,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		}
 	}*/
 	
-	func updatePawnIcons()
-	{
-		self.pawnViewRepresentingLocalPlayer.removeFromSuperview()
-		self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
-		
-//		println("Updating pawn icons")
-		self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer1.shape, color: kColorLocalPlayer))
-		self.pawnViewRepresentingOtherPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: self.currentGame.currentLevel!.pawnPlayer2.shape, color: kColorOtherPlayer))
-		
-		pawnViewRepresentingLocalPlayer.frame = CGRectMake(self.view.frame.size.width - kMargeFacesX - kEdgelengthFaces, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		pawnViewRepresentingOtherPlayer.frame = CGRectMake(kMargeFacesX, kMargeFacesY, kEdgelengthFaces, kEdgelengthFaces)
-		
-		self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingLocalPlayer)
-		self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(self.pawnViewRepresentingOtherPlayer)
-	}
-	
 	func updateLevelButtonAsAResultOfHavingBeenFinished(levelButton: UIButton) {
 /*		// Make the button dissappear really quickly and reappear with its new appearance:
 		CATransaction.begin()
@@ -1302,7 +1286,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             var shapeOtherPlayer:PawnShape
             
             //See whether you have the pawnshape of player 1 or player 2
-            if (self.weMakeAllDecisions == self.currentGame.currentLevel!.decisionMakerPlayer1)
+            if (self.weMakeAllDecisions! == self.currentGame.currentLevel!.decisionMakerPlayer1)
             {
                 ourShape = self.currentGame.currentLevel!.pawnPlayer1.shape
                 shapeOtherPlayer = self.currentGame.currentLevel!.pawnPlayer2.shape
@@ -1312,6 +1296,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
                 ourShape = self.currentGame.currentLevel!.pawnPlayer2.shape
                 shapeOtherPlayer = self.currentGame.currentLevel!.pawnPlayer1.shape
             }
+            
             
             //The local icon
             self.pawnViewRepresentingLocalPlayer = PawnView(edgelength: kEdgelengthFaces, pawnDefinition: PawnDefinition(shape: ourShape, color: kColorLocalPlayer))
@@ -1407,7 +1392,6 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		
 		self.updatePlayerRepresentations()
-		self.updatePawnIcons()
 		
 		// quick fix:
 		if self.levelViewController!.view.superview != self.view {
