@@ -152,7 +152,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	
     //Misc
-    var weMakeAllDecisions: Bool?
+	var weMakeAllDecisions: Bool?
 	
 	// Whenever there's already a connection with another player, this can be set to false so the irrelevant explanation isn't shown:
 	var showExplanationsAboutHowToMakeAConnection: Bool = true { // todo rename
@@ -563,7 +563,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		self.currentGame.gameState = GameState.LookingForMatch
 		
-		switch difficultyPressedButton!
+/*		switch difficultyPressedButton!
 		{
 		case Difficulty.Beginner:
 			self.currentGame.currentDifficulty = Difficulty.Beginner
@@ -576,6 +576,17 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			self.currentGame.indexUpcomingLevel = 0 // irrelevant
 		default:
 			println("WARNING in levelButtonPressed: we don't know what to do with this difficulty.")
+		}*/
+		
+		self.currentGame.currentDifficulty = difficultyPressedButton!
+		if difficultyPressedButton! == Difficulty.Beginner {
+			self.currentGame.indexUpcomingLevel = indexButtonPressed!
+		} else {
+			// todo explain and cleanup
+			self.currentGame.indexUpcomingLevel = self.currentGame.nCompletedLevels[difficultyPressedButton!]
+			if self.currentGame.indexUpcomingLevel! >= self.currentGame.nLevelsForDifficulty(difficultyPressedButton!) {
+				self.currentGame.indexUpcomingLevel = self.currentGame.nLevelsForDifficulty(difficultyPressedButton!) - 1
+			}
 		}
 		
 		if (!kDevLocalTestingIsOn)
@@ -1277,6 +1288,22 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         //The names
         self.nameLabelLocalPlayer.text = shortenNameIfNeeded(self.ownAlias)
         self.nameLabelOtherPlayer.text = shortenNameIfNeeded(self.aliasOtherPlayer)
+		
+		// Just for development:
+		if kDevFakePlayerName1 != nil && weMakeAllDecisions != nil {
+			if weMakeAllDecisions! {
+				self.nameLabelLocalPlayer.text = kDevFakePlayerName1
+			} else {
+				self.nameLabelOtherPlayer.text = kDevFakePlayerName1
+			}
+		}
+		if kDevFakePlayerName2 != nil && weMakeAllDecisions != nil {
+			if weMakeAllDecisions! {
+				self.nameLabelOtherPlayer.text = kDevFakePlayerName2
+			} else {
+				self.nameLabelLocalPlayer.text = kDevFakePlayerName2
+			}
+		}
 
         self.pawnViewRepresentingOtherPlayer.removeFromSuperview()
         

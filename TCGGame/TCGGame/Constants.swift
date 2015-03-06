@@ -21,11 +21,13 @@ let kDevPerspectiveToStartWithInLocalTesting = PerspectiveOnTwoPlayers.Player1
 let kDevUseLevelLabelForLevelSelection = kDevelopmentMode ? false : false
 let kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals = kDevelopmentMode ? false : false // when true, something goes wrong; todo: fix this, because I think it means that the first level isn't communicated to the other player
 let kDevPretendThatPawnsAreAlwaysPlacedCorrectly = kDevelopmentMode ? false : false // e.g. handy to test level transitions
-let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? nil : nil
+let kDevFakeMaxAvailableDifficultyAsInt: Int? = kDevelopmentMode ? 1 : nil
 let kDevFakeNumberOfFinishedLevelsBeginner: Int? = kDevelopmentMode ? nil : nil
 let kDevFakeNumberOfFinishedLevelsAdvanced: Int? = kDevelopmentMode ? nil : nil
 let kDevFakeNumberOfFinishedLevelsExpert: Int? = kDevelopmentMode ? nil : nil
 let kDevFakeCompletingALevelByPressingHomeButtonButOnlyForOnePlayer = kDevelopmentMode ? false : false // handy to test situations in which the players have not finished the same number of levels
+let kDevFakePlayerName1: String? = kDevelopmentMode ? "Mees Bakker" : nil
+let kDevFakePlayerName2: String? = kDevelopmentMode ? "Fenna Yildiz" : nil
 
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
