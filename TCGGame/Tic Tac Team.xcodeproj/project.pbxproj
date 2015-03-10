@@ -130,12 +130,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4812E6061A0A655A006DED82 /* TCGGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TCGGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4812E6061A0A655A006DED82 /* Tic Tac Team.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic Tac Team.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4812E60A1A0A655A006DED82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4812E60B1A0A655A006DED82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4812E60D1A0A655A006DED82 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4812E6121A0A655A006DED82 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		4812E61B1A0A655A006DED82 /* TCGGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TCGGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4812E61B1A0A655A006DED82 /* Tic Tac TeamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tic Tac TeamTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4812E6201A0A655A006DED82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4812E6211A0A655A006DED82 /* TCGGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCGGameTests.swift; sourceTree = "<group>"; };
 		4812E62E1A0A6B65006DED82 /* Round.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Round.swift; sourceTree = "<group>"; };
@@ -280,8 +280,8 @@
 		4812E6071A0A655A006DED82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4812E6061A0A655A006DED82 /* TCGGame.app */,
-				4812E61B1A0A655A006DED82 /* TCGGameTests.xctest */,
+				4812E6061A0A655A006DED82 /* Tic Tac Team.app */,
+				4812E61B1A0A655A006DED82 /* Tic Tac TeamTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -554,9 +554,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4812E6051A0A655A006DED82 /* TCGGame */ = {
+		4812E6051A0A655A006DED82 /* Tic Tac Team */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4812E6251A0A655A006DED82 /* Build configuration list for PBXNativeTarget "TCGGame" */;
+			buildConfigurationList = 4812E6251A0A655A006DED82 /* Build configuration list for PBXNativeTarget "Tic Tac Team" */;
 			buildPhases = (
 				4812E6021A0A655A006DED82 /* Sources */,
 				4812E6031A0A655A006DED82 /* Frameworks */,
@@ -566,14 +566,14 @@
 			);
 			dependencies = (
 			);
-			name = TCGGame;
+			name = "Tic Tac Team";
 			productName = TCGGame;
-			productReference = 4812E6061A0A655A006DED82 /* TCGGame.app */;
+			productReference = 4812E6061A0A655A006DED82 /* Tic Tac Team.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4812E61A1A0A655A006DED82 /* TCGGameTests */ = {
+		4812E61A1A0A655A006DED82 /* Tic Tac TeamTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4812E6281A0A655A006DED82 /* Build configuration list for PBXNativeTarget "TCGGameTests" */;
+			buildConfigurationList = 4812E6281A0A655A006DED82 /* Build configuration list for PBXNativeTarget "Tic Tac TeamTests" */;
 			buildPhases = (
 				4812E6171A0A655A006DED82 /* Sources */,
 				4812E6181A0A655A006DED82 /* Frameworks */,
@@ -584,9 +584,9 @@
 			dependencies = (
 				4812E61D1A0A655A006DED82 /* PBXTargetDependency */,
 			);
-			name = TCGGameTests;
+			name = "Tic Tac TeamTests";
 			productName = TCGGameTests;
-			productReference = 4812E61B1A0A655A006DED82 /* TCGGameTests.xctest */;
+			productReference = 4812E61B1A0A655A006DED82 /* Tic Tac TeamTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -613,7 +613,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4812E6011A0A655A006DED82 /* Build configuration list for PBXProject "TCGGame" */;
+			buildConfigurationList = 4812E6011A0A655A006DED82 /* Build configuration list for PBXProject "Tic Tac Team" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -626,8 +626,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4812E6051A0A655A006DED82 /* TCGGame */,
-				4812E61A1A0A655A006DED82 /* TCGGameTests */,
+				4812E6051A0A655A006DED82 /* Tic Tac Team */,
+				4812E61A1A0A655A006DED82 /* Tic Tac TeamTests */,
 			);
 		};
 /* End PBXProject section */
@@ -778,7 +778,7 @@
 /* Begin PBXTargetDependency section */
 		4812E61D1A0A655A006DED82 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4812E6051A0A655A006DED82 /* TCGGame */;
+			target = 4812E6051A0A655A006DED82 /* Tic Tac Team */;
 			targetProxy = 4812E61C1A0A655A006DED82 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -873,7 +873,7 @@
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Tic Tac Team";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -889,7 +889,7 @@
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Tic Tac Team";
 				PROVISIONING_PROFILE = "3ab727d8-1b69-4946-8036-c1b7053864ad";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -909,7 +909,7 @@
 				);
 				INFOPLIST_FILE = TCGGameTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Tic Tac TeamTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TCGGame.app/TCGGame";
 			};
 			name = Debug;
@@ -924,7 +924,7 @@
 				);
 				INFOPLIST_FILE = TCGGameTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Tic Tac TeamTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TCGGame.app/TCGGame";
 			};
 			name = Release;
@@ -932,7 +932,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4812E6011A0A655A006DED82 /* Build configuration list for PBXProject "TCGGame" */ = {
+		4812E6011A0A655A006DED82 /* Build configuration list for PBXProject "Tic Tac Team" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4812E6231A0A655A006DED82 /* Debug */,
@@ -941,7 +941,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4812E6251A0A655A006DED82 /* Build configuration list for PBXNativeTarget "TCGGame" */ = {
+		4812E6251A0A655A006DED82 /* Build configuration list for PBXNativeTarget "Tic Tac Team" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4812E6261A0A655A006DED82 /* Debug */,
@@ -950,7 +950,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4812E6281A0A655A006DED82 /* Build configuration list for PBXNativeTarget "TCGGameTests" */ = {
+		4812E6281A0A655A006DED82 /* Build configuration list for PBXNativeTarget "Tic Tac TeamTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4812E6291A0A655A006DED82 /* Debug */,
