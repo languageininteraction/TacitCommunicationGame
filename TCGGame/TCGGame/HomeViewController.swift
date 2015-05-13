@@ -257,14 +257,16 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         self.viewWithWhatIsAlwaysVisibleWhenPlayingLevels.addSubview(nameLabelOtherPlayer)
         
 		// Create and add a pageControl:
-		let heightPageControl: CGFloat = 37
-		pageControl.frame = CGRectMake(20, self.view.frame.size.height - 37 - 20, self.view.frame.size.width - 2 * 20, heightPageControl)
-		pageControl.numberOfPages = difficultiesInOrder().count
-		pageControl.currentPage = 0
-		pageControl.pageIndicatorTintColor = UIColor(white: 0.85, alpha: 1)
-		pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
-		pageControl.userInteractionEnabled = false
-		viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(pageControl)
+		if !kOnPhone {
+			let heightPageControl: CGFloat = 37
+			pageControl.frame = CGRectMake(20, self.view.frame.size.height - heightPageControl - 20, self.view.frame.size.width - 2 * 20, heightPageControl) // todo
+			pageControl.numberOfPages = difficultiesInOrder().count
+			pageControl.currentPage = 0
+			pageControl.pageIndicatorTintColor = UIColor(white: 0.85, alpha: 1)
+			pageControl.currentPageIndicatorTintColor = UIColor.blackColor()
+			pageControl.userInteractionEnabled = false
+			viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(pageControl)
+		}
 		
 		
 		// Add gesture recognizers to swipe between difficulty levels, unless kDevLocalTestingIsOn is true, because in that case these gestures intervere with gestures we use to change SimulateTwoHomeViewControllers's perspective:
@@ -283,13 +285,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		// Calculate some metrics:
 		
 		// Metrics of difficulty views:
-		let edgeLengthDifficultyViews: CGFloat = 540 // todo
-		let frameDifficultyViews = CGRectMake(0.5 * (self.view.frame.width - edgeLengthDifficultyViews), 0.5 * (self.view.frame.height - edgeLengthDifficultyViews) + kAmountYOfBoardViewLowerThanCenter, edgeLengthDifficultyViews, edgeLengthDifficultyViews)
+		let frameDifficultyViews = CGRectMake(0.5 * (self.view.frame.width - kEdgeLengthDifficultyViews), 0.5 * (self.view.frame.height - kEdgeLengthDifficultyViews) + kAmountYOfBoardViewLowerThanCenter, kEdgeLengthDifficultyViews, kEdgeLengthDifficultyViews)
 		
 		// Metrics of buttons within difficulty views:
-		let xAndYCenterInDifficultyViews = 0.5 * edgeLengthDifficultyViews
-		let edgeLengthButtonsInDifficultyViews: CGFloat = 75 // todo
-		let radiusTillCenterOfButtonsInDifficultyViews = xAndYCenterInDifficultyViews - 0.5 * edgeLengthButtonsInDifficultyViews
+		let xAndYCenterInDifficultyViews = 0.5 * kEdgeLengthDifficultyViews
+		let radiusTillCenterOfButtonsInDifficultyViews = xAndYCenterInDifficultyViews - 0.5 * kEdgeLengthButtonsInDifficultyViews
 		
 		// Go through the three views, set their frame, background color, etc., and add them:
 		for indexDifficulty in 0 ... difficultiesInOrder().count - 1 {
@@ -310,21 +310,21 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			label.font = kFontDifficulty
 			label.text = difficulty.description()
 			label.textAlignment = NSTextAlignment.Center
-			let widthLabel: CGFloat = 200, heightLabel: CGFloat = 100 // todo
-			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabel), 0.5 * (frameDifficultyViews.height - heightLabel), widthLabel, heightLabel)
+			
+			label.frame = CGRectMake(0.5 * (frameDifficultyViews.width - kWidthLabelDifficulty), 0.5 * (frameDifficultyViews.height - kHeightLabelDifficulty), kWidthLabelDifficulty, kHeightLabelDifficulty)
 			difficultyView.addSubview(label)
 			label.tag = kTagLabelTitleInDifficultyView
 			
 			// added later, todo cleanup and explain:
 			let labelExplanation = UILabel()
 			labelExplanation.numberOfLines = 0
-			labelExplanation.font = UIFont(name: kMainFontNameRegular, size: 15 * kDefaultScaling) // todo
+			labelExplanation.font = kFontExplanationBeneathDifficulty
 			labelExplanation.textColor = UIColor(white: 0.5, alpha: 1)
 			labelExplanation.text = difficulty == Difficulty.Beginner ? "Om Tic Tac Team te spelen heb je een teamgenoot nodig. Druk op dezelfde knop als een andere speler en jullie komen bij elkaar in het team!" :
 				difficulty == Difficulty.Advanced ? "De Gevorderde levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." :
 				difficulty == Difficulty.Expert ? "De Expert levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." : nil
 			labelExplanation.textAlignment = NSTextAlignment.Center
-			let widthLabelExplanation: CGFloat = 300, heightLabelExplanation: CGFloat = 200 // todo
+			let widthLabelExplanation: CGFloat = kWidthExplanationBeneathDifficulty, heightLabelExplanation: CGFloat = kHeightExplanationBeneathDifficulty // todo
 			labelExplanation.frame = CGRectMake(0.5 * (frameDifficultyViews.width - widthLabelExplanation), label.frame.origin.y - 15, widthLabelExplanation, heightLabelExplanation) // todo constants
 			difficultyView.addSubview(labelExplanation)
 			labelExplanation.tag = kTagLabelExplanationInDifficultyView
@@ -345,7 +345,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				let angle = CGFloat(Double(indexButton) * anglePerButton - 0.5 * M_PI)
 				let xCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * cos(angle)
 				let yCenter = xAndYCenterInDifficultyViews + radiusTillCenterOfButtonsInDifficultyViews * sin(angle)
-				let button = UIButton(frame: CGRectMake(xCenter - 0.5 * edgeLengthButtonsInDifficultyViews, yCenter - 0.5 * edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews, edgeLengthButtonsInDifficultyViews))
+				let button = UIButton(frame: CGRectMake(xCenter - 0.5 * kEdgeLengthButtonsInDifficultyViews, yCenter - 0.5 * kEdgeLengthButtonsInDifficultyViews, kEdgeLengthButtonsInDifficultyViews, kEdgeLengthButtonsInDifficultyViews))
 				
 				updateLevelButtonBasedOnProgress(difficulty: difficulty, indexLevel: indexButton, button: button)
 				
@@ -394,14 +394,14 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
 
 	func addInfoButton() {
-		let edgeLengthButton: CGFloat = 44
-		let infoButton = UIButton(frame: CGRectMake(25, self.view.frame.height - edgeLengthButton - 25, edgeLengthButton, edgeLengthButton))
+		let infoButton = UIButton(frame: CGRectMake(kDistanceFromInfoButtonToEdge, self.view.frame.height - kEdgeLengthInfoButton - kDistanceFromInfoButtonToEdge, kEdgeLengthInfoButton, kEdgeLengthInfoButton))
 		viewWithWhatIsNeverVisibleWhenPlayingLevels.addSubview(infoButton)
 		infoButton.addTarget(self, action: "infoButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
 		
+		println("kDefaultScaling = \(kDefaultScaling)")
 		
 		// This isn't pretty, similar code is also use elsewhere…
-		let icon = UIImage(named: "Info 24x24")!
+		let icon = UIImage(named: kOnPhone ? "Info 16x16" : "Info 24x24")!
 		let scaleFactor = UIScreen.mainScreen().scale
 		let scaledSizeOfButton = CGSizeMake(infoButton.frame.size.width * scaleFactor, infoButton.frame.size.height * scaleFactor)
 		let scaledSizeOfImage = CGSizeMake(icon.size.width * scaleFactor, icon.size.height * scaleFactor)
@@ -426,7 +426,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 		
 		// Draw a circle around it:
 		CGContextSetStrokeColorWithColor(context, kColorLiIBlue.CGColor)
-		CGContextSetLineWidth(context, 1.5 * scaleFactor)
+		CGContextSetLineWidth(context, kLineWidthLevelButton * scaleFactor)
 		let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
 		CGContextAddPath(context, circlePath)
 		CGContextStrokePath(context)
@@ -443,7 +443,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	func setImagesForLevelButton(button: UIButton, text: NSString?, lineColorWhenLocked: UIColor, lineColorWhenUnlocked: UIColor, fillColorWhenUnlocked: UIColor?) {
 		// Load the lock image:
-		let iconImage = UIImage(named: "LockIcon 30x30")!
+		let iconImage = UIImage(named: kOnPhone ? "LockIcon 20x20" : "LockIcon 30x30")!
 		let scaleFactor = UIScreen.mainScreen().scale
 		let scaledSizeOfButton = CGSizeMake(button.frame.size.width * scaleFactor, button.frame.size.height * scaleFactor)
 		let scaledSizeOfImage = CGSizeMake(iconImage.size.width * scaleFactor, iconImage.size.height * scaleFactor)
@@ -492,7 +492,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			// Draw a circle around it:
 			CGContextSetStrokeColorWithColor(context, (disabled ? lineColorWhenLocked : kColorUnlockedLevels).CGColor)
-			CGContextSetLineWidth(context, 1.5 * scaleFactor)
+			CGContextSetLineWidth(context, kLineWidthLevelButton * scaleFactor)
 			let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, 1 * scaleFactor, 1 * scaleFactor), nil) // todo
 			CGContextAddPath(context, circlePath)
 			CGContextStrokePath(context)
@@ -645,7 +645,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 
 		let widthScreen = self.view.frame.size.width
 	
-		let transformTranslation = CATransform3DMakeTranslation(delta * (0.5 * widthScreen + 285), 0, 0)
+		let transformTranslation = CATransform3DMakeTranslation(delta * (0.5 * widthScreen + (kOnPhone ? 150 : 285)), 0, 0) // todo
 		let scale: CGFloat = 0.8
 		let transformScale = CATransform3DMakeScale(scale, scale, 1)
 		return CATransform3DConcat(transformTranslation, transformScale)

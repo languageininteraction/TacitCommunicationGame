@@ -27,6 +27,6 @@ class Message: NSObject, NSCoding {
 	
 	required init (coder decoder: NSCoder) {
 		self.index = decoder.decodeIntegerForKey(kKeyIndex)
-		self.content = decoder.decodeObjectForKey(kKeyContent) as NSCoding
+		self.content = decoder.decodeObjectForKey(kKeyContent) as! NSCoding
 	}
 }

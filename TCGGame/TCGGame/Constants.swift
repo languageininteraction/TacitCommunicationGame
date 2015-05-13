@@ -60,6 +60,17 @@ let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 160 * kDefaultScaling // use 
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
 let kEdgelengtProgressCircle: CGFloat = 640 * kDefaultScaling
 
+// added later for the home screen:
+let kEdgeLengthDifficultyViews: CGFloat = kOnPhone ? 275 : 540
+let kEdgeLengthButtonsInDifficultyViews: CGFloat = kOnPhone ? 40 : 75
+let kWidthLabelDifficulty: CGFloat = 200 * kDefaultScaling
+let kHeightLabelDifficulty: CGFloat = 100 * kDefaultScaling
+let kWidthExplanationBeneathDifficulty: CGFloat = kOnPhone ? 150 : 300
+let kHeightExplanationBeneathDifficulty: CGFloat = 200 * kDefaultScaling
+let kEdgeLengthInfoButton: CGFloat = 44 * kDefaultScaling
+let kDistanceFromInfoButtonToEdge: CGFloat = kOnPhone ? 10 : 25
+let kLineWidthLevelButton: CGFloat = kOnPhone ? 1 : 1.5
+
 let kMaxNameLength: Int = 25
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
@@ -70,6 +81,7 @@ let kFontLevel = UIFont(name: kMainFontNameSemiBold, size: 24 * kDefaultScaling)
 let kFontAttributeInfinity = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)
 let kFontAttributeNumber = UIFont(name: kMainFontNameSemiBold, size: 15 * kDefaultScaling)
 let kFontDifficulty = UIFont(name: kMainFontNameSemiBold, size: 30 * kDefaultScaling)
+let kFontExplanationBeneathDifficulty = UIFont(name: kMainFontNameSemiBold, size: kOnPhone ? 10 : 15)
 let kFontLevelNumber = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)
 
 // Pawns:

@@ -49,6 +49,10 @@
 		485E1C861A4C3D2A00AC88AC /* communicatie_limiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C851A4C3D2A00AC88AC /* communicatie_limiet.json */; };
 		485E1C8B1A4C3D8300AC88AC /* communicatie_gevenlimiet.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */; };
 		485E1C8C1A4C3D8300AC88AC /* communicatie_draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 485E1C881A4C3D8300AC88AC /* communicatie_draai.json */; };
+		48622C821AB725C20000EF94 /* LockIcon 20x20.png in Resources */ = {isa = PBXBuildFile; fileRef = 48622C801AB725C20000EF94 /* LockIcon 20x20.png */; };
+		48622C831AB725C20000EF94 /* LockIcon 20x20@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48622C811AB725C20000EF94 /* LockIcon 20x20@2x.png */; };
+		48622C861AB729080000EF94 /* Info 16x16.png in Resources */ = {isa = PBXBuildFile; fileRef = 48622C841AB729080000EF94 /* Info 16x16.png */; };
+		48622C871AB729080000EF94 /* Info 16x16@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48622C851AB729080000EF94 /* Info 16x16@2x.png */; };
 		4874D87C1A70F8DE00EE812D /* JvHUIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */; };
 		4874D87D1A7143B100EE812D /* advanced1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A781A696C31008CC491 /* advanced1.json */; };
 		487D5ED21AA85DC100D4D455 /* LiL logo diapositief 1000x194.png in Resources */ = {isa = PBXBuildFile; fileRef = 487D5ED01AA85DC100D4D455 /* LiL logo diapositief 1000x194.png */; };
@@ -176,6 +180,10 @@
 		485E1C851A4C3D2A00AC88AC /* communicatie_limiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_limiet.json; sourceTree = "<group>"; };
 		485E1C871A4C3D8300AC88AC /* communicatie_gevenlimiet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_gevenlimiet.json; sourceTree = "<group>"; };
 		485E1C881A4C3D8300AC88AC /* communicatie_draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = communicatie_draai.json; sourceTree = "<group>"; };
+		48622C801AB725C20000EF94 /* LockIcon 20x20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 20x20.png"; sourceTree = "<group>"; };
+		48622C811AB725C20000EF94 /* LockIcon 20x20@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 20x20@2x.png"; sourceTree = "<group>"; };
+		48622C841AB729080000EF94 /* Info 16x16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info 16x16.png"; sourceTree = "<group>"; };
+		48622C851AB729080000EF94 /* Info 16x16@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Info 16x16@2x.png"; sourceTree = "<group>"; };
 		4874D87B1A70F8DE00EE812D /* JvHUIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JvHUIView+Animations.swift"; sourceTree = "<group>"; };
 		487D5ED01AA85DC100D4D455 /* LiL logo diapositief 1000x194.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiL logo diapositief 1000x194.png"; sourceTree = "<group>"; };
 		487D5ED11AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LiL logo diapositief 1000x194@2x.png"; sourceTree = "<group>"; };
@@ -458,8 +466,12 @@
 			children = (
 				487D5ED01AA85DC100D4D455 /* LiL logo diapositief 1000x194.png */,
 				487D5ED11AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png */,
+				48622C841AB729080000EF94 /* Info 16x16.png */,
+				48622C851AB729080000EF94 /* Info 16x16@2x.png */,
 				48C4A0B31A97A41A0034D878 /* Info 24x24.png */,
 				48C4A0B41A97A41A0034D878 /* Info 24x24@2x.png */,
+				48622C801AB725C20000EF94 /* LockIcon 20x20.png */,
+				48622C811AB725C20000EF94 /* LockIcon 20x20@2x.png */,
 				48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */,
 				48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */,
 				485E1C771A4AFE9000AC88AC /* ButtonToGiveSee.png */,
@@ -641,6 +653,7 @@
 				485E1C831A4C351D00AC88AC /* communicatie.json in Resources */,
 				48C4A0B51A97A41A0034D878 /* Info 24x24.png in Resources */,
 				48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */,
+				48622C831AB725C20000EF94 /* LockIcon 20x20@2x.png in Resources */,
 				48C4A0B61A97A41A0034D878 /* Info 24x24@2x.png in Resources */,
 				48C3C2BF1A695EA1007FBF04 /* Icon_Finish 70x70@2x.png in Resources */,
 				48C3C2D01A695EA1007FBF04 /* Icon_See 70x70.png in Resources */,
@@ -692,6 +705,7 @@
 				481F63AB1A9759790007D135 /* OpenSans-Italic.ttf in Resources */,
 				48C3C2CC1A695EA1007FBF04 /* Icon_RotateClockwise 70x70.png in Resources */,
 				481F63A61A9759790007D135 /* Apache License.txt in Resources */,
+				48622C821AB725C20000EF94 /* LockIcon 20x20.png in Resources */,
 				48C3C2C11A695EA1007FBF04 /* Icon_Give 70x70@2x.png in Resources */,
 				48A8F1E81A977182008EE4BA /* LockIcon 30x30@2x.png in Resources */,
 				48C3C2CE1A695EA1007FBF04 /* Icon_RotateCounterClockwise 70x70.png in Resources */,
@@ -700,6 +714,7 @@
 				48C3C2D21A695EA1007FBF04 /* Icon_Up 70x70.png in Resources */,
 				487D5ED31AA85DC100D4D455 /* LiL logo diapositief 1000x194@2x.png in Resources */,
 				48EDD3431AA0ADBC00953628 /* HelpIcon 21x21@2x.png in Resources */,
+				48622C861AB729080000EF94 /* Info 16x16.png in Resources */,
 				48C3C2BE1A695EA1007FBF04 /* Icon_Finish 70x70.png in Resources */,
 				48C3C2BD1A695EA1007FBF04 /* Icon_Down 70x70@2x.png in Resources */,
 				48C3C2CA1A695EA1007FBF04 /* Icon_Right 70x70.png in Resources */,
@@ -708,6 +723,7 @@
 				485E1C761A49AA1F00AC88AC /* kijkknop.json in Resources */,
 				485E1C8B1A4C3D8300AC88AC /* communicatie_gevenlimiet.json in Resources */,
 				48A02DF41A9F7DD200C49E09 /* Cross 22x22@2x.png in Resources */,
+				48622C871AB729080000EF94 /* Info 16x16@2x.png in Resources */,
 				48C3C2CD1A695EA1007FBF04 /* Icon_RotateClockwise 70x70@2x.png in Resources */,
 				48EDD3421AA0ADBC00953628 /* HelpIcon 21x21.png in Resources */,
 				4812E6131A0A655A006DED82 /* Images.xcassets in Resources */,
@@ -874,7 +890,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Tic Tac Team";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "db80b127-f1e9-46d1-b007-f2e6684180f8";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;

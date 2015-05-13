@@ -787,26 +787,30 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	
     func showHint()
     {
-        let helpVC = UIViewController()
-        helpVC.view.frame = CGRectMake(0, 0, 320, 200)
-        
-        let helpLabel = UILabel(frame: CGRectInset(helpVC.view.frame, 20, 20)) // todo
-        helpLabel.numberOfLines = 0
-        helpLabel.text = currentLevel!.hint
-        helpLabel.textColor = UIColor(white: 0.5, alpha: 1)
-        helpLabel.adjustsFontSizeToFitWidth = true
-        helpLabel.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
-        helpLabel.textAlignment = NSTextAlignment.Center
-        
-        helpVC.view.addSubview(helpLabel)
-        
-        let popover = UIPopoverController(contentViewController: helpVC)
-        
-        popover.popoverContentSize = helpVC.view.frame.size
-        
-        let frameButton = helpButton.frame
-        popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
-        
+		if !kOnPhone {
+			let helpVC = UIViewController()
+			helpVC.view.frame = CGRectMake(0, 0, 320, 200)
+			
+			let helpLabel = UILabel(frame: CGRectInset(helpVC.view.frame, 20, 20)) // todo
+			helpLabel.numberOfLines = 0
+			helpLabel.text = currentLevel!.hint
+			helpLabel.textColor = UIColor(white: 0.5, alpha: 1)
+			helpLabel.adjustsFontSizeToFitWidth = true
+			helpLabel.font = UIFont(name: kMainFontNameRegular, size: 50) // why doesn't size matter?
+			helpLabel.textAlignment = NSTextAlignment.Center
+			
+			helpVC.view.addSubview(helpLabel)
+			
+			let popover = UIPopoverController(contentViewController: helpVC)
+			
+			popover.popoverContentSize = helpVC.view.frame.size
+			
+			let frameButton = helpButton.frame
+			popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
+		} else {
+			println("todo show hint in action sheet: \(currentLevel!.hint)")
+		}
+		
     }
 	
 	// MARK: - Update UI
