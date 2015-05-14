@@ -19,6 +19,6 @@ class BoardDefinition: NSObject
 	
 	convenience init(jsonDict: [String: AnyObject])
 	{
-		self.init(width: jsonDict["width"] as Int, height: jsonDict["height"] as Int)
+		self.init(width: jsonDict["width"] as! Int, height: jsonDict["height"] as! Int)
 	}
 }

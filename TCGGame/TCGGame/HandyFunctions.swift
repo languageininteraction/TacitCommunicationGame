@@ -13,14 +13,14 @@ import CoreGraphics
 func printAllAvailableFonts() {
 	for familyName in UIFont.familyNames() {
 		println("\(familyName):")
-		for name in UIFont.fontNamesForFamilyName(familyName as NSString) {
+		for name in UIFont.fontNamesForFamilyName(familyName as! String) {
 			println(" \(name)")
 		}
 	}
 }
 
 
-func createBitmapContext(pixelsWide: UInt, pixelsHigh: UInt) -> CGContextRef? {
+func createBitmapContext(pixelsWide: Int, pixelsHigh: Int) -> CGContextRef? {
 	
 	// A context without width or height doesn't make sense:
 	if pixelsWide <= 0 || pixelsHigh <= 0 {
@@ -35,7 +35,7 @@ func createBitmapContext(pixelsWide: UInt, pixelsHigh: UInt) -> CGContextRef? {
 		pixelsWide,
 		pixelsHigh,
 		8, // bits per component
-		UInt(bitmapBytesPerRow),
+		bitmapBytesPerRow,
 		colorSpace,
 		bitmapInfo)
 	
@@ -84,7 +84,7 @@ func createImageFromLayer(layer: CALayer, switchXAndY: Bool) -> CGImageRef? {
 	let widthInPoints: CGFloat = switchXAndY ? layer.frame.size.height : layer.frame.size.width
 	let heightInPoints: CGFloat = switchXAndY ? layer.frame.size.width : layer.frame.size.height
 	let scale: CGFloat = UIScreen.mainScreen().scale
-	let context = createBitmapContext(UInt(widthInPoints * scale), UInt(heightInPoints * scale))
+	let context = createBitmapContext(Int(widthInPoints * scale), Int(heightInPoints * scale))
 	
 	// If context is nil (e.g. because widthInPoints or heightInPoints is 0), return NULL:
 	if (context == nil) {
@@ -130,7 +130,7 @@ func shortenNameIfNeeded(name: String) -> String
 {
     var result:String = name
     
-    if countElements(name) > kMaxNameLength
+    if count(name) > kMaxNameLength
     {
         result = result.substringToIndex(advance(result.startIndex,kMaxNameLength)) + "..."
     }

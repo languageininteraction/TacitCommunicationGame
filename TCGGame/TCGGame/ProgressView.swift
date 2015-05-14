@@ -95,7 +95,7 @@ class ProgressView: UIView {
 		
 		let scale: CGFloat = UIScreen.mainScreen().scale
 		let widthMask = circleLayer.frame.width * scale, heightMask = circleLayer.frame.height * scale
-		let context = createBitmapContext(UInt(widthMask), UInt(heightMask))
+		let context = createBitmapContext(Int(widthMask), Int(heightMask))
 		CGContextSetLineWidth(context, 2 * scale)
 		CGContextSetRGBStrokeColor(context, 0, 0, 0, 1)
 		

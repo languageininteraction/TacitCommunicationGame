@@ -19,7 +19,7 @@ class LevelTemplate: NSObject
     let name: String
     var hint: String?
 
-    let decisionMakerPlayer1Possibilities: [Bool]
+    var decisionMakerPlayer1Possibilities: [Bool]
 
     let board: BoardDefinition
     
@@ -43,58 +43,58 @@ class LevelTemplate: NSObject
         // Read in the template:
         let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
         let jsonData = NSData(contentsOfFile:path!, options: .DataReadingMappedIfSafe, error: nil)
-        var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as Dictionary<String, AnyObject>
+        var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as! Dictionary<String, AnyObject>
         
         // Fill the vars:
-        self.name = jsonResult["name"] as String
-        self.hint = (jsonResult["hint"] as String)
+        self.name = jsonResult["name"] as! String
+        self.hint = (jsonResult["hint"] as! String)
         
         if self.hint! == ""
         {
             self.hint = nil
         }
 
-        var decisionMakerPlayer1PossibilitiesNSArray = jsonResult["decisionMakerPlayer1"] as NSArray
+        var decisionMakerPlayer1PossibilitiesNSArray = jsonResult["decisionMakerPlayer1"] as! NSArray
         self.decisionMakerPlayer1Possibilities = []
 
         for possibility in decisionMakerPlayer1PossibilitiesNSArray
         {
-            self.decisionMakerPlayer1Possibilities.append(possibility as Bool)
+            self.decisionMakerPlayer1Possibilities.append(possibility as! Bool)
         }
 
-        self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
+        self.board = BoardDefinition(jsonDict: jsonResult["board"] as! Dictionary)
         self.possiblePawnShapesPlayer1 = []
         
-        var shapesAsStrings = jsonResult["possiblePawnShapesPlayer1"] as NSArray
+        var shapesAsStrings = jsonResult["possiblePawnShapesPlayer1"] as! NSArray
         for shape in shapesAsStrings
         {
-            var shapeAsString = shape as NSString
+            var shapeAsString = shape as! NSString
             self.possiblePawnShapesPlayer1.append(shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : shapeAsString == "square" ? PawnShape.Square : shapeAsString == "line" ? PawnShape.Line : shapeAsString == "bar" ? PawnShape.Bar : shapeAsString == "cornerTriangle" ? PawnShape.CornerTriangle : PawnShape.Star)
         }
 
         self.possiblePawnShapesPlayer2 = []
 
-        shapesAsStrings = jsonResult["possiblePawnShapesPlayer2"] as NSArray
+        shapesAsStrings = jsonResult["possiblePawnShapesPlayer2"] as! NSArray
         for shape in shapesAsStrings
         {
-            var shapeAsString = shape as NSString
+            var shapeAsString = shape as! NSString
             self.possiblePawnShapesPlayer2.append(shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : shapeAsString == "square" ? PawnShape.Square : shapeAsString == "line" ? PawnShape.Line : shapeAsString == "bar" ? PawnShape.Bar : shapeAsString == "cornerTriangle" ? PawnShape.CornerTriangle : PawnShape.Star)
         }
 
-        self.orientationRelation = jsonResult["orientationRelation"] as NSArray
-        self.pointing = jsonResult["goalPlayer2Pointing"] as NSArray
+        self.orientationRelation = jsonResult["orientationRelation"] as! NSArray
+        self.pointing = jsonResult["goalPlayer2Pointing"] as! NSArray
         
-        self.moveItemAvailable = jsonResult["moveItemAvailable"] as Bool
-        self.seeItemAvailable = jsonResult["seeItemAvailable"] as Bool
-        self.giveItemAvailable = jsonResult["giveItemAvailable"] as Bool
+        self.moveItemAvailable = jsonResult["moveItemAvailable"] as! Bool
+        self.seeItemAvailable = jsonResult["seeItemAvailable"] as! Bool
+        self.giveItemAvailable = jsonResult["giveItemAvailable"] as! Bool
         
-        let itemsPlayer1 = jsonResult["itemsPlayer1"] as [String: Int]
+        let itemsPlayer1 = jsonResult["itemsPlayer1"] as! [String: Int]
         startItemsPlayer1 = []
         for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer1 {
             startItemsPlayer1.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
         }
         
-        let itemsPlayer2 = jsonResult["itemsPlayer2"] as [String: Int]
+        let itemsPlayer2 = jsonResult["itemsPlayer2"] as! [String: Int]
         startItemsPlayer2 = []
         for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer2 {
             startItemsPlayer2.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
@@ -137,7 +137,7 @@ class LevelTemplate: NSObject
         pawn2StartDirection = allDirections.randomItem()
 
         //Decide whether to have the same orientation (if you can choose)
-        let sameOrientation = Array(self.orientationRelation).randomItem() as NSString == "same"
+        let sameOrientation = Array(self.orientationRelation).randomItem() as! NSString == "same"
         
         if sameOrientation
         {
@@ -170,7 +170,7 @@ class LevelTemplate: NSObject
             {
                 
                 //Decide whether to point inwards (if you can choose)
-                let pointingInwards = Array(self.pointing).randomItem() as NSString == "inwards"
+                let pointingInwards = Array(self.pointing).randomItem() as! NSString == "inwards"
                 
                 if pointingInwards
                 {

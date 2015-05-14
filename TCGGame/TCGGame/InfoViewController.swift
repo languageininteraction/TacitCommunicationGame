@@ -32,7 +32,7 @@ class InfoViewController: UIViewController, UIWebViewDelegate {
 		} else {
 			// A web view doesn't take the scale factor into account, so make sure that high resolution versions are used if available:
 			htmlString = htmlString?.stringByReplacingOccurrencesOfString(".png", withString: "@2x.png")
-			webView.loadHTMLString(htmlString, baseURL: NSBundle.mainBundle().bundleURL)
+			webView.loadHTMLString(htmlString! as String, baseURL: NSBundle.mainBundle().bundleURL)
 			
 			// Make sure the webView is scrolled to the top:
 			let rect = CGRectMake(0, 0, webView.frame.size.width, webView.frame.size.height)
@@ -92,7 +92,7 @@ class InfoViewController: UIViewController, UIWebViewDelegate {
 		}
 		
 		// Open the url with the default internet browser:
-		UIApplication.sharedApplication().openURL(request.URL)
+		UIApplication.sharedApplication().openURL(request.URL!)
 		return false
 	}
 

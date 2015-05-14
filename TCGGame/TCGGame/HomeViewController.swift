@@ -141,7 +141,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				difficultyView.layer.opacity = toValueOpacity
 				
 				// Update .. todo explain
-				if let viewToRegisterTaps = difficultyView.viewWithTag(kTagViewToRegisterTapsInDifficultyView)? {
+				if let viewToRegisterTaps = difficultyView.viewWithTag(kTagViewToRegisterTapsInDifficultyView) {
 					viewToRegisterTaps.hidden = i == indexCurrentDifficultyLevel
 				}
 			}
@@ -164,10 +164,10 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 	
 	// MARK: - Init
 	
-	override init() {
+	init() {
 		difficultyViews = [Difficulty.Beginner: easyDifficultyView, Difficulty.Advanced: advancedDifficultyView, Difficulty.Expert: expertDifficultyView] // for convenience
 		
-		super.init()
+		super.init(nibName: nil, bundle: nil)
 	}
 	
 	// We don't need this, but Swift requires it:
@@ -469,7 +469,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				coloredIconCGImage?.drawInRect(CGRectMake(0.5 * (scaledSizeOfButton.width - scaledSizeOfImage.width), 0.5 * (scaledSizeOfButton.height - scaledSizeOfImage.height), scaledSizeOfImage.width, scaledSizeOfImage.height))
 			} else {
 				// If a fill color has been defined, draw a filled circle:
-				if let actualFillColorWhenUnlocked = fillColorWhenUnlocked? {
+				if let actualFillColorWhenUnlocked = fillColorWhenUnlocked {
 					CGContextSetFillColorWithColor(context, actualFillColorWhenUnlocked.CGColor)
 					let inset: CGFloat = 5 // todo constant
 					let circlePath = CGPathCreateWithEllipseInRect(CGRectInset(rect, inset * scaleFactor, inset * scaleFactor), nil)
@@ -479,7 +479,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 				
 				// Draw the text:
 				let label = UILabel(frame: CGRectMake(0, 0, 10, 10)) // will size to fit
-				label.text = text
+				label.text = text as! String?
 				label.textAlignment = NSTextAlignment.Center
 				label.font = kFontLevelNumber
 				label.textColor = fillColorWhenUnlocked == nil ? UIColor.blackColor() : UIColor.whiteColor()
@@ -696,8 +696,8 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 //			let amountHigherBecauseOfExplanation: CGFloat = difficulty == Difficulty.Expert ? 0 : 50 // messy, todo make dependent on text of labelExplanation
 			let amountHigherBecauseOfExplanation: CGFloat = 50 // messy, todo make dependent on text of labelExplanation
 			
-			let labelTitle = difficultyView.viewWithTag(kTagLabelTitleInDifficultyView)! as UILabel
-			let labelExplanation = difficultyView.viewWithTag(kTagLabelExplanationInDifficultyView)! as UILabel
+			let labelTitle = difficultyView.viewWithTag(kTagLabelTitleInDifficultyView)! as! UILabel
+			let labelExplanation = difficultyView.viewWithTag(kTagLabelExplanationInDifficultyView)! as! UILabel
 			
 			labelExplanation.hidden = !showExplanationsAboutHowToMakeAConnection
 			labelTitle.layer.transform = showExplanationsAboutHowToMakeAConnection ? CATransform3DMakeTranslation(0, -1 * amountHigherBecauseOfExplanation, 0) : CATransform3DIdentity
@@ -746,7 +746,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			
 			if weMakeAllDecisions! {
 				// If there is an upcoming level, make the game go to it and send it to the other device:
-				if let actualIndexUpcomingLevel = self.currentGame.indexUpcomingLevel? {
+				if let actualIndexUpcomingLevel = self.currentGame.indexUpcomingLevel {
 					self.currentGame.goToUpcomingLevel(predefinedLevel: nil) // passing no predefinedLevel means that we'll make a level ourselves
 					messagingHelper.sendOutgoing(content: self.currentGame.currentLevel!)
 				}
@@ -791,11 +791,11 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // Take action that fits the content's type:
         if content is RoundAction
         {
-            self.levelViewController!.receiveAction(content as RoundAction)
+            self.levelViewController!.receiveAction(content as! RoundAction)
         }
         else if content is Level
         {
-			let level = content as Level
+			let level = content as! Level
             if self.currentGame.gameState != GameState.WaitingForOtherPlayerToSendLevel
             {
                 println("Warning! Received a Level while not waiting for it")
@@ -885,7 +885,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     func matchmakerViewController(viewController: GKMatchmakerViewController!, didFindMatch match: GKMatch!) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.GCMatch = match
-        self.otherPlayer = (GCMatch!.players[0] as GKPlayer)
+        self.otherPlayer = (GCMatch!.players[0] as! GKPlayer)
         
         if (!kDevLocalTestingIsOn)
         {
@@ -943,7 +943,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
     func startPlayingMatch() {
         
         if (!kDevLocalTestingIsOn) { // normal case
-            let otherPlayer = self.GCMatch!.players[0] as GKPlayer //
+            let otherPlayer = self.GCMatch!.players[0] as! GKPlayer //
             self.weMakeAllDecisions = otherPlayer.playerID.compare(localPlayer.playerID) == NSComparisonResult.OrderedAscending
 		}
 		else

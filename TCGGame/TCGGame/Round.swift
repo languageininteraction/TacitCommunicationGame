@@ -35,11 +35,11 @@ class Round : NSObject {
 		// quick fix:
 		beginState.itemsPlayer1 = []
 		for item in level.startItemsPlayer1 {
-			beginState.itemsPlayer1.append(item.copy() as ItemDefinition)
+			beginState.itemsPlayer1.append(item.copy() as! ItemDefinition)
 		}
 		beginState.itemsPlayer2 = []
 		for item in level.startItemsPlayer2 {
-			beginState.itemsPlayer2.append(item.copy() as ItemDefinition)
+			beginState.itemsPlayer2.append(item.copy() as! ItemDefinition)
 		}
 		
 		self.currentPhase = RoundPhase(state: beginState)

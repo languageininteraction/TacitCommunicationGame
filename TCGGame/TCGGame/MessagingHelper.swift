@@ -37,7 +37,7 @@ class MessagingHelper: NSObject {
 	func registerIncomingData(data: NSData) -> AnyObject {
 
 		// Decode the data, which is a Message:
-		var message: Message = NSKeyedUnarchiver.unarchiveObjectWithData(data) as Message!
+		var message: Message = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Message!
 		
 		// Check whether the index is what we expect; log a warning if that's not the case:
 		if indexLastReceivedMessage == nil && message.index != 0 {

@@ -34,7 +34,7 @@ class PawnDefinition: NSObject {
 	
 	convenience init(jsonDict: [String: AnyObject]) {
 		// Get the shape:
-		let shapeAsString = jsonDict["shape"] as String
+		let shapeAsString = jsonDict["shape"] as! String
 		let shape = shapeAsString == "circle" ? PawnShape.Circle : shapeAsString == "triangle" ? PawnShape.Triangle : shapeAsString == "square" ? PawnShape.Square : shapeAsString == "line" ? PawnShape.Line : shapeAsString == "bar" ? PawnShape.Bar : shapeAsString == "cornerTriangle" ? PawnShape.CornerTriangle : PawnShape.Star
 				
 		self.init(shape: shape)

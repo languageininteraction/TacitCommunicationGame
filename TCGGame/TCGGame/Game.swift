@@ -121,7 +121,7 @@ class Game: NSObject
 		let actualIndexCurrentLevel = self.indexCurrentLevel!
 		
 		// Update currentLevel. The level is already defined (because it has been created on the other device), or we need to create it, based on the current difficulty and indexCurrentLevel:
-		if let actualPredefinedLevel = predefinedLevel? {
+		if let actualPredefinedLevel = predefinedLevel {
 			self.currentLevel = actualPredefinedLevel
 		} else {
 			switch self.currentDifficulty {

@@ -137,10 +137,10 @@ class BoardView: UIView {
 			}
 			
 			// Add the pawn views, because we'll rotate these as well:
-			if let actualPawnView1 = pawnView1? {
+			if let actualPawnView1 = pawnView1 {
 				viewsToRotate.append(actualPawnView1)
 			}
-			if let actualPawnView2 = pawnView2? {
+			if let actualPawnView2 = pawnView2 {
 				viewsToRotate.append(actualPawnView2)
 			}
 			

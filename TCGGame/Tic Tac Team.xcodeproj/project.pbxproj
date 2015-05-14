@@ -97,9 +97,9 @@
 		48CC18791A9DCF6700892CAD /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CC18781A9DCF6700892CAD /* ProgressView.swift */; };
 		48D19EB71A48A91B0072524E /* SmallCheckMark.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB51A48A91B0072524E /* SmallCheckMark.png */; };
 		48D19EB81A48A91B0072524E /* SmallCross.png in Resources */ = {isa = PBXBuildFile; fileRef = 48D19EB61A48A91B0072524E /* SmallCross.png */; };
+		48D654F31B04184300C967D7 /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D654F21B04184300C967D7 /* PassControlBackAndForth.swift */; };
 		48D70C421A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */; };
 		48D8903D1AA87F6D00A98C4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48D8903C1AA87F6D00A98C4E /* Main.storyboard */; };
-		48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF63A21A39FE6500941BDA /* HandyFunctions.swift */; };
 		48DF9E1F1A73F76A00624C80 /* JvHClosureBasedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DF9E1E1A73F76A00624C80 /* JvHClosureBasedTimer.swift */; };
 		48EDD3421AA0ADBC00953628 /* HelpIcon 21x21.png in Resources */ = {isa = PBXBuildFile; fileRef = 48EDD3401AA0ADBC00953628 /* HelpIcon 21x21.png */; };
@@ -111,7 +111,6 @@
 		4940291D1A399ED400449754 /* beweegver.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291C1A399ED400449754 /* beweegver.json */; };
 		4940291F1A399EF200449754 /* draai.json in Resources */ = {isa = PBXBuildFile; fileRef = 4940291E1A399EF200449754 /* draai.json */; };
 		494029211A399F0900449754 /* beweegknop.json in Resources */ = {isa = PBXBuildFile; fileRef = 494029201A399F0900449754 /* beweegknop.json */; };
-		496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */ = {isa = PBXBuildFile; fileRef = 496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */; };
 		49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49821A761A695C5A008CC491 /* HomeViewController.swift */; };
 		49821A7D1A696CD7008CC491 /* expert1.json in Resources */ = {isa = PBXBuildFile; fileRef = 49821A7C1A696CD7008CC491 /* expert1.json */; };
 		49BB4E561A5691B400C93C26 /* LevelTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BB4E551A5691B400C93C26 /* LevelTemplate.swift */; };
@@ -227,6 +226,7 @@
 		48CC18781A9DCF6700892CAD /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
 		48D19EB51A48A91B0072524E /* SmallCheckMark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCheckMark.png; sourceTree = "<group>"; };
 		48D19EB61A48A91B0072524E /* SmallCross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SmallCross.png; sourceTree = "<group>"; };
+		48D654F21B04184300C967D7 /* PassControlBackAndForth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassControlBackAndForth.swift; sourceTree = "<group>"; };
 		48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "Test Accounts GameCenter TCGGame on RU.rtf"; sourceTree = "<group>"; };
 		48D8903C1AA87F6D00A98C4E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		48DF63A21A39FE6500941BDA /* HandyFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandyFunctions.swift; sourceTree = "<group>"; };
@@ -240,7 +240,6 @@
 		4940291C1A399ED400449754 /* beweegver.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweegver.json; sourceTree = "<group>"; };
 		4940291E1A399EF200449754 /* draai.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = draai.json; sourceTree = "<group>"; };
 		494029201A399F0900449754 /* beweegknop.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = beweegknop.json; sourceTree = "<group>"; };
-		496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassControlBackAndForth.swift; sourceTree = "<group>"; };
 		49821A761A695C5A008CC491 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		49821A781A696C31008CC491 /* advanced1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = advanced1.json; sourceTree = "<group>"; };
 		49821A7C1A696CD7008CC491 /* expert1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = expert1.json; sourceTree = "<group>"; };
@@ -365,7 +364,6 @@
 				4812E60D1A0A655A006DED82 /* ViewController.swift */,
 				482EEC3C1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift */,
 				482EEC421A121D6A00FB13FF /* For One Player */,
-				496F60871A39E3BD000FD142 /* PassControlBackAndForth.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -529,6 +527,7 @@
 				4812F6191A974B450078E38B /* ViewThatPassesTouchesThrough.swift */,
 				48A02DE91A9F247500C49E09 /* JvHGradientView.swift */,
 				48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */,
+				48D654F21B04184300C967D7 /* PassControlBackAndForth.swift */,
 			);
 			name = "Handy stuff";
 			sourceTree = "<group>";
@@ -696,7 +695,6 @@
 				48D8903D1AA87F6D00A98C4E /* Main.storyboard in Resources */,
 				49D87FF51A56D2DB00455DA8 /* test.json in Resources */,
 				4940291F1A399EF200449754 /* draai.json in Resources */,
-				496F60881A39E3BD000FD142 /* PassControlBackAndForth.swift in Resources */,
 				485E1C7A1A4AFE9000AC88AC /* ButtonToGiveMove.png in Resources */,
 				48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */,
 				48EDD3461AA0AE9E00953628 /* HelpIcon 16x16.png in Resources */,
@@ -746,7 +744,6 @@
 			files = (
 				489B03471AA60A260068253F /* MessagingHelper.swift in Sources */,
 				49821A771A695C5A008CC491 /* HomeViewController.swift in Sources */,
-				48DF63A01A39ECF800941BDA /* PassControlBackAndForth.swift in Sources */,
 				48DF63A31A39FE6500941BDA /* HandyFunctions.swift in Sources */,
 				482EEC3D1A121C7200FB13FF /* SimulateTwoHomeViewControllers.swift in Sources */,
 				48A02DE61A9F21AB00C49E09 /* InfoViewController.swift in Sources */,
@@ -754,6 +751,7 @@
 				489B03451AA608B40068253F /* Message.swift in Sources */,
 				4847D8151A24D99400540223 /* PawnView.swift in Sources */,
 				48CC18791A9DCF6700892CAD /* ProgressView.swift in Sources */,
+				48D654F31B04184300C967D7 /* PassControlBackAndForth.swift in Sources */,
 				4812E6311A0A6B77006DED82 /* RoundState.swift in Sources */,
 				49E83DAE1A272293006952EE /* ItemDefinition.swift in Sources */,
 				4812E60E1A0A655A006DED82 /* ViewController.swift in Sources */,
@@ -884,13 +882,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jop van Heesch (JTPV9H2G87)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jop van Heesch (JTPV9H2G87)";
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Tic Tac Team";
-				PROVISIONING_PROFILE = "db80b127-f1e9-46d1-b007-f2e6684180f8";
+				PROVISIONING_PROFILE = "075a9e69-a86a-4693-a893-9916f1d92363";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -906,7 +904,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Tic Tac Team";
-				PROVISIONING_PROFILE = "3ab727d8-1b69-4946-8036-c1b7053864ad";
+				PROVISIONING_PROFILE = "ca4a9d83-ca52-42bd-8101-d777d6ed1124";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;

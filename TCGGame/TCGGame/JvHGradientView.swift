@@ -46,7 +46,7 @@ class JvHGradientView: UIView {
 		}
 		
 		let rgbColorspace = CGColorSpaceCreateDeviceRGB()
-		let gradient = CGGradientCreateWithColorComponents(rgbColorspace, components, locations, UInt(num_locations))
+		let gradient = CGGradientCreateWithColorComponents(rgbColorspace, components, locations, num_locations)
 		
 		let currentBounds = self.bounds
 		let startPointInPoints = CGPointMake(self.startPoint.x * currentBounds.size.width, self.startPoint.y * currentBounds.size.height)

@@ -37,30 +37,30 @@ class Level: NSObject, NSCoding
         // Read in the level:
         let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
         let jsonData = NSData(contentsOfFile:path!, options: .DataReadingMappedIfSafe, error: nil)
-        var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as Dictionary<String, AnyObject>
+        var jsonResult = NSJSONSerialization.JSONObjectWithData(jsonData!, options: NSJSONReadingOptions.MutableContainers, error: nil) as! Dictionary<String, AnyObject>
         
         // Fill the vars:
-        self.name = jsonResult["name"] as String
-        self.hint = (jsonResult["hint"] as String)
+        self.name = jsonResult["name"] as! String
+        self.hint = (jsonResult["hint"] as! String)
         
         if self.hint! == ""
         {
             self.hint = nil
         }
         
-        self.decisionMakerPlayer1 = jsonResult["decisionMakerPlayer1"] as Bool
+        self.decisionMakerPlayer1 = jsonResult["decisionMakerPlayer1"] as! Bool
         
-        self.board = BoardDefinition(jsonDict: jsonResult["board"] as Dictionary)
-        self.pawnPlayer1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as Dictionary)
-        self.pawnPlayer2 = PawnDefinition(jsonDict: jsonResult["pawn2"] as Dictionary)
+        self.board = BoardDefinition(jsonDict: jsonResult["board"] as! Dictionary)
+        self.pawnPlayer1 = PawnDefinition(jsonDict: jsonResult["pawn1"] as! Dictionary)
+        self.pawnPlayer2 = PawnDefinition(jsonDict: jsonResult["pawn2"] as! Dictionary)
         
-        self.goalConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["goal1"] as Dictionary)
-        self.goalConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["goal2"] as Dictionary)
+        self.goalConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["goal1"] as! Dictionary)
+        self.goalConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["goal2"] as! Dictionary)
         
         if !kDevMakeTestingLevelTransitionsEasierByPuttingPawnsOnTheirGoals
         {
-            self.startConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["start1"] as Dictionary)
-            self.startConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["start2"] as Dictionary)
+            self.startConfigurationPawn1 = PawnConfiguration(jsonDict: jsonResult["start1"] as! Dictionary)
+            self.startConfigurationPawn2 = PawnConfiguration(jsonDict: jsonResult["start2"] as! Dictionary)
         }
         else
         {
@@ -68,17 +68,17 @@ class Level: NSObject, NSCoding
             self.startConfigurationPawn2 = goalConfigurationPawn2;
         }
         
-		self.moveItemAvailable = jsonResult["moveItemAvailable"] as Bool
-		self.seeItemAvailable = jsonResult["seeItemAvailable"] as Bool
-		self.giveItemAvailable = jsonResult["giveItemAvailable"] as Bool
+		self.moveItemAvailable = jsonResult["moveItemAvailable"] as! Bool
+		self.seeItemAvailable = jsonResult["seeItemAvailable"] as! Bool
+		self.giveItemAvailable = jsonResult["giveItemAvailable"] as! Bool
 		
-		let itemsPlayer1 = jsonResult["itemsPlayer1"] as [String: Int]
+		let itemsPlayer1 = jsonResult["itemsPlayer1"] as! [String: Int]
 		startItemsPlayer1 = []
 		for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer1 {
 			startItemsPlayer1.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
 		}
 		
-		let itemsPlayer2 = jsonResult["itemsPlayer2"] as [String: Int]
+		let itemsPlayer2 = jsonResult["itemsPlayer2"] as! [String: Int]
 		startItemsPlayer2 = []
 		for (itemTypeAsJsonString, nUsesFromJson) in itemsPlayer2 {
 			startItemsPlayer2.append(ItemDefinition(itemTypeAsJsonString: itemTypeAsJsonString, nUsesFromJson: nUsesFromJson))
@@ -172,7 +172,7 @@ class Level: NSObject, NSCoding
             
             for item in itemlist
             {
-                listToEncode.append(item.asDict())
+                listToEncode.append(item.asDict()) // todo
             }
 
             coder.encodeObject(listToEncode,forKey: title);
@@ -208,8 +208,8 @@ class Level: NSObject, NSCoding
 
     required init (coder decoder: NSCoder)
     {
-        self.name = decoder.decodeObjectForKey("name") as String
-        self.hint = (decoder.decodeObjectForKey("hint") as String)
+        self.name = decoder.decodeObjectForKey("name") as! String
+        self.hint = (decoder.decodeObjectForKey("hint") as! String)
         
         if self.hint! == ""
         {
@@ -218,18 +218,18 @@ class Level: NSObject, NSCoding
         
         self.decisionMakerPlayer1 = decoder.decodeBoolForKey("decisionMakerPlayer1")
 
-        self.board = BoardDefinition(width: decoder.decodeObjectForKey("boardWidth") as Int, height: decoder.decodeObjectForKey("boardHeight") as Int)
-        self.pawnPlayer1 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer1Shape") as Int)!)
-        self.pawnPlayer2 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer2Shape") as Int)!)
+        self.board = BoardDefinition(width: decoder.decodeObjectForKey("boardWidth") as! Int, height: decoder.decodeObjectForKey("boardHeight") as! Int)
+        self.pawnPlayer1 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer1Shape") as! Int)!)
+        self.pawnPlayer2 = PawnDefinition(shape: PawnShape(rawValue: decoder.decodeObjectForKey("pawnPlayer2Shape") as! Int)!)
         
-        self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as Int, y: decoder.decodeObjectForKey("startConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as Int)!)
-        self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
+        self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as! Int, y: decoder.decodeObjectForKey("startConfig1y") as! Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as! Int)!)
+        self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as! Int, y: decoder.decodeObjectForKey("startConfig2y") as! Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as! Int)!)
         
-        self.goalConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig1x") as Int, y: decoder.decodeObjectForKey("goalConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig1Rotation") as Int)!)
-		self.goalConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig2x") as Int, y: decoder.decodeObjectForKey("goalConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig2Rotation") as Int)!)
+        self.goalConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig1x") as! Int, y: decoder.decodeObjectForKey("goalConfig1y") as! Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig1Rotation") as! Int)!)
+		self.goalConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("goalConfig2x") as! Int, y: decoder.decodeObjectForKey("goalConfig2y") as! Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("goalConfig2Rotation") as! Int)!)
 		
-        self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as Int, y: decoder.decodeObjectForKey("startConfig1y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as Int)!)
-        self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as Int, y: decoder.decodeObjectForKey("startConfig2y") as Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as Int)!)
+        self.startConfigurationPawn1 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig1x") as! Int, y: decoder.decodeObjectForKey("startConfig1y") as! Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig1Rotation") as! Int)!)
+        self.startConfigurationPawn2 = PawnConfiguration(x: decoder.decodeObjectForKey("startConfig2x") as! Int, y: decoder.decodeObjectForKey("startConfig2y") as! Int, rotation: Direction(rawValue: decoder.decodeObjectForKey("startConfig2Rotation") as! Int)!)
 		
         self.moveItemAvailable = decoder.decodeBoolForKey("moveItemAvailable")
         self.seeItemAvailable = decoder.decodeBoolForKey("seeItemAvailable")
@@ -238,21 +238,21 @@ class Level: NSObject, NSCoding
         var itemTypeRawValue : Int = 0
         
         self.startItemsPlayer1 = []
-        var encodedStartItemsPlayer1 : Array = decoder.decodeObjectForKey("startItemsPlayer1") as NSArray
+        var encodedStartItemsPlayer1 : Array<Dictionary<String, AnyObject>> = decoder.decodeObjectForKey("startItemsPlayer1")! as! Array<Dictionary<String, AnyObject>> // todo: rename encodedStartItemsPlayer1 (and variables with similar confusing names)
         
         for itemDict in encodedStartItemsPlayer1
         {
-            itemTypeRawValue = itemDict["itemType"] as Int
-            self.startItemsPlayer1.append(ItemDefinition(itemType: ItemType(rawValue: itemTypeRawValue)!, endlessUse: itemDict["endlessUse"] as Bool, nrUses: (itemDict["nrUses"] as Int)))
+            itemTypeRawValue = itemDict["itemType"] as! Int
+            self.startItemsPlayer1.append(ItemDefinition(itemType: ItemType(rawValue: itemTypeRawValue)!, endlessUse: itemDict["endlessUse"] as! Bool, nrUses: (itemDict["nrUses"] as! Int)))
         }
         
         self.startItemsPlayer2 = []
-        var encodedStartItemsPlayer2 : Array = decoder.decodeObjectForKey("startItemsPlayer2") as NSArray
+        var encodedStartItemsPlayer2 : Array<Dictionary<String, AnyObject>> = decoder.decodeObjectForKey("startItemsPlayer2")! as! Array<Dictionary<String, AnyObject>>
         
         for itemDict in encodedStartItemsPlayer2
         {
-            itemTypeRawValue = itemDict["itemType"] as Int
-            self.startItemsPlayer2.append(ItemDefinition(itemType: ItemType(rawValue: itemTypeRawValue)!, endlessUse: itemDict["endlessUse"] as Bool, nrUses: (itemDict["nrUses"] as Int)))
+            itemTypeRawValue = itemDict["itemType"] as! Int
+            self.startItemsPlayer2.append(ItemDefinition(itemType: ItemType(rawValue: itemTypeRawValue)!, endlessUse: itemDict["endlessUse"] as! Bool, nrUses: (itemDict["nrUses"] as! Int)))
         }
     }
 }

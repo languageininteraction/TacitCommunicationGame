@@ -128,7 +128,7 @@ class RoundState: NSObject, NSCopying {
 	
 	func nextPhase(action: RoundAction) -> RoundPhase {
 		// The next state is the same as us, but with certain values changed:
-		let nextState = self.copy() as RoundState
+		let nextState = self.copy() as! RoundState
 		
 		// Depending on the action type, change the state:
 		switch action.type {

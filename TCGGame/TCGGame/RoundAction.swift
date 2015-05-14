@@ -44,10 +44,10 @@ class RoundAction: NSObject, NSCoding {
     }
     
     required init (coder decoder: NSCoder) {
-		self.type = RoundActionType(rawValue: decoder.decodeObjectForKey(kKeyTypeAsRawValue) as Int)!
+		self.type = RoundActionType(rawValue: decoder.decodeObjectForKey(kKeyTypeAsRawValue) as! Int)!
 		self.performedByPlayer1 = decoder.decodeBoolForKey(kKeyPerformedByPlayer1)
-		self.moveDirection = Direction(rawValue: decoder.decodeObjectForKey(kKeyMoveDirectionAsRawValue) as Int)!
-		self.rotateDirection = RotateDirection(rawValue: decoder.decodeObjectForKey(kKeyRotateDirectionAsRawValue) as Int)!
+		self.moveDirection = Direction(rawValue: decoder.decodeObjectForKey(kKeyMoveDirectionAsRawValue) as! Int)!
+		self.rotateDirection = RotateDirection(rawValue: decoder.decodeObjectForKey(kKeyRotateDirectionAsRawValue) as! Int)!
     }
 }
 
