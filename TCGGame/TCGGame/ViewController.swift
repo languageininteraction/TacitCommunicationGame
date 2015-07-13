@@ -18,8 +18,16 @@ class ViewController: UIViewController {
 				
 		if (!kDevLocalTestingIsOn) { // normal case
 			let homeViewController = HomeViewController()
+			
+			homeViewController.view.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
+			homeViewController.view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+			self.view.addSubview(homeViewController.view)
+			
+			println("UIScreen.mainScreen().bounds = \(UIScreen.mainScreen().bounds.width), \(UIScreen.mainScreen().bounds.height)")
+			println("frame self = \(self.view.frame.width), \(self.view.frame.height)")
+			
 						
-			self.presentViewController(homeViewController, animated: false, completion: nil)
+//			self.presentViewController(homeViewController, animated: false, completion: nil)
 		} else {
 			// This is useful for testing, circumventing the need for two devices and using Game Center:
 			let simulateTwoHomeViewControllers = SimulateTwoHomeViewControllers()

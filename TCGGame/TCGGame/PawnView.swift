@@ -145,7 +145,7 @@ class PawnView: UIView {
 		shapeLayerForGoalConfiguration.lineWidth = 0.75 * CGFloat(kPawnLineWidth) // todo constant
 		shapeLayerForGoalConfiguration.lineJoin = kCALineJoinRound
 		shapeLayerForGoalConfiguration.lineCap = kCALineCapRound
-		shapeLayerForGoalConfiguration.lineDashPattern = [5, 9]
+		shapeLayerForGoalConfiguration.lineDashPattern = !kOnPhone ? [5, 9] : [3, 5]
 		
 		super.init(frame: frame)
 		

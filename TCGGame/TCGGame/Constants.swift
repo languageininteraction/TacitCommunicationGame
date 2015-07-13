@@ -32,12 +32,12 @@ let kDevFakePlayerName2: String? = kDevelopmentMode ? "Fenna Yildiz" : nil
 // Layout of the board and stuff on top of / inside the board:
 let kDefaultScalePhoneWRTIpad: CGFloat = 0.65 // todo explain
 let kDefaultScaling: CGFloat = kOnPhone ? kDefaultScalePhoneWRTIpad : 1
-let kBoardEdgeLength: CGFloat = 400 * kDefaultScaling
+let kBoardEdgeLength: CGFloat = !kOnPhone ? 400 : 200
 let kBoardSpaceBetweenFields: Float = 10
 let kBoardLineWidthOfFields = kOnPhone ? 1.5 : 2
 let kBoardEdgeLengthOfPawnsWRTFields: Float = 0.7
 let kAmountFieldCanInflate: CGFloat = 0.30
-let kEdgelengthMovementButtons: CGFloat = 66 * kDefaultScaling
+let kEdgelengthMovementButtons: CGFloat = !kOnPhone ? 66 : 33
 
 // Layout of the screen:
 let kMargeFacesY: CGFloat = 30 * kDefaultScaling
@@ -58,7 +58,7 @@ let kSpaceBetweenItemButtons: CGFloat = 20 * kDefaultScaling
 let kSpaceBetweenReadyButtonAndBottom: CGFloat = 30 * kDefaultScaling
 let kSpaceBetweenYOfLevelLabelAndBottom: CGFloat = 160 * kDefaultScaling // use to be 120
 let kWidthOfLevelLabel: CGFloat = 200 * kDefaultScaling
-let kEdgelengtProgressCircle: CGFloat = 640 * kDefaultScaling
+let kEdgelengtProgressCircle: CGFloat = !kOnPhone ? 640 : 320
 
 // added later for the home screen:
 let kEdgeLengthDifficultyViews: CGFloat = kOnPhone ? 275 : 540
@@ -75,7 +75,7 @@ let kMaxNameLength: Int = 25
 
 // Fonts: UIFont fontWithName:@"OpenSans" size:18
 let kMainFontNameSemiBold = "OpenSans-Semibold"
-let kMainFontNameRegular = "OpenSans-Regular"
+let kMainFontNameRegular = "OpenSans"
 let kFontPlayerNames = UIFont(name: kMainFontNameSemiBold, size: kOnPhone ? 16 : 24)
 let kFontLevel = UIFont(name: kMainFontNameSemiBold, size: 24 * kDefaultScaling)
 let kFontAttributeInfinity = UIFont(name: kMainFontNameSemiBold, size: 20 * kDefaultScaling)

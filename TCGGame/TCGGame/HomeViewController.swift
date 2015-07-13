@@ -243,7 +243,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
         // The name labels:
         let yOfSmallPawnViews = kMargeFacesY + 0.5 * (kEdgelengthFaces - kEdgelengthSmallPawns) // used because we won't be adding the pawn views here, but we do place the names wrt these pawn views
         let xOfSmallPawnViewOfOtherPlayer = oldFrameOfImageViewPictureOfOtherPlayer.origin.x + oldFrameOfImageViewPictureOfOtherPlayer.size.width + kSpaceBetweenFaceAndSmallPawn + kEdgelengthSmallPawns
-        let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - 140 // todo cleanup again xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
+		let widthOfNameLabels = 0.5 * (widthScreen - kMinimalSpaceBetweenPlayerNames) - (!kOnPhone ? 140 : 60) // todo cleanup again xOfSmallPawnViewOfOtherPlayer - kSpaceBetweenSmallPawnAndPlayerName
 
         self.nameLabelLocalPlayer = UILabel(frame: CGRectMake(0.5 * (widthScreen + kMinimalSpaceBetweenPlayerNames), yOfSmallPawnViews + kAmountYOfPlayerNamesLowerThanYOfSmallPawn, widthOfNameLabels, kHeightOfPlayerNameLabels))
         self.nameLabelLocalPlayer.font = kFontPlayerNames
@@ -320,7 +320,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
 			labelExplanation.numberOfLines = 0
 			labelExplanation.font = kFontExplanationBeneathDifficulty
 			labelExplanation.textColor = UIColor(white: 0.5, alpha: 1)
-			labelExplanation.text = difficulty == Difficulty.Beginner ? "Om Tic Tac Team te spelen heb je een teamgenoot nodig. Druk op dezelfde knop als een andere speler en jullie komen bij elkaar in het team!" :
+			labelExplanation.text = difficulty == Difficulty.Beginner ? "Om TicTacTeam te spelen heb je een teamgenoot nodig. Druk op dezelfde knop als een andere speler en jullie komen bij elkaar in het team!" :
 				difficulty == Difficulty.Advanced ? "De Gevorderde levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." :
 				difficulty == Difficulty.Expert ? "De Expert levels zijn willekeurig. Daarom hoef je NIET op dezelfde knop te drukken als een andere speler om bij elkaar in het team te komen." : nil
 			labelExplanation.textAlignment = NSTextAlignment.Center
@@ -600,7 +600,7 @@ class HomeViewController: UIViewController, PassControlToSubControllerProtocol, 
             //This rarely happens, but if it happens we communicate that the player should login
             else
             {
-                self.showAlert(title:"Nog niet ingelogd",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Inloggen gebeurt normaal automatisch, maar kan wel enkele seconden duren. Ben je nog steeds niet ingelogd? Start Tic Tac Team dan opnieuw op.")
+                self.showAlert(title:"Nog niet ingelogd",message:"Om dit spel te kunnen spelen moet je ingelogd zijn bij GameCenter. Inloggen gebeurt normaal automatisch, maar kan wel enkele seconden duren. Ben je nog steeds niet ingelogd? Start TicTacTeam dan opnieuw op.")
             }
 		}
         else

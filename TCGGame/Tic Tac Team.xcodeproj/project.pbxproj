@@ -65,6 +65,7 @@
 		48A02DEC1A9F29B400C49E09 /* UIColor+Variations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */; };
 		48A02DF31A9F7DD200C49E09 /* Cross 22x22.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */; };
 		48A02DF41A9F7DD200C49E09 /* Cross 22x22@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */; };
+		48A31B951B53F144000EB1D0 /* Screen Shot 2015-07-13 at 14.50.55.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A31B941B53F144000EB1D0 /* Screen Shot 2015-07-13 at 14.50.55.png */; };
 		48A8F1E71A977182008EE4BA /* LockIcon 30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */; };
 		48A8F1E81A977182008EE4BA /* LockIcon 30x30@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */; };
 		48B1CF511A5EC739008EA4A7 /* Generic State Trajectories.key.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */; };
@@ -133,7 +134,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4812E6061A0A655A006DED82 /* Tic Tac Team.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic Tac Team.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4812E6061A0A655A006DED82 /* TicTacTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4812E60A1A0A655A006DED82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4812E60B1A0A655A006DED82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4812E60D1A0A655A006DED82 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +195,7 @@
 		48A02DEB1A9F29B400C49E09 /* UIColor+Variations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Variations.swift"; sourceTree = "<group>"; };
 		48A02DF11A9F7DD200C49E09 /* Cross 22x22.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross 22x22.png"; sourceTree = "<group>"; };
 		48A02DF21A9F7DD200C49E09 /* Cross 22x22@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cross 22x22@2x.png"; sourceTree = "<group>"; };
+		48A31B941B53F144000EB1D0 /* Screen Shot 2015-07-13 at 14.50.55.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screen Shot 2015-07-13 at 14.50.55.png"; sourceTree = "<group>"; };
 		48A8F1E51A977182008EE4BA /* LockIcon 30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30.png"; sourceTree = "<group>"; };
 		48A8F1E61A977182008EE4BA /* LockIcon 30x30@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LockIcon 30x30@2x.png"; sourceTree = "<group>"; };
 		48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Generic State Trajectories.key.pdf"; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 		4812E5FD1A0A655A006DED82 = {
 			isa = PBXGroup;
 			children = (
+				48A31B941B53F144000EB1D0 /* Screen Shot 2015-07-13 at 14.50.55.png */,
 				48D70C411A725D0E0087B938 /* Test Accounts GameCenter TCGGame on RU.rtf */,
 				48591D161A445D7E00D57FDD /* Test Accounts GameCenter TCGGame on GameTogether.rtf */,
 				48B1CF501A5EC739008EA4A7 /* Generic State Trajectories.key.pdf */,
@@ -287,7 +290,7 @@
 		4812E6071A0A655A006DED82 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4812E6061A0A655A006DED82 /* Tic Tac Team.app */,
+				4812E6061A0A655A006DED82 /* TicTacTeam.app */,
 				4812E61B1A0A655A006DED82 /* Tic Tac TeamTests.xctest */,
 			);
 			name = Products;
@@ -579,7 +582,7 @@
 			);
 			name = "Tic Tac Team";
 			productName = TCGGame;
-			productReference = 4812E6061A0A655A006DED82 /* Tic Tac Team.app */;
+			productReference = 4812E6061A0A655A006DED82 /* TicTacTeam.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4812E61A1A0A655A006DED82 /* Tic Tac TeamTests */ = {
@@ -655,6 +658,7 @@
 				48622C831AB725C20000EF94 /* LockIcon 20x20@2x.png in Resources */,
 				48C4A0B61A97A41A0034D878 /* Info 24x24@2x.png in Resources */,
 				48C3C2BF1A695EA1007FBF04 /* Icon_Finish 70x70@2x.png in Resources */,
+				48A31B951B53F144000EB1D0 /* Screen Shot 2015-07-13 at 14.50.55.png in Resources */,
 				48C3C2D01A695EA1007FBF04 /* Icon_See 70x70.png in Resources */,
 				48C3C2C71A695EA1007FBF04 /* Icon_Move 70x70@2x.png in Resources */,
 				481F63AC1A9759790007D135 /* OpenSans-Light.ttf in Resources */,
@@ -882,12 +886,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jop van Heesch (JTPV9H2G87)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jop van Heesch (JTPV9H2G87)";
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "Tic Tac Team";
+				PRODUCT_NAME = TicTacTeam;
 				PROVISIONING_PROFILE = "075a9e69-a86a-4693-a893-9916f1d92363";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -898,12 +902,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Radboud University (H5HQ399A66)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Radboud University (H5HQ399A66)";
 				INFOPLIST_FILE = TCGGame/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "Tic Tac Team";
+				PRODUCT_NAME = TicTacTeam;
 				PROVISIONING_PROFILE = "ca4a9d83-ca52-42bd-8101-d777d6ed1124";
 				TARGETED_DEVICE_FAMILY = 2;
 			};

@@ -392,8 +392,8 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 	
 	// ugly but quick (copied)
 	func addHelpButton() {
-		let edgeLengthButton: CGFloat = 44
-		helpButton.frame = CGRectMake(0.5 * (self.view.frame.width - edgeLengthButton), self.view.frame.height - edgeLengthButton - 25, edgeLengthButton, edgeLengthButton)
+		let edgeLengthButton: CGFloat = !kOnPhone ? 44 : 40
+		helpButton.frame = CGRectMake(0.5 * (self.view.frame.width - edgeLengthButton), self.view.frame.height - edgeLengthButton - (!kOnPhone ? 25 : 10), edgeLengthButton, edgeLengthButton)
 		self.view.addSubview(helpButton)
 		helpButton.addTarget(self, action: "helpButtonPressed", forControlEvents: UIControlEvents.TouchUpInside)
 		
@@ -808,7 +808,10 @@ class LevelViewController: ViewSubController, PassControlToSubControllerProtocol
 			let frameButton = helpButton.frame
 			popover.presentPopoverFromRect(frameButton, inView: self.view, permittedArrowDirections: UIPopoverArrowDirection.Down, animated: true)
 		} else {
-			println("todo show hint in action sheet: \(currentLevel!.hint)")
+			
+			var alert = UIAlertController(title: nil, message: currentLevel!.hint, preferredStyle: UIAlertControllerStyle.ActionSheet)
+			alert.addAction(UIAlertAction(title: "Ok!", style: UIAlertActionStyle.Default, handler: nil))
+			self.presentViewController(alert, animated: true, completion: nil)
 		}
 		
     }

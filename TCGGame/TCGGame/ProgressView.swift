@@ -81,14 +81,14 @@ class ProgressView: UIView {
 		let arcCenter = CGPointMake(0.5 * kEdgelengtProgressCircle, 0.5 * kEdgelengtProgressCircle)
 		shapeLayerRightPart.path = UIBezierPath(arcCenter: arcCenter, radius: 0.5 * kEdgelengtProgressCircle, startAngle: 0.5 * piAsCGFloat, endAngle: 1.5 * piAsCGFloat, clockwise: false).CGPath
 		shapeLayerRightPart.strokeColor = strokeColorRightPart.CGColor
-		shapeLayerRightPart.lineWidth = 20
+		shapeLayerRightPart.lineWidth = !kOnPhone ? 20 : 10
 		shapeLayerRightPart.fillColor = nil
 		shapeLayerRightPart.frame = CGRectMake(0.5 * (circleLayer.frame.width - kEdgelengtProgressCircle), 0.5 * (circleLayer.frame.height - kEdgelengtProgressCircle), kEdgelengtProgressCircle, kEdgelengtProgressCircle)
 		circleLayer.addSublayer(shapeLayerRightPart)
 		
 		shapeLayerLeftPart.path = UIBezierPath(arcCenter: arcCenter, radius: 0.5 * kEdgelengtProgressCircle, startAngle: 0.5 * piAsCGFloat, endAngle: 1.5 * piAsCGFloat, clockwise: true).CGPath
 		shapeLayerLeftPart.strokeColor = strokeColorLeftPart.CGColor
-		shapeLayerLeftPart.lineWidth = 20
+		shapeLayerLeftPart.lineWidth = shapeLayerRightPart.lineWidth
 		shapeLayerLeftPart.fillColor = nil
 		shapeLayerLeftPart.frame = CGRectMake(0.5 * (circleLayer.frame.width - kEdgelengtProgressCircle), 0.5 * (circleLayer.frame.height - kEdgelengtProgressCircle), kEdgelengtProgressCircle, kEdgelengtProgressCircle)
 		circleLayer.addSublayer(shapeLayerLeftPart)
@@ -99,7 +99,7 @@ class ProgressView: UIView {
 		CGContextSetLineWidth(context, 2 * scale)
 		CGContextSetRGBStrokeColor(context, 0, 0, 0, 1)
 		
-		let n = 200
+		let n = !kOnPhone ? 200 : 160
 		let anglePerLine = M_PI * 2 / Double(n)
 		let xCenter = 0.5 * widthMask, yCenter = 0.5 * heightMask
 		let radius = pow(pow(kEdgelengtProgressCircle, 2) * 2, 0.5)

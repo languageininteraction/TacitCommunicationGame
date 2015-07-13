@@ -169,7 +169,9 @@ class FieldView: UIView {
 		
 		
 		// Prepare imageViewWithSmallCheckmarkOrCross. Here we only set its frame, the image is set by the boardView:
-		imageViewWithSmallCheckmarkOrCross.frame = CGRectMake(edgelength - 25, edgelength - 25, 20, 20) // todo!
+		let edgelengthButton: CGFloat = !kOnPhone ? 20 : 10
+		let margin: CGFloat = !kOnPhone ? 25 : 12
+		imageViewWithSmallCheckmarkOrCross.frame = CGRectMake(edgelength - margin, edgelength - margin, edgelengthButton, edgelengthButton) // todo!
 		self.addSubview(imageViewWithSmallCheckmarkOrCross)
 	}
 	
